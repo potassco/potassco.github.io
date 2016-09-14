@@ -20,8 +20,6 @@ purposes by the Computational Logic Group at the ICS Department of Aalto SCI.
 
 [Link to Website](http://research.ics.aalto.fi/software/asp/)
 
-<!-- ========================= asptools ======================= -->
-
 # Cmodels (University of Texas at Austin, USA)
 
 Cmodels is a system that computes answer sets for either disjunctive logic
@@ -36,8 +34,6 @@ DLV is a deductive database system, based on disjunctive logic programming,
 which offers front-ends to several advanced KR formalisms.</p>
 
 [Link to Website](http://www.dlvsystem.com/dlv/)
-
-<!-- ========================= dlv ======================= -->
 
 # GASP (University of Udine, Italy)
 
