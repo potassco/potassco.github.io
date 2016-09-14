@@ -1,6 +1,6 @@
 ---
 layout: page
-title: Getting started
+title: Getting Started
 permalink: /start/
 menu: main
 weight: 2
