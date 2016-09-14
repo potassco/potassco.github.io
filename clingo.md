@@ -18,24 +18,25 @@ Both clingo and gringo are released together in one package.
 For processing legacy encodings, we recommend downloading the latest version of clingo 3 in addition to clingo 4.
 The language did not change in version 5 but there were many API changes.
 
+# Download
+
+- Recent clingo releases are on github: [github.com/potassco/clingo/releases](https://github.com/potassco/clingo/releases).
+- The latest source is on github: [github.com/potassco/clingo](https://github.com/potassco/clingo).
+- clingo up to version 4.x available on sourceforge: [sourceforge.net/p/potassco/files/clingo](https://sourceforge.net/p/potassco/files/clingo/).
+- clingo versions 2.x is also available on sourceforge: [sourceforge/p/potassco/files/gringo](https://sourceforge.net/p/potassco/files/gringo/).
+
 # API Reference
 
 - [Python API Reference](/clingo/python-api/current/clingo.html) 
 - [C API Reference](/clingo/c-api/current/)
 
-# Download
-
-The most recent version of clingo can be downloaded on [sourceforge](https://sourceforge.net/projects/potassco/files/clingo/).
-Legacy versions (2.x) are also available on [sourceforge](https://sourceforge.net/projects/potassco/files/gringo/).
-Development happens on [github.com/potassco](https://github.com/potassco).
-
 # Packages
 
-Packages for clingo and gringo are available in the linux distributions
+- Packages for clingo and gringo are available in the linux distributions
 [Debian](https://www.debian.org/),
 [Ubuntu](http://www.ubuntu.com/), and
 [Arch Linux (AUR)](https://aur.archlinux.org/).
-For Mac OS X, both clingo and gringo are available in
+- For Mac OS X, both clingo and gringo are available in
 [homebrew](http://brew.sh/) and
 [macports](https://www.macports.org/)
 as part of gringo.

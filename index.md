@@ -7,7 +7,7 @@ weight: 0
 permalink: /
 ---
 
-# Getting started
+# Getting Started
 
 Answer Set Programming (ASP) offers a simple and powerful modeling language to solve combinatorial problems.
 With our tools you can concentrate on an actual problem, rather than a smart way of implementing it.
