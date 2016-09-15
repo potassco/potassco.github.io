@@ -51,7 +51,7 @@ containing all three facts as well as the proposition `innocent(sally)`.
 This is because our rule applies to `sally` but not `harry`.
 
 Let us reproduce this result with clingo.
-To begin with, we put the above rule along with the three facts in a file called [crime.lp](files/crime.lp).
+To begin with, we put the above rule along with the three facts in a file called [crime.lp](/files/crime.lp).
 The extension `lp` is not necessary but helps to identify the type of file.
 
 The ASP system clingo allows us to compute the aforementioned answer set:
@@ -89,7 +89,7 @@ and may need more care during installation.
 # Despairing
 
 If you have a question,
-it is a good idea to try at first the [FAQ](/faq/),
+it is a good idea to try at first the [FAQ](/doc/faq/),
 which answers the most commonly asked questions about our tools.
 Your next best bet is to check the archive of the [potassco-users](https://sourceforge.net/p/potassco/mailman/potassco-users/) mailing list.
 If you need further help,

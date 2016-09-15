@@ -13,13 +13,25 @@ clasp can be applied as an ASP solver (on aspif or [smodels format](http://www.t
 as a SAT solver (on a simplified version of [dimacs/CNF format](http://www.satcompetition.org/2009/format-benchmarks2009.html)),
 or as a PB solver (on [OPB format](http://www.cril.univ-artois.fr/PB09/solver_req.html)).
 
-[Download](http://sourceforge.net/projects/potassco/files/clingo/)
-[Resources](http://www.cs.uni-potsdam.de/clasp/)
-[Article](http://www.cs.uni-potsdam.de/wv/pdfformat/gekasc12c.pdf)
-[Citation](http://www.cs.uni-potsdam.de/wv/bibtex/gekasc12c.bib)
+Further information about clasp is available on [clasp's home page](https://www.cs.uni-potsdam.de/clasp/).
 
-clasp is also available in
-[Debian](http://www.debian.org/),
-[Ubuntu](http://www.ubuntu.com/),
-[Arch Linux (AUR)](https://aur.archlinux.org/),
-and for Mac OS X in [homebrew](http://brew.sh/) and [macports](http://www.macports.org/).
+# Download
+
+- clasp is available on sourceforge: [sourceforge.net/projects/potassco/files/clasp](https://sourceforge.net/projects/potassco/files/clasp/).
+
+# Packages
+
+- Packages for clasp are available in the linux distributions
+[Debian](https://www.debian.org/),
+[Ubuntu](http://www.ubuntu.com/), and
+[Arch Linux (AUR)](https://aur.archlinux.org/).
+- For Mac OS X, both clingo and gringo are available in
+[homebrew](http://brew.sh/) and
+[macports](https://www.macports.org/).
+
+# Citing
+
+- Overview article for clasp:
+[pdf](https://www.cs.uni-potsdam.de/wv/pdfformat/gekasc12c.pdf)
+[bibtex](https://www.cs.uni-potsdam.de/wv/bibtex/gekasc12c.bib)
+

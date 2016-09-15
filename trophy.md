@@ -178,7 +178,7 @@ permalink: /trophies/
 
 <table width="100%">
 <tr>
-<td style="width:20%"><b><a style="color: #000;" href="labs.html#fimo">fimo</a></b> (iClingo)</td>
+<td style="width:20%"><b><a style="color: #000;" href="labs.html#fimo">fimo</a></b> (iclingo)</td>
 <td style="width:5%">2nd</td>
 <td style="width:75%">FNT</td>
 </tr>
@@ -198,7 +198,7 @@ permalink: /trophies/
 <td style="width:75%">Global, Decision (P, NP), Optimization</td>
 </tr>
 <tr>
-<td  colspan="3">(clasp, claspd, iClingo, clingcon, bingo)</td>
+<td  colspan="3">(clasp, claspd, iclingo, clingcon, bingo)</td>
 </tr>
 <tr>
 <td><b><a style="color: #000;" href="index.html#claspfolio">claspfolio</a></b></td>
