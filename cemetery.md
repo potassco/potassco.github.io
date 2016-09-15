@@ -42,7 +42,7 @@ claspd is an extension of clasp that allows for solving disjunctive logic progra
 fmc2iasp is a system for computing finite models of first-order theories
 (written in [TPTP](http://www.cs.miami.edu/~tptp/) format)
 via incremental Answer Set Programming.
-fmc2iasp uses [clingo](/clingo/) for finding answer sets of the resulting logic program.
+fmc2iasp uses [iclingo](/cemetery/#iclingo) for finding answer sets of the resulting logic program.
 An answer set represents a finite model of the input theory.
 
 [System](https://sourceforge.net/p/potassco/code/HEAD/tree/trunk/fmc2iasp/)
@@ -71,9 +71,9 @@ an extension of clasp to program the heuristic of the solver directly from the A
 
 [Download](https://www.cs.uni-potsdam.de/clavis/download/hclavis-1.1.5-x86_64-linux-static.tar.gz)
 
-# clingo
+# iclingo
 
-clingo is an incremental ASP system implemented on top of Clingo 3.
+iclingo is an incremental ASP system implemented on top of Clingo 3.
 It is based on the idea that the grounder as well as the solver are implemented in a stateful way.
 Thus, both keep their previous states while increasing an incremental parameter.
 As regards grounding, at each incremental step, the goal is to produce only ground rules stemming from the current program slice, without re-producing previous ground rules.
@@ -98,7 +98,7 @@ oclingo is a system for reactive answer set programming, extending gringo and cl
 
 # pbclasp
 
-PBclasp bundles a set of tools for using the ASP solver clasp as a full-fledged pseudo-Boolean solver.
+pbclasp bundles a set of tools for using the ASP solver clasp as a full-fledged pseudo-Boolean solver.
 
 [System](https://sourceforge.net/p/potassco/code/HEAD/tree/trunk/pbclasp/)
 (superseded by [clasp](/clasp/))
