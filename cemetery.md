@@ -15,7 +15,7 @@ aclasp uses a slightly modified restart policy based upon the average decision l
 Solver for upgrade scenarios in the Common Upgradeability Description Format (CUDF).
 Winner of Paranoid and Trendy Track at the Mancoosi International Solver Competition (MISC) 2011.
 
-[System](https://www.cs.uni-potsdam.de/aspcud/index.html)
+[System](http://www.cs.uni-potsdam.de/aspcud/index.html)
 (superseded by [aspcud](/aspcud/))
 
 # claspar
@@ -23,7 +23,7 @@ Winner of Paranoid and Trendy Track at the Mancoosi International Solver Competi
 claspar is a parallelized version of clasp 1 using MPI to distribute search.
 
 [Download](https://sourceforge.net/projects/potassco/files/claspar/)
-[Resources](https://www.cs.uni-potsdam.de/claspar)
+[Resources](http://www.cs.uni-potsdam.de/claspar)
 [Article](https://www.cs.uni-potsdam.de/wv/pdfformat/gekakascsc11a.pdf)
 [Citation](https://www.cs.uni-potsdam.de/wv/bibtex/gekakascsc11a.bib)
 
@@ -33,7 +33,7 @@ claspd is an extension of clasp that allows for solving disjunctive logic progra
 
 [System](https://sourceforge.net/projects/potassco/files/claspd/)
 (superseded by [clasp 3](/clasp/))
-[Resources](https://www.cs.uni-potsdam.de/claspd/)
+[Resources](http://www.cs.uni-potsdam.de/claspd/)
 [Article](https://www.cs.uni-potsdam.de/wv/pdfformat/drgegrkakoossc08a.pdf)
 [Citation](https://www.cs.uni-potsdam.de/wv/bibtex/drgegrkakoossc08a.bib)
 
@@ -57,16 +57,16 @@ It extends clasp allowing to program the heuristic of the solver directly from t
 
 [System](https://sourceforge.net/projects/potassco/files/hclasp)
 (superseded by [clasp 3](/clasp/))
-[Resources](https://www.cs.uni-potsdam.de/hclasp/)
+[Resources](http://www.cs.uni-potsdam.de/hclasp/)
 [Article](https://www.cs.uni-potsdam.de/wv/pdfformat/gekaotroscwa13a.pdf)
 [Citation](https://www.cs.uni-potsdam.de/wv/bibtex/gekaotroscwa13a.bib)
 
 # hclavis
 
 hclavis applies
-[clavis](https://www.cs.uni-potsdam.de/clavis)
+[clavis](http://www.cs.uni-potsdam.de/clavis)
 visualization tool to
-[hclasp](https://www.cs.uni-potsdam.de/hclasp),
+[hclasp](http://www.cs.uni-potsdam.de/hclasp),
 an extension of clasp to program the heuristic of the solver directly from the ASP code.
 
 [Download](https://www.cs.uni-potsdam.de/clavis/download/hclavis-1.1.5-x86_64-linux-static.tar.gz)
@@ -91,7 +91,7 @@ both superseded by  [clingo 4](/clingo/))
 
 oclingo is a system for reactive answer set programming, extending gringo and clasp for handling external data streams provided at runtime via a controller.
 
-[System](https://www.cs.uni-potsdam.de/wv/oclingo/)
+[System](http://www.cs.uni-potsdam.de/wv/oclingo/)
 (superseded by [clingo 4](/clingo/))
 [Article](https://www.cs.uni-potsdam.de/wv/pdfformat/gegrkasc11a.pdf)
 [Citation](https://www.cs.uni-potsdam.de/wv/bibtex/gegrkasc11a.bib)
