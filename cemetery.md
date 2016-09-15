@@ -73,7 +73,7 @@ an extension of clasp to program the heuristic of the solver directly from the A
 
 # iclingo
 
-iclingo is an incremental ASP system implemented on top of Clingo 3.
+iclingo is an incremental ASP system implemented on top of clingo 3.
 It is based on the idea that the grounder as well as the solver are implemented in a stateful way.
 Thus, both keep their previous states while increasing an incremental parameter.
 As regards grounding, at each incremental step, the goal is to produce only ground rules stemming from the current program slice, without re-producing previous ground rules.
