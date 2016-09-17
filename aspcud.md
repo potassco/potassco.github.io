@@ -20,8 +20,8 @@ And more information about the cudf format can be found on the [Mancoosi](http:/
 
 # Download
 
-Recent versions are on sourceforge: [sourceforge.net/projects/potassco/aspcud](https://sourceforge.net/projects/potassco/files/aspcud/)
-Old versions are on the universitiy of Potsdam site: [cs.uni-potsdam.de/aspcud](https://cs.uni-potsdam.de/aspcud/)
+- Recent versions are on sourceforge: [sourceforge.net/projects/potassco/aspcud](https://sourceforge.net/projects/potassco/files/aspcud/)
+- Old versions are on the universitiy of Potsdam site: [cs.uni-potsdam.de/aspcud](https://cs.uni-potsdam.de/aspcud/)
 
 # Packages
 
