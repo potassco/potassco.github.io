@@ -15,13 +15,13 @@ But if you want to get started quickly:
     apt-get install apt-cudf
     apt-get -s --solver aspcud install totem
 
-Additional information can be found on [aspcud's home page](https://cs.uni-potsdam.de/aspcud/).
+Additional information can be found on [aspcud's home page](http://www.cs.uni-potsdam.de/aspcud/).
 And more information about the cudf format can be found on the [Mancoosi](http://www.mancoosi.org/) homepage.
 
 # Download
 
 - Recent versions are on sourceforge: [sourceforge.net/projects/potassco/aspcud](https://sourceforge.net/projects/potassco/files/aspcud/)
-- Old versions are on the universitiy of Potsdam site: [cs.uni-potsdam.de/aspcud](https://cs.uni-potsdam.de/aspcud/)
+- Old versions are on the universitiy of Potsdam site: [cs.uni-potsdam.de/aspcud](http://www.cs.uni-potsdam.de/aspcud/)
 
 # Packages
 
@@ -30,5 +30,5 @@ And more information about the cudf format can be found on the [Mancoosi](http:/
 # Citing
 
 - Overview article for aspcud:
-[pdf](https://cs.uni-potsdam.de/wv/pdf/gekasc11c.pdf)
-[bibtex](https://cs.uni-potsdam.de/wv/bibtex/gekasc11c.bib)
+[pdf](https://www.cs.uni-potsdam.de/wv/pdf/gekasc11c.pdf)
+[bibtex](https://www.cs.uni-potsdam.de/wv/bibtex/gekasc11c.bib)
