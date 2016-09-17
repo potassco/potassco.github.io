@@ -1,0 +1,58 @@
+---
+layout: page
+title: Running clingo
+css: /css/clingo.css
+permalink: /clingo/run/
+---
+
+<div class="center">
+
+ <ul class="hlist">
+  <li><b>Simple Examples:</b></li>
+  <li><input type="button" value="Harry and Sally" onclick="example1()"/></li>
+  <li><input type="button" value="Flying Birds" onclick="example3()"/></li>
+  <li><input type="button" value="Graph Coloring" onclick="example4()"/></li>
+  <li><input type="button" value="n-Queens" onclick="example2()"/></li>
+ </ul>
+
+ <ul class="hlist">
+  <li><b>Advanced Examples:</b></li>
+  <li><input type="button" value="Traveling Salesperson" onclick="example5()"/></li>
+  <li><input type="button" value="Blocksworld Planing" onclick="example6()"/></li>
+ </ul>
+
+ <pre id="input">
+% instance
+motive(harry).
+motive(sally).
+guilty(harry).
+
+% encoding
+innocent(Suspect) :- motive(Suspect), not guilty(Suspect).</pre>
+
+ <ul class="hlist">
+  <li><b>Configuration:</b></li>
+  <li>resoning mode
+   <select id="mode">
+    <option selected>default</option>
+    <option>brave</option>
+    <option>cautious</option>
+    <option>enumerate all</option>
+   </select>
+  </li>
+  <li><input type="checkbox" id="project"/>&nbsp;project</li>
+  <li><input type="checkbox" id="stats"/>&nbsp;statistics</li>
+ </ul>
+
+ <input type="button" id="run" value="&#x25ba; Run!" onclick="solve()" disabled/>
+
+ <pre id="output"></pre>
+
+</div>
+
+<script src="/js/ace.js" type="text/javascript" charset="utf-8"></script>
+<script type="text/javascript">
+var Module; // global
+</script>
+<script src="/js/clingo-module.js" type="text/javascript"></script>
+<script src="/js/clingo.js" type="text/javascript" async></script>

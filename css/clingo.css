@@ -1,0 +1,30 @@
+#output {
+  text-align:left;
+  margin: 10px auto;
+  width: 100%;
+  display: block;
+  background-color: black;
+  color: white;
+  font: 12px/normal 'Monaco', 'Menlo', 'Ubuntu Mono', 'Consolas', 'source-code-pro', monospace;
+  outline: none;
+  overflow: visible;
+}
+#input { 
+  text-align:left;
+  width: 100%;
+  display: block;
+  position: relative;
+  overflow: hidden;
+  font: 12px/normal 'Monaco', 'Menlo', 'Ubuntu Mono', 'Consolas', 'source-code-pro', monospace;
+}
+.hlist {
+  display: block;
+}
+.hlist li { 
+  display: inline;
+  padding-right: .7em;
+  padding-left: .7em;
+}
+.center {
+  text-align:center;
+}
