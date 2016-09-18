@@ -1,7 +1,7 @@
 ---
 layout: page
 title: Getting Started
-permalink: /start/
+permalink: /doc/start/
 menu: main
 weight: 2
 ---
@@ -29,15 +29,15 @@ For example, the rule
     innocent(Suspect) :- motive(Suspect), not guilty(Suspect).
 
 expresses that a `Suspect` is considered `innocent` *if* she has a `motive` *and* she was not found `guilty`.
-The symbols '`:-`' and '`,`' stand for *if* and *and*.
-The symbol '`not`' stands for (default) negation.
+The symbols `:-` and `,` stand for *if* and *and*.
+The symbol `not` stands for (default) negation.
 While `guilty`, `innocent`, and `motive` are user-defined predicates,
 `Suspect` provides a user-defined variable that can be replaced by specific terms (representing objects).
 Variables start with uppercase letters, predicates and terms (usually) begin with lowercase letters.
-Finally, each rule must be terminated with a period '`.`' to signal the end of the rule.
+Finally, each rule must be terminated with a period `.` to signal the end of the rule.
 
 Facts are rules without any conditions.
-This is why the *if* symbol '`:-`' is omitted.
+This is why the *if* symbol `:-` is omitted.
 Example facts are
 
     motive(harry).
