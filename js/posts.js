@@ -1,6 +1,5 @@
 $(document).ready(function() {
   var search_field = $('#search');
-  var search_label = $('#search_area label');
   var search_clear = $('#search_area img');
   var search_area = $('#search_results_area');
   var search_count = $('#result_count');
@@ -27,16 +26,14 @@ $(document).ready(function() {
     var results;
     if (!query) {
       results = posts;
-      search_label.show();
       search_clear.hide();
       search_results_heading.hide();
     } else {
       results = json_search.getResults(query, posts);
-      search_label.hide();
       search_clear.show();
       search_results_heading.show();
     }
-    
+
     search_count.text('(' + results.length + ')');
     search_results.html(results.map(function(post) {
       return ('<li><a href="' + post.url + '">' + post.title + '</a><p>' + post.summary + '</p></li>');
@@ -46,20 +43,8 @@ $(document).ready(function() {
   var clear = function() {
     search_field.val('');
     search();
-    search_field.blur();
   }
 
   search_field.on('keyup',  search);
-  search_field.on('focus', function(e) {
-    search_label.hide();
-  });
-  search_field.on('blur', function(e) {
-    if (!search_field.val()) {
-      search_label.show();
-    }
-  });
   search_clear.on('click', clear);
-  if (!search_field.val()) {
-    search_label.show();
-  }
 });

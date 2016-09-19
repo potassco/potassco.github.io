@@ -1,43 +1,6 @@
 ---
-layout: page
+layout: posts
 title: Teaching
 permalink: /doc/teaching/
-javascript:
-  - /js/jquery.min.js
-  - /js/json_search.0.9.0.js
-  - /js/posts.js
-css:
-  - /css/posts.css
+category: teaching
 ---
-
-<div id="search_area">
-  <label for="search" style="display: none">Search</label>
-  <img src="/images/cancel.png" alt="X" style="display: none">
-  <input id="search">
-</div>
-
-<div id="search_results_area">
-  <h2 id="search_results_heading" style="display:none">Search results: <span id="result_count"></span></h2>
-  <ul id="search_results" class="posts">
-    {% for post in site.posts %}
-      <li>
-        <a href="{{ post.url }}">{{ post.title }}</a>
-        <p>{{ post.summary }}</p>
-      </li>
-    {% endfor %}
-  </ul>
-</div>
-
-<script type="text/javascript" charset="utf-8">
-  var posts = [
-    {% for post in site.posts %}
-      {
-        title:   {{ post.title   | strip_html | jsonify }},
-        summary: {{ post.summary | strip_html | jsonify }},
-        content: {{ post.content | strip_html | jsonify }},
-        url:     {{ post.url     | strip_html | jsonify }},
-      },
-    {% endfor %}
-  0];
-  posts.pop();
-</script>
