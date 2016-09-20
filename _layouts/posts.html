@@ -1,5 +1,8 @@
 ---
 layout: default
+empty:
+ - 
+
 ---
 <article class="post">
 
@@ -21,13 +24,27 @@ layout: default
     <div id="search_results_area">
       <h2 id="search_results_heading" style="display:none">Search results: <span id="result_count"></span></h2>
       <ul id="search_results" class="posts">
-        {% for post in site.posts %}
-          {% if post.categories contains page.category %}
-            <li>
-              <a href="{{ post.url }}">{{ post.title }}</a>
-              <p>{{ post.summary }}</p>
-            </li>
-          {% endif %}
+        {% if page.sorting == "alpha" %}
+        {%   assign posts = site.posts | sort: "title"  %}
+        {% elsif page.sorting == "weight" %}
+        {%   assign grouped = site.posts | group_by: "weight" | sort: "name", "last" | reverse %}
+        {%   assign posts = "" | split: "," %}
+        {%   for group in grouped %}
+        {%     assign items = group["items"] | sort: "title" %}
+        {%     for post in items %}
+        {%       assign posts = posts | push: post %}
+        {%     endfor %}
+        {%   endfor %}
+        {% else %}
+        {%   assign posts = site.posts %}
+        {% endif %}
+        {% for post in posts %}
+        {%   if post.categories contains page.category %}
+        <li>
+          <a href="{{ post.url }}">{{ post.title }}</a>
+          <p>{{ post.summary }}</p>
+        </li>
+        {%   endif %}
         {% endfor %}
       </ul>
     </div>
@@ -38,7 +55,7 @@ layout: default
 
 <script type="text/javascript" charset="utf-8">
   var posts = [
-    {% for post in site.posts %}
+    {% for post in posts %}
       {% if post.categories contains page.category %}
         {
           title:   {{ post.title   | strip_html | jsonify }},
