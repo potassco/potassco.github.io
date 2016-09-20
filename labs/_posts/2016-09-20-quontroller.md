@@ -1,0 +1,8 @@
+---
+layout: post
+title: quontroller
+summary: A system to interactively query ASP encodings.
+---
+quontroller is a system based on  [oclingo](/cemetery/#oclingo) to interactively query ASP encodings.
+
+[Download and Resources](http://www.cs.uni-potsdam.de/wv/quontroller/)
