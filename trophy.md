@@ -8,7 +8,7 @@ permalink: /trophies/
 
 <table width="100%">
 <tr>
-<td style="width:20%"><b><a style="color: #000;" href="index.html#clasp">clasp</a></b></td>
+<td style="width:20%"><b><a style="color: #000;" href="/clasp/">clasp</a></b></td>
 <td style="width:5%">1st</td>
 <td style="width:75%">Crafted Track</td>
 </tr>
@@ -23,12 +23,12 @@ permalink: /trophies/
 
 <table width="100%">
 <tr>
-<td><b><a style="color: #000;" href="labs.html#aspuncud">aspuncud</a></b> (unclasp) </td>
+<td><b><a style="color: #000;" href="{% post_url 2016-09-20-aspuncud %}">aspuncud</a></b> (unclasp) </td>
 <td>1st</td>
 <td>Paranoid, Basic User, Full User</td>
 </tr>
 <tr>
-<td style="width:20%"><b><a style="color: #000;" href="labs.html#aspcud">aspcud</a></b> (clasp) </td>
+<td style="width:20%"><b><a style="color: #000;" href="/aspcud/">aspcud</a></b> (clasp) </td>
 <td style="width:5%">2nd</td>
 <td style="width:75%">Paranoid, Basic User, Full User</td>
 </tr>
@@ -38,7 +38,7 @@ permalink: /trophies/
 
 <table width="100%">
 <tr>
-<td style="width:20%"><b><a style="color: #000;" href="index.html#clasp">clasp</a></b></td>
+<td style="width:20%"><b><a style="color: #000;" href="/clasp/">clasp</a></b></td>
 <td style="width:5%">1st</td>
 <td style="width:75%">PBS/PBO DEC-SMALLINT-LIN (SAT), WBO PARTIAL-SMALLINT-LIN (UNSAT), WBO SOFT-SMALLINT-LIN (UNSAT)</td>
 </tr>
@@ -58,7 +58,7 @@ permalink: /trophies/
 
 <table width="100%">
 <tr>
-<td style="width:20%"><b><a style="color: #000;" href="index.html#clasp">clasp-crafted</a></b></td>
+<td style="width:20%"><b><a style="color: #000;" href="/clasp/">clasp-crafted</a></b></td>
 <td style="width:5%">1st</td>
 <td style="width:75%">Main Track (Hard Combinatorial SAT+UNSAT)</td>
 </tr>
@@ -68,7 +68,7 @@ permalink: /trophies/
 
 <table width="100%">
 <tr>
-<td style="width:20%"><b><a style="color: #000;" href="index.html#clasp">clasp</a></b></td>
+<td style="width:20%"><b><a style="color: #000;" href="/clasp/">clasp</a></b></td>
 <td style="width:5%">1st</td>
 <td style="width:75%">System Track (P Problems), Model + Solve (Overall, P, NP, Beyond NP, Optimization)</td>
 </tr>
@@ -83,7 +83,7 @@ permalink: /trophies/
 <td>System Track (Overall)</td>
 </tr>
 <tr>
-<td><b><a style="color: #000;" href="index.html#claspd">claspD</a></b></td>
+<td><b><a style="color: #000;" href="{% post_url 2016-09-20-claspd %}">claspD</a></b></td>
 <td>1st</td>
 <td>System Track (Overall, Beyond NP)</td>
 </tr>
@@ -93,7 +93,7 @@ permalink: /trophies/
 <td>System Track (P)</td>
 </tr>
 <tr>
-<td><b><a style="color: #000;" href="labs.html#aclasp">aclasp</a></b></td>
+<td><b><a style="color: #000;" href="{% post_url 2016-09-20-aclasp %}">aclasp</a></b></td>
 <td>2nd</td>
 <td>Model + Solve (Optimization)</td>
 </tr>
@@ -103,7 +103,7 @@ permalink: /trophies/
 <td>Model + Solve (Overall, P, Optimization)</td>
 </tr>
 <tr>
-<td><b><a style="color: #000;" href="index.html#claspfolio">claspfolio</a></b></td>
+<td><b><a style="color: #000;" href="/claspfolio/">claspfolio</a></b></td>
 <td>1st</td>
 <td>System Track (NP Problems)</td>
 </tr>
@@ -118,7 +118,7 @@ permalink: /trophies/
 
 <table width="100%">
 <tr>
-<td style="width:20%"><b><a style="color: #000;" href="index.html#clasp">clasp</a></b></td>
+<td style="width:20%"><b><a style="color: #000;" href="/clasp/">clasp</a></b></td>
 <td style="width:5%">1st</td>
 <td style="width:75%">CPU Time Crafted UNSAT</td>
 </tr>
@@ -128,7 +128,7 @@ permalink: /trophies/
 <td>WC Time Crafted UNSAT</td>
 </tr>
 <tr>
-<td><b><a style="color: #000;" href="index.html#clasp">clasp</a></b> (multi-threaded)</td>
+<td><b><a style="color: #000;" href="/clasp/">clasp</a></b> (multi-threaded)</td>
 <td>1st</td>
 <td>WC Time Crafted UNSAT</td>
 </tr>
@@ -143,7 +143,7 @@ permalink: /trophies/
 
 <table width="100%">
 <tr>
-<td style="width:20%"><b><a style="color: #000;" href="index.html#clasp">clasp</a></b></td>
+<td style="width:20%"><b><a style="color: #000;" href="/clasp/">clasp</a></b></td>
 <td style="width:5%">1st</td>
 <td style="width:75%">WBO PARTIAL-SMALLINT-LIN (OPT+UNSAT, OPT, UNSAT), WBO SOFT-SMALLINT-LIN (OPT+UNSAT, OPT)</td>
 </tr>
@@ -158,7 +158,7 @@ permalink: /trophies/
 
 <table width="100%">
 <tr>
-<td><b><a style="color: #000;" href="labs.html#aspuncud">aspuncud</a></b> (unclasp) </td>
+<td><b><a style="color: #000;" href="{% post_url 2016-09-20-aspuncud %}">aspuncud</a></b> (unclasp) </td>
 <td>1st</td>
 <td>Paranoid, Trendy</td>
 </tr>
@@ -168,7 +168,7 @@ permalink: /trophies/
 <td>Total User</td>
 </tr>
 <tr>
-<td style="width:20%"><b><a style="color: #000;" href="labs.html#aspcud">aspcud</a></b> (clasp) </td>
+<td style="width:20%"><b><a style="color: #000;" href="/aspcud/">aspcud</a></b> (clasp) </td>
 <td style="width:5%">3rd</td>
 <td style="width:75%">Paranoid</td>
 </tr>
@@ -178,7 +178,7 @@ permalink: /trophies/
 
 <table width="100%">
 <tr>
-<td style="width:20%"><b><a style="color: #000;" href="labs.html#fimo">fimo</a></b> (iclingo)</td>
+<td style="width:20%"><b><a style="color: #000;" href="{% post_url 2016-09-20-fimo %}">fimo</a></b> (iclingo)</td>
 <td style="width:5%">2nd</td>
 <td style="width:75%">FNT</td>
 </tr>
@@ -193,7 +193,7 @@ permalink: /trophies/
 
 <table width="100%">
 <tr>
-<td style="width:20%"><b><a style="color: #000;" href="index.html">Potassco</a></b></td>
+<td style="width:20%"><b><a style="color: #000;" href="/">Potassco</a></b></td>
 <td style="width:5%">1st</td>
 <td style="width:75%">Global, Decision (P, NP), Optimization</td>
 </tr>
@@ -201,7 +201,7 @@ permalink: /trophies/
 <td  colspan="3">(clasp, claspd, iclingo, clingcon, bingo)</td>
 </tr>
 <tr>
-<td><b><a style="color: #000;" href="index.html#claspfolio">claspfolio</a></b></td>
+<td><b><a style="color: #000;" href="/claspfolio/">claspfolio</a></b></td>
 <td>2nd</td>
 <td>Global,  Decision (NP), Optimization</td>
 </tr>
@@ -211,7 +211,7 @@ permalink: /trophies/
 
 <table width="100%">
 <tr>
-<td style="width:20%"><b><a style="color: #000;" href="index.html#clasp">clasp</a></b></td>
+<td style="width:20%"><b><a style="color: #000;" href="/clasp/">clasp</a></b></td>
 <td style="width:5%">1st</td>
 <td style="width:75%">Crafted (SAT+UNSAT, SAT)</td>
 </tr>
@@ -226,7 +226,7 @@ permalink: /trophies/
 
 <table width="100%">
 <tr>
-<td style="width:20%"><b><a style="color: #000;" href="index.html#clasp">pbclasp</a></b> (clasp)</td>
+<td style="width:20%"><b><a style="color: #000;" href="{% post_url 2016-09-20-pbclasp %}">pbclasp</a></b> (clasp)</td>
 <td style="width:5%">1st</td>
 <td style="width:75%">OPT-SMALLINT-LIN (UNSAT)</td>
 </tr>
@@ -241,7 +241,7 @@ permalink: /trophies/
 
 <table width="100%">
 <tr>
-<td style="width:20%"><b><a style="color: #000;" href="index.html#clasp">clasp</a></b></td>
+<td style="width:20%"><b><a style="color: #000;" href="/clasp/">clasp</a></b></td>
 <td style="width:5%">1st</td>
 <td style="width:75%">SCore, SLparse</td>
 </tr>
@@ -256,7 +256,7 @@ permalink: /trophies/
 
 <table width="100%">
 <tr>
-<td style="width:20%"><b><a style="color: #000;" href="index.html#clasp">PB-clasp</a></b> (clasp)</td>
+<td style="width:20%"><b><a style="color: #000;" href="{% post_url 2016-09-20-pbclasp %}">pbclasp</a></b> (clasp)</td>
 <td style="width:5%">1st</td>
 <td style="width:75%">PURE-SAT</td>
 </tr>
