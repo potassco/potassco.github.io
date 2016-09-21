@@ -9,7 +9,7 @@ weight: 2
 # Installing
 
 The installation of the major Potassco tools is rather straightforward.
-We suggest to start with downloading the most recent version of the ASP system [clingo](http://sourceforge.net/projects/potassco/files/clingo).
+We suggest to start with downloading the most recent [clingo release](https://github.com/potassco/clingo/releases/).
 
 # Learning
 
