@@ -22,7 +22,7 @@ The language did not change in version 5 but there were many API changes.
 
 - Recent clingo releases are on github: [github.com/potassco/clingo/releases](https://github.com/potassco/clingo/releases).
 - The latest source is on github: [github.com/potassco/clingo](https://github.com/potassco/clingo).
-- clingo up to version 4.x available on sourceforge: [sourceforge.net/projects/potassco/files/clingo](https://sourceforge.net/projects/potassco/files/clingo/).
+- clingo up to version 4.x is available on sourceforge: [sourceforge.net/projects/potassco/files/clingo](https://sourceforge.net/projects/potassco/files/clingo/).
 - clingo versions 2.x is also available on sourceforge: [sourceforge/projects/potassco/files/gringo](https://sourceforge.net/projects/potassco/files/gringo/).
 
 # API Reference
