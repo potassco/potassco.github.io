@@ -13,5 +13,5 @@ barriers, robots, and targets as well as for animating robot moves in a stepwise
 Note that the clingo examples (part of the [releases](https://github.com/potassco/clingo/releases)) also contain an encoding and a visualizer for the ricochet robot problems.
 
 [Article](http://www.cs.uni-potsdam.de/wv/pdfformat/gejokaobsascsc13a.pdf)
-[Citation](http://www.cs.uni-potsdam.de/wv/pdfformat/gejokaobsascsc13a.bib)
+[Citation](http://www.cs.uni-potsdam.de/wv/bibtex/gejokaobsascsc13a.bib)
 [Encodings](/files/ricochetrobots-encodings.tar.gz)

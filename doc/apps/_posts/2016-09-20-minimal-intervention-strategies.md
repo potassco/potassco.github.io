@@ -8,5 +8,5 @@ strategies in logical signaling networks.  For further information see the
 publication below.
 
 [Article](http://www.cs.uni-potsdam.de/wv/pdfformat/kascsivi13a.pdf)
-[Citation](http://www.cs.uni-potsdam.de/wv/pdfformat/kascsivi13a.bib)
+[Citation](http://www.cs.uni-potsdam.de/wv/bibtex/kascsivi13a.bib)
 [Encodings](/files/intervention-encodings-2013-06-21.tar.bz2)

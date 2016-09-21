@@ -7,7 +7,7 @@ weight: 9000
 
 This is a full-fledged lecture series over an entire semester.
 The teaching material follows our forthcoming book on 
-[Answer Set Solving in Practice](book.html)
+[Answer Set Solving in Practice](/doc/book/)
 
 *Note that the material is still expanding and subject to change.*
 
@@ -86,7 +86,5 @@ and
 [Slides](http://www.cs.uni-potsdam.de/~torsten/Lehre/ASP/Folien/asp-slides.pdf) (2011)
 [Handout](http://www.cs.uni-potsdam.de/~torsten/Lehre/ASP/Folien/asp-handout.pdf) (2011)
 [Moodle](http://moodle.cs.uni-potsdam.de/course/view.php?id=39)
-[Documentation](http://sourceforge.net/projects/potassco/files/guide/) 
-[Support](/support/)
 [Videos](/doc/videos/)
 

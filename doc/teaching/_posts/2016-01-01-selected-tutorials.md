@@ -20,12 +20,7 @@ weight: 0
   Answer Set Programming: A Primer.
   Tutorial at RW'09.
   ([Notes](http://www.kr.tuwien.ac.at/staff/tkren/pub/2009/rw2009-asp.pdf))
-- [Tran Cao Son](http://www.cs.nmsu.edu/~tson).
-  Answer Set Programming.
-  Tutorial 2005.
-  ([Slides](http://www.alahay.org/teaching/mia/asp-tutorial.pdf))
 - [Vladimir Lifschitz](http://www.cs.utexas.edu/~vl).
   Answer Set Programming.
   Tutorial at ESSLLI'04.
   ([Notes](http://www.cs.utexas.edu/~vl/papers/esslli.ps))
-

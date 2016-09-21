@@ -73,6 +73,8 @@ program that can be given to smodels.
 This package provides a python framework to build on top of Answer Set Programming tools
 using the Zope Component Architecture. Currently pyzcasp supports the usage of most common tools from Potassco.
 
+[Link to Website](https://svidela.github.io/pyzcasp/)
+
 # Your Project
 
 If you think that your project should be listed here, please [contact us](/support/).
