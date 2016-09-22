@@ -2,7 +2,7 @@
 layout: page
 title: Support
 menu: main
-weight: 3
+weight: 5
 permalink: /support/
 ---
 

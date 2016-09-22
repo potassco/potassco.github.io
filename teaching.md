@@ -1,13 +1,14 @@
 ---
-layout: post
-title: Answer Set Programming
-summary: Lecture series at the University of Potsdam for an entire semester.
-weight: 9000
+layout: page
+title: Teaching
+permalink: /teaching/
+weight: 4
+menu: main
 ---
 
-This is a full-fledged lecture series over an entire semester.
+This is a Lecture series at the University of Potsdam about Answer Set Programming for an entire semester.
 The teaching material follows our forthcoming book on 
-[Answer Set Solving in Practice](/doc/book/)
+[Answer Set Solving in Practice](/book/)
 
 *Note that the material is still expanding and subject to change.*
 

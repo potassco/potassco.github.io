@@ -1,7 +1,7 @@
 ---
 layout: page
 title: Answer Set Solving in Practice
-permalink: /doc/book/
+permalink: /book/
 ---
 
 by
@@ -47,6 +47,6 @@ while illustrating the overall solving process by practical examples.
 # Resources
 
 - Example programs ([zip](/files/listings.zip), [tgz](/files/listings.tgz))
-- [Slides](/doc/teaching/)
+- [Slides](/teaching/)
 - [Videos](/doc/videos/)
 - [Guide](http://sourceforge.net/projects/potassco/files/guide/)
