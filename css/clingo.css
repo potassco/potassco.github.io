@@ -1,26 +1,27 @@
 #output {
   text-align:left;
   margin: 10px auto;
-  width: 100%;
   display: block;
   background-color: black;
   color: white;
   font: 12px/normal 'Monaco', 'Menlo', 'Ubuntu Mono', 'Consolas', 'source-code-pro', monospace;
   outline: none;
-  overflow: visible;
+  overflow-y: auto;
+  word-break: normal !important;
+  word-wrap: normal !important;
+  white-space: pre !important;
 }
-#input { 
+#input {
   text-align:left;
-  width: 100%;
   display: block;
   position: relative;
-  overflow: hidden;
+  overflow-y: hidden;
   font: 12px/normal 'Monaco', 'Menlo', 'Ubuntu Mono', 'Consolas', 'source-code-pro', monospace;
 }
 .hlist {
   display: block;
 }
-.hlist li { 
+.hlist li {
   display: inline;
   padding-right: .7em;
   padding-left: .7em;
