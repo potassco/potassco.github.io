@@ -1,21 +1,11 @@
 #output {
-  text-align:left;
   margin: 10px auto;
-  display: block;
-  background-color: black;
-  color: white;
   font: 12px/normal 'Monaco', 'Menlo', 'Ubuntu Mono', 'Consolas', 'source-code-pro', monospace;
-  outline: none;
-  overflow-y: auto;
-  word-break: normal !important;
-  word-wrap: normal !important;
-  white-space: pre !important;
+  text-align:left;
 }
 #input {
+  margin: 10px auto;
   text-align:left;
-  display: block;
-  position: relative;
-  overflow-y: hidden;
   font: 12px/normal 'Monaco', 'Menlo', 'Ubuntu Mono', 'Consolas', 'source-code-pro', monospace;
 }
 .hlist {
