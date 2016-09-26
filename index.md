@@ -27,7 +27,6 @@ To find out more about a specific system and a download link, follow one of the 
 * [**clingo**](/clingo/) an ASP system to ground and solve logic programs.
     * [gringo](/clingo/) is a grounder (powering the grounding in clingo).
     * [clasp](/clasp/) is a solver (powering the search in clingo).
-* [claspfolio](/claspfolio/) uses machine-learning techniques to improve the performance of clasp.
 * [clingcon](/clingcon/) extends clingo with constraint solving capabilities.
 * [aspcud](/aspcud/) is a solver for package dependencies.
 
