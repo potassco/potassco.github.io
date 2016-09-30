@@ -23,12 +23,12 @@ permalink: /trophies/
 
 <table class="trophy">
 <tr>
-<td><b><a style="color: #000;" href="{% post_url 2016-09-20-aspuncud %}">aspuncud</a></b> (unclasp) </td>
+<td><b><a style="color: #000;" href="{% post_url 2016-09-20-aspuncud %}">aspuncud</a></b><br>(unclasp) </td>
 <td>1st</td>
 <td>Paranoid, Basic User, Full User</td>
 </tr>
 <tr>
-<td style="width:20%"><b><a style="color: #000;" href="/aspcud/">aspcud</a></b> (clasp) </td>
+<td style="width:20%"><b><a style="color: #000;" href="/aspcud/">aspcud</a></b><br>(clasp) </td>
 <td style="width:5%">2nd</td>
 <td style="width:75%">Paranoid, Basic User, Full User</td>
 </tr>
@@ -128,12 +128,11 @@ permalink: /trophies/
 <td>WC Time Crafted UNSAT</td>
 </tr>
 <tr>
-<td><b><a style="color: #000;" href="/clasp/">clasp</a></b> (multi-threaded)</td>
+<td rowspan="2"><b><a style="color: #000;" href="/clasp/">clasp</a></b><br>(multi-threaded)</td>
 <td>1st</td>
 <td>WC Time Crafted UNSAT</td>
 </tr>
 <tr>
-<td></td>
 <td>2nd</td>
 <td>WC Time Crafted SAT+UNSAT</td>
 </tr>
@@ -158,17 +157,16 @@ permalink: /trophies/
 
 <table class="trophy">
 <tr>
-<td><b><a style="color: #000;" href="{% post_url 2016-09-20-aspuncud %}">aspuncud</a></b> (unclasp) </td>
+<td rowspan="2"><b><a style="color: #000;" href="{% post_url 2016-09-20-aspuncud %}">aspuncud</a></b><br>(unclasp) </td>
 <td>1st</td>
 <td>Paranoid, Trendy</td>
 </tr>
 <tr>
-<td></td>
 <td>2nd</td>
 <td>Total User</td>
 </tr>
 <tr>
-<td style="width:20%"><b><a style="color: #000;" href="/aspcud/">aspcud</a></b> (clasp) </td>
+<td style="width:20%"><b><a style="color: #000;" href="/aspcud/">aspcud</a></b><br>(clasp) </td>
 <td style="width:5%">3rd</td>
 <td style="width:75%">Paranoid</td>
 </tr>
@@ -178,12 +176,11 @@ permalink: /trophies/
 
 <table class="trophy">
 <tr>
-<td style="width:20%"><b><a style="color: #000;" href="{% post_url 2016-09-20-fimo %}">fimo</a></b> (iclingo)</td>
+<td rowspan="2" style="width:20%"><b><a style="color: #000;" href="{% post_url 2016-09-20-fimo %}">fimo</a></b><br>(iclingo)</td>
 <td style="width:5%">2nd</td>
 <td style="width:75%">FNT</td>
 </tr>
 <tr>
-<td></td>
 <td></td>
 <td>Best Newcomer award</td>
 </tr>
@@ -193,12 +190,9 @@ permalink: /trophies/
 
 <table class="trophy">
 <tr>
-<td style="width:20%"><b><a style="color: #000;" href="/">Potassco</a></b></td>
+<td style="width:20%"><b><a style="color: #000;" href="/">Potassco</a></b><br>(clasp, claspd, iclingo, clingcon, bingo)</td>
 <td style="width:5%">1st</td>
 <td style="width:75%">Global, Decision (P, NP), Optimization</td>
-</tr>
-<tr>
-<td  colspan="3">(clasp, claspd, iclingo, clingcon, bingo)</td>
 </tr>
 <tr>
 <td><b><a style="color: #000;" href="/claspfolio/">claspfolio</a></b></td>
@@ -226,12 +220,11 @@ permalink: /trophies/
 
 <table class="trophy">
 <tr>
-<td style="width:20%"><b><a style="color: #000;" href="{% post_url 2016-09-20-pbclasp %}">pbclasp</a></b> (clasp)</td>
+<td rowspan="2" style="width:20%"><b><a style="color: #000;" href="{% post_url 2016-09-20-pbclasp %}">pbclasp</a></b><br>(clasp)</td>
 <td style="width:5%">1st</td>
 <td style="width:75%">OPT-SMALLINT-LIN (UNSAT)</td>
 </tr>
 <tr>
-<td></td>
 <td>3rd</td>
 <td>DEC-SMALLINT-NLC (SAT+UNSAT), OPT-SMALLINT-NLC (OPT+UNSAT, OPT)</td>
 </tr>
@@ -256,7 +249,7 @@ permalink: /trophies/
 
 <table class="trophy">
 <tr>
-<td style="width:20%"><b><a style="color: #000;" href="{% post_url 2016-09-20-pbclasp %}">pbclasp</a></b> (clasp)</td>
+<td style="width:20%"><b><a style="color: #000;" href="{% post_url 2016-09-20-pbclasp %}">pbclasp</a></b><br>(clasp)</td>
 <td style="width:5%">1st</td>
 <td style="width:75%">PURE-SAT</td>
 </tr>
