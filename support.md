@@ -12,6 +12,7 @@ permalink: /support/
   please take the time to report it using the issue trackers of the respective projects:
   - [clingo issues](https://github.com/potassco/clingo/issues)
   - [clasp issues](https://github.com/potassco/clasp/issues)
+  - [website issues](https://github.com/potassco/potassco.github.io/issues)
   - or find the project among the [Potassco gits](https://github.com/potassco)
 - You can also sign up to our [mailing lists](https://sourceforge.net/p/potassco/mailman/) hosted on sourceforge.
   The potassco-users list is for all kinds of questions about our tools 
