@@ -35,5 +35,14 @@ $on-laptop:        800px;
 //     }
 // }
 
+table.trophy {
+    margin-bottom: 2em;
+    width: 100%;
+}
+table.trophy td {
+    padding-right: 2ex;
+    padding-bottom: 1ex;
+}
+
 // Import partials from the `minima` theme.
 @import "minima";

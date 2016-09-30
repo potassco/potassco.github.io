@@ -6,7 +6,7 @@ permalink: /trophies/
 
 # [Configurable SAT Solver Challenge 2013](http://www.cs.ubc.ca/labs/beta/Projects/CSSC2013/results.html)
 
-<table width="100%">
+<table class="trophy">
 <tr>
 <td style="width:20%"><b><a style="color: #000;" href="/clasp/">clasp</a></b></td>
 <td style="width:5%">1st</td>
@@ -21,7 +21,7 @@ permalink: /trophies/
 
 # [MISC 2012 CUDF Solver Competition](http://www.mancoosi.org/misc-2012/results/)
 
-<table width="100%">
+<table class="trophy">
 <tr>
 <td><b><a style="color: #000;" href="{% post_url 2016-09-20-aspuncud %}">aspuncud</a></b> (unclasp) </td>
 <td>1st</td>
@@ -36,7 +36,7 @@ permalink: /trophies/
 
 # [PB Competition 2012](http://www.cril.univ-artois.fr/PB12/)
 
-<table width="100%">
+<table class="trophy">
 <tr>
 <td style="width:20%"><b><a style="color: #000;" href="/clasp/">clasp</a></b></td>
 <td style="width:5%">1st</td>
@@ -56,7 +56,7 @@ permalink: /trophies/
 
 # [SAT Challenge 2012](http://baldur.iti.kit.edu/SAT-Challenge-2012/results.html)
 
-<table width="100%">
+<table class="trophy">
 <tr>
 <td style="width:20%"><b><a style="color: #000;" href="/clasp/">clasp-crafted</a></b></td>
 <td style="width:5%">1st</td>
@@ -66,7 +66,7 @@ permalink: /trophies/
 
 # [ASP Competition 2011](https://www.mat.unical.it/aspcomp2011/FrontPage)
 
-<table width="100%">
+<table class="trophy">
 <tr>
 <td style="width:20%"><b><a style="color: #000;" href="/clasp/">clasp</a></b></td>
 <td style="width:5%">1st</td>
@@ -116,7 +116,7 @@ permalink: /trophies/
 
 # [SAT 2011 Competition](http://www.satcompetition.org/)
 
-<table width="100%">
+<table class="trophy">
 <tr>
 <td style="width:20%"><b><a style="color: #000;" href="/clasp/">clasp</a></b></td>
 <td style="width:5%">1st</td>
@@ -141,7 +141,7 @@ permalink: /trophies/
 
 # [PB Competition 2011](http://www.cril.univ-artois.fr/PB11/)
 
-<table width="100%">
+<table class="trophy">
 <tr>
 <td style="width:20%"><b><a style="color: #000;" href="/clasp/">clasp</a></b></td>
 <td style="width:5%">1st</td>
@@ -156,7 +156,7 @@ permalink: /trophies/
 
 # [MISC 2011 CUDF Solver Competion](http://mancoosi.org/misc-2011/)
 
-<table width="100%">
+<table class="trophy">
 <tr>
 <td><b><a style="color: #000;" href="{% post_url 2016-09-20-aspuncud %}">aspuncud</a></b> (unclasp) </td>
 <td>1st</td>
@@ -176,7 +176,7 @@ permalink: /trophies/
 
 # [CADE ATP System Competition 2011](http://www.cs.miami.edu/~tptp/CASC/)
 
-<table width="100%">
+<table class="trophy">
 <tr>
 <td style="width:20%"><b><a style="color: #000;" href="{% post_url 2016-09-20-fimo %}">fimo</a></b> (iclingo)</td>
 <td style="width:5%">2nd</td>
@@ -191,7 +191,7 @@ permalink: /trophies/
 
 # [ASP Competition 2009](http://www.cs.kuleuven.be/~dtai/events/ASP-competition/Results.shtml)
 
-<table width="100%">
+<table class="trophy">
 <tr>
 <td style="width:20%"><b><a style="color: #000;" href="/">Potassco</a></b></td>
 <td style="width:5%">1st</td>
@@ -209,7 +209,7 @@ permalink: /trophies/
 
 # [SAT Competition 2009](http://www.satcompetition.org/)
 
-<table width="100%">
+<table class="trophy">
 <tr>
 <td style="width:20%"><b><a style="color: #000;" href="/clasp/">clasp</a></b></td>
 <td style="width:5%">1st</td>
@@ -224,7 +224,7 @@ permalink: /trophies/
 
 # [PB Evaluation 2009](http://www.cril.univ-artois.fr/PB09/results/ranking.php?idev=28)
 
-<table width="100%">
+<table class="trophy">
 <tr>
 <td style="width:20%"><b><a style="color: #000;" href="{% post_url 2016-09-20-pbclasp %}">pbclasp</a></b> (clasp)</td>
 <td style="width:5%">1st</td>
@@ -239,7 +239,7 @@ permalink: /trophies/
 
 # [ASP System Competition 2007](http://asparagus.cs.uni-potsdam.de/contest/index.php?page=results)
 
-<table width="100%">
+<table class="trophy">
 <tr>
 <td style="width:20%"><b><a style="color: #000;" href="/clasp/">clasp</a></b></td>
 <td style="width:5%">1st</td>
@@ -254,7 +254,7 @@ permalink: /trophies/
 
 # [PB Evaluation 2007](http://www.cril.univ-artois.fr/PB07/results/ranking.php?idev=9)
 
-<table width="100%">
+<table class="trophy">
 <tr>
 <td style="width:20%"><b><a style="color: #000;" href="{% post_url 2016-09-20-pbclasp %}">pbclasp</a></b> (clasp)</td>
 <td style="width:5%">1st</td>
