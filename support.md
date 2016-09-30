@@ -15,6 +15,6 @@ permalink: /support/
   - [website issues](https://github.com/potassco/potassco.github.io/issues)
   - or find the project among the [Potassco gits](https://github.com/potassco)
 - You can also sign up to our [mailing lists](https://sourceforge.net/p/potassco/mailman/) hosted on sourceforge.
-  The potassco-users list is for all kinds of questions about our tools 
+  The potassco-users list is for all kinds of questions about our tools
   and the potassco-announce list is a read-only low frequency list where we announce new releases.
   Also check the [potassco-users archive](https://sourceforge.net/p/potassco/mailman/potassco-users/), maybe your question already has an answer.
