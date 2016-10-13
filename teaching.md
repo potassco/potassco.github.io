@@ -66,6 +66,12 @@ and
 - Mult-shot Solving
   [LaTeX Bundle](http://www.cs.uni-potsdam.de/~torsten/Potassco/Slides/msolving.tgz)
   [PDF](http://www.cs.uni-potsdam.de/~torsten/Potassco/Slides/msolving.pdf)
+- Theory Solving
+  [LaTeX Bundle](http://www.cs.uni-potsdam.de/~torsten/Potassco/Slides/tsolving.tgz)
+  [PDF](http://www.cs.uni-potsdam.de/~torsten/Potassco/Slides/tsolving.pdf)
+- Heuristic Programming
+  [LaTeX Bundle](http://www.cs.uni-potsdam.de/~torsten/Potassco/Slides/hsolving.tgz)
+  [PDF](http://www.cs.uni-potsdam.de/~torsten/Potassco/Slides/hsolving.pdf)
 - Potassco Systems
   [LaTeX Bundle](http://www.cs.uni-potsdam.de/~torsten/Potassco/Slides/systems.tgz)
   [PDF](http://www.cs.uni-potsdam.de/~torsten/Potassco/Slides/systems.pdf)
@@ -76,10 +82,6 @@ and
   (preliminary; 
   G3: [LaTeX Bundle](http://www.cs.uni-potsdam.de/~torsten/Potassco/Slides/encoding3.tgz)
   [PDF](http://www.cs.uni-potsdam.de/~torsten/Potassco/Slides/encoding3.pdf))
-- Constraint Solving
-  [LaTeX](http://www.cs.uni-potsdam.de/~torsten/Potassco/Slides/csolving.tex)
-  [PDF](http://www.cs.uni-potsdam.de/~torsten/Potassco/Slides/csolving.pdf)
-  (preliminary)
 - Preferences and Optimization
   [LaTeX](http://www.cs.uni-potsdam.de/~torsten/Potassco/Slides/preferences.tex)
   [PDF](http://www.cs.uni-potsdam.de/~torsten/Potassco/Slides/preferences.pdf)
