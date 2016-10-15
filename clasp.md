@@ -17,7 +17,9 @@ Further information about clasp is available on [clasp's home page](https://www.
 
 # Download
 
-- clasp is available on sourceforge: [sourceforge.net/projects/potassco/files/clasp](https://sourceforge.net/projects/potassco/files/clasp/).
+- Most recent clasp releases are on github: [github.com/potassco/clasp/releases](https://github.com/potassco/clasp/releases).
+- The latest source is on github: [github.com/potassco/clasp](https://github.com/potassco/clasp).
+- clasp up to version 3.2.0 is available on sourceforge: [sourceforge.net/projects/potassco/files/clasp](https://sourceforge.net/projects/potassco/files/clasp/).
 
 # Packages
 
