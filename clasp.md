@@ -72,7 +72,7 @@ to get an overview of the most important options supported by clasp.
   [Conflict-Driven Answer Set Enumeration](http://www.cs.uni-potsdam.de/wv/pdfformat/gekanesc07c.pdf), LPNMR'07, 2007<br/>
   [[bibtex](http://www.cs.uni-potsdam.de/wv/bibtex/gekanesc07c.bib)]
   [Experiments: [instances](https://www.cs.uni-potsdam.de/clasp/Download/rc4-enum.tgz)
-  |[results](https://www.cs.uni-potsdam.de/clasp/Download/results-clasp07-enum.xlsx)]
+  | [results](https://www.cs.uni-potsdam.de/clasp/Download/results-clasp07-enum.xlsx)]
 - Martin Gebser, Benjamin Kaufmann, Andr&#233; Neumann and Torsten Schaub,
   [Conflict-Driven Answer Set Solving](http://www.cs.uni-potsdam.de/wv/pdfformat/gekanesc07a.pdf), IJCAI'07, 2007<br/>
   [[bibtex](http://www.cs.uni-potsdam.de/wv/bibtex/gekanesc07a.bib)]
