@@ -151,6 +151,69 @@ goal(on(b2,b1)).\n\
 goal(on(b0,table)).", -1);
 }
 
+function example7() {
+  input.setValue("#script (lua)\n\
+\n\
+require(\"clingo\")\n\
+\n\
+local Pigeonator = { }\n\
+Pigeonator.__index = Pigeonator\n\
+\n\
+function Pigeonator.new()\n\
+    local self = setmetatable({ }, Pigeonator)\n\
+    self.place = {} -- shared state\n\
+    return self\n\
+end\n\
+\n\
+function Pigeonator:init(init)\n\
+    for atom in init.symbolic_atoms:by_signature(\"place\", 2) do\n\
+        local lit = init:solver_literal(atom.literal)\n\
+        -- store hole H of each place(P,H) atom\n\
+        self.place[lit] = atom.symbol.arguments[2].number\n\
+        init:add_watch(lit)\n\
+    end\n\
+    for i = 1, init.threads do\n\
+        init:set_state(i, {})\n\
+    end\n\
+end\n\
+\n\
+function Pigeonator:propagate(control, changes, holes)\n\
+    for _, lit in ipairs(changes) do\n\
+        local hole = self.place[lit]\n\
+        if holes[hole] == nil then\n\
+            holes[hole] = lit\n\
+        end\n\
+        local prev = holes[hole]\n\
+        if prev ~= lit and not control:add_nogood{{lit, prev}} then\n\
+            return\n\
+        end\n\
+    end\n\
+end\n\
+\n\
+function Pigeonator:undo(thread_id, assignment, changes, holes)\n\
+    for _, lit in ipairs(changes) do\n\
+        local hole = self.place[lit]\n\
+        if holes[hole] == lit then\n\
+            holes[hole] = nil\n\
+        end\n\
+    end\n\
+end\n\
+\n\
+function main(prg)\n\
+    prg:register_propagator(Pigeonator.new())\n\
+    prg:ground({{\"base\", {}}})\n\
+    prg:solve()\n\
+end\n\
+\n\
+#end.\n\
+\n\
+#const h = 5.\n\
+#const p = h+1.\n\
+\n\
+1 { place(P,H) : H = 1..h } 1 :- P = 1..p.\n\
+% { place(P,H) : P = 1..p } 1 :- H = 1..h.", -1);
+}
+
 function solve() {
   options = "";
   if (document.getElementById("stats").checked) { options += " --stats"; }
