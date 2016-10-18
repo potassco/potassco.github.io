@@ -1,4 +1,3 @@
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
 <html><head><title>Python: module clingo.ast</title>
 </head><body bgcolor="#f0f0f8">
@@ -149,7 +148,7 @@ theory_atom&nbsp;=&nbsp;TheoryAtom<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;,&nbsp;term&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;theory_term<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;)?<br>
 &nbsp;<br>
-body_atom&nbsp;=&nbsp;Aggregate<br>
+body_atom&nbsp;=&nbsp;aggregate<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;BodyAggregate<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(&nbsp;location&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;Location<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;,&nbsp;left_guard&nbsp;&nbsp;:&nbsp;aggregate_guard?<br>
@@ -180,7 +179,7 @@ body_literal&nbsp;=&nbsp;literal<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;)<br>
 &nbsp;<br>
 head&nbsp;=&nbsp;literal<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;Aggregate<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;aggregate<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;HeadAggregate<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(&nbsp;location&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;Location<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;,&nbsp;left_guard&nbsp;&nbsp;:&nbsp;aggregate_guard?<br>
@@ -311,17 +310,17 @@ statement&nbsp;=&nbsp;Rule<br>
 <dt><font face="helvetica, arial">object
 </font></dt><dd>
 <dl>
-<dt><font face="helvetica, arial"><a href="clingo.ast.html#AST">AST</a>
-</font></dt><dt><font face="helvetica, arial"><a href="clingo.ast.html#ASTType">ASTType</a>
-</font></dt><dt><font face="helvetica, arial"><a href="clingo.ast.html#AggregateFunction">AggregateFunction</a>
-</font></dt><dt><font face="helvetica, arial"><a href="clingo.ast.html#BinaryOperator">BinaryOperator</a>
-</font></dt><dt><font face="helvetica, arial"><a href="clingo.ast.html#ComparisonOperator">ComparisonOperator</a>
-</font></dt><dt><font face="helvetica, arial"><a href="clingo.ast.html#ScriptType">ScriptType</a>
-</font></dt><dt><font face="helvetica, arial"><a href="clingo.ast.html#Sign">Sign</a>
-</font></dt><dt><font face="helvetica, arial"><a href="clingo.ast.html#TheoryAtomType">TheoryAtomType</a>
-</font></dt><dt><font face="helvetica, arial"><a href="clingo.ast.html#TheoryOperatorType">TheoryOperatorType</a>
-</font></dt><dt><font face="helvetica, arial"><a href="clingo.ast.html#TheorySequenceType">TheorySequenceType</a>
-</font></dt><dt><font face="helvetica, arial"><a href="clingo.ast.html#UnaryOperator">UnaryOperator</a>
+<dt><font face="helvetica, arial"><a href="#AST">AST</a>
+</font></dt><dt><font face="helvetica, arial"><a href="#ASTType">ASTType</a>
+</font></dt><dt><font face="helvetica, arial"><a href="#AggregateFunction">AggregateFunction</a>
+</font></dt><dt><font face="helvetica, arial"><a href="#BinaryOperator">BinaryOperator</a>
+</font></dt><dt><font face="helvetica, arial"><a href="#ComparisonOperator">ComparisonOperator</a>
+</font></dt><dt><font face="helvetica, arial"><a href="#ScriptType">ScriptType</a>
+</font></dt><dt><font face="helvetica, arial"><a href="#Sign">Sign</a>
+</font></dt><dt><font face="helvetica, arial"><a href="#TheoryAtomType">TheoryAtomType</a>
+</font></dt><dt><font face="helvetica, arial"><a href="#TheoryOperatorType">TheoryOperatorType</a>
+</font></dt><dt><font face="helvetica, arial"><a href="#TheorySequenceType">TheorySequenceType</a>
+</font></dt><dt><font face="helvetica, arial"><a href="#UnaryOperator">UnaryOperator</a>
 </font></dt></dl>
 </dd>
 </dl>
@@ -596,7 +595,7 @@ Data and other attributes defined here:<br>
 <a href="#BinaryOperator">BinaryOperator</a>.Or&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;--&nbsp;bitwise&nbsp;or<br>
 <a href="#BinaryOperator">BinaryOperator</a>.And&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;--&nbsp;bitwise&nbsp;and<br>
 <a href="#BinaryOperator">BinaryOperator</a>.Plus&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;--&nbsp;arithmetic&nbsp;addition<br>
-<a href="#BinaryOperator">BinaryOperator</a>.Minus&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;--&nbsp;arithmetic&nbsp;substraction&nbsp;and&nbsp;classical&nbsp;negation<br>
+<a href="#BinaryOperator">BinaryOperator</a>.Minus&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;--&nbsp;arithmetic&nbsp;substraction<br>
 <a href="#BinaryOperator">BinaryOperator</a>.Multiplication&nbsp;--&nbsp;arithmetic&nbsp;multipilcation<br>
 <a href="#BinaryOperator">BinaryOperator</a>.Division&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;--&nbsp;arithmetic&nbsp;division<br>
 <a href="#BinaryOperator">BinaryOperator</a>.Modulo&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;--&nbsp;arithmetic&nbsp;modulo<br>&nbsp;</tt></td></tr>
@@ -905,7 +904,7 @@ Data and other attributes defined here:<br>
 <td colspan=2><tt>Enumeration&nbsp;of&nbsp;unary&nbsp;operators.<br>
 &nbsp;<br>
 <a href="#UnaryOperator">UnaryOperator</a>.Negation&nbsp;--&nbsp;bitwise&nbsp;negation<br>
-<a href="#UnaryOperator">UnaryOperator</a>.Minus&nbsp;&nbsp;&nbsp;&nbsp;--&nbsp;unary&nbsp;minus<br>
+<a href="#UnaryOperator">UnaryOperator</a>.Minus&nbsp;&nbsp;&nbsp;&nbsp;--&nbsp;unary&nbsp;minus&nbsp;and&nbsp;classical&nbsp;negation<br>
 <a href="#UnaryOperator">UnaryOperator</a>.Absolute&nbsp;--&nbsp;absolute&nbsp;value<br>&nbsp;</tt></td></tr>
 <tr><td>&nbsp;</td>
 <td width="100%">Methods defined here:<br>

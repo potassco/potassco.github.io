@@ -7,8 +7,8 @@ menu: main
 ---
 
 This is a Lecture series at the University of Potsdam about Answer Set Programming for an entire semester.
-The teaching material follows our forthcoming book on 
-[Answer Set Solving in Practice](/book/)
+The teaching material follows our book on 
+[Answer Set Solving in Practice](/book/).
 
 *Note that the material is still expanding and subject to change.*
 
@@ -66,6 +66,12 @@ and
 - Mult-shot Solving
   [LaTeX Bundle](http://www.cs.uni-potsdam.de/~torsten/Potassco/Slides/msolving.tgz)
   [PDF](http://www.cs.uni-potsdam.de/~torsten/Potassco/Slides/msolving.pdf)
+- Theory Solving
+  [LaTeX Bundle](http://www.cs.uni-potsdam.de/~torsten/Potassco/Slides/tsolving.tgz)
+  [PDF](http://www.cs.uni-potsdam.de/~torsten/Potassco/Slides/tsolving.pdf)
+- Heuristic Programming
+  [LaTeX Bundle](http://www.cs.uni-potsdam.de/~torsten/Potassco/Slides/hsolving.tgz)
+  [PDF](http://www.cs.uni-potsdam.de/~torsten/Potassco/Slides/hsolving.pdf)
 - Potassco Systems
   [LaTeX Bundle](http://www.cs.uni-potsdam.de/~torsten/Potassco/Slides/systems.tgz)
   [PDF](http://www.cs.uni-potsdam.de/~torsten/Potassco/Slides/systems.pdf)
@@ -76,10 +82,6 @@ and
   (preliminary; 
   G3: [LaTeX Bundle](http://www.cs.uni-potsdam.de/~torsten/Potassco/Slides/encoding3.tgz)
   [PDF](http://www.cs.uni-potsdam.de/~torsten/Potassco/Slides/encoding3.pdf))
-- Constraint Solving
-  [LaTeX](http://www.cs.uni-potsdam.de/~torsten/Potassco/Slides/csolving.tex)
-  [PDF](http://www.cs.uni-potsdam.de/~torsten/Potassco/Slides/csolving.pdf)
-  (preliminary)
 - Preferences and Optimization
   [LaTeX](http://www.cs.uni-potsdam.de/~torsten/Potassco/Slides/preferences.tex)
   [PDF](http://www.cs.uni-potsdam.de/~torsten/Potassco/Slides/preferences.pdf)
