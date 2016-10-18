@@ -58,6 +58,7 @@ More examples can be found in the download section.
 - Recent clingcon 3.x releases are on github: [github.com/potassco/clingcon/releases](https://github.com/potassco/clingcon/releases).
 - The latest source is on github: [github.com/potassco/clingcon](https://github.com/potassco/clingcon).
 - Clingcon up to version 2.x is available on sourceforge: [sourceforge.net/projects/potassco/files/clingcon](https://sourceforge.net/projects/potassco/files/clingcon/).
+
 # Citing
 
 - Description of clingcon version 2.x:
