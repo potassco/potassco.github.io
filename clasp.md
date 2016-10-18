@@ -9,7 +9,7 @@ It combines the high-level modeling capacities of ASP with state-of-the-art tech
 The primary clasp algorithm relies on conflict-driven nogood learning, a technique that proved very successful for satisfiability checking (SAT).
 Unlike other learning ASP solvers, clasp does not rely on legacy software, such as a SAT solver or any other existing ASP solver.
 Rather, clasp has been genuinely developed for answer set solving based on conflict-driven nogood learning.
-clasp can be applied as an ASP solver (on aspif or [smodels format](http://www.tcs.hut.fi/Software/smodels/lparse.ps), as output by gringo),
+clasp can be applied as an ASP solver (on [aspif](http://www.cs.uni-potsdam.de/wv/pdfformat/gekakaosscwa16b.pdf) or [smodels format](http://www.tcs.hut.fi/Software/smodels/lparse.ps), as output by gringo),
 as a SAT solver (on a simplified version of [dimacs/CNF format](http://www.satcompetition.org/2009/format-benchmarks2009.html)),
 as a PB solver (on [OPB format](http://www.cril.univ-artois.fr/PB09/solver_req.html)),
 or as a C++ library in another program.
