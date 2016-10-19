@@ -14,6 +14,11 @@ input.setOptions({
   autoScrollEditorIntoView: true
 });
 
+function example() {
+    var ex = document.getElementById("examples").value;
+    window[ex]();
+}
+
 function example1() {
   input.setValue("% instance\n\
 motive(harry).\n\

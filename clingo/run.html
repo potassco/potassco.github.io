@@ -13,18 +13,22 @@ permalink: /clingo/run/
 <div class="center">
 
  <ul class="hlist">
-  <li><b>Simple Examples:</b></li>
-  <li><input type="button" value="Harry and Sally" onclick="example1()"/></li>
-  <li><input type="button" value="Flying Birds" onclick="example3()"/></li>
-  <li><input type="button" value="Graph Coloring" onclick="example4()"/></li>
-  <li><input type="button" value="n-Queens" onclick="example2()"/></li>
- </ul>
-
- <ul class="hlist">
-  <li><b>Advanced Examples:</b></li>
-  <li><input type="button" value="Traveling Salesperson" onclick="example5()"/></li>
-  <li><input type="button" value="Blocksworld Planing" onclick="example6()"/></li>
-  <li><input type="button" value="Pigeonator Propagator" onclick="example7()"/></li>
+  <li><b>Examples:</b></li>
+  <li>
+    <select id="examples" onchange="example()">
+        <optgroup label="Simple Examples">
+          <option value="example1">Harry and Sally</option>
+          <option value="example3">Flying Birds</option>
+          <option value="example4">Graph Coloring</option>
+          <option value="example2">n-Queens</option>
+        </optgroup>
+        <optgroup label="Advanced Examples">
+          <option value="example5">Traveling Salesperson</option>
+          <option value="example6">Blocksworld Planning</option>
+          <option value="example7">Pigeonator Propagator</option>
+        </optgroup>
+    </select>
+  </li>
  </ul>
 
  <pre id="input">
