@@ -104,6 +104,12 @@ to get an overview of the most important options supported by clasp.
   [[bibtex](http://www.cs.uni-potsdam.de/wv/bibtex/gekasc12c.bib)]
   [Experiments: [instances](https://www.cs.uni-potsdam.de/clasp/comp.tar.gz)
   | [results](https://www.cs.uni-potsdam.de/clasp/paper-asp09.ods)]
+- Martin Gebser, Benjamin Kaufmann and Torsten Schaub,
+  [Advanced Conflict-Driven Disjunctive Answer Set Solving](http://www.cs.uni-potsdam.de/wv/pdfformat/gekasc13a.pdf),
+  IJCAI'13, 2013<br/>
+  [[bibtex](http://www.cs.uni-potsdam.de/wv/bibtex/gekasc13a.bib)]
+  [Experiments: [instances](http://www.cs.uni-potsdam.de/claspD/files/experiments.tar.gz)]
+  [[Sources](http://www.cs.uni-potsdam.de/claspD/files/claspD-2.0-src.tar.gz)]
 - Martin Gebser, Roland Kaminski, Benjamin Kaufmann, Javier Romero and Torsten Schaub,
   [Progress in clasp Series 3](http://www.cs.uni-potsdam.de/wv/pdfformat/gekakarosc15a.pdf),
 LPNMR'15, 2015<br/>
