@@ -25,10 +25,11 @@ The language did not change in version 5 but there were many API changes.
 - clingo up to version 4.x is available on sourceforge: [sourceforge.net/projects/potassco/files/clingo](https://sourceforge.net/projects/potassco/files/clingo/).
 - clingo versions 2.x are also available on sourceforge: [sourceforge/projects/potassco/files/gringo](https://sourceforge.net/projects/potassco/files/gringo/).
 
-# API Reference
+# Resources
 
-- [Python API Reference](/clingo/python-api/current/clingo.html) 
+- [Python API Reference](/clingo/python-api/current/clingo.html)
 - [C API Reference](/clingo/c-api/current/)
+- [Advanced Examples](/clingo/examples/)
 
 # Packages
 
@@ -40,18 +41,6 @@ The language did not change in version 5 but there were many API changes.
 [homebrew](http://brew.sh/) and
 [macports](https://www.macports.org/)
 as part of gringo.
-
-# Propagators
-
-The theory interface of clingo provides an easy way to integrate dedicated theory propagators.
-Here is a list of example propagators written in C and Python.
-
-- Pigeonhole propagator outsourcing one Pigeonhole integrity constraint to a propagator
-  [Clingo C API](https://potassco.org/clingo/c-api/current/propagator_8c-example.html)
-- Dot propagator printing a dot for each propagated atom
-  [Clingo release, Python version](https://github.com/potassco/clingo/tree/master/examples/clingo/dot-propagator)
-- Sequence mining propagator checking whether a pattern contains a sequence
-  [Clingo release, Python version](https://github.com/potassco/clingo/blob/master/app/clingo/tests/python/propagator.lp)
 
 # Citing
 
