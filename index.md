@@ -30,6 +30,11 @@ To find out more about a specific system and a download link, follow one of the 
 * [clingcon](/clingcon/) extends clingo with constraint solving capabilities.
 * [aspcud](/aspcud/) is a solver for package dependencies.
 
+# Development
+
+The source code of our projects are available on [github.com/potassco](https://github.com/potassco/).
+Legacy code can be found in the subversion repository on [sourceforge.net/projects/potassco/code](https://sourceforge.net/projects/potassco/code).
+
 # Labs
 
 The [Labs](/labs/) suite comprises programs related to Answer Set Programming.
