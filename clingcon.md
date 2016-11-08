@@ -32,27 +32,27 @@ and features several preprocessing techniques.
 #const end=20.
 #const stepsize=7.
 step(0..end).
-
+ 
 % initial state
 &sum {at(0)} = 0.
-
+ 
 % actions
 {move(T)} :- step(T); T > 0.
-
+ 
 %effects
-&sum {at(V); stepsize} = at(T) :- move(T); V = T-1.
-
+&sum {at(T-1); stepsize} = at(T) :- move(T).
+ 
 %frame axiom
-&sum {at(V)} = at(T) :- not move(T); step(T); step(V); V = T-1.
-
+&sum {at(T-1)} = at(T) :- not move(T); step(T); step(T-1).
+ 
 %goals
 :- &sum {at(end)} <= 100.
-
+ 
 &show {at(X):step(X)}.
 #show move/1.
 ~~~~
 
-More examples can be found in the [example](examples/) section.
+More examples can be found in the [example](https://github.com/potassco/clingcon/tree/master/examples) section.
 # Download
 
 - Recent clingcon 3.x releases are on github: [github.com/potassco/clingcon/releases](https://github.com/potassco/clingcon/releases).
