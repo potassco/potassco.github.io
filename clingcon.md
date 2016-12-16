@@ -63,6 +63,10 @@ More examples can be found in the [example](https://github.com/potassco/clingcon
 
 See [INSTALL](https://github.com/potassco/clingcon/blob/master/INSTALL.md) for more details.
 
+# Benchmarks
+
+See [here](http://www.cs.uni-potsdam.de/clingcon/benchmarks/clingcon3bench.tar.gz) for a comparison of clingcon 3.2.0 with other CP and CASP systems.
+
 # Citing
 
 - Description of clingcon version 2.x:
