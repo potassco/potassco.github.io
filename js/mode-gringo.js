@@ -472,12 +472,12 @@ var GringoHighlightRules = function() {
       ],
       '#keyword': 
       [ { token: 'keyword.control', 
-          regex: '#include\\b|#show\\b|#program\\b|#const\\b|#sum\\+|#sum\\b|#count\\b|#minimize\\b|#maximize\\b|#true\\b|#false\\b'
+          regex: '#include\\b|#show\\b|#program\\b|#const\\b|#sum\\+|#sum\\b|#count\\b|#minimize\\b|#maximize\\b|#true\\b|#false\\b|#theory\\b'
         },
       ],
       '#operator': 
       [ { token: 'keyword.operator.gringo',
-          regex: '\\bnot\\b|[><]=?|[!]?=|\\.\\.|\\+|-|\\*|/|\\|\\?|\\^|~|@'
+          regex: '\\bnot\\b|[><]=?|[!]?=|\\.\\.|\\+|-|\\*|/|\\|\\?|\\^|~|@|&|\\|'
         },
       ],
       '#punctuation': 
