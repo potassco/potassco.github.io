@@ -1,6 +1,6 @@
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
-<html><head><title>Python: module clingo</title>
+<html><head><title>Python: built-in module clingo</title>
 <meta charset="utf-8">
 </head><body bgcolor="#f0f0f8">
 
@@ -117,6 +117,7 @@ q(@seq(1,2)).</tt></p>
 </font></dt><dt><font face="helvetica, arial"><a href="clingo.html#ProgramBuilder">ProgramBuilder</a>
 </font></dt><dt><font face="helvetica, arial"><a href="clingo.html#PropagateControl">PropagateControl</a>
 </font></dt><dt><font face="helvetica, arial"><a href="clingo.html#PropagateInit">PropagateInit</a>
+</font></dt><dt><font face="helvetica, arial"><a href="clingo.html#PropagatorCheckMode">PropagatorCheckMode</a>
 </font></dt><dt><font face="helvetica, arial"><a href="clingo.html#SolveControl">SolveControl</a>
 </font></dt><dt><font face="helvetica, arial"><a href="clingo.html#SolveHandle">SolveHandle</a>
 </font></dt><dt><font face="helvetica, arial"><a href="clingo.html#SolveResult">SolveResult</a>
@@ -185,7 +186,16 @@ Data descriptors defined here:<br>
 <dd><tt>The&nbsp;current&nbsp;decision&nbsp;level.</tt></dd>
 </dl>
 <dl><dt><strong>has_conflict</strong></dt>
-<dd><tt>True&nbsp;if&nbsp;the&nbsp;current&nbsp;assignment&nbsp;is&nbsp;conflicting.</tt></dd>
+<dd><tt>True&nbsp;if&nbsp;the&nbsp;assignment&nbsp;is&nbsp;conflicting.</tt></dd>
+</dl>
+<dl><dt><strong>is_total</strong></dt>
+<dd><tt>Wheather&nbsp;the&nbsp;assignment&nbsp;is&nbsp;total.</tt></dd>
+</dl>
+<dl><dt><strong>max_size</strong></dt>
+<dd><tt>The&nbsp;maximum&nbsp;size&nbsp;of&nbsp;the&nbsp;assignment&nbsp;(if&nbsp;all&nbsp;literals&nbsp;are&nbsp;assigned).</tt></dd>
+</dl>
+<dl><dt><strong>size</strong></dt>
+<dd><tt>The&nbsp;number&nbsp;of&nbsp;assigned&nbsp;literals.</tt></dd>
 </dl>
 </td></tr></table> <p>
 <table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
@@ -203,6 +213,13 @@ format.<br>&nbsp;</tt></td></tr>
 <dl><dt><a name="Backend-add_atom"><strong>add_atom</strong></a>(...)</dt><dd><tt><a href="#Backend-add_atom">add_atom</a>(self)&nbsp;-&gt;&nbsp;Int<br>
 &nbsp;<br>
 Return&nbsp;a&nbsp;fresh&nbsp;program&nbsp;atom.</tt></dd></dl>
+
+<dl><dt><a name="Backend-add_minimize"><strong>add_minimize</strong></a>(...)</dt><dd><tt><a href="#Backend-add_minimize">add_minimize</a>(self,&nbsp;priority,&nbsp;literals)&nbsp;-&gt;&nbsp;None<br>
+Add&nbsp;a&nbsp;minimize&nbsp;constraint&nbsp;to&nbsp;the&nbsp;program.<br>
+&nbsp;<br>
+Arguments:<br>
+priority&nbsp;--&nbsp;integer&nbsp;for&nbsp;the&nbsp;priority<br>
+literals&nbsp;--&nbsp;list&nbsp;of&nbsp;pairs&nbsp;of&nbsp;program&nbsp;literals&nbsp;and&nbsp;weights</tt></dd></dl>
 
 <dl><dt><a name="Backend-add_rule"><strong>add_rule</strong></a>(...)</dt><dd><tt><a href="#Backend-add_rule">add_rule</a>(self,&nbsp;head,&nbsp;body,&nbsp;choice)&nbsp;-&gt;&nbsp;None<br>
 &nbsp;<br>
@@ -452,7 +469,8 @@ observer&nbsp;--&nbsp;the&nbsp;observer&nbsp;to&nbsp;register<br>
 &nbsp;<br>
 Keyword&nbsp;Arguments:<br>
 replace&nbsp;&nbsp;--&nbsp;if&nbsp;set&nbsp;to&nbsp;true,&nbsp;the&nbsp;output&nbsp;is&nbsp;just&nbsp;passed&nbsp;to&nbsp;the&nbsp;observer&nbsp;and&nbsp;no<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;longer&nbsp;to&nbsp;the&nbsp;underlying&nbsp;solver&nbsp;(Default:&nbsp;False)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;longer&nbsp;to&nbsp;the&nbsp;underlying&nbsp;solver<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(Default:&nbsp;False)<br>
 &nbsp;<br>
 An&nbsp;observer&nbsp;should&nbsp;be&nbsp;a&nbsp;class&nbsp;of&nbsp;the&nbsp;form&nbsp;below.&nbsp;Not&nbsp;all&nbsp;functions&nbsp;have&nbsp;to&nbsp;be<br>
 implemented&nbsp;and&nbsp;can&nbsp;be&nbsp;ommited&nbsp;if&nbsp;not&nbsp;needed.<br>
@@ -723,21 +741,26 @@ Starts&nbsp;a&nbsp;search.<br>
 Keyword&nbsp;Arguments:<br>
 on_model&nbsp;&nbsp;&nbsp;&nbsp;--&nbsp;optional&nbsp;callback&nbsp;for&nbsp;intercepting&nbsp;models<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;a&nbsp;<a href="#Model">Model</a>&nbsp;object&nbsp;is&nbsp;passed&nbsp;to&nbsp;the&nbsp;callback<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(Default:&nbsp;None)<br>
 on_finish&nbsp;&nbsp;&nbsp;--&nbsp;optional&nbsp;callback&nbsp;called&nbsp;once&nbsp;search&nbsp;has&nbsp;finished<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;a&nbsp;<a href="#SolveResult">SolveResult</a>&nbsp;and&nbsp;a&nbsp;Boolean&nbsp;indicating&nbsp;whether&nbsp;the&nbsp;solve&nbsp;call<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;has&nbsp;been&nbsp;canceled&nbsp;is&nbsp;passed&nbsp;to&nbsp;the&nbsp;callback<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(Default:&nbsp;None)<br>
 assumptions&nbsp;--&nbsp;list&nbsp;of&nbsp;(atom,&nbsp;boolean)&nbsp;tuples&nbsp;that&nbsp;serve&nbsp;as&nbsp;assumptions&nbsp;for<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;the&nbsp;solve&nbsp;call,&nbsp;e.g.&nbsp;-&nbsp;solving&nbsp;under&nbsp;assumptions&nbsp;[(<a href="#-Function">Function</a>("a"),<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;True)]&nbsp;only&nbsp;admits&nbsp;answer&nbsp;sets&nbsp;that&nbsp;contain&nbsp;atom&nbsp;a<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(Default:&nbsp;[])<br>
 yield_&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;--&nbsp;The&nbsp;resulting&nbsp;<a href="#SolveHandle">SolveHandle</a>&nbsp;is&nbsp;iterable&nbsp;yielding&nbsp;<a href="#Model">Model</a>&nbsp;objects.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(Default:&nbsp;False)<br>
 async&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;--&nbsp;The&nbsp;solve&nbsp;call&nbsp;and&nbsp;<a href="#SolveHandle">SolveHandle</a>.resume()&nbsp;are&nbsp;non-blocking.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(Default:&nbsp;False)<br>
 &nbsp;<br>
 If&nbsp;neither&nbsp;yield_&nbsp;nor&nbsp;async&nbsp;is&nbsp;set,&nbsp;the&nbsp;function&nbsp;returns&nbsp;a&nbsp;<a href="#SolveResult">SolveResult</a>&nbsp;reight<br>
 away.<br>
 &nbsp;<br>
 Note&nbsp;that&nbsp;in&nbsp;gringo&nbsp;or&nbsp;in&nbsp;clingo&nbsp;with&nbsp;lparse&nbsp;or&nbsp;text&nbsp;output&nbsp;enabled&nbsp;this<br>
-function&nbsp;just&nbsp;grounds&nbsp;and&nbsp;returns&nbsp;a&nbsp;<a href="#SolveResult">SolveResult</a>&nbsp;where<br>
-<a href="#SolveResult">SolveResult</a>.satisfiability()&nbsp;is&nbsp;None.<br>
+function&nbsp;just&nbsp;grounds&nbsp;and&nbsp;returns&nbsp;a&nbsp;<a href="#SolveResult">SolveResult</a>&nbsp;where&nbsp;<a href="#SolveResult">SolveResult</a>.satisfiable<br>
+is&nbsp;True.<br>
 &nbsp;<br>
 You&nbsp;might&nbsp;want&nbsp;to&nbsp;start&nbsp;clingo&nbsp;using&nbsp;the&nbsp;--outf=3&nbsp;option&nbsp;to&nbsp;disable&nbsp;all&nbsp;output<br>
 from&nbsp;clingo.<br>
@@ -792,7 +815,8 @@ def&nbsp;main(prg):<br>
 &nbsp;&nbsp;&nbsp;&nbsp;prg.<a href="#Control-add">add</a>("p",&nbsp;"{a;b;c}.")<br>
 &nbsp;&nbsp;&nbsp;&nbsp;prg.<a href="#Control-ground">ground</a>([("base",&nbsp;[])])<br>
 &nbsp;&nbsp;&nbsp;&nbsp;with&nbsp;prg.<a href="#Control-solve">solve</a>(on_model=on_model,&nbsp;on_finish=on_finish,&nbsp;async=True)&nbsp;as&nbsp;handle:<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;#&nbsp;do&nbsp;something&nbsp;asynchronously<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;while&nbsp;not&nbsp;handle.wait(0):<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;#&nbsp;do&nbsp;something&nbsp;asynchronously<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print(handle.get())<br>
 &nbsp;<br>
 #end.</tt></dd></dl>
@@ -919,6 +943,10 @@ places&nbsp;like&nbsp;-&nbsp;e.g.,&nbsp;the&nbsp;main&nbsp;function.<br>&nbsp;</
 Check&nbsp;if&nbsp;an&nbsp;atom&nbsp;a&nbsp;is&nbsp;contained&nbsp;in&nbsp;the&nbsp;model.<br>
 &nbsp;<br>
 The&nbsp;atom&nbsp;must&nbsp;be&nbsp;represented&nbsp;using&nbsp;a&nbsp;function&nbsp;symbol.</tt></dd></dl>
+
+<dl><dt><a name="Model-is_true"><strong>is_true</strong></a>(...)</dt><dd><tt><a href="#Model-contains">contains</a>(self,&nbsp;a)&nbsp;-&gt;&nbsp;bool<br>
+&nbsp;<br>
+Check&nbsp;if&nbsp;the&nbsp;given&nbsp;program&nbsp;literal&nbsp;is&nbsp;true.</tt></dd></dl>
 
 <dl><dt><a name="Model-symbols"><strong>symbols</strong></a>(...)</dt><dd><tt><a href="#Model-symbols">symbols</a>(self,&nbsp;atoms,&nbsp;terms,&nbsp;shown,&nbsp;csp,&nbsp;extra,&nbsp;complement)<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&gt;&nbsp;list&nbsp;of&nbsp;terms<br>
@@ -1137,6 +1165,9 @@ Map&nbsp;the&nbsp;given&nbsp;program&nbsp;literal&nbsp;or&nbsp;condition&nbsp;id
 
 <hr>
 Data descriptors defined here:<br>
+<dl><dt><strong>check_mode</strong></dt>
+<dd><tt>PropagatorCheckMode&nbsp;controling&nbsp;when&nbsp;to&nbsp;call&nbsp;Propagator.check().</tt></dd>
+</dl>
 <dl><dt><strong>number_of_threads</strong></dt>
 <dd><tt>The&nbsp;number&nbsp;of&nbsp;solver&nbsp;threads&nbsp;used&nbsp;in&nbsp;the&nbsp;corresponding&nbsp;solve&nbsp;call.</tt></dd>
 </dl>
@@ -1150,6 +1181,49 @@ Data descriptors defined here:<br>
 <table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
 <tr bgcolor="#88ff99">
 <td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#000000" face="helvetica, arial"><a name="PropagatorCheckMode">class <strong>PropagatorCheckMode</strong></a>(object)</font></td></tr>
+    
+<tr bgcolor="#88ff99"><td rowspan=2><tt>&nbsp;&nbsp;&nbsp;</tt></td>
+<td colspan=2><tt>Enumeration&nbsp;of&nbsp;supported&nbsp;check&nbsp;modes&nbsp;for&nbsp;propagators.<br>
+&nbsp;<br>
+<a href="#PropagatorCheckMode">PropagatorCheckMode</a>&nbsp;objects&nbsp;cannot&nbsp;be&nbsp;constructed&nbsp;from&nbsp;python.&nbsp;Instead&nbsp;the<br>
+following&nbsp;preconstructed&nbsp;objects&nbsp;are&nbsp;available:<br>
+&nbsp;<br>
+<a href="#PropagatorCheckMode">PropagatorCheckMode</a>.None&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;--&nbsp;do&nbsp;not&nbsp;call&nbsp;Propagator.check()&nbsp;at&nbsp;all<br>
+<a href="#PropagatorCheckMode">PropagatorCheckMode</a>.Total&nbsp;&nbsp;&nbsp;&nbsp;--&nbsp;call&nbsp;Propagator.check()&nbsp;on&nbsp;total&nbsp;assignment<br>
+<a href="#PropagatorCheckMode">PropagatorCheckMode</a>.Fixpoint&nbsp;--&nbsp;call&nbsp;Propagator.check()&nbsp;on&nbsp;propagation&nbsp;fixpoints<br>&nbsp;</tt></td></tr>
+<tr><td>&nbsp;</td>
+<td width="100%">Methods defined here:<br>
+<dl><dt><a name="PropagatorCheckMode-__eq__"><strong>__eq__</strong></a>(...)</dt><dd><tt>x.<a href="#PropagatorCheckMode-__eq__">__eq__</a>(y)&nbsp;&lt;==&gt;&nbsp;x==y</tt></dd></dl>
+
+<dl><dt><a name="PropagatorCheckMode-__ge__"><strong>__ge__</strong></a>(...)</dt><dd><tt>x.<a href="#PropagatorCheckMode-__ge__">__ge__</a>(y)&nbsp;&lt;==&gt;&nbsp;x&gt;=y</tt></dd></dl>
+
+<dl><dt><a name="PropagatorCheckMode-__gt__"><strong>__gt__</strong></a>(...)</dt><dd><tt>x.<a href="#PropagatorCheckMode-__gt__">__gt__</a>(y)&nbsp;&lt;==&gt;&nbsp;x&gt;y</tt></dd></dl>
+
+<dl><dt><a name="PropagatorCheckMode-__hash__"><strong>__hash__</strong></a>(...)</dt><dd><tt>x.<a href="#PropagatorCheckMode-__hash__">__hash__</a>()&nbsp;&lt;==&gt;&nbsp;hash(x)</tt></dd></dl>
+
+<dl><dt><a name="PropagatorCheckMode-__le__"><strong>__le__</strong></a>(...)</dt><dd><tt>x.<a href="#PropagatorCheckMode-__le__">__le__</a>(y)&nbsp;&lt;==&gt;&nbsp;x&lt;=y</tt></dd></dl>
+
+<dl><dt><a name="PropagatorCheckMode-__lt__"><strong>__lt__</strong></a>(...)</dt><dd><tt>x.<a href="#PropagatorCheckMode-__lt__">__lt__</a>(y)&nbsp;&lt;==&gt;&nbsp;x&lt;y</tt></dd></dl>
+
+<dl><dt><a name="PropagatorCheckMode-__ne__"><strong>__ne__</strong></a>(...)</dt><dd><tt>x.<a href="#PropagatorCheckMode-__ne__">__ne__</a>(y)&nbsp;&lt;==&gt;&nbsp;x!=y</tt></dd></dl>
+
+<dl><dt><a name="PropagatorCheckMode-__repr__"><strong>__repr__</strong></a>(...)</dt><dd><tt>x.<a href="#PropagatorCheckMode-__repr__">__repr__</a>()&nbsp;&lt;==&gt;&nbsp;repr(x)</tt></dd></dl>
+
+<dl><dt><a name="PropagatorCheckMode-__str__"><strong>__str__</strong></a>(...)</dt><dd><tt>x.<a href="#PropagatorCheckMode-__str__">__str__</a>()&nbsp;&lt;==&gt;&nbsp;str(x)</tt></dd></dl>
+
+<hr>
+Data and other attributes defined here:<br>
+<dl><dt><strong>Fixpoint</strong> = Fixpoint</dl>
+
+<dl><dt><strong>Off</strong> = Off</dl>
+
+<dl><dt><strong>Total</strong> = Total</dl>
+
+</td></tr></table> <p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#88ff99">
+<td colspan=3 valign=bottom>&nbsp;<br>
 <font color="#000000" face="helvetica, arial"><a name="SolveControl">class <strong>SolveControl</strong></a>(object)</font></td></tr>
     
 <tr bgcolor="#88ff99"><td rowspan=2><tt>&nbsp;&nbsp;&nbsp;</tt></td>
@@ -1159,23 +1233,29 @@ Note&nbsp;that&nbsp;<a href="#SolveControl">SolveControl</a>&nbsp;objects&nbsp;c
 they&nbsp;are&nbsp;available&nbsp;as&nbsp;properties&nbsp;of&nbsp;<a href="#Model">Model</a>&nbsp;objects.<br>&nbsp;</tt></td></tr>
 <tr><td>&nbsp;</td>
 <td width="100%">Methods defined here:<br>
-<dl><dt><a name="SolveControl-add_clause"><strong>add_clause</strong></a>(...)</dt><dd><tt><a href="#SolveControl-add_clause">add_clause</a>(self,&nbsp;lits)&nbsp;-&gt;&nbsp;None<br>
+<dl><dt><a name="SolveControl-add_clause"><strong>add_clause</strong></a>(...)</dt><dd><tt><a href="#SolveControl-add_clause">add_clause</a>(self,&nbsp;literals)&nbsp;-&gt;&nbsp;None<br>
 &nbsp;<br>
 Add&nbsp;a&nbsp;clause&nbsp;that&nbsp;applies&nbsp;to&nbsp;the&nbsp;current&nbsp;solving&nbsp;step&nbsp;during&nbsp;the&nbsp;search.<br>
 &nbsp;<br>
 Arguments:<br>
-lits&nbsp;--&nbsp;list&nbsp;of&nbsp;literals&nbsp;represented&nbsp;as&nbsp;pairs&nbsp;of&nbsp;atoms&nbsp;and&nbsp;Booleans<br>
+literals&nbsp;--&nbsp;list&nbsp;of&nbsp;literals&nbsp;either&nbsp;represented&nbsp;as&nbsp;pairs&nbsp;of&nbsp;symbolic&nbsp;atoms&nbsp;and<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Booleans&nbsp;or&nbsp;as&nbsp;program&nbsp;literals<br>
 &nbsp;<br>
 Note&nbsp;that&nbsp;this&nbsp;function&nbsp;can&nbsp;only&nbsp;be&nbsp;called&nbsp;in&nbsp;the&nbsp;model&nbsp;callback&nbsp;(or&nbsp;while<br>
 iterating&nbsp;when&nbsp;using&nbsp;a&nbsp;<a href="#SolveHandle">SolveHandle</a>).</tt></dd></dl>
 
-<dl><dt><a name="SolveControl-add_nogood"><strong>add_nogood</strong></a>(...)</dt><dd><tt><a href="#SolveControl-add_nogood">add_nogood</a>(self,&nbsp;lits)&nbsp;-&gt;&nbsp;None<br>
+<dl><dt><a name="SolveControl-add_nogood"><strong>add_nogood</strong></a>(...)</dt><dd><tt><a href="#SolveControl-add_nogood">add_nogood</a>(self,&nbsp;literals)&nbsp;-&gt;&nbsp;None<br>
 &nbsp;<br>
 Equivalent&nbsp;to&nbsp;add_clause&nbsp;with&nbsp;the&nbsp;literals&nbsp;inverted.<br>
 &nbsp;<br>
 Arguments:<br>
-lits&nbsp;--&nbsp;list&nbsp;of&nbsp;pairs&nbsp;of&nbsp;Booleans&nbsp;and&nbsp;atoms&nbsp;representing&nbsp;the&nbsp;nogood</tt></dd></dl>
+literals&nbsp;--&nbsp;list&nbsp;of&nbsp;pairs&nbsp;of&nbsp;Booleans&nbsp;and&nbsp;atoms&nbsp;representing&nbsp;the&nbsp;nogood</tt></dd></dl>
 
+<hr>
+Data descriptors defined here:<br>
+<dl><dt><strong>symbolic_atoms</strong></dt>
+<dd><tt>The&nbsp;symbolic&nbsp;atoms&nbsp;captured&nbsp;by&nbsp;a&nbsp;SymbolicAtoms&nbsp;object.</tt></dd>
+</dl>
 </td></tr></table> <p>
 <table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
 <tr bgcolor="#88ff99">
@@ -1783,7 +1863,7 @@ name&nbsp;--&nbsp;the&nbsp;name&nbsp;of&nbsp;the&nbsp;function&nbsp;(empty&nbsp;
 Keyword&nbsp;Arguments:<br>
 arguments&nbsp;--&nbsp;the&nbsp;arguments&nbsp;in&nbsp;form&nbsp;of&nbsp;a&nbsp;list&nbsp;of&nbsp;symbols<br>
 positive&nbsp;&nbsp;--&nbsp;the&nbsp;sign&nbsp;of&nbsp;the&nbsp;function&nbsp;(tuples&nbsp;must&nbsp;not&nbsp;have&nbsp;signs)<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(Default:&nbsp;True)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(Default:&nbsp;True)<br>
 &nbsp;<br>
 This&nbsp;includes&nbsp;constants&nbsp;and&nbsp;tuples.&nbsp;Constants&nbsp;have&nbsp;an&nbsp;empty&nbsp;argument&nbsp;list&nbsp;and<br>
 tuples&nbsp;have&nbsp;an&nbsp;empty&nbsp;name.&nbsp;Functions&nbsp;can&nbsp;represent&nbsp;classically&nbsp;negated&nbsp;atoms.<br>

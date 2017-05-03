@@ -27,8 +27,14 @@ The language did not change in version 5 but there were many API changes.
 
 # Resources
 
-- [Python API Reference](/clingo/python-api/current/clingo.html)
-- [C API Reference](/clingo/c-api/current/)
+- [Python API Reference](/clingo/python-api/current/clingo.html) (versions
+  [5.2](/clingo/python-api/5.2/clingo.html),
+  [5.1](/clingo/python-api/5.1/clingo.html),
+  [5.0](/clingo/python-api/5.0/clingo.html))
+- [C API Reference](/clingo/c-api/current/) (versions
+  [5.2](/clingo/c-api/5.2/),
+  [5.1](/clingo/c-api/5.1/),
+  [5.0](/clingo/c-api/5.0/))
 - [Advanced Examples](/clingo/examples/)
 
 # Packages

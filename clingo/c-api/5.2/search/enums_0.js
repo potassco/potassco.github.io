@@ -6,6 +6,7 @@ var searchData=
   ['clingo_5fexternal_5ftype',['clingo_external_type',['../group__ProgramInspection.html#gafc14f388b0487330a84b32f8c5bcc5f4',1,'clingo.h']]],
   ['clingo_5fheuristic_5ftype',['clingo_heuristic_type',['../group__ProgramInspection.html#ga183da375afbb835c45bb9e0d402bbf82',1,'clingo.h']]],
   ['clingo_5fmodel_5ftype',['clingo_model_type',['../group__Model.html#gad41ae442c905008f0dcd923c4ef3bc7c',1,'clingo.h']]],
+  ['clingo_5fpropagator_5fcheck_5fmode',['clingo_propagator_check_mode',['../group__Propagator.html#ga29aa0cd73225dac59890b34f2db57eab',1,'clingo.h']]],
   ['clingo_5fshow_5ftype',['clingo_show_type',['../group__Model.html#gaa943fe81f0874ea63820b627bc19845c',1,'clingo.h']]],
   ['clingo_5fsolve_5fevent_5ftype',['clingo_solve_event_type',['../group__SolveHandle.html#gaff408464c5f6f5a22fc9b2fe5f6e6599',1,'clingo.h']]],
   ['clingo_5fsolve_5fmode',['clingo_solve_mode',['../group__SolveHandle.html#ga2cfdeafd2caf82e14349e639f298a35f',1,'clingo.h']]],
