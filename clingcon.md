@@ -32,22 +32,22 @@ and features several preprocessing techniques.
 #const end=20.
 #const stepsize=7.
 step(0..end).
- 
+
 % initial state
 &sum {at(0)} = 0.
- 
+
 % actions
 {move(T)} :- step(T); T > 0.
- 
-%effects
+
+% effects
 &sum {at(T-1); stepsize} = at(T) :- move(T).
- 
-%frame axiom
+
+% frame axiom
 &sum {at(T-1)} = at(T) :- not move(T); step(T); step(T-1).
- 
-%goals
+
+% goals
 :- &sum {at(end)} <= 100.
- 
+
 &show {at(X):step(X)}.
 #show move/1.
 ~~~~
