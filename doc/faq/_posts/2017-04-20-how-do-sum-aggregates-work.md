@@ -6,16 +6,23 @@ A sum aggregate consists of a set of elements consisting of a tuple together wit
 Whenever the condition of an element is true wrt an answer set, its associated tuple contributes a value to a set.
 Hence, if two equal tuples have true conditions, then only one value is provided.
 
-For example
+Consider for example the program
 
-    1 { a; b }.
-    :- #sum { 2,t:a; 2,t:b; 1,u:b; 2,v:b } <= 5.
+```text
+{a; b; c}.
 
-If `a` and `b` are true, the values of tuples `(2,t)`, `(1,u)`, and `(2,v)` are summed up.
+:- #sum { 2,p : a; 1,q : a
+        ; 1,q : b; 2,r : b
+        ; 2,r : c; 1,s : c
+    } < 6.
+```
+
+If `a` and `b` are true, the values of tuples `(2,p)`, `(1,q)`, and `(2,r)` are summed up.
 Hence, the sum aggregate evaluates to `5`.
-Note that the value of tuple `(2,t)` provided by the first and second element of the sum aggregate is counted only **once**.
+Note that the value of tuple `(1,q)` provided by the second and third element of the sum aggregate is counted only **once**.
 
-If only `a` is true, the only tuple is `(2,t)` and the sum is `2`.
-Hence, all answer sets of the program must contain at least atom `b`.
+If `a` and `c` are true, the values of tuples `(2,p)`, `(1,q)`, `(2,r)`, and `(1,s)` are summed up.
+Hence, the sum aggregate evaluates to `6` and `{a, c}` is an answer set of the program.
+In fact, there are only two answer sets: `{a, c}` and `{a, b, c}`.
 
 Accumulation in `#sum+`, `#min`, and `#max` aggregates as well as `#minimize` and `#maximize` constraints works the same.
