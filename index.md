@@ -29,6 +29,8 @@ To find out more about a specific system and a download link, follow one of the 
     * [clasp](/clasp/) is a solver (powering the search in clingo).
 * [clingcon](/clingcon/) extends clingo with constraint solving capabilities.
 * [aspcud](/aspcud/) is a solver for package dependencies.
+* [clingo[DL]](/clingoDL/) extends clingo with difference logic solving capabilities.
+* [clingo[LP]](/clingoLP/) extends clingo with linear programming solving capabilities.
 
 # Development
 
