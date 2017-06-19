@@ -2,7 +2,7 @@
 layout: post
 title: clingo[LP]
 permalink: labs/clingoLP/
-summary: clingo[LP] extends clingo with difference logic solving capabilities.
+summary: clingo[LP] extends clingo with linear programming solving capabilities.
 ---
 
 The `clingo` derivative `clingo[LP]` extends of ASP with linear constraints as dealt with in Linear Programming (LP). 
