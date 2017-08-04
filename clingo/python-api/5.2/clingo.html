@@ -7,10 +7,10 @@
 <table width="100%" cellspacing=0 cellpadding=2 border=0 summary="heading">
 <tr bgcolor="#7799ee">
 <td valign=bottom>&nbsp;<br>
-<font color="#ffffff" face="helvetica, arial">&nbsp;<br><big><big><strong>clingo</strong></big></big> (version 5.2.0)</font></td
+<font color="#ffffff" face="helvetica, arial">&nbsp;<br><big><big><strong>clingo</strong></big></big> (version 5.2.1)</font></td
 ><td align=right valign=bottom
 ><font color="#ffffff" face="helvetica, arial"><a href=".">&laquo;Potassco</a></font></td></tr></table>
-    <p><tt>The&nbsp;clingo-5.2.0&nbsp;module.<br>
+    <p><tt>The&nbsp;clingo-5.2.1&nbsp;module.<br>
 &nbsp;<br>
 This&nbsp;module&nbsp;provides&nbsp;functions&nbsp;and&nbsp;classes&nbsp;to&nbsp;work&nbsp;with&nbsp;ground&nbsp;terms&nbsp;and&nbsp;to<br>
 control&nbsp;the&nbsp;instantiation&nbsp;process.&nbsp;&nbsp;In&nbsp;clingo&nbsp;builts,&nbsp;additional&nbsp;functions&nbsp;to<br>
@@ -30,7 +30,7 @@ symbol&nbsp;or&nbsp;a&nbsp;sequence&nbsp;of&nbsp;symbols.&nbsp;&nbsp;If&nbsp;a&n
 &nbsp;<br>
 Static&nbsp;Objects:<br>
 &nbsp;<br>
-__version__&nbsp;--&nbsp;version&nbsp;of&nbsp;the&nbsp;clingo&nbsp;module&nbsp;(5.2.0)<br>
+__version__&nbsp;--&nbsp;version&nbsp;of&nbsp;the&nbsp;clingo&nbsp;module&nbsp;(5.2.1)<br>
 Infimum&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;--&nbsp;represents&nbsp;an&nbsp;#inf&nbsp;symbol<br>
 Supremum&nbsp;&nbsp;&nbsp;&nbsp;--&nbsp;represents&nbsp;a&nbsp;#sup&nbsp;symbol<br>
 &nbsp;<br>
@@ -45,30 +45,31 @@ Functions:<br>
 &nbsp;<br>
 Classes:<br>
 &nbsp;<br>
-<a href="#Assignment">Assignment</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;--&nbsp;partial&nbsp;assignment&nbsp;of&nbsp;truth&nbsp;values&nbsp;to&nbsp;solver&nbsp;literals<br>
-<a href="#Backend">Backend</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;--&nbsp;extend&nbsp;the&nbsp;logic&nbsp;program<br>
-<a href="#Configuration">Configuration</a>&nbsp;&nbsp;&nbsp;&nbsp;--&nbsp;modify/inspect&nbsp;the&nbsp;solver&nbsp;configuration<br>
-<a href="#Control">Control</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;--&nbsp;controls&nbsp;the&nbsp;grounding/solving&nbsp;process<br>
-<a href="#HeuristicType">HeuristicType</a>&nbsp;&nbsp;&nbsp;&nbsp;--&nbsp;enumeration&nbsp;of&nbsp;heuristic&nbsp;modificators<br>
-<a href="#Model">Model</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;--&nbsp;provides&nbsp;access&nbsp;to&nbsp;a&nbsp;model&nbsp;during&nbsp;solve&nbsp;call<br>
-<a href="#ModelType">ModelType</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;--&nbsp;captures&nbsp;the&nbsp;type&nbsp;of&nbsp;a&nbsp;model<br>
-<a href="#ProgramBuilder">ProgramBuilder</a>&nbsp;&nbsp;&nbsp;--&nbsp;extend&nbsp;a&nbsp;non-ground&nbsp;logic&nbsp;program<br>
-<a href="#PropagateControl">PropagateControl</a>&nbsp;--&nbsp;controls&nbsp;running&nbsp;search&nbsp;in&nbsp;a&nbsp;custom&nbsp;propagator<br>
-<a href="#PropagateInit">PropagateInit</a>&nbsp;&nbsp;&nbsp;&nbsp;--&nbsp;object&nbsp;to&nbsp;initialize&nbsp;custom&nbsp;propagators<br>
-<a href="#SolveControl">SolveControl</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;--&nbsp;controls&nbsp;running&nbsp;search&nbsp;in&nbsp;a&nbsp;model&nbsp;handler<br>
-<a href="#SolveHandle">SolveHandle</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;--&nbsp;handle&nbsp;for&nbsp;solve&nbsp;calls<br>
-<a href="#SolveResult">SolveResult</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;--&nbsp;result&nbsp;of&nbsp;a&nbsp;solve&nbsp;call<br>
-<a href="#Symbol">Symbol</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;--&nbsp;captures&nbsp;precomputed&nbsp;terms<br>
-<a href="#SymbolicAtom">SymbolicAtom</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;--&nbsp;captures&nbsp;information&nbsp;about&nbsp;a&nbsp;symbolic&nbsp;atom<br>
-<a href="#SymbolicAtomIter">SymbolicAtomIter</a>&nbsp;--&nbsp;iterate&nbsp;over&nbsp;symbolic&nbsp;atoms<br>
-<a href="#SymbolicAtoms">SymbolicAtoms</a>&nbsp;&nbsp;&nbsp;&nbsp;--&nbsp;inspection&nbsp;of&nbsp;symbolic&nbsp;atoms<br>
-<a href="#SymbolType">SymbolType</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;--&nbsp;enumeration&nbsp;of&nbsp;symbol&nbsp;types<br>
-<a href="#TheoryAtom">TheoryAtom</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;--&nbsp;captures&nbsp;theory&nbsp;atoms<br>
-<a href="#TheoryAtomIter">TheoryAtomIter</a>&nbsp;&nbsp;&nbsp;--&nbsp;iterate&nbsp;over&nbsp;theory&nbsp;atoms<br>
-<a href="#TheoryElement">TheoryElement</a>&nbsp;&nbsp;&nbsp;&nbsp;--&nbsp;captures&nbsp;theory&nbsp;elements<br>
-<a href="#TheoryTerm">TheoryTerm</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;--&nbsp;captures&nbsp;theory&nbsp;terms<br>
-<a href="#TheoryTermType">TheoryTermType</a>&nbsp;&nbsp;&nbsp;--&nbsp;the&nbsp;type&nbsp;of&nbsp;a&nbsp;theory&nbsp;term<br>
-<a href="#TruthValue">TruthValue</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;--&nbsp;enumeration&nbsp;of&nbsp;truth&nbsp;values<br>
+<a href="#Assignment">Assignment</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;--&nbsp;partial&nbsp;assignment&nbsp;of&nbsp;truth&nbsp;values&nbsp;to&nbsp;solver&nbsp;literals<br>
+<a href="#Backend">Backend</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;--&nbsp;extend&nbsp;the&nbsp;logic&nbsp;program<br>
+<a href="#Configuration">Configuration</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;--&nbsp;modify/inspect&nbsp;the&nbsp;solver&nbsp;configuration<br>
+<a href="#Control">Control</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;--&nbsp;controls&nbsp;the&nbsp;grounding/solving&nbsp;process<br>
+<a href="#HeuristicType">HeuristicType</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;--&nbsp;enumeration&nbsp;of&nbsp;heuristic&nbsp;modificators<br>
+<a href="#Model">Model</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;--&nbsp;provides&nbsp;access&nbsp;to&nbsp;a&nbsp;model&nbsp;during&nbsp;solve&nbsp;call<br>
+<a href="#ModelType">ModelType</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;--&nbsp;captures&nbsp;the&nbsp;type&nbsp;of&nbsp;a&nbsp;model<br>
+<a href="#ProgramBuilder">ProgramBuilder</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;--&nbsp;extend&nbsp;a&nbsp;non-ground&nbsp;logic&nbsp;program<br>
+<a href="#PropagatorCheckMode">PropagatorCheckMode</a>&nbsp;--&nbsp;enumeration&nbsp;of&nbsp;check&nbsp;modes<br>
+<a href="#PropagateControl">PropagateControl</a>&nbsp;&nbsp;&nbsp;&nbsp;--&nbsp;controls&nbsp;running&nbsp;search&nbsp;in&nbsp;a&nbsp;custom&nbsp;propagator<br>
+<a href="#PropagateInit">PropagateInit</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;--&nbsp;object&nbsp;to&nbsp;initialize&nbsp;custom&nbsp;propagators<br>
+<a href="#SolveControl">SolveControl</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;--&nbsp;controls&nbsp;running&nbsp;search&nbsp;in&nbsp;a&nbsp;model&nbsp;handler<br>
+<a href="#SolveHandle">SolveHandle</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;--&nbsp;handle&nbsp;for&nbsp;solve&nbsp;calls<br>
+<a href="#SolveResult">SolveResult</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;--&nbsp;result&nbsp;of&nbsp;a&nbsp;solve&nbsp;call<br>
+<a href="#Symbol">Symbol</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;--&nbsp;captures&nbsp;precomputed&nbsp;terms<br>
+<a href="#SymbolicAtom">SymbolicAtom</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;--&nbsp;captures&nbsp;information&nbsp;about&nbsp;a&nbsp;symbolic&nbsp;atom<br>
+<a href="#SymbolicAtomIter">SymbolicAtomIter</a>&nbsp;&nbsp;&nbsp;&nbsp;--&nbsp;iterate&nbsp;over&nbsp;symbolic&nbsp;atoms<br>
+<a href="#SymbolicAtoms">SymbolicAtoms</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;--&nbsp;inspection&nbsp;of&nbsp;symbolic&nbsp;atoms<br>
+<a href="#SymbolType">SymbolType</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;--&nbsp;enumeration&nbsp;of&nbsp;symbol&nbsp;types<br>
+<a href="#TheoryAtom">TheoryAtom</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;--&nbsp;captures&nbsp;theory&nbsp;atoms<br>
+<a href="#TheoryAtomIter">TheoryAtomIter</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;--&nbsp;iterate&nbsp;over&nbsp;theory&nbsp;atoms<br>
+<a href="#TheoryElement">TheoryElement</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;--&nbsp;captures&nbsp;theory&nbsp;elements<br>
+<a href="#TheoryTerm">TheoryTerm</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;--&nbsp;captures&nbsp;theory&nbsp;terms<br>
+<a href="#TheoryTermType">TheoryTermType</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;--&nbsp;the&nbsp;type&nbsp;of&nbsp;a&nbsp;theory&nbsp;term<br>
+<a href="#TruthValue">TruthValue</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;--&nbsp;enumeration&nbsp;of&nbsp;truth&nbsp;values<br>
 &nbsp;<br>
 Example:<br>
 &nbsp;<br>
@@ -944,7 +945,7 @@ Check&nbsp;if&nbsp;an&nbsp;atom&nbsp;a&nbsp;is&nbsp;contained&nbsp;in&nbsp;the&n
 &nbsp;<br>
 The&nbsp;atom&nbsp;must&nbsp;be&nbsp;represented&nbsp;using&nbsp;a&nbsp;function&nbsp;symbol.</tt></dd></dl>
 
-<dl><dt><a name="Model-is_true"><strong>is_true</strong></a>(...)</dt><dd><tt><a href="#Model-contains">contains</a>(self,&nbsp;a)&nbsp;-&gt;&nbsp;bool<br>
+<dl><dt><a name="Model-is_true"><strong>is_true</strong></a>(...)</dt><dd><tt><a href="#Model-is_true">is_true</a>(self,&nbsp;a)&nbsp;-&gt;&nbsp;bool<br>
 &nbsp;<br>
 Check&nbsp;if&nbsp;the&nbsp;given&nbsp;program&nbsp;literal&nbsp;is&nbsp;true.</tt></dd></dl>
 
@@ -1902,5 +1903,5 @@ clingo.<a href="#-parse_term">parse_term</a>('p(1+2)')&nbsp;==&nbsp;clingo.<a hr
 <tr><td bgcolor="#55aa55"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
 <td width="100%"><strong>Infimum</strong> = #sup<br>
 <strong>Supremum</strong> = #inf<br>
-<strong>__version__</strong> = '5.2.0'</td></tr></table>
+<strong>__version__</strong> = '5.2.1'</td></tr></table>
 </body></html>
