@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['undo',['undo',['../structclingo__propagator.html#a8108d1789d05862f636c6ca9328d4b88',1,'clingo_propagator']]]
+  ['undo',['undo',['../structclingo__propagator.html#aaa1b2889d4defdc21429af68524db391',1,'clingo_propagator']]]
 ];
