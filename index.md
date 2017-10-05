@@ -17,7 +17,7 @@ To get a quick first impression, you may want to experiment with [running clingo
 
 # Documentation
 
-A comprehensive documentation of our software can be found in the [Potassco guide](https://sourceforge.net/projects/potassco/files/guide/).
+A comprehensive documentation of our software can be found in the [Potassco guide](https://github.com/potassco/guide/releases/).
 For additional resources, see the [documentation](/doc/) page.
 
 # Systems

@@ -14,7 +14,7 @@ We suggest to start with downloading the most recent [clingo release](https://gi
 # Learning
 
 For experiencing ASP with [clingo](/clingo/),
-we recommend to begin with the [Potassco guide](http://sourceforge.net/projects/potassco/files/guide/).
+we recommend to begin with the [Potassco guide](https://github.com/potassco/guide/releases/).
 It contains a light introduction to the input language of clingo, provides easy modeling examples, and discusses its usage.
 
 # Running

@@ -49,4 +49,4 @@ while illustrating the overall solving process by practical examples.
 - Example programs ([zip](/files/listings.zip), [tgz](/files/listings.tgz))
 - [Slides](/teaching/)
 - [Videos](/doc/videos/)
-- [Guide](http://sourceforge.net/projects/potassco/files/guide/)
+- [Guide](https://github.com/potassco/guide/releases/)
