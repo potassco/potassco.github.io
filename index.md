@@ -29,6 +29,7 @@ To find out more about a specific system and a download link, follow one of the 
     * [clasp](/clasp/) is a solver (powering the search in clingo).
 * [clingcon](/clingcon/) extends clingo with constraint solving capabilities.
 * [aspcud](/aspcud/) is a solver for package dependencies.
+* [asprin](/asprin/) is a general framework for qualitative and quantitative optimization in ASP.
 
 # Development
 
