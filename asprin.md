@@ -1,7 +1,7 @@
 ---
-layout: post
+layout: page
 title: asprin
-summary: A general framework for qualitative and quantitative optimization in answer set programming.
+permalink: /asprin/
 ---
 
 asprin is a general framework for qualitative and quantitative optimization in ASP that allows:
