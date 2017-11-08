@@ -7,10 +7,10 @@
 <table width="100%" cellspacing=0 cellpadding=2 border=0 summary="heading">
 <tr bgcolor="#7799ee">
 <td valign=bottom>&nbsp;<br>
-<font color="#ffffff" face="helvetica, arial">&nbsp;<br><big><big><strong>clingo</strong></big></big> (version 5.2.1)</font></td
+<font color="#ffffff" face="helvetica, arial">&nbsp;<br><big><big><strong>clingo</strong></big></big> (version 5.2.2)</font></td
 ><td align=right valign=bottom
 ><font color="#ffffff" face="helvetica, arial"><a href=".">&laquo;Potassco</a></font></td></tr></table>
-    <p><tt>The&nbsp;clingo-5.2.1&nbsp;module.<br>
+    <p><tt>The&nbsp;clingo-5.2.2&nbsp;module.<br>
 &nbsp;<br>
 This&nbsp;module&nbsp;provides&nbsp;functions&nbsp;and&nbsp;classes&nbsp;to&nbsp;work&nbsp;with&nbsp;ground&nbsp;terms&nbsp;and&nbsp;to<br>
 control&nbsp;the&nbsp;instantiation&nbsp;process.&nbsp;&nbsp;In&nbsp;clingo&nbsp;builts,&nbsp;additional&nbsp;functions&nbsp;to<br>
@@ -30,7 +30,7 @@ symbol&nbsp;or&nbsp;a&nbsp;sequence&nbsp;of&nbsp;symbols.&nbsp;&nbsp;If&nbsp;a&n
 &nbsp;<br>
 Static&nbsp;Objects:<br>
 &nbsp;<br>
-__version__&nbsp;--&nbsp;version&nbsp;of&nbsp;the&nbsp;clingo&nbsp;module&nbsp;(5.2.1)<br>
+__version__&nbsp;--&nbsp;version&nbsp;of&nbsp;the&nbsp;clingo&nbsp;module&nbsp;(5.2.2)<br>
 Infimum&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;--&nbsp;represents&nbsp;an&nbsp;#inf&nbsp;symbol<br>
 Supremum&nbsp;&nbsp;&nbsp;&nbsp;--&nbsp;represents&nbsp;a&nbsp;#sup&nbsp;symbol<br>
 &nbsp;<br>
@@ -205,7 +205,7 @@ Data descriptors defined here:<br>
 <font color="#000000" face="helvetica, arial"><a name="Backend">class <strong>Backend</strong></a>(object)</font></td></tr>
     
 <tr bgcolor="#88ff99"><td rowspan=2><tt>&nbsp;&nbsp;&nbsp;</tt></td>
-<td colspan=2><tt><a href="#Backend">Backend</a>&nbsp;object&nbsp;providing&nbsp;a&nbsp;low&nbsp;level&nbsp;interface&nbsp;to&nbsp;extend&nbsp;a&nbsp;logic&nbsp;program."<br>
+<td colspan=2><tt><a href="#Backend">Backend</a>&nbsp;object&nbsp;providing&nbsp;a&nbsp;low&nbsp;level&nbsp;interface&nbsp;to&nbsp;extend&nbsp;a&nbsp;logic&nbsp;program.<br>
 &nbsp;<br>
 This&nbsp;class&nbsp;provides&nbsp;an&nbsp;interface&nbsp;that&nbsp;allows&nbsp;for&nbsp;adding&nbsp;statements&nbsp;in&nbsp;ASPIF<br>
 format.<br>&nbsp;</tt></td></tr>
@@ -548,7 +548,7 @@ class&nbsp;GroundProgramObserver:<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Observe&nbsp;external&nbsp;statements&nbsp;passed&nbsp;to&nbsp;the&nbsp;solver.<br>
 &nbsp;<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Arguments:<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;atom&nbsp;&nbsp;--&nbsp;the&nbsp;external&nbsp;atom&nbsp;in&nbsp;form&nbsp;of&nbsp;a&nbsp;<a href="#Symbol">Symbol</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;atom&nbsp;&nbsp;--&nbsp;the&nbsp;external&nbsp;atom&nbsp;in&nbsp;form&nbsp;of&nbsp;a&nbsp;literal<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;value&nbsp;--&nbsp;the&nbsp;<a href="#TruthValue">TruthValue</a>&nbsp;of&nbsp;the&nbsp;external&nbsp;statement<br>
 &nbsp;<br>
 &nbsp;&nbsp;&nbsp;&nbsp;assume(self,&nbsp;literals)&nbsp;-&gt;&nbsp;None<br>
@@ -698,8 +698,12 @@ class&nbsp;Propagator(object)<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;propagator.<br>
 &nbsp;<br>
 &nbsp;&nbsp;&nbsp;&nbsp;check(self,&nbsp;control)&nbsp;-&gt;&nbsp;None<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;This&nbsp;function&nbsp;is&nbsp;similar&nbsp;to&nbsp;propagate&nbsp;but&nbsp;is&nbsp;only&nbsp;called&nbsp;on&nbsp;total<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;assignments&nbsp;without&nbsp;a&nbsp;change&nbsp;set.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;This&nbsp;function&nbsp;is&nbsp;similar&nbsp;to&nbsp;propagate&nbsp;but&nbsp;is&nbsp;called&nbsp;without&nbsp;a&nbsp;change<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;set&nbsp;on&nbsp;propagation&nbsp;fixpoints.&nbsp;&nbsp;When&nbsp;exactly&nbsp;this&nbsp;function&nbsp;is&nbsp;called,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;can&nbsp;be&nbsp;configured&nbsp;using&nbsp;the&nbsp;@ref&nbsp;clingo_propagate_init_set_check_mode()<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;function.<br>
+&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Note&nbsp;that&nbsp;this&nbsp;function&nbsp;is&nbsp;called&nbsp;even&nbsp;if&nbsp;no&nbsp;watches&nbsp;have&nbsp;been&nbsp;added.<br>
 &nbsp;<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Arguments:<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;control&nbsp;--&nbsp;<a href="#PropagateControl">PropagateControl</a>&nbsp;object<br>
@@ -747,9 +751,10 @@ on_finish&nbsp;&nbsp;&nbsp;--&nbsp;optional&nbsp;callback&nbsp;called&nbsp;once&
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;a&nbsp;<a href="#SolveResult">SolveResult</a>&nbsp;and&nbsp;a&nbsp;Boolean&nbsp;indicating&nbsp;whether&nbsp;the&nbsp;solve&nbsp;call<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;has&nbsp;been&nbsp;canceled&nbsp;is&nbsp;passed&nbsp;to&nbsp;the&nbsp;callback<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(Default:&nbsp;None)<br>
-assumptions&nbsp;--&nbsp;list&nbsp;of&nbsp;(atom,&nbsp;boolean)&nbsp;tuples&nbsp;that&nbsp;serve&nbsp;as&nbsp;assumptions&nbsp;for<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;the&nbsp;solve&nbsp;call,&nbsp;e.g.&nbsp;-&nbsp;solving&nbsp;under&nbsp;assumptions&nbsp;[(<a href="#-Function">Function</a>("a"),<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;True)]&nbsp;only&nbsp;admits&nbsp;answer&nbsp;sets&nbsp;that&nbsp;contain&nbsp;atom&nbsp;a<br>
+assumptions&nbsp;--&nbsp;list&nbsp;of&nbsp;(atom,&nbsp;boolean)&nbsp;tuples&nbsp;or&nbsp;program&nbsp;literals&nbsp;that&nbsp;serve&nbsp;as<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;assumptions&nbsp;for&nbsp;the&nbsp;solve&nbsp;call,&nbsp;e.g.&nbsp;-&nbsp;solving&nbsp;under&nbsp;assumptions<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[(<a href="#-Function">Function</a>("a"),&nbsp;True)]&nbsp;only&nbsp;admits&nbsp;answer&nbsp;sets&nbsp;that&nbsp;contain<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;atom&nbsp;a<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(Default:&nbsp;[])<br>
 yield_&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;--&nbsp;The&nbsp;resulting&nbsp;<a href="#SolveHandle">SolveHandle</a>&nbsp;is&nbsp;iterable&nbsp;yielding&nbsp;<a href="#Model">Model</a>&nbsp;objects.<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(Default:&nbsp;False)<br>
@@ -1901,7 +1906,7 @@ clingo.<a href="#-parse_term">parse_term</a>('p(1+2)')&nbsp;==&nbsp;clingo.<a hr
 <font color="#ffffff" face="helvetica, arial"><big><strong>Data</strong></big></font></td></tr>
     
 <tr><td bgcolor="#55aa55"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
-<td width="100%"><strong>Infimum</strong> = #sup<br>
-<strong>Supremum</strong> = #inf<br>
-<strong>__version__</strong> = '5.2.1'</td></tr></table>
+<td width="100%"><strong>Infimum</strong> = #inf<br>
+<strong>Supremum</strong> = #sup<br>
+<strong>__version__</strong> = '5.2.2'</td></tr></table>
 </body></html>
