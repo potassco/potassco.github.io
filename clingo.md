@@ -42,14 +42,19 @@ The language did not change in version 5 but there were many API changes.
 
 # Packages
 
-- Packages for clingo and gringo are available in the linux distributions
+- Packages for clingo are available in the Linux distributions
 [Debian](https://www.debian.org/),
 [Ubuntu](http://www.ubuntu.com/), and
 [Arch Linux (AUR)](https://aur.archlinux.org/).
-- For Mac OS X, both clingo and gringo are available in
+- For Mac OS X, clingo packages are available in
 [homebrew](http://brew.sh/) and
-[macports](https://www.macports.org/)
-as part of gringo.
+[macports](https://www.macports.org/).
+- The easiest way to obtain Python enabled clingo packages is using [Anaconda](https://conda.io).
+  Packages are available in the [Potassco channel](https://anaconda.org/potassco/clingo).
+  First [install either Anaconda or Miniconda](https://conda.io/docs/user-guide/install/index.html) and then run:
+  ```bash
+  conda install -c potassco clingo
+  ```
 
 # Citing
 
