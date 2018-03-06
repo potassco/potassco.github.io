@@ -28,6 +28,12 @@ And more information about the cudf format can be found on the [Mancoosi](http:/
 
 - aspcud is available in [Debian](https://www.debian.org/) and [Ubuntu](http://www.ubuntu.com/).
 
+# Competition submissions
+
+- [MISC competition 2012](http://www.mancoosi.org/misc-2012/)
+- [MISC competition 2011](http://www.mancoosi.org/misc-2011/)
+- [Fourth MISC-live run](http://www.mancoosi.org/misc-live/20110225/)
+
 # Citing
 
 - Overview article for aspcud:
