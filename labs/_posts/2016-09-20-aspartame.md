@@ -2,6 +2,7 @@
 layout: post
 title: aspartame
 summary: A translation-based CSP Solver.
+permalink: /labs/aspartame/
 ---
 aspartame is a translation-based constraint solver that converts
 a constraint satisfaction problem from Sugar or XCSP format to
