@@ -15,14 +15,12 @@ All you have to do is install and then select aspcud as solver:
     apt-get install apt-cudf
     apt-get -s --solver aspcud install totem
 
-Additional information can be found on [aspcud's home page](http://www.cs.uni-potsdam.de/aspcud/).
-And more information about the cudf format can be found on the [Mancoosi](http://www.mancoosi.org/) homepage.
+More information about the cudf format can be found on the [Mancoosi](http://www.mancoosi.org/) homepage.
 
 # Download
 
 - Recent versions are on github: [github.com/potassco/aspcud/releases](https://github.com/potassco/aspcud/releases)
 - Old versions are on sourceforge: [sourceforge.net/projects/potassco/aspcud](https://sourceforge.net/projects/potassco/files/aspcud/)
-- Older versions are on the universitiy of Potsdam site: [cs.uni-potsdam.de/aspcud](http://www.cs.uni-potsdam.de/aspcud/)
 
 # Packages
 
