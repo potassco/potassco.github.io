@@ -20,6 +20,8 @@ description: >
 baseurl: "" # the subpath of your site, e.g. /blog
 url: "" # the base hostname & protocol for your site
 
+resourceurl: "https://cs.uni-potsdam.de/wv/projects"
+
 # Build settings
 markdown: kramdown
 theme: minima
