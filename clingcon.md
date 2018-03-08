@@ -14,6 +14,7 @@ It uses lazy nogood and variable generation on the order encoding
 and features several preprocessing techniques.
 
 # Features
+
 * integer linear constraints
   * `&sum{3*x; 4*y} >= z-7`
 * global distinct constraint
@@ -25,8 +26,8 @@ and features several preprocessing techniques.
 * multi-objective optimization on constraint variables
   * `&minimize{x;y;z}`
 
-
 # Example
+
 ~~~~
 #include "csp.lp".
 #const end=20.
@@ -53,6 +54,7 @@ step(0..end).
 ~~~~
 
 More examples can be found in the [example](https://github.com/potassco/clingcon/tree/master/examples) section.
+
 # Download
 
 - Recent clingcon 3.x releases are on github: [github.com/potassco/clingcon/releases](https://github.com/potassco/clingcon/releases).
@@ -65,15 +67,16 @@ See [INSTALL](https://github.com/potassco/clingcon/blob/master/INSTALL.md) for m
 
 # Benchmarks
 
-See [here](http://www.cs.uni-potsdam.de/clingcon/benchmarks/clingcon3bench.tar.gz) for a comparison of clingcon 3.2.0 with other CP and CASP systems.
+- [Experiments for clingcon 3]({{ site.resourceurl }}/clingcon/experiments-clingcon-3.tar.xz)
+- [Experiments for clingcon 2]({{ site.resourceurl }}/clingcon/experiments-clingcon-2.tar.xz)
+- [Experiments for clingcon 1]({{ site.resourceurl }}/clingcon/experiments-clingcon-1.tar.xz)
+- [Experiments for new-old]({{ site.resourceurl }}/clingcon/experiments-newold.tar.xz)
 
 # Citing
 
 - Description of clingcon version 2.x:
-[pdf](http://www.cs.uni-potsdam.de/wv/pdfformat/ostsch12a.pdf)
-[bibtex](http://www.cs.uni-potsdam.de/wv/bibtex/ostsch12a.bib)
+  [pdf](http://www.cs.uni-potsdam.de/wv/pdfformat/ostsch12a.pdf)
+  [bibtex](http://www.cs.uni-potsdam.de/wv/bibtex/ostsch12a.bib)
 - Article for Constraint Answer Set Solving and clingcon 1.x:
-[pdf](http://www.cs.uni-potsdam.de/wv/pdfformat/geossc09a.pdf)
-[bibtex](http://www.cs.uni-potsdam.de/wv/bibtex/geossc09a.bib)
-
-More information on the versions 1.x -2.x can be found on [clingcon's old home page](http://www.cs.uni-potsdam.de/clingcon/).
+  [pdf](http://www.cs.uni-potsdam.de/wv/pdfformat/geossc09a.pdf)
+  [bibtex](http://www.cs.uni-potsdam.de/wv/bibtex/geossc09a.bib)
