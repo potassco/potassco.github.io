@@ -88,7 +88,7 @@ to get an overview of the most important options supported by clasp.
 - Martin Gebser, Roland Kaminski, Benjamin Kaufmann and Torsten Schaub,
   [On the Implementation of Weight Constraint Rules in Conflict-Driven ASP Solvers](http://www.cs.uni-potsdam.de/wv/pdfformat/gekakasc09a.pdf), ICLP'09, 2009<br/>
   [[bibtex](http://www.cs.uni-potsdam.de/wv/bibtex/gekakasc09a.bib)]
-  [[Experiments](experiments-weights.tar.xz)]
+  [[Experiments]({{ site.resourceurl }}/experiments-weights.tar.xz)]
 - Martin Gebser, Benjamin Kaufmann and Torsten Schaub,
   [The Conflict-Driven Answer Set Solver clasp: Progress Report](http://www.cs.uni-potsdam.de/wv/pdfformat/gekasc09b.pdf), LPNMR'09, 2009<br/>
   [[bibtex](http://www.cs.uni-potsdam.de/wv/bibtex/gekasc09b.bib)]
@@ -104,7 +104,7 @@ to get an overview of the most important options supported by clasp.
   [Advanced Conflict-Driven Disjunctive Answer Set Solving](http://www.cs.uni-potsdam.de/wv/pdfformat/gekasc13a.pdf),
   IJCAI'13, 2013<br/>
   [[bibtex](http://www.cs.uni-potsdam.de/wv/bibtex/gekasc13a.bib)]
-  [[Experiments](experiments-claspD.tar.xz)]
+  [[Experiments]({{ site.resourceurl }}/experiments-claspD.tar.xz)]
 - Martin Gebser, Roland Kaminski, Benjamin Kaufmann, Javier Romero and Torsten Schaub,
   [Progress in clasp Series 3](http://www.cs.uni-potsdam.de/wv/pdfformat/gekakarosc15a.pdf), LPNMR'15, 2015<br/>
   [[bibtex](http://www.cs.uni-potsdam.de/wv/bibtex/gekakarosc15a.bib)]
