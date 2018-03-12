@@ -76,7 +76,7 @@ to get an overview of the most important options supported by clasp.
 - Martin Gebser, Benjamin Kaufmann, Andr&#233; Neumann and Torsten Schaub,
   [Conflict-Driven Answer Set Solving](http://www.cs.uni-potsdam.de/wv/pdfformat/gekanesc07a.pdf), IJCAI'07, 2007<br/>
   [[bibtex](http://www.cs.uni-potsdam.de/wv/bibtex/gekanesc07a.bib)]
-  [[Experiments]({ site.resourceurl }}/clasp/experiments-clasp.tar.xz)]
+  [[Experiments]({{ site.resourceurl }}/clasp/experiments-clasp.tar.xz)]
 - Martin Gebser, Benjamin Kaufmann, Andr&#233; Neumann and Torsten Schaub,
   [Advanced Preprocessing for Answer Set Solving](http://www.cs.uni-potsdam.de/wv/pdfformat/gekanesc08a.pdf), ECAI'08, 2008<br/>
   [[bibtex](http://www.cs.uni-potsdam.de/wv/bibtex/gekanesc08a.bib)]
