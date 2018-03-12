@@ -65,3 +65,8 @@ The language did not change in version 5 but there were many API changes.
 [pdf](http://www.cs.uni-potsdam.de/wv/pdfformat/gekakasc14b.pdf)
 [bibtex](http://www.cs.uni-potsdam.de/wv/bibtex/gekakasc14b.bib)
 
+# Publications
+
+- Martin Gebser, Roland Kaminski, Benjamin Kaufmann, Torsten Schaub,
+  Multi-shot ASP solving with clingo, TPLP, 2018:
+  [[Experiments]({{ site.resourceurl }}/clingo/experiments-multishot.tar.xz)]
