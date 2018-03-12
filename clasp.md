@@ -80,7 +80,7 @@ to get an overview of the most important options supported by clasp.
 - Martin Gebser, Benjamin Kaufmann, Andr&#233; Neumann and Torsten Schaub,
   [Advanced Preprocessing for Answer Set Solving](http://www.cs.uni-potsdam.de/wv/pdfformat/gekanesc08a.pdf), ECAI'08, 2008<br/>
   [[bibtex](http://www.cs.uni-potsdam.de/wv/bibtex/gekanesc08a.bib)]
-  [[Experiment]({{ site.resourceurl }}/clasp/experiments-clasp08a.xlsx)]
+  [[Experiments]({{ site.resourceurl }}/clasp/experiments-clasp08a.xlsx)]
 - Martin Gebser, Benjamin Kaufmann and Torsten Schaub,
   [Solution Enumeration for Projected Boolean Search Problems](http://www.cs.uni-potsdam.de/wv/pdfformat/gekasc09a.pdf), CPAIOR'09, 2009<br/>
   [[bibtex](http://www.cs.uni-potsdam.de/wv/bibtex/gekasc09a.bib)]
