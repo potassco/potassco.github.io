@@ -10,9 +10,16 @@ asprin is a general framework for qualitative and quantitative optimization in A
 Some preference types (`subset`, `pareto`, ...) are already defined in `asprin`'s library,
 but many more can be defined simply writing a logic program.
 
-For a formal description of asprin, please read our [paper](http://www.cs.uni-potsdam.de/wv/pdfformat/brderosc15a.pdf) ([bibtex](http://www.cs.uni-potsdam.de/wv/bibtex/brderosc15a.bib)).
+# Download
 
-Starting with version 3, asprin is documented in the [Potassco guide](https://github.com/potassco/guide/releases/).
-Older versions are documented in the [Potassco guide on Sourceforge](https://sourceforge.net/projects/potassco/files/guide/).
+- Source code and binary releases are on github: [github.com/potassco/asprin](https://github.com/potassco/asprin).
 
-For downloads and resources, please go to our [GitHub repository](https://github.com/potassco/asprin).
+# Documentation
+
+- Starting with version 3, asprin is documented in the [Potassco guide](https://github.com/potassco/guide/releases/).
+- Older versions are documented in the [Potassco guide on Sourceforge](https://sourceforge.net/projects/potassco/files/guide/).
+
+# Citing
+
+- Gerhard Brewka, James Delgrande, Javier Romero, Torsten Schaub,
+  [asprin: Customizing Answer Set Preferences without a Headache]({{ site.publicationurl }}/#DBLP:conf/aaai/BrewkaD0S15), AAAI, 2015
