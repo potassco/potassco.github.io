@@ -52,21 +52,18 @@ The language did not change in version 5 but there were many API changes.
 - The easiest way to obtain Python enabled clingo packages is using [Anaconda](https://conda.io).
   Packages are available in the [Potassco channel](https://anaconda.org/potassco/clingo).
   First [install either Anaconda or Miniconda](https://conda.io/docs/user-guide/install/index.html) and then run:
-  ```bash
-  conda install -c potassco clingo
-  ```
+  `conda install -c potassco clingo`
 
 # Citing
 
-- Overview article for gringo:
-[pdf](http://www.cs.uni-potsdam.de/wv/pdfformat/gekakosc11a.pdf)
-[bibtex](http://www.cs.uni-potsdam.de/wv/bibtex/gekakosc11a.bib)
-- Overview article for clingo:
-[pdf](http://www.cs.uni-potsdam.de/wv/pdfformat/gekakasc14b.pdf)
-[bibtex](http://www.cs.uni-potsdam.de/wv/bibtex/gekakasc14b.bib)
+- Martin Gebser, Roland Kaminski, Benjamin Kaufmann and Torsten Schaub,
+  [Clingo = ASP + Control: Preliminary Report]({{ site.publicationurl }}/#DBLP:journals/corr/GebserKKS14), 2014
+
+- Martin Gebser, Roland Kaminski, Benjamin Kaufmann, Arne König and Torsten Schaub,
+  [Advances in gringo Series 3]({{ site.publicationurl }}/#DBLP:conf/lpnmr/GebserKKS11), LPNMR, 2011
 
 # Publications
 
-- Martin Gebser, Roland Kaminski, Benjamin Kaufmann, Torsten Schaub,
-  Multi-shot ASP solving with clingo, TPLP, 2018:
-  [[Experiments]({{ site.resourceurl }}/clingo/experiments-multishot.tar.xz)]
+- Martin Gebser, Roland Kaminski, Benjamin Kaufmann and Torsten Schaub,
+  [Multi-shot ASP solving with clingo]({{ site.publicationurl }}/#DBLP:journals/corr/GebserKKS17), TPLP, 2018
+  \[[Experiments]({{ site.resourceurl }}/clingo/experiments-multishot.tar.xz)\]
