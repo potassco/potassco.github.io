@@ -74,9 +74,7 @@ See [INSTALL](https://github.com/potassco/clingcon/blob/master/INSTALL.md) for m
 
 # Citing
 
-- Description of clingcon version 2.x:
-  [pdf](http://www.cs.uni-potsdam.de/wv/pdfformat/ostsch12a.pdf)
-  [bibtex](http://www.cs.uni-potsdam.de/wv/bibtex/ostsch12a.bib)
-- Article for Constraint Answer Set Solving and clingcon 1.x:
-  [pdf](http://www.cs.uni-potsdam.de/wv/pdfformat/geossc09a.pdf)
-  [bibtex](http://www.cs.uni-potsdam.de/wv/bibtex/geossc09a.bib)
+- Max Ostrowski and Torsten Schaub,
+  [ASP modulo CSP: The clingcon system]({{ site.publicationurl }}/#DBLP:journals/tplp/OstrowskiS12), TPLP, 2012 (for version 2)
+- Martin Gebser, Max Ostrowski and Torsten Schaub,
+  [Constraint Answer Set Solving]({{ site.publicationurl }}/#DBLP:conf/iclp/GebserOS09), ICLP, 2009 (for version 1)
