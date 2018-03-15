@@ -34,6 +34,4 @@ More information about the cudf format can be found on the [Mancoosi](http://www
 
 # Citing
 
-- Overview article for aspcud:
-[pdf](https://www.cs.uni-potsdam.de/wv/pdf/gekasc11c.pdf)
-[bibtex](https://www.cs.uni-potsdam.de/wv/bibtex/gekasc11c.bib)
+- [Overview article for aspcud]({{ site.publicationurl }}/#DBLP:journals/corr/abs-1109-0113)
