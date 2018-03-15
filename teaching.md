@@ -88,7 +88,7 @@ and
 
 [Slides](http://www.cs.uni-potsdam.de/~torsten/Lehre/ASP/Folien/asp-slides.pdf) (2011)
 [Handout](http://www.cs.uni-potsdam.de/~torsten/Lehre/ASP/Folien/asp-handout.pdf) (2011)
-[Moodle](http://moodle.cs.uni-potsdam.de/course/view.php?id=39)
+[Moodle](https://moodle.cs.uni-potsdam.de/course/view.php?id=39)
 [Videos](/doc/videos/)
 
 <a rel="license" href="http://creativecommons.org/licenses/by/3.0/deed.en_US"><img alt="Creative Commons License" style="border-width:0" src="/images/ccby80x15.png"></a>
