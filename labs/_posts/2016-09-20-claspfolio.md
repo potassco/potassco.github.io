@@ -17,9 +17,7 @@ Releases can be found on sourceforge: [sourceforge.net/projects/potassco/files/c
 
 # Citation
 
-- Overview article for claspfolio:
-[pdf](http://www.cs.uni-potsdam.de/wv/pdfformat/holisc14a.pdf)
-[bibtex](http://www.cs.uni-potsdam.de/wv/bibtex/holisc14a.bib)
+- [Overview article for claspfolio]({{ site.publicationurl }}/#DBLP:journals/tplp/HoosLS14)
 
 # Resources
 

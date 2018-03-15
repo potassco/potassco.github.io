@@ -7,7 +7,7 @@ permalink: /clingo/
 Current answer set solvers work on variable-free programs.
 Hence, a grounder is needed that, given an input program with first-order variables, computes an equivalent ground (variable-free) program.
 gringo is such a grounder.
-Its output can be processed further with [clasp](/clasp/), [claspfolio](/claspfolio/), or [clingcon](/clingcon/).
+Its output can be processed further with [clasp](/clasp/), [claspfolio](/labs/claspfolio/), or [clingcon](/clingcon/).
 
 clingo combines both gringo and clasp into a monolithic system.
 This way it offers more control over the grounding and solving process than gringo and clasp can offer individually - e.g., incremental grounding and solving.

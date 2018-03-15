@@ -103,7 +103,7 @@ permalink: /trophies/
 <td>Model + Solve (Overall, P, Optimization)</td>
 </tr>
 <tr>
-<td><b><a style="color: #000;" href="/claspfolio/">claspfolio</a></b></td>
+<td><b><a style="color: #000;" href="/labs/claspfolio/">claspfolio</a></b></td>
 <td>1st</td>
 <td>System Track (NP Problems)</td>
 </tr>
@@ -195,7 +195,7 @@ permalink: /trophies/
 <td style="width:75%">Global, Decision (P, NP), Optimization</td>
 </tr>
 <tr>
-<td><b><a style="color: #000;" href="/claspfolio/">claspfolio</a></b></td>
+<td><b><a style="color: #000;" href="/labs/claspfolio/">claspfolio</a></b></td>
 <td>2nd</td>
 <td>Global,  Decision (NP), Optimization</td>
 </tr>
