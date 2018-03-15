@@ -59,59 +59,45 @@ to get an overview of the most important options supported by clasp.
 
 # Citing
 
-- Overview article for clasp:
-[[bibtex](https://www.cs.uni-potsdam.de/wv/bibtex/gekasc12c.bib)]
-[[pdf](https://www.cs.uni-potsdam.de/wv/pdfformat/gekasc12c.pdf)]
+- [Conflict-Driven Answer Set Solving: From Theory to Practice]({{ site.publicationurl }}/#DBLP:journals/ai/GebserKS12), Artificial Intelligence, 2012
 
 # Publications
 
 - Martin Gebser, Benjamin Kaufmann, Andr&#233; Neumann and Torsten Schaub,
-  [clasp: A Conflict-Driven Answer Set Solver](http://www.cs.uni-potsdam.de/wv/pdfformat/gekanesc07b.pdf), LPNMR'07, 2007<br/>
-   [[bibtex](http://www.cs.uni-potsdam.de/wv/bibtex/gekanesc07b.bib)]
-   [[Experiments]({{ site.resourceurl }}/clasp/experiments-rc4-system.tar.xz)]
+  [clasp: A Conflict-Driven Answer Set Solver]({{ site.publicationurl }}/#DBLP:conf/lpnmr/GebserKNS07a), LPNMR'07, 2007
+   \[[Experiments]({{ site.resourceurl }}/clasp/experiments-rc4-system.tar.xz)\]
 - Martin Gebser, Benjamin Kaufmann, Andr&#233; Neumann and Torsten Schaub,
-  [Conflict-Driven Answer Set Enumeration](http://www.cs.uni-potsdam.de/wv/pdfformat/gekanesc07c.pdf), LPNMR'07, 2007<br/>
-  [[bibtex](http://www.cs.uni-potsdam.de/wv/bibtex/gekanesc07c.bib)]
-  [[Experiments]({{ site.resourceurl }}/clasp/experiments-rc4-enumeration.tar.xz)]
+  [Conflict-Driven Answer Set Enumeration]({{ site.publicationurl }}/#DBLP:conf/lpnmr/GebserKNS07), LPNMR'07, 2007
+  \[[Experiments]({{ site.resourceurl }}/clasp/experiments-rc4-enumeration.tar.xz)\]
 - Martin Gebser, Benjamin Kaufmann, Andr&#233; Neumann and Torsten Schaub,
-  [Conflict-Driven Answer Set Solving](http://www.cs.uni-potsdam.de/wv/pdfformat/gekanesc07a.pdf), IJCAI'07, 2007<br/>
-  [[bibtex](http://www.cs.uni-potsdam.de/wv/bibtex/gekanesc07a.bib)]
-  [[Experiments]({{ site.resourceurl }}/clasp/experiments-clasp.tar.xz)]
+  [Conflict-Driven Answer Set Solving]({{ site.publicationurl }}/#DBLP:conf/ijcai/GebserKNS07), IJCAI'07, 2007
+  \[[Experiments]({{ site.resourceurl }}/clasp/experiments-clasp.tar.xz)\]
 - Martin Gebser, Benjamin Kaufmann, Andr&#233; Neumann and Torsten Schaub,
-  [Advanced Preprocessing for Answer Set Solving](http://www.cs.uni-potsdam.de/wv/pdfformat/gekanesc08a.pdf), ECAI'08, 2008<br/>
-  [[bibtex](http://www.cs.uni-potsdam.de/wv/bibtex/gekanesc08a.bib)]
-  [[Experiments]({{ site.resourceurl }}/clasp/experiments-clasp08a.xlsx)]
+  [Advanced Preprocessing for Answer Set Solving]({{ site.publicationurl }}/#DBLP:conf/ecai/GebserKNS08), ECAI'08, 2008
+  \[[Experiments]({{ site.resourceurl }}/clasp/experiments-clasp08a.xlsx)\]
 - Martin Gebser, Benjamin Kaufmann and Torsten Schaub,
-  [Solution Enumeration for Projected Boolean Search Problems](http://www.cs.uni-potsdam.de/wv/pdfformat/gekasc09a.pdf), CPAIOR'09, 2009<br/>
-  [[bibtex](http://www.cs.uni-potsdam.de/wv/bibtex/gekasc09a.bib)]
-  [[Experiments]({{ site.resourceurl }}/clasp/experiments-projection.tar.xz)]
+  [Solution Enumeration for Projected Boolean Search Problems]({{ site.publicationurl }}/#DBLP:conf/cpaior/GebserKS09), CPAIOR'09, 2009
+  \[[Experiments]({{ site.resourceurl }}/clasp/experiments-projection.tar.xz)\]
 - Martin Gebser, Roland Kaminski, Benjamin Kaufmann and Torsten Schaub,
-  [On the Implementation of Weight Constraint Rules in Conflict-Driven ASP Solvers](http://www.cs.uni-potsdam.de/wv/pdfformat/gekakasc09a.pdf), ICLP'09, 2009<br/>
-  [[bibtex](http://www.cs.uni-potsdam.de/wv/bibtex/gekakasc09a.bib)]
-  [[Experiments]({{ site.resourceurl }}/experiments-weights.tar.xz)]
+  [On the Implementation of Weight Constraint Rules in Conflict-Driven ASP Solvers]({{ site.publicationurl }}/#DBLP:conf/iclp/GebserKKS09), ICLP'09, 2009
+  \[[Experiments]({{ site.resourceurl }}/experiments-weights.tar.xz)\]
 - Martin Gebser, Benjamin Kaufmann and Torsten Schaub,
-  [The Conflict-Driven Answer Set Solver clasp: Progress Report](http://www.cs.uni-potsdam.de/wv/pdfformat/gekasc09b.pdf), LPNMR'09, 2009<br/>
-  [[bibtex](http://www.cs.uni-potsdam.de/wv/bibtex/gekasc09b.bib)]
+  [The Conflict-Driven Answer Set Solver clasp: Progress Report]({{ site.publicationurl }}/#DBLP:conf/lpnmr/GebserKS09), LPNMR'09, 2009
 - Martin Gebser, Benjamin Kaufmann and Torsten Schaub,
-  [Multi-threaded ASP Solving with clasp](http://www.cs.uni-potsdam.de/wv/pdfformat/gekasc12b.pdf), Theory and Practice of Logic Programming, 2012<br/>
-  [[bibtex](http://www.cs.uni-potsdam.de/wv/bibtex/gekasc12b.bib)]
-  [[Experiments]({{ site.resourceurl }}/clasp/experiments-mt.tar.xz)]
+  [Multi-threaded ASP Solving with clasp]({{ site.publicationurl }}/#DBLP:journals/tplp/GebserKS12), Theory and Practice of Logic Programming, 2012
+  \[[Experiments]({{ site.resourceurl }}/clasp/experiments-mt.tar.xz)\]
 - Martin Gebser, Benjamin Kaufmann and Torsten Schaub,
-  [Conflict-Driven Answer Set Solving: From Theory to Practice](http://www.cs.uni-potsdam.de/wv/pdfformat/gekasc12c.pdf), Artificial Intelligence, 2012<br/>
-  [[bibtex](http://www.cs.uni-potsdam.de/wv/bibtex/gekasc12c.bib)]
-  [[Experiments]({{ site.resourceurl }}/clasp/experiments-aspcomp.tar.xz)]
+  [Conflict-Driven Answer Set Solving: From Theory to Practice]({{ site.publicationurl }}/#DBLP:journals/ai/GebserKS12), Artificial Intelligence, 2012
+  \[[Experiments]({{ site.resourceurl }}/clasp/experiments-aspcomp.tar.xz)\]
 - Martin Gebser, Benjamin Kaufmann and Torsten Schaub,
-  [Advanced Conflict-Driven Disjunctive Answer Set Solving](http://www.cs.uni-potsdam.de/wv/pdfformat/gekasc13a.pdf),
+  [Advanced Conflict-Driven Disjunctive Answer Set Solving]({{ site.publicationurl }}/#DBLP:conf/ijcai/GebserKS13),
   IJCAI'13, 2013<br/>
-  [[bibtex](http://www.cs.uni-potsdam.de/wv/bibtex/gekasc13a.bib)]
-  [[Experiments]({{ site.resourceurl }}/experiments-claspD.tar.xz)]
+  \[[Experiments]({{ site.resourceurl }}/experiments-claspD.tar.xz)\]
 - Martin Gebser, Roland Kaminski, Benjamin Kaufmann, Javier Romero and Torsten Schaub,
-  [Progress in clasp Series 3](http://www.cs.uni-potsdam.de/wv/pdfformat/gekakarosc15a.pdf), LPNMR'15, 2015<br/>
-  [[bibtex](http://www.cs.uni-potsdam.de/wv/bibtex/gekakarosc15a.bib)]
-  [[Experiments]({{ site.resourceurl }}/clasp/experiments-lpnmr15.tar.xz)]
+  [Progress in clasp Series 3]({{ site.publicationurl }}/#DBLP:conf/lpnmr/GebserKK0S15), LPNMR'15, 2015
+  \[[Experiments]({{ site.resourceurl }}/clasp/experiments-lpnmr15.tar.xz)\]
 - Jori Bomanson, Martin Gebser, Tomi Janhunen, Benjamin Kaufmann and Torsten Schaub,
-  [Answer Set Programming Modulo Acyclicity](http://www.cs.uni-potsdam.de/wv/pdfformat/bogejakasc15b.pdf), ASPOCP'15, 2015<br/>
-  [[bibtex](http://www.cs.uni-potsdam.de/wv/bibtex/bogejakasc15b.bib)]
-  [[Experiments]({{ site.resourceurl }}/clasp/experiments-acyclicity.tar.xz)]
+  [Answer Set Programming Modulo Acyclicity]({{ site.publicationurl }}/#DBLP:journals/fuin/BomansonGJKS16), Fundamenta Informaticae, 2016
+  \[[Experiments]({{ site.resourceurl }}/clasp/experiments-acyclicity.tar.xz)\]
 
 
