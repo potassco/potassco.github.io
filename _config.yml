@@ -20,9 +20,9 @@ description: >
 baseurl: "" # the subpath of your site, e.g. /blog
 url: "" # the base hostname & protocol for your site
 
-uniurl: "https://www.cs.uni-potsdam.de/~kaminski/kr-web"
-resourceurl: "https://www.cs.uni-potsdam.de/~kaminski/kr-web/projects"
-publicationurl: "https://www.cs.uni-potsdam.de/~kaminski/kr-web/publications"
+uniurl: "https://www.cs.uni-potsdam.de/wv"
+resourceurl: "https://www.cs.uni-potsdam.de/wv/projects"
+publicationurl: "https://www.cs.uni-potsdam.de/wv/publications"
 
 # Build settings
 markdown: kramdown
