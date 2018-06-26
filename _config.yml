@@ -27,3 +27,5 @@ publicationurl: "https://www.cs.uni-potsdam.de/wv/publications"
 # Build settings
 markdown: kramdown
 theme: minima
+
+include: _headers
