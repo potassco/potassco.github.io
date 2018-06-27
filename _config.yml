@@ -28,4 +28,5 @@ publicationurl: "https://www.cs.uni-potsdam.de/wv/publications"
 markdown: kramdown
 theme: minima
 
-include: _headers
+include:
+- _headers
