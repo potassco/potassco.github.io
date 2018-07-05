@@ -34,9 +34,10 @@ constraint solving including:
 # Packages
 
 - Packages for clasp are available in the linux distributions
-[Debian](https://www.debian.org/),
-[Ubuntu](http://www.ubuntu.com/), and
-[Arch Linux (AUR)](https://aur.archlinux.org/).
+[Debian](https://packages.debian.org/clasp),
+[Ubuntu](https://packages.ubuntu.com/clasp), and
+[Arch Linux](https://www.archlinux.org/packages/clasp).
+(For Arch Linux, clasp is also available in the [clingo](https://www.archlinux.org/packages/clingo) package.)
 - For Mac OS X, clasp is available in
 [homebrew](http://brew.sh/) and
 [macports](https://www.macports.org/).
