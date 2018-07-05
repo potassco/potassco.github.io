@@ -44,17 +44,17 @@ The language did not change in version 5 but there were many API changes.
 
 # Packages
 
+- The easiest way to obtain Python enabled clingo packages is using [Anaconda](https://conda.io).
+  Packages are available in the [Potassco channel](https://anaconda.org/potassco/clingo).
+  First [install either Anaconda or Miniconda](https://conda.io/docs/user-guide/install/index.html) and then run:
+  `conda install -c potassco clingo`
 - Packages for clingo are available in the Linux distributions
 [Debian](https://packages.debian.org/gringo),
 [Ubuntu](https://packages.ubuntu.com/gringo), and
 [Arch Linux](https://www.archlinux.org/packages/clingo).
 - For Mac OS X, clingo packages are available in
-[homebrew](http://brew.sh/) and
-[macports](https://www.macports.org/).
-- The easiest way to obtain Python enabled clingo packages is using [Anaconda](https://conda.io).
-  Packages are available in the [Potassco channel](https://anaconda.org/potassco/clingo).
-  First [install either Anaconda or Miniconda](https://conda.io/docs/user-guide/install/index.html) and then run:
-  `conda install -c potassco clingo`
+[homebrew](https://formulae.brew.sh/formula/clingo) and
+[macports](https://www.macports.org/ports.php?by=name&substr=gringo).
 
 # Citing
 

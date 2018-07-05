@@ -33,14 +33,17 @@ constraint solving including:
 
 # Packages
 
+- Packages for all major platforms are available for the [Anaconda](https://conda.io) distribution
+  in the [Potassco channel](https://anaconda.org/potassco/clingo).
+  First [install either Anaconda or Miniconda](https://conda.io/docs/user-guide/install/index.html) and then run:
+  `conda install -c potassco clingo`
 - Packages for clasp are available in the linux distributions
 [Debian](https://packages.debian.org/clasp),
 [Ubuntu](https://packages.ubuntu.com/clasp), and
-[Arch Linux](https://www.archlinux.org/packages/clasp).
-(For Arch Linux, clasp is also available in the [clingo](https://www.archlinux.org/packages/clingo) package.)
+[Arch Linux](https://www.archlinux.org/packages/clingo).
 - For Mac OS X, clasp is available in
-[homebrew](http://brew.sh/) and
-[macports](https://www.macports.org/).
+[homebrew](https://formulae.brew.sh/formula/clingo) and
+[macports](https://www.macports.org/ports.php?by=name&substr=clasp).
 
 # Usage
 
