@@ -17,6 +17,7 @@ Here is a list of example propagators.
 - Sequence mining propagator checking whether a pattern contains a sequence.
   - [Clingo release, Python version](https://github.com/potassco/clingo/blob/master/app/clingo/tests/python/propagator.lp)
 - Linear programming propagator.
-  - [Python version](https://github.com/potassco/ASPmLP)
+  - [Python version](https://github.com/potassco/clingoLP)
 - Difference logic propagator.
-  - [Python version](https://github.com/potassco/ASPmDL)
+  - [C++ version](https://github.com/potassco/clingoDL)
+  - [Python version](https://github.com/potassco/clingo/tree/master/examples/clingo/dl)

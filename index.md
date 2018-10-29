@@ -17,7 +17,7 @@ To get a quick first impression, you may want to experiment with [running clingo
 
 # Documentation
 
-A comprehensive documentation of our software can be found in the [Potassco guide](https://sourceforge.net/projects/potassco/files/guide/).
+A comprehensive documentation of our software can be found in the [Potassco guide](https://github.com/potassco/guide/releases/).
 For additional resources, see the [documentation](/doc/) page.
 
 # Systems
@@ -29,6 +29,7 @@ To find out more about a specific system and a download link, follow one of the 
     * [clasp](/clasp/) is a solver (powering the search in clingo).
 * [clingcon](/clingcon/) extends clingo with constraint solving capabilities.
 * [aspcud](/aspcud/) is a solver for package dependencies.
+* [asprin](/asprin/) is a general framework for qualitative and quantitative optimization in ASP.
 
 # Development
 

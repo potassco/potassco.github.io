@@ -2,6 +2,7 @@
 layout: post
 title: Ricochet Robots
 summary: Encodings to solve the ricochet robots game.
+permalink: /labs/ricochet/
 ---
 Alex Randolph's board game Ricochet Robots offers a rich and versatile benchmark for
 ASP. As it stands, it represents a simple multi-agent planning problem in which each
@@ -12,6 +13,5 @@ barriers, robots, and targets as well as for animating robot moves in a stepwise
 
 Note that the clingo examples (part of the [releases](https://github.com/potassco/clingo/releases)) also contain an encoding and a visualizer for the ricochet robot problems.
 
-[Article](http://www.cs.uni-potsdam.de/wv/pdfformat/gejokaobsascsc13a.pdf)
-[Citation](http://www.cs.uni-potsdam.de/wv/bibtex/gejokaobsascsc13a.bib)
+[Article]({{ site.publicationurl }}/#DBLP:conf/lpnmr/GebserJKOSSS13)
 [Encodings](/files/ricochetrobots-encodings.tar.gz)

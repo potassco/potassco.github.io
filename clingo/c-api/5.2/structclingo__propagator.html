@@ -84,7 +84,7 @@ Public Attributes</h2></td></tr>
 <tr class="memdesc:a8108d1789d05862f636c6ca9328d4b88"><td class="mdescLeft">&#160;</td><td class="mdescRight">Called whenever a solver undoes assignments to watched solver literals.  <a href="#a8108d1789d05862f636c6ca9328d4b88">More...</a><br /></td></tr>
 <tr class="separator:a8108d1789d05862f636c6ca9328d4b88"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3a883ef32f49030ae701550bbdbcf4a0"><td class="memItemLeft" align="right" valign="top">bool(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structclingo__propagator.html#a3a883ef32f49030ae701550bbdbcf4a0">check</a> )(<a class="el" href="group__Propagator.html#ga1cf43bea08101abb8b8cc7711c4c7165">clingo_propagate_control_t</a> *control, void *data)</td></tr>
-<tr class="memdesc:a3a883ef32f49030ae701550bbdbcf4a0"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function is similar to <a class="el" href="group__Propagator.html#ga1e5504a8332ed8c453197046d201cd4b">clingo_propagate_control_propagate()</a> but is only called on total assignments without a change set.  <a href="#a3a883ef32f49030ae701550bbdbcf4a0">More...</a><br /></td></tr>
+<tr class="memdesc:a3a883ef32f49030ae701550bbdbcf4a0"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function is similar to <a class="el" href="group__Propagator.html#ga1e5504a8332ed8c453197046d201cd4b">clingo_propagate_control_propagate()</a> but is called without a change set on propagation fixpoints.  <a href="#a3a883ef32f49030ae701550bbdbcf4a0">More...</a><br /></td></tr>
 <tr class="separator:a3a883ef32f49030ae701550bbdbcf4a0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Member Data Documentation</h2>
@@ -100,8 +100,9 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>This function is similar to <a class="el" href="group__Propagator.html#ga1e5504a8332ed8c453197046d201cd4b">clingo_propagate_control_propagate()</a> but is only called on total assignments without a change set. </p>
-<dl class="section note"><dt>Note</dt><dd>This function is called even if no watches have been added. </dd></dl>
+<p>This function is similar to <a class="el" href="group__Propagator.html#ga1e5504a8332ed8c453197046d201cd4b">clingo_propagate_control_propagate()</a> but is called without a change set on propagation fixpoints. </p>
+<p>When exactly this function is called, can be configured using the <a class="el" href="group__Propagator.html#gaa268d0dcfc313360d57b9164fea21074">clingo_propagate_init_set_check_mode()</a> function.</p>
+<dl class="section note"><dt>Note</dt><dd>This function is called even if no watches have been added.</dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">control</td><td>control object for the target solver </td></tr>
@@ -204,7 +205,7 @@ Public Attributes</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed May 3 2017 18:38:41 for Clingo C API by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Wed Nov 8 2017 09:57:37 for Clingo C API by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.13
 </small></address>

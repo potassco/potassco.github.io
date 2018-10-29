@@ -44,4 +44,4 @@ weight: 0
   An Extensible SAT-solver.
   Proceeedings SAT'03, 502-518.
   Springer, 2004.
-- [Potassco Literature](http://www.cs.uni-potsdam.de/wv/publications)
+- [Potassco Literature]({{ site.uniurl }}/publications/)

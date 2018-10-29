@@ -15,7 +15,7 @@ Torsten Schaub
 [Morgan and Claypool](http://www.morganclaypool.com)
 
 December 2012, 238 pages, doi:10.2200/S00457ED1V01Y201211AIM019,
-[BiBTeX](https://www.cs.uni-potsdam.de/wv/bibtex/gekakasc12a.bib)
+[BiBTeX]({{ site.publicationurl }}/#DBLP:series/synthesis/2012Gebser)
 
 Available at:
 [Morgan and Claypool](https://dx.doi.org/10.2200/S00457ED1V01Y201211AIM019),
@@ -49,4 +49,4 @@ while illustrating the overall solving process by practical examples.
 - Example programs ([zip](/files/listings.zip), [tgz](/files/listings.tgz))
 - [Slides](/teaching/)
 - [Videos](/doc/videos/)
-- [Guide](http://sourceforge.net/projects/potassco/files/guide/)
+- [Guide](https://github.com/potassco/guide/releases/)
