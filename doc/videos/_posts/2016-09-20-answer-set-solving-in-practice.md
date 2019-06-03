@@ -8,4 +8,4 @@ AAAI'13, Seattle, USA,
 Video
 ([part one](http://techtalks.tv/talks/answer-set-solving-in-practice-part-1/58559/) 1:28:21,
 [part two](http://techtalks.tv/talks/answer-set-solving-in-practice-part-2/58560/) 1:59:22),
-[Slides]({% post_url 2013-01-01-aaai13 %})
+[Slides]({% post_url doc/tutorials/2013-01-01-aaai13 %})

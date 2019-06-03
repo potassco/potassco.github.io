@@ -23,7 +23,7 @@ permalink: /trophies/
 
 <table class="trophy">
 <tr>
-<td><b><a style="color: #000;" href="{% post_url 2016-09-20-aspuncud %}">aspuncud</a></b><br>(unclasp) </td>
+<td><b><a style="color: #000;" href="{% post_url cemetery/2016-09-20-aspuncud %}">aspuncud</a></b><br>(unclasp) </td>
 <td>1st</td>
 <td>Paranoid, Basic User, Full User</td>
 </tr>
@@ -83,7 +83,7 @@ permalink: /trophies/
 <td>System Track (Overall)</td>
 </tr>
 <tr>
-<td><b><a style="color: #000;" href="{% post_url 2016-09-20-claspd %}">claspD</a></b></td>
+<td><b><a style="color: #000;" href="{% post_url cemetery/2016-09-20-claspd %}">claspD</a></b></td>
 <td>1st</td>
 <td>System Track (Overall, Beyond NP)</td>
 </tr>
@@ -93,7 +93,7 @@ permalink: /trophies/
 <td>System Track (P)</td>
 </tr>
 <tr>
-<td><b><a style="color: #000;" href="{% post_url 2016-09-20-aclasp %}">aclasp</a></b></td>
+<td><b><a style="color: #000;" href="{% post_url cemetery/2016-09-20-aclasp %}">aclasp</a></b></td>
 <td>2nd</td>
 <td>Model + Solve (Optimization)</td>
 </tr>
@@ -157,7 +157,7 @@ permalink: /trophies/
 
 <table class="trophy">
 <tr>
-<td rowspan="2"><b><a style="color: #000;" href="{% post_url 2016-09-20-aspuncud %}">aspuncud</a></b><br>(unclasp) </td>
+<td rowspan="2"><b><a style="color: #000;" href="{% post_url cemetery/2016-09-20-aspuncud %}">aspuncud</a></b><br>(unclasp) </td>
 <td>1st</td>
 <td>Paranoid, Trendy</td>
 </tr>
@@ -176,7 +176,7 @@ permalink: /trophies/
 
 <table class="trophy">
 <tr>
-<td rowspan="2" style="width:20%"><b><a style="color: #000;" href="{% post_url 2016-09-20-fimo %}">fimo</a></b><br>(iclingo)</td>
+<td rowspan="2" style="width:20%"><b><a style="color: #000;" href="{% post_url labs/2016-09-20-fimo %}">fimo</a></b><br>(iclingo)</td>
 <td style="width:5%">2nd</td>
 <td style="width:75%">FNT</td>
 </tr>
@@ -220,7 +220,7 @@ permalink: /trophies/
 
 <table class="trophy">
 <tr>
-<td rowspan="2" style="width:20%"><b><a style="color: #000;" href="{% post_url 2016-09-20-pbclasp %}">pbclasp</a></b><br>(clasp)</td>
+<td rowspan="2" style="width:20%"><b><a style="color: #000;" href="{% post_url cemetery/2016-09-20-pbclasp %}">pbclasp</a></b><br>(clasp)</td>
 <td style="width:5%">1st</td>
 <td style="width:75%">OPT-SMALLINT-LIN (UNSAT)</td>
 </tr>
@@ -249,7 +249,7 @@ permalink: /trophies/
 
 <table class="trophy">
 <tr>
-<td style="width:20%"><b><a style="color: #000;" href="{% post_url 2016-09-20-pbclasp %}">pbclasp</a></b><br>(clasp)</td>
+<td style="width:20%"><b><a style="color: #000;" href="{% post_url cemetery/2016-09-20-pbclasp %}">pbclasp</a></b><br>(clasp)</td>
 <td style="width:5%">1st</td>
 <td style="width:75%">PURE-SAT</td>
 </tr>
