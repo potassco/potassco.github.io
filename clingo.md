@@ -30,12 +30,14 @@ The language did not change in version 5 but there were many API changes.
 - [Potassco guide on GitHub](https://github.com/potassco/guide/releases/) for series 5 and later
 - [Potassco guide on Sourceforge](https://sourceforge.net/projects/potassco/files/guide/) for series 4 and earlier
 - [Formal language specification](https://www.cs.utexas.edu/users/vl/papers/AG.pdf)
-- [Python API Reference](/clingo/python-api/current/clingo.html) (versions
+- [Python API Reference](/clingo/python-api/current/) (versions
+  [5.4](/clingo/python-api/5.4/),
   [5.3](/clingo/python-api/5.3/clingo.html),
   [5.2](/clingo/python-api/5.2/clingo.html),
   [5.1](/clingo/python-api/5.1/clingo.html),
   [5.0](/clingo/python-api/5.0/clingo.html))
 - [C API Reference](/clingo/c-api/current/) (versions
+  [5.4](/clingo/c-api/5.4/),
   [5.3](/clingo/c-api/5.3/),
   [5.2](/clingo/c-api/5.2/),
   [5.1](/clingo/c-api/5.1/),
@@ -56,6 +58,14 @@ The language did not change in version 5 but there were many API changes.
 [homebrew](https://formulae.brew.sh/formula/clingo) and
 [macports](https://www.macports.org/ports.php?by=name&substr=gringo).
 
+# Related Projects
+
+- The [clorm] python library provides an object relational mapper-like interface to clingo.
+  It allows facts to be asserted and extracted in an intuitive and easy to use way.
+- The [clingo-rs] project provides rust bindings to the clingo library.
+- The [clingo-haskell] project provides haskell bindings to the clingo library.
+- There are also rudimentary [prolog bindings][clingo-pl] to clingo.
+
 # Citing
 
 - Martin Gebser, Roland Kaminski, Benjamin Kaufmann and Torsten Schaub,
@@ -69,3 +79,8 @@ The language did not change in version 5 but there were many API changes.
 - Martin Gebser, Roland Kaminski, Benjamin Kaufmann and Torsten Schaub,
   [Multi-shot ASP solving with clingo]({{ site.publicationurl }}/#DBLP:journals/corr/GebserKKS17), TPLP, 2018
   \[[Experiments]({{ site.resourceurl }}/clingo/experiments-multishot.tar.xz)\]
+
+[clorm]: https://github.com/daveraja/clorm
+[clingo-rs]: https://github.com/potassco/clingo-rs
+[clingo-haskell]: https://github.com/tsahyt/clingo-haskell
+[clingo-pl]: https://github.com/JanWielemaker/clingo
