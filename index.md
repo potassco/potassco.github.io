@@ -33,7 +33,7 @@ To find out more about a specific system and a download link, follow one of the 
 
 # Development
 
-The source code of our projects are available on [github.com/potassco](https://github.com/potassco/).
+The source code of our projects is available on [github.com/potassco](https://github.com/potassco/).
 Legacy code can be found in the subversion repository on [sourceforge.net/p/potassco/code](https://sourceforge.net/p/potassco/code).
 
 # Labs
