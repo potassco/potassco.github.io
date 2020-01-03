@@ -40,7 +40,7 @@ constraint solving including:
 - Packages for clasp are available in the linux distributions
 [Debian](https://packages.debian.org/clasp),
 [Ubuntu](https://packages.ubuntu.com/clasp), and
-[Arch Linux](https://www.archlinux.org/packages/clingo).
+[Arch Linux](https://www.archlinux.org/packages/clasp).
 - For Mac OS X, clasp is available in
 [homebrew](https://formulae.brew.sh/formula/clingo) and
 [macports](https://www.macports.org/ports.php?by=name&substr=clasp).
