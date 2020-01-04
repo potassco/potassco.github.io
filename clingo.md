@@ -53,7 +53,7 @@ The language did not change in version 5 but there were many API changes.
 - Packages for clingo are available in the Linux distributions
 [Debian](https://packages.debian.org/gringo),
 [Ubuntu](https://packages.ubuntu.com/gringo), and
-[Arch Linux](https://www.archlinux.org/packages/clingo).
+[Arch Linux](https://aur.archlinux.org/packages/clingo).
 - For Mac OS X, clingo packages are available in
 [homebrew](https://formulae.brew.sh/formula/clingo) and
 [macports](https://www.macports.org/ports.php?by=name&substr=gringo).
