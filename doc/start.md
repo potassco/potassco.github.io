@@ -98,5 +98,5 @@ feel free to sign up to the [potassco-users](https://lists.sourceforge.net/lists
 Bug reports and feature requests can be posted in the issue tracker of a system's [github page](https://github.com/potassco/).
 
 For gossip and release announcements,
-you may want to join our [Google+ group](https://plus.google.com/+Potassco-live) or
+you may want to follow us on [Twitter](https://twitter.com/potassco) or
 the [potassco-announce](https://lists.sourceforge.net/lists/listinfo/potassco-announce) mailing list.
