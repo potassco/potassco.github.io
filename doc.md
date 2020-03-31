@@ -15,4 +15,4 @@ permalink: /doc/
 * The [Potassco apps](/doc/apps/) comprise projects involving our tools, we found interesting.
 * The [Potassco video clips](/doc/videos/) provide some rough, smallish tutorials on various aspects around our ASP tools.
   The videos can also be found on the [Potassco Youtube channel](https://www.youtube.com/channel/UCnvoHDf9RqBJxKPSGdToLzA/feed).
-* News and gossip can be found on the [Potassco Google+](https://plus.google.com/+Potassco-live) and the [Potassco Facebook](https://facebook.com/potassco/) page.
+* News and gossip can be found on the [Potassco Twitter](https://twitter.com/potassco) and the [Potassco Facebook](https://facebook.com/potassco/) page.
