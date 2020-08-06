@@ -65,6 +65,9 @@ The language did not change in version 5 but there were many API changes.
 - The [clingo-rs] project provides rust bindings to the clingo library.
 - The [clingo-haskell] project provides haskell bindings to the clingo library.
 - There are also rudimentary [prolog bindings][clingo-pl] to clingo.
+- There is a [project][clingo-js] offering rudimentary JavaScript support to run clingo in the browser.
+- There are abandoned [java bindings][clingo-java] to clingo.
+- Syntax highlighting is available for [vim][clingo-vim] and [emacs][clingo-emacs].
 
 # Citing
 
@@ -80,23 +83,27 @@ The language did not change in version 5 but there were many API changes.
   [Multi-shot ASP solving with clingo]({{ site.publicationurl }}/#DBLP:journals/corr/GebserKKS17), TPLP, 2018
   \[[Experiments]({{ site.resourceurl }}/clingo/experiments-multishot.tar.xz)\]
 
-[clorm]: https://github.com/daveraja/clorm
-[clingo-rs]: https://github.com/potassco/clingo-rs
+[ag]: https://www.cs.utexas.edu/users/vl/papers/AG.pdf
+[aspcore]: https://www.mat.unical.it/aspcomp2013/ASPStandardization
+[clingo-emacs]: https://github.com/santifa/pasp-mode
+[clingo-github]: https://github.com/potassco/clingo
 [clingo-haskell]: https://github.com/tsahyt/clingo-haskell
+[clingo-java]: https://github.com/clingo4j/clingo4j
+[clingo-js]: https://github.com/domoritz/clingo-wasm
 [clingo-pl]: https://github.com/JanWielemaker/clingo
+[clingo-releases]: https://github.com/potassco/clingo/releases
+[clingo-rs]: https://github.com/potassco/clingo-rs
+[clingo-sf]: https://sourceforge.net/projects/potassco/files/clingo
+[clingo-vim]: https://github.com/rkaminsk/vim-syntax-clingo
+[clorm]: https://github.com/daveraja/clorm
+[conda-channel]: https://anaconda.org/potassco/clingo
 [conda]: https://conda.io
 [conda-install]: https://conda.io/projects/conda/en/latest/user-guide/install/index.html
-[conda-channel]: https://anaconda.org/potassco/clingo
-[aspcore]: https://www.mat.unical.it/aspcomp2013/ASPStandardization
-[clingo-github]: https://github.com/potassco/clingo
-[clingo-releases]: https://github.com/potassco/clingo/releases
-[clingo-sf]: https://sourceforge.net/projects/potassco/files/clingo
 [gringo-sf]: https://sourceforge.net/projects/potassco/files/gringo
 [guide-github]: https://github.com/potassco/guide/releases
 [guide-sf]: https://sourceforge.net/projects/potassco/files/guide
-[ag]: https://www.cs.utexas.edu/users/vl/papers/AG.pdf
-[package-debian]: https://packages.debian.org/gringo
-[package-ubuntu]: https://packages.ubuntu.com/gringo
 [package-arch]: https://aur.archlinux.org/packages/clingo
 [package-brew]: https://formulae.brew.sh/formula/clingo
+[package-debian]: https://packages.debian.org/gringo
 [package-macports]: https://www.macports.org/ports.php?by=name&substr=gringo
+[package-ubuntu]: https://packages.ubuntu.com/gringo
