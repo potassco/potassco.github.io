@@ -5,7 +5,7 @@ description: The clingo-5.5.0 module …
 css:
 - /css/pdoc.css
 - /css/github.min.css
-permalink: /clingo/python-api/5.5/
+permalink: /clingo/python-api/5.5//
 ---
 <main>
 <article id="content">
@@ -185,7 +185,7 @@ Argument <code>positive</code> has to be set to false to represent such atoms.</
 <dl>
 <dt><strong><code>name</code></strong> :&ensp;<code>str</code></dt>
 <dd>The name of the function (empty for tuples).</dd>
-<dt><strong><code>arguments</code></strong> :&ensp;<code>Iterable[Symbol] = []</code></dt>
+<dt><strong><code>arguments</code></strong> :&ensp;<code>Iterable[<a title="clingo.Symbol" href="#clingo.Symbol">Symbol</a>] = []</code></dt>
 <dd>The arguments in form of a list of symbols.</dd>
 <dt><strong><code>positive</code></strong> :&ensp;<code>bool = True</code></dt>
 <dd>The sign of the function (tuples must not have signs).</dd>
@@ -315,7 +315,7 @@ via a callback.</p>
 <dl>
 <dt><strong><code>string</code></strong> :&ensp;<code>str</code></dt>
 <dd>The string to be parsed.</dd>
-<dt><strong><code>logger</code></strong> :&ensp;<code>Callable[[MessageCode,str],None] = None</code></dt>
+<dt><strong><code>logger</code></strong> :&ensp;<code>Callable[[<a title="clingo.MessageCode" href="#clingo.MessageCode">MessageCode</a>,str],None] = None</code></dt>
 <dd>Function to intercept messages normally printed to standard error.</dd>
 <dt><strong><code>message_limit</code></strong> :&ensp;<code>int = 20</code></dt>
 <dd>Maximum number of messages passed to the logger.</dd>
@@ -706,7 +706,7 @@ SAT
 atoms will be used in subequents calls to ground for instantiation.</p>
 <h2 id="parameters">Parameters</h2>
 <dl>
-<dt><strong><code>symbol</code></strong> :&ensp;<code>Optional[Symbol]=None</code></dt>
+<dt><strong><code>symbol</code></strong> :&ensp;<code>Optional[<a title="clingo.Symbol" href="#clingo.Symbol">Symbol</a>]=None</code></dt>
 <dd>The symbol associated with the atom.</dd>
 </dl>
 <h2 id="returns">Returns</h2>
@@ -724,7 +724,7 @@ atoms will be used in subequents calls to ground for instantiation.</p>
 <dl>
 <dt><strong><code>atom</code></strong> :&ensp;<code>int</code></dt>
 <dd>The program atom to mark as external.</dd>
-<dt><strong><code>value</code></strong> :&ensp;<code>TruthValue=TruthValue.False_</code></dt>
+<dt><strong><code>value</code></strong> :&ensp;<code><a title="clingo.TruthValue" href="#clingo.TruthValue">TruthValue</a>=<a title="clingo.TruthValue.False_" href="#clingo.TruthValue.False_">TruthValue.False_</a></code></dt>
 <dd>Optional truth value.</dd>
 </dl>
 <h2 id="returns">Returns</h2>
@@ -912,7 +912,7 @@ SAT
 <dl>
 <dt><strong><code>arguments</code></strong> :&ensp;<code>Iterable[str]</code></dt>
 <dd>Arguments to the grounder and solver.</dd>
-<dt><strong><code>logger</code></strong> :&ensp;<code>Callable[[MessageCode,str],None]=None</code></dt>
+<dt><strong><code>logger</code></strong> :&ensp;<code>Callable[[<a title="clingo.MessageCode" href="#clingo.MessageCode">MessageCode</a>,str],None]=None</code></dt>
 <dd>Function to intercept messages normally printed to standard error.</dd>
 <dt><strong><code>message_limit</code></strong> :&ensp;<code>int</code></dt>
 <dd>The maximum number of messages passed to the logger.</dd>
@@ -1264,20 +1264,20 @@ SAT
 <section class="desc"><p>Starts a search.</p>
 <h2 id="parameters">Parameters</h2>
 <dl>
-<dt><strong><code>assumptions</code></strong> :&ensp;<code>Iterable[Union[Tuple[Symbol,bool],int]]=[]</code></dt>
+<dt><strong><code>assumptions</code></strong> :&ensp;<code>Iterable[Union[Tuple[<a title="clingo.Symbol" href="#clingo.Symbol">Symbol</a>,bool],int]]=[]</code></dt>
 <dd>List of (atom, boolean) tuples or program literals that serve
 as assumptions for the solve call, e.g., solving under
 assumptions <code>[(Function("a"), True)]</code> only admits answer sets
 that contain atom <code>a</code>.</dd>
-<dt><strong><code>on_model</code></strong> :&ensp;<code>Callable[[Model],Optional[bool]]=None</code></dt>
+<dt><strong><code>on_model</code></strong> :&ensp;<code>Callable[[<a title="clingo.Model" href="#clingo.Model">Model</a>],Optional[bool]]=None</code></dt>
 <dd>Optional callback for intercepting models.
 A <code><a title="clingo.Model" href="#clingo.Model">Model</a></code> object is passed to the callback.
 The search can be interruped from the model callback by
 returning False.</dd>
-<dt><strong><code>on_statistics</code></strong> :&ensp;<code>Callable[[StatisticsMap,StatisticsMap],None]=None</code></dt>
+<dt><strong><code>on_statistics</code></strong> :&ensp;<code>Callable[[<a title="clingo.StatisticsMap" href="#clingo.StatisticsMap">StatisticsMap</a>,<a title="clingo.StatisticsMap" href="#clingo.StatisticsMap">StatisticsMap</a>],None]=None</code></dt>
 <dd>Optional callback to update statistics.
 The step and accumulated statistics are passed as arguments.</dd>
-<dt><strong><code>on_finish</code></strong> :&ensp;<code>Callable[[SolveResult],None]=None</code></dt>
+<dt><strong><code>on_finish</code></strong> :&ensp;<code>Callable[[<a title="clingo.SolveResult" href="#clingo.SolveResult">SolveResult</a>],None]=None</code></dt>
 <dd>Optional callback called once search has finished.
 A <code><a title="clingo.SolveResult" href="#clingo.SolveResult">SolveResult</a></code> also indicating whether the solve call has been intrrupted
 is passed to the callback.</dd>
