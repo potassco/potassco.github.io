@@ -1,0 +1,1907 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<meta name="generator" content="pdoc 0.8.4" />
+<title>clingox.program API documentation</title>
+<meta name="description" content="This module provides functions to work with ground programs …" />
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
+<link rel="stylesheet preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.1/styles/github.min.css" crossorigin>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.1/highlight.min.js" integrity="sha256-eOgo0OtLL4cdq7RdwRUiGKLX9XsIJ7nGhWEKbohmVAQ=" crossorigin></script>
+<script>window.addEventListener('DOMContentLoaded', () => hljs.initHighlighting())</script>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>clingox.program</code></h1>
+</header>
+<section id="section-intro">
+<p>This module provides functions to work with ground programs.</p>
+<p>This includes constructing a ground representation using an observer, pretty
+printing the ground representation, and adding ground program to control
+objects via the backend.</p>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">&#39;&#39;&#39;
+This module provides functions to work with ground programs.
+
+This includes constructing a ground representation using an observer, pretty
+printing the ground representation, and adding ground program to control
+objects via the backend.
+&#39;&#39;&#39;
+
+from typing import (Callable, Iterable, List, Mapping, MutableMapping, MutableSequence, NamedTuple, Optional, Sequence,
+                    Tuple, TypeVar)
+from dataclasses import dataclass, field
+from functools import singledispatch
+from itertools import chain
+from copy import copy
+
+from clingo import Backend, HeuristicType, Observer, Symbol, TruthValue
+
+Atom = int
+Literal = int
+Weight = int
+OutputTable = Mapping[Atom, Symbol]
+AtomMap = Callable[[Atom], Atom]
+Statement = TypeVar(&#39;Statement&#39;, &#39;Fact&#39;, &#39;Show&#39;, &#39;Rule&#39;, &#39;WeightRule&#39;, &#39;Heuristic&#39;, &#39;Edge&#39;, &#39;Minimize&#39;, &#39;External&#39;,
+                    &#39;Project&#39;)
+
+@singledispatch
+def pretty_str(arg: Statement, output_atoms: OutputTable) -&gt; str: # pylint: disable=unused-argument
+    &#39;&#39;&#39;
+    Pretty print program constructs.
+    &#39;&#39;&#39;
+    assert False, &#39;unexpected type&#39;
+
+@singledispatch
+def remap(arg: Statement, mapping: AtomMap) -&gt; Statement: # pylint: disable=unused-argument
+    &#39;&#39;&#39;
+    Add statements or programs to the backend using the provided mapping to map
+    literals.
+    &#39;&#39;&#39;
+    assert False, &#39;unexpected type&#39;
+
+@singledispatch
+def add_to_backend(arg: Statement, backend: Backend) -&gt; None: # pylint: disable=unused-argument
+    &#39;&#39;&#39;
+    Add statements or programs to the backend using the provided mapping to map
+    literals.
+    &#39;&#39;&#39;
+    assert False, &#39;unexpected type&#39;
+
+# ------------------------------------------------------------------------------
+
+def _pretty_str_lit(arg: Literal, output_atoms: OutputTable) -&gt; str:
+    &#39;&#39;&#39;
+    Pretty print literals and atoms.
+    &#39;&#39;&#39;
+    atom = abs(arg)
+    if atom in output_atoms:
+        atom_str = str(output_atoms[atom])
+    else:
+        atom_str = f&#39;__x{atom}&#39;
+
+    return f&#39;not {atom_str}&#39; if arg &lt; 0 else atom_str
+
+def _pretty_str_rule_head(choice: bool, has_body: bool, head: Sequence[Atom], output_atoms: OutputTable) -&gt; str:
+    &#39;&#39;&#39;
+    Pretty print the head of a rule including the implication symbol if
+    necessary.
+    &#39;&#39;&#39;
+    ret = &#39;&#39;
+
+    if choice:
+        ret += &#39;{&#39;
+    ret += &#39;; &#39;.join(_pretty_str_lit(lit, output_atoms) for lit in head)
+    if choice:
+        ret += &#39;}&#39;
+
+    if has_body or (not head and not choice):
+        ret += &#39; :- &#39;
+
+    return ret
+
+def _pretty_str_truth_value(arg: TruthValue):
+    &#39;&#39;&#39;
+    Pretty print a truth value.
+    &#39;&#39;&#39;
+    if arg == TruthValue.False_:
+        return &#39;False&#39;
+    if arg == TruthValue.True_:
+        return &#39;True&#39;
+    return &#39;Free&#39;
+
+def _remap_lit(literal: Literal, mapping: AtomMap) -&gt; Atom:
+    return -mapping(-literal) if literal &lt; 0 else mapping(literal)
+
+def _remap_seq(literals: Sequence[Literal], mapping: AtomMap):
+    &#39;&#39;&#39;
+    Apply the mapping to a sequence of literals or atoms.
+    &#39;&#39;&#39;
+    return [_remap_lit(lit, mapping) for lit in literals]
+
+def _remap_wseq(literals: Sequence[Tuple[Literal, Weight]], mapping: AtomMap):
+    &#39;&#39;&#39;
+    Apply the mapping to a sequence of weighted literals or atoms.
+    &#39;&#39;&#39;
+    return [(_remap_lit(lit, mapping), weight) for lit, weight in literals]
+
+def _remap_stms(stms: MutableSequence[Statement], mapping: AtomMap):
+    &#39;&#39;&#39;
+    Remap the given statements.
+    &#39;&#39;&#39;
+    for i, stm in enumerate(stms):
+        stms[i] = remap(stm, mapping)
+
+def _add_stms_to_backend(stms: Iterable[Statement], backend: Backend, mapping: Optional[AtomMap]):
+    &#39;&#39;&#39;
+    Remap the given statements returning a list with the result.
+    &#39;&#39;&#39;
+    for stm in stms:
+        if mapping:
+            add_to_backend(remap(stm, mapping), backend)
+        else:
+            add_to_backend(stm, backend)
+
+# ------------------------------------------------------------------------------
+
+class Fact(NamedTuple):
+    &#39;&#39;&#39;
+    Ground representation of a fact.
+    &#39;&#39;&#39;
+    symbol: Symbol
+
+@pretty_str.register
+def _pretty_str_fact(arg: Fact, output_atoms: OutputTable) -&gt; str: # pylint: disable=unused-argument
+    &#39;&#39;&#39;
+    Pretty print a fact.
+    &#39;&#39;&#39;
+    return f&#39;{arg.symbol}.&#39;
+
+@remap.register
+def _remap_fact(arg: Fact, mapping: AtomMap) -&gt; Fact: # pylint: disable=unused-argument
+    &#39;&#39;&#39;
+    Remap a fact statement.
+    &#39;&#39;&#39;
+    return arg
+
+@add_to_backend.register
+def _add_to_backend_fact(arg: Fact, backend: Backend) -&gt; None: # pylint: disable=unused-argument
+    &#39;&#39;&#39;
+    Add a fact to the backend.
+
+    This does nothing to not interfere with the mapping of literals. If facts
+    are to be mapped, then this should be done manually beforehand.
+    &#39;&#39;&#39;
+
+# ------------------------------------------------------------------------------
+
+class Show(NamedTuple):
+    &#39;&#39;&#39;
+    Ground representation of a show statements.
+    &#39;&#39;&#39;
+    symbol: Symbol
+    condition: Sequence[Literal]
+
+@pretty_str.register
+def _pretty_str_show(arg: Show, output_atoms: OutputTable) -&gt; str:
+    &#39;&#39;&#39;
+    Pretty print a fact.
+    &#39;&#39;&#39;
+    body = &#39;, &#39;.join(_pretty_str_lit(lit, output_atoms) for lit in arg.condition)
+    return f&#39;#show {arg.symbol}{&#34;: &#34; if body else &#34;&#34;}{body}.&#39;
+
+@remap.register
+def _remap_show(arg: Show, mapping: AtomMap) -&gt; Show:
+    &#39;&#39;&#39;
+    Remap a show statetment.
+    &#39;&#39;&#39;
+    return Show(arg.symbol, _remap_seq(arg.condition, mapping))
+
+@add_to_backend.register
+def _add_to_backend_show(arg: Show, backend: Backend) -&gt; None: # pylint: disable=unused-argument
+    &#39;&#39;&#39;
+    Add a show statement to the backend.
+
+    Note that this currently does nothing because backend does not yet support
+    adding to the symbol table.
+    &#39;&#39;&#39;
+
+# ------------------------------------------------------------------------------
+
+class Rule(NamedTuple):
+    &#39;&#39;&#39;
+    Ground representation of disjunctive and choice rules.
+    &#39;&#39;&#39;
+    choice: bool
+    head: Sequence[Atom]
+    body: Sequence[Literal]
+
+@pretty_str.register(Rule)
+def _pretty_str_rule(arg: Rule, output_atoms: OutputTable) -&gt; str:
+    &#39;&#39;&#39;
+    Pretty print a rule.
+    &#39;&#39;&#39;
+    head = _pretty_str_rule_head(arg.choice, bool(arg.body), arg.head, output_atoms)
+    body = &#39;, &#39;.join(_pretty_str_lit(lit, output_atoms) for lit in arg.body)
+
+    return f&#39;{head}{body}.&#39;
+
+@remap.register
+def _remap_rule(arg: Rule, mapping: AtomMap) -&gt; Rule:
+    &#39;&#39;&#39;
+    Remap literals in a rule.
+    &#39;&#39;&#39;
+    return Rule(arg.choice, _remap_seq(arg.head, mapping), _remap_seq(arg.body, mapping))
+
+@add_to_backend.register
+def _add_to_backend_rule(arg: Rule, backend: Backend) -&gt; None:
+    &#39;&#39;&#39;
+    Add a rule to the backend.
+    &#39;&#39;&#39;
+    backend.add_rule(arg.head, arg.body, arg.choice)
+
+# ------------------------------------------------------------------------------
+
+class WeightRule(NamedTuple):
+    &#39;&#39;&#39;
+    Ground representation of rules with a weight constraint in the body.
+    &#39;&#39;&#39;
+    choice: bool
+    head: Sequence[Atom]
+    lower_bound: Weight
+    body: Sequence[Tuple[Literal, Weight]]
+
+@pretty_str.register(WeightRule)
+def _pretty_str_weight_rule(arg: WeightRule, output_atoms: OutputTable) -&gt; str:
+    &#39;&#39;&#39;
+    Pretty print a rule or weight rule.
+    &#39;&#39;&#39;
+    head = _pretty_str_rule_head(arg.choice, bool(arg.body), arg.head, output_atoms)
+    body = &#39;, &#39;.join(f&#39;{weight},{i}: {_pretty_str_lit(literal, output_atoms)}&#39;
+                     for i, (literal, weight) in enumerate(arg.body))
+
+    return f&#39;{head}{arg.lower_bound}{{{body}}}.&#39;
+
+@remap.register
+def _remap_weight_rule(arg: WeightRule, mapping: AtomMap) -&gt; WeightRule:
+    &#39;&#39;&#39;
+    Remap literals in a weight rule.
+    &#39;&#39;&#39;
+    return WeightRule(arg.choice, _remap_seq(arg.head, mapping), arg.lower_bound, _remap_wseq(arg.body, mapping))
+
+@add_to_backend.register
+def _add_to_backend_weight_rule(arg: WeightRule, backend: Backend) -&gt; None:
+    &#39;&#39;&#39;
+    Add a weight rule to the backend.
+    &#39;&#39;&#39;
+    backend.add_weight_rule(arg.head, arg.lower_bound, arg.body, arg.choice)
+
+# ------------------------------------------------------------------------------
+
+class Project(NamedTuple):
+    &#39;&#39;&#39;
+    Ground representation of project statements.
+    &#39;&#39;&#39;
+    atom: Atom
+
+@pretty_str.register(Project)
+def _pretty_str_project(arg: Project, output_atoms: OutputTable) -&gt; str:
+    &#39;&#39;&#39;
+    Pretty print a project statement.
+    &#39;&#39;&#39;
+    return f&#39;#project {_pretty_str_lit(arg.atom, output_atoms)}.&#39;
+
+@remap.register
+def _remap_project(arg: Project, mapping: AtomMap):
+    &#39;&#39;&#39;
+    Remap project statement.
+    &#39;&#39;&#39;
+    return Project(mapping(arg.atom))
+
+@add_to_backend.register
+def _add_to_backend_project(arg: Project, backend: Backend):
+    &#39;&#39;&#39;
+    Add a project statement to the backend.
+    &#39;&#39;&#39;
+    backend.add_project([arg.atom])
+
+# ------------------------------------------------------------------------------
+
+class External(NamedTuple):
+    &#39;&#39;&#39;
+    Ground representation of external atoms.
+    &#39;&#39;&#39;
+    atom: Atom
+    value: TruthValue
+
+@pretty_str.register(External)
+def _pretty_print_external(arg: External, output_atoms: OutputTable) -&gt; str:
+    &#39;&#39;&#39;
+    Pretty print an external.
+    &#39;&#39;&#39;
+    return f&#39;#external {_pretty_str_lit(arg.atom, output_atoms)}. [{_pretty_str_truth_value(arg.value)}]&#39;
+
+@remap.register
+def _remap_external(arg: External, mapping: AtomMap) -&gt; External:
+    &#39;&#39;&#39;
+    Remap the external.
+    &#39;&#39;&#39;
+    return External(mapping(arg.atom), arg.value)
+
+@add_to_backend.register
+def _add_to_backend_external(arg: External, backend: Backend):
+    &#39;&#39;&#39;
+    Add an external statement to the backend remapping its atom.
+    &#39;&#39;&#39;
+    backend.add_external(arg.atom, arg.value)
+
+# ------------------------------------------------------------------------------
+
+class Minimize(NamedTuple):
+    &#39;&#39;&#39;
+    Ground representation of a minimize statement.
+    &#39;&#39;&#39;
+    priority: Weight
+    literals: Sequence[Tuple[Literal, Weight]]
+
+@pretty_str.register(Minimize)
+def _pretty_print_minimize(arg, output_atoms) -&gt; str:
+    &#39;&#39;&#39;
+    Pretty print a minimize statement.
+    &#39;&#39;&#39;
+    body = &#39;; &#39;.join(f&#39;{weight}@{arg.priority},{i}: {_pretty_str_lit(literal, output_atoms)}&#39;
+                     for i, (literal, weight) in enumerate(arg.literals))
+    return f&#39;#minimize{{{body}}}.&#39;
+
+@remap.register
+def _remap_minimize(arg: Minimize, mapping: AtomMap) -&gt; Minimize:
+    &#39;&#39;&#39;
+    Remap the literals in the minimize statement.
+    &#39;&#39;&#39;
+    return Minimize(arg.priority, _remap_wseq(arg.literals, mapping))
+
+@add_to_backend.register
+def _add_to_backend_minimize(arg: Minimize, backend: Backend):
+    &#39;&#39;&#39;
+    Add a minimize statement to the backend.
+    &#39;&#39;&#39;
+    backend.add_minimize(arg.priority, arg.literals)
+
+# ------------------------------------------------------------------------------
+
+class Heuristic(NamedTuple):
+    &#39;&#39;&#39;
+    Ground representation of a heuristic statement.
+    &#39;&#39;&#39;
+    atom: Atom
+    type_: HeuristicType
+    bias: Weight
+    priority: Weight
+    condition: Sequence[Literal]
+
+@pretty_str.register(Heuristic)
+def _pretty_str_heuristic(arg: Heuristic, output_atoms: OutputTable) -&gt; str:
+    &#39;&#39;&#39;
+    Pretty print a heuristic statement.
+    &#39;&#39;&#39;
+    body = &#39;, &#39;.join(_pretty_str_lit(lit, output_atoms) for lit in arg.condition)
+    head = _pretty_str_lit(arg.atom, output_atoms)
+    return f&#39;#heuristic {head}{&#34;: &#34; if body else &#34;&#34;}{body}. [{arg.bias}@{arg.priority}, {arg.type_}]&#39;
+
+@remap.register
+def _remap_heuristic(arg: Heuristic, mapping: AtomMap) -&gt; Heuristic:
+    &#39;&#39;&#39;
+    Remap the heuristic statement.
+    &#39;&#39;&#39;
+    return Heuristic(mapping(arg.atom), arg.type_, arg.bias, arg.priority, _remap_seq(arg.condition, mapping))
+
+@add_to_backend.register
+def _add_to_backend_heuristic(arg: Heuristic, backend: Backend) -&gt; None:
+    &#39;&#39;&#39;
+    Add a heurisitic statement to the backend.
+    &#39;&#39;&#39;
+    backend.add_heuristic(arg.atom, arg.type_, arg.bias, arg.priority, arg.condition)
+
+# ------------------------------------------------------------------------------
+
+class Edge(NamedTuple):
+    &#39;&#39;&#39;
+    Ground representation of a heuristic statement.
+    &#39;&#39;&#39;
+    u: int
+    v: int
+    condition: Sequence[Literal]
+
+@pretty_str.register(Edge)
+def _pretty_str_edge(arg: Edge, output_atoms: OutputTable) -&gt; str:
+    &#39;&#39;&#39;
+    Pretty print a heuristic statement.
+    &#39;&#39;&#39;
+    body = &#39;, &#39;.join(_pretty_str_lit(lit, output_atoms) for lit in arg.condition)
+    return f&#39;#edge ({arg.u},{arg.v}){&#34;: &#34; if body else &#34;&#34;}{body}.&#39;
+
+@remap.register
+def _remap_edge(arg: Edge, mapping: AtomMap) -&gt; Edge:
+    &#39;&#39;&#39;
+    Remap an edge statement.
+    &#39;&#39;&#39;
+    return Edge(arg.u, arg.v, _remap_seq(arg.condition, mapping))
+
+@add_to_backend.register
+def _add_to_backend_edge(arg: Edge, backend: Backend) -&gt; None:
+    &#39;&#39;&#39;
+    Add an edge statement to the backend remapping its literals.
+    &#39;&#39;&#39;
+    backend.add_acyc_edge(arg.u, arg.v, arg.condition)
+
+# ------------------------------------------------------------------------------
+
+@dataclass
+class Program: # pylint: disable=too-many-instance-attributes
+    &#39;&#39;&#39;
+    Ground program representation.
+
+    Although inefficient, the string representation of this program is parsable
+    by clingo.
+    &#39;&#39;&#39;
+    output_atoms: MutableMapping[Atom, Symbol] = field(default_factory=dict)
+    shows: List[Show] = field(default_factory=list)
+    facts: List[Fact] = field(default_factory=list)
+    rules: List[Rule] = field(default_factory=list)
+    weight_rules: List[WeightRule] = field(default_factory=list)
+    heuristics: List[Heuristic] = field(default_factory=list)
+    edges: List[Edge] = field(default_factory=list)
+    minimizes: List[Minimize] = field(default_factory=list)
+    externals: List[External] = field(default_factory=list)
+    projects: Optional[List[Project]] = None
+    assumptions: List[Literal] = field(default_factory=list)
+
+    def _pretty_stms(self, arg: Iterable[Statement], sort: bool) -&gt; Iterable[str]:
+        if sort:
+            arg = sorted(arg)
+        return (pretty_str(x, self.output_atoms) for x in arg)
+
+    def _pretty_assumptions(self, sort: bool) -&gt; Iterable[str]:
+        if not self.assumptions:
+            return []
+        arg = sorted(self.assumptions) if sort else self.assumptions
+        assumptions = (_pretty_str_lit(lit, self.output_atoms) for lit in arg)
+        return [f&#39;% assumptions: {&#34;, &#34;.join(assumptions)}&#39;]
+
+    def _pretty_projects(self, sort: bool) -&gt; Iterable[str]:
+        if self.projects is None:
+            return []
+        # This is to inform that there is an empty projection statement.
+        # It might be worth to allow writing just #project.
+        if not self.projects:
+            return [&#39;#project x: #false.&#39;]
+        arg = sorted(self.projects) if sort else self.projects
+        return (pretty_str(project, self.output_atoms) for project in arg)
+
+    def sort(self) -&gt; &#39;Program&#39;:
+        &#39;&#39;&#39;
+        Sort the statements in the program inplace.
+
+        Returns a reference to self.
+
+        Note: It might also be nice to sort statement bodies and conditions.
+        &#39;&#39;&#39;
+        self.shows.sort()
+        self.facts.sort()
+        self.rules.sort()
+        self.weight_rules.sort()
+        self.heuristics.sort()
+        self.edges.sort()
+        self.minimizes.sort()
+        self.externals.sort()
+        if self.projects is not None:
+            self.projects.sort()
+        self.assumptions.sort()
+
+        return self
+
+    def remap(self, mapping: AtomMap) -&gt; &#39;Program&#39;:
+        &#39;&#39;&#39;
+        Remap the literals in the program inplace.
+
+        Returns a reference to self.
+
+        Note: It might also be nice to sort statement bodies and conditions.
+        &#39;&#39;&#39;
+        _remap_stms(self.shows, mapping)
+        _remap_stms(self.facts, mapping)
+        _remap_stms(self.rules, mapping)
+        _remap_stms(self.weight_rules, mapping)
+        _remap_stms(self.heuristics, mapping)
+        _remap_stms(self.edges, mapping)
+        _remap_stms(self.minimizes, mapping)
+        _remap_stms(self.externals, mapping)
+        if self.projects is not None:
+            _remap_stms(self.projects, mapping)
+        for i, lit in enumerate(self.assumptions):
+            self.assumptions[i] = _remap_lit(lit, mapping)
+        self.output_atoms = {mapping(lit): sym for lit, sym in self.output_atoms.items()}
+
+        return self
+
+    def add_to_backend(self, backend: Backend, mapping: Optional[AtomMap] = None) -&gt; &#39;Program&#39;:
+        &#39;&#39;&#39;
+        Add the program to the given backend with an optional mapping.
+
+        Note that the output table cannot be added to the backend for technical
+        reasons. This has to be taken care of by the user. See for example the
+        `Remapping` class, which provides functionality for this.
+
+        Returns a reference to self.
+        &#39;&#39;&#39;
+
+        _add_stms_to_backend(self.shows, backend, mapping)
+        _add_stms_to_backend(self.facts, backend, mapping)
+        _add_stms_to_backend(self.rules, backend, mapping)
+        _add_stms_to_backend(self.weight_rules, backend, mapping)
+        _add_stms_to_backend(self.heuristics, backend, mapping)
+        _add_stms_to_backend(self.edges, backend, mapping)
+        _add_stms_to_backend(self.minimizes, backend, mapping)
+        _add_stms_to_backend(self.externals, backend, mapping)
+        if self.projects is not None:
+            if self.projects:
+                _add_stms_to_backend(self.projects, backend, mapping)
+            else:
+                backend.add_project([])
+
+        backend.add_assume(_remap_lit(lit, mapping) if mapping else lit
+                           for lit in self.assumptions)
+
+        return self
+
+    def pretty_str(self, sort: bool = True) -&gt; str:
+        &#39;&#39;&#39;
+        Return a readable string represenation of the program.
+        &#39;&#39;&#39;
+        return &#39;\n&#39;.join(chain(
+            self._pretty_stms(self.shows, sort),
+            self._pretty_stms(self.facts, sort),
+            self._pretty_stms(self.rules, sort),
+            self._pretty_stms(self.weight_rules, sort),
+            self._pretty_stms(self.heuristics, sort),
+            self._pretty_stms(self.edges, sort),
+            self._pretty_stms(self.minimizes, sort),
+            self._pretty_stms(self.externals, sort),
+            self._pretty_projects(sort),
+            self._pretty_assumptions(sort)))
+
+    def copy(self) -&gt; &#39;Program&#39;:
+        &#39;&#39;&#39;
+        Return a shallow copy of the program.
+
+        This copies all mutable state.
+        &#39;&#39;&#39;
+        return copy(self)
+
+    def __str__(self) -&gt; str:
+        &#39;&#39;&#39;
+        Return a readable string represenation of the program.
+        &#39;&#39;&#39;
+        return self.pretty_str()
+
+# ------------------------------------------------------------------------------
+
+class Remapping:
+    &#39;&#39;&#39;
+    This class maps existing literals to fresh literals as created by the
+    backend.
+    &#39;&#39;&#39;
+    _backend: Backend
+    _map: MutableMapping[Atom, Atom]
+
+    def __init__(self, backend: Backend, output_atoms: OutputTable, facts: Iterable[Fact] = None):
+        &#39;&#39;&#39;
+        Initializes the mapping with the literals in the given output table.
+
+        Furthemore, it associates a fresh literal with each given fact.
+        &#39;&#39;&#39;
+        self._backend = backend
+        self._map = {}
+        for atom, sym in output_atoms.items():
+            assert atom not in self._map
+            self._map[atom] = self._backend.add_atom(sym)
+        if facts is not None:
+            for fact in facts:
+                backend.add_rule([backend.add_atom(fact.symbol)])
+
+    def __call__(self, atom: Atom) -&gt; Atom:
+        &#39;&#39;&#39;
+        Map the given literal to the corresponding literal in the backend.
+
+        If the literal was not mapped during initialization, a new literal is
+        associated with it.
+        &#39;&#39;&#39;
+        if atom not in self._map:
+            self._map[atom] = self._backend.add_atom()
+
+        return self._map[atom]
+
+# ------------------------------------------------------------------------------
+
+class ProgramObserver(Observer):
+    &#39;&#39;&#39;
+    Program observer to build a ground program representation while grounding.
+
+    This class explicitly ignores theory atoms because they already have a
+    ground representation.
+    &#39;&#39;&#39;
+    _program: Program
+
+    def __init__(self, program: Program):
+        self._program = program
+
+    def begin_step(self) -&gt; None:
+        &#39;&#39;&#39;
+        Resets the assumptions.
+        &#39;&#39;&#39;
+        self._program.assumptions.clear()
+
+    def output_atom(self, symbol: Symbol, atom: Atom) -&gt; None:
+        &#39;&#39;&#39;
+        Add the given atom to the list of facts or output table.
+        &#39;&#39;&#39;
+        if atom != 0:
+            self._program.output_atoms[atom] = symbol
+        else:
+            self._program.facts.append(Fact(symbol))
+
+    def output_term(self, symbol: Symbol, condition: Sequence[Literal]) -&gt; None:
+        &#39;&#39;&#39;
+        Add a term to the output table.
+        &#39;&#39;&#39;
+        self._program.shows.append(Show(symbol, condition))
+
+    def rule(self, choice: bool, head: Sequence[Atom], body: Sequence[Literal]) -&gt; None:
+        &#39;&#39;&#39;
+        Add a rule to the ground representation.
+        &#39;&#39;&#39;
+        self._program.rules.append(Rule(choice, head, body))
+
+    def weight_rule(self, choice: bool, head: Sequence[Atom], lower_bound: Weight,
+                    body: Sequence[Tuple[Literal, Weight]]) -&gt; None:
+        &#39;&#39;&#39;
+        Add a weight rule to the ground representation.
+        &#39;&#39;&#39;
+        self._program.weight_rules.append(WeightRule(choice, head, lower_bound, body))
+
+    def project(self, atoms: Sequence[Atom]) -&gt; None:
+        &#39;&#39;&#39;
+        Add a project statement to the ground representation.
+        &#39;&#39;&#39;
+        if self._program.projects is None:
+            self._program.projects = []
+        self._program.projects.extend(Project(atom) for atom in atoms)
+
+    def external(self, atom: Atom, value: TruthValue) -&gt; None:
+        &#39;&#39;&#39;
+        Add an external statement to the ground representation.
+        &#39;&#39;&#39;
+        self._program.externals.append(External(atom, value))
+
+    def assume(self, literals: Sequence[Literal]) -&gt; None:
+        &#39;&#39;&#39;
+        Extend the program with the given assumptions.
+        &#39;&#39;&#39;
+        self._program.assumptions.extend(literals)
+
+    def minimize(self, priority: Weight, literals: Sequence[Tuple[Literal, Weight]]) -&gt; None:
+        &#39;&#39;&#39;
+        Add a minimize statement to the ground representation.
+        &#39;&#39;&#39;
+        self._program.minimizes.append(Minimize(priority, literals))
+
+    def acyc_edge(self, node_u: int, node_v: int, condition: Sequence[Literal]) -&gt; None:
+        &#39;&#39;&#39;
+        Add an edge statement to the gronud representation.
+        &#39;&#39;&#39;
+        self._program.edges.append(Edge(node_u, node_v, condition))
+
+    def heuristic(self, atom: Atom, type_: HeuristicType, bias: Weight, priority: Weight,
+                  condition: Sequence[Literal]) -&gt; None:
+        &#39;&#39;&#39;
+        Add heurisitic statement to the gronud representation.
+        &#39;&#39;&#39;
+        self._program.heuristics.append(Heuristic(atom, type_, bias, priority, condition))</code></pre>
+</details>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-functions">Functions</h2>
+<dl>
+<dt id="clingox.program.add_to_backend"><code class="name flex">
+<span>def <span class="ident">add_to_backend</span></span>(<span>arg: ~Statement, backend: clingo.Backend) ‑> NoneType</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Add statements or programs to the backend using the provided mapping to map
+literals.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@singledispatch
+def add_to_backend(arg: Statement, backend: Backend) -&gt; None: # pylint: disable=unused-argument
+    &#39;&#39;&#39;
+    Add statements or programs to the backend using the provided mapping to map
+    literals.
+    &#39;&#39;&#39;
+    assert False, &#39;unexpected type&#39;</code></pre>
+</details>
+</dd>
+<dt id="clingox.program.pretty_str"><code class="name flex">
+<span>def <span class="ident">pretty_str</span></span>(<span>arg: ~Statement, output_atoms: Mapping[int, clingo.Symbol]) ‑> str</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Pretty print program constructs.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@singledispatch
+def pretty_str(arg: Statement, output_atoms: OutputTable) -&gt; str: # pylint: disable=unused-argument
+    &#39;&#39;&#39;
+    Pretty print program constructs.
+    &#39;&#39;&#39;
+    assert False, &#39;unexpected type&#39;</code></pre>
+</details>
+</dd>
+<dt id="clingox.program.remap"><code class="name flex">
+<span>def <span class="ident">remap</span></span>(<span>arg: ~Statement, mapping: Callable[[int], int]) ‑> ~Statement</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Add statements or programs to the backend using the provided mapping to map
+literals.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@singledispatch
+def remap(arg: Statement, mapping: AtomMap) -&gt; Statement: # pylint: disable=unused-argument
+    &#39;&#39;&#39;
+    Add statements or programs to the backend using the provided mapping to map
+    literals.
+    &#39;&#39;&#39;
+    assert False, &#39;unexpected type&#39;</code></pre>
+</details>
+</dd>
+</dl>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="clingox.program.Edge"><code class="flex name class">
+<span>class <span class="ident">Edge</span></span>
+<span>(</span><span>u: int, v: int, condition: Sequence[int])</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Ground representation of a heuristic statement.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class Edge(NamedTuple):
+    &#39;&#39;&#39;
+    Ground representation of a heuristic statement.
+    &#39;&#39;&#39;
+    u: int
+    v: int
+    condition: Sequence[Literal]</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>builtins.tuple</li>
+</ul>
+<h3>Instance variables</h3>
+<dl>
+<dt id="clingox.program.Edge.condition"><code class="name">var <span class="ident">condition</span> : Sequence[int]</code></dt>
+<dd>
+<div class="desc"><p>Alias for field number 2</p></div>
+</dd>
+<dt id="clingox.program.Edge.u"><code class="name">var <span class="ident">u</span> : int</code></dt>
+<dd>
+<div class="desc"><p>Alias for field number 0</p></div>
+</dd>
+<dt id="clingox.program.Edge.v"><code class="name">var <span class="ident">v</span> : int</code></dt>
+<dd>
+<div class="desc"><p>Alias for field number 1</p></div>
+</dd>
+</dl>
+</dd>
+<dt id="clingox.program.External"><code class="flex name class">
+<span>class <span class="ident">External</span></span>
+<span>(</span><span>atom: int, value: clingo.TruthValue)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Ground representation of external atoms.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class External(NamedTuple):
+    &#39;&#39;&#39;
+    Ground representation of external atoms.
+    &#39;&#39;&#39;
+    atom: Atom
+    value: TruthValue</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>builtins.tuple</li>
+</ul>
+<h3>Instance variables</h3>
+<dl>
+<dt id="clingox.program.External.atom"><code class="name">var <span class="ident">atom</span> : int</code></dt>
+<dd>
+<div class="desc"><p>Alias for field number 0</p></div>
+</dd>
+<dt id="clingox.program.External.value"><code class="name">var <span class="ident">value</span> : clingo.TruthValue</code></dt>
+<dd>
+<div class="desc"><p>Alias for field number 1</p></div>
+</dd>
+</dl>
+</dd>
+<dt id="clingox.program.Fact"><code class="flex name class">
+<span>class <span class="ident">Fact</span></span>
+<span>(</span><span>symbol: clingo.Symbol)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Ground representation of a fact.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class Fact(NamedTuple):
+    &#39;&#39;&#39;
+    Ground representation of a fact.
+    &#39;&#39;&#39;
+    symbol: Symbol</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>builtins.tuple</li>
+</ul>
+<h3>Instance variables</h3>
+<dl>
+<dt id="clingox.program.Fact.symbol"><code class="name">var <span class="ident">symbol</span> : clingo.Symbol</code></dt>
+<dd>
+<div class="desc"><p>Alias for field number 0</p></div>
+</dd>
+</dl>
+</dd>
+<dt id="clingox.program.Heuristic"><code class="flex name class">
+<span>class <span class="ident">Heuristic</span></span>
+<span>(</span><span>atom: int, type_: clingo.HeuristicType, bias: int, priority: int, condition: Sequence[int])</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Ground representation of a heuristic statement.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class Heuristic(NamedTuple):
+    &#39;&#39;&#39;
+    Ground representation of a heuristic statement.
+    &#39;&#39;&#39;
+    atom: Atom
+    type_: HeuristicType
+    bias: Weight
+    priority: Weight
+    condition: Sequence[Literal]</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>builtins.tuple</li>
+</ul>
+<h3>Instance variables</h3>
+<dl>
+<dt id="clingox.program.Heuristic.atom"><code class="name">var <span class="ident">atom</span> : int</code></dt>
+<dd>
+<div class="desc"><p>Alias for field number 0</p></div>
+</dd>
+<dt id="clingox.program.Heuristic.bias"><code class="name">var <span class="ident">bias</span> : int</code></dt>
+<dd>
+<div class="desc"><p>Alias for field number 2</p></div>
+</dd>
+<dt id="clingox.program.Heuristic.condition"><code class="name">var <span class="ident">condition</span> : Sequence[int]</code></dt>
+<dd>
+<div class="desc"><p>Alias for field number 4</p></div>
+</dd>
+<dt id="clingox.program.Heuristic.priority"><code class="name">var <span class="ident">priority</span> : int</code></dt>
+<dd>
+<div class="desc"><p>Alias for field number 3</p></div>
+</dd>
+<dt id="clingox.program.Heuristic.type_"><code class="name">var <span class="ident">type_</span> : clingo.HeuristicType</code></dt>
+<dd>
+<div class="desc"><p>Alias for field number 1</p></div>
+</dd>
+</dl>
+</dd>
+<dt id="clingox.program.Minimize"><code class="flex name class">
+<span>class <span class="ident">Minimize</span></span>
+<span>(</span><span>priority: int, literals: Sequence[Tuple[int, int]])</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Ground representation of a minimize statement.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class Minimize(NamedTuple):
+    &#39;&#39;&#39;
+    Ground representation of a minimize statement.
+    &#39;&#39;&#39;
+    priority: Weight
+    literals: Sequence[Tuple[Literal, Weight]]</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>builtins.tuple</li>
+</ul>
+<h3>Instance variables</h3>
+<dl>
+<dt id="clingox.program.Minimize.literals"><code class="name">var <span class="ident">literals</span> : Sequence[Tuple[int, int]]</code></dt>
+<dd>
+<div class="desc"><p>Alias for field number 1</p></div>
+</dd>
+<dt id="clingox.program.Minimize.priority"><code class="name">var <span class="ident">priority</span> : int</code></dt>
+<dd>
+<div class="desc"><p>Alias for field number 0</p></div>
+</dd>
+</dl>
+</dd>
+<dt id="clingox.program.Program"><code class="flex name class">
+<span>class <span class="ident">Program</span></span>
+<span>(</span><span>output_atoms: MutableMapping[int, clingo.Symbol] = &lt;factory&gt;, shows: List[<a title="clingox.program.Show" href="#clingox.program.Show">Show</a>] = &lt;factory&gt;, facts: List[<a title="clingox.program.Fact" href="#clingox.program.Fact">Fact</a>] = &lt;factory&gt;, rules: List[<a title="clingox.program.Rule" href="#clingox.program.Rule">Rule</a>] = &lt;factory&gt;, weight_rules: List[<a title="clingox.program.WeightRule" href="#clingox.program.WeightRule">WeightRule</a>] = &lt;factory&gt;, heuristics: List[<a title="clingox.program.Heuristic" href="#clingox.program.Heuristic">Heuristic</a>] = &lt;factory&gt;, edges: List[<a title="clingox.program.Edge" href="#clingox.program.Edge">Edge</a>] = &lt;factory&gt;, minimizes: List[<a title="clingox.program.Minimize" href="#clingox.program.Minimize">Minimize</a>] = &lt;factory&gt;, externals: List[<a title="clingox.program.External" href="#clingox.program.External">External</a>] = &lt;factory&gt;, projects: Union[List[<a title="clingox.program.Project" href="#clingox.program.Project">Project</a>], NoneType] = None, assumptions: List[int] = &lt;factory&gt;)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Ground program representation.</p>
+<p>Although inefficient, the string representation of this program is parsable
+by clingo.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class Program: # pylint: disable=too-many-instance-attributes
+    &#39;&#39;&#39;
+    Ground program representation.
+
+    Although inefficient, the string representation of this program is parsable
+    by clingo.
+    &#39;&#39;&#39;
+    output_atoms: MutableMapping[Atom, Symbol] = field(default_factory=dict)
+    shows: List[Show] = field(default_factory=list)
+    facts: List[Fact] = field(default_factory=list)
+    rules: List[Rule] = field(default_factory=list)
+    weight_rules: List[WeightRule] = field(default_factory=list)
+    heuristics: List[Heuristic] = field(default_factory=list)
+    edges: List[Edge] = field(default_factory=list)
+    minimizes: List[Minimize] = field(default_factory=list)
+    externals: List[External] = field(default_factory=list)
+    projects: Optional[List[Project]] = None
+    assumptions: List[Literal] = field(default_factory=list)
+
+    def _pretty_stms(self, arg: Iterable[Statement], sort: bool) -&gt; Iterable[str]:
+        if sort:
+            arg = sorted(arg)
+        return (pretty_str(x, self.output_atoms) for x in arg)
+
+    def _pretty_assumptions(self, sort: bool) -&gt; Iterable[str]:
+        if not self.assumptions:
+            return []
+        arg = sorted(self.assumptions) if sort else self.assumptions
+        assumptions = (_pretty_str_lit(lit, self.output_atoms) for lit in arg)
+        return [f&#39;% assumptions: {&#34;, &#34;.join(assumptions)}&#39;]
+
+    def _pretty_projects(self, sort: bool) -&gt; Iterable[str]:
+        if self.projects is None:
+            return []
+        # This is to inform that there is an empty projection statement.
+        # It might be worth to allow writing just #project.
+        if not self.projects:
+            return [&#39;#project x: #false.&#39;]
+        arg = sorted(self.projects) if sort else self.projects
+        return (pretty_str(project, self.output_atoms) for project in arg)
+
+    def sort(self) -&gt; &#39;Program&#39;:
+        &#39;&#39;&#39;
+        Sort the statements in the program inplace.
+
+        Returns a reference to self.
+
+        Note: It might also be nice to sort statement bodies and conditions.
+        &#39;&#39;&#39;
+        self.shows.sort()
+        self.facts.sort()
+        self.rules.sort()
+        self.weight_rules.sort()
+        self.heuristics.sort()
+        self.edges.sort()
+        self.minimizes.sort()
+        self.externals.sort()
+        if self.projects is not None:
+            self.projects.sort()
+        self.assumptions.sort()
+
+        return self
+
+    def remap(self, mapping: AtomMap) -&gt; &#39;Program&#39;:
+        &#39;&#39;&#39;
+        Remap the literals in the program inplace.
+
+        Returns a reference to self.
+
+        Note: It might also be nice to sort statement bodies and conditions.
+        &#39;&#39;&#39;
+        _remap_stms(self.shows, mapping)
+        _remap_stms(self.facts, mapping)
+        _remap_stms(self.rules, mapping)
+        _remap_stms(self.weight_rules, mapping)
+        _remap_stms(self.heuristics, mapping)
+        _remap_stms(self.edges, mapping)
+        _remap_stms(self.minimizes, mapping)
+        _remap_stms(self.externals, mapping)
+        if self.projects is not None:
+            _remap_stms(self.projects, mapping)
+        for i, lit in enumerate(self.assumptions):
+            self.assumptions[i] = _remap_lit(lit, mapping)
+        self.output_atoms = {mapping(lit): sym for lit, sym in self.output_atoms.items()}
+
+        return self
+
+    def add_to_backend(self, backend: Backend, mapping: Optional[AtomMap] = None) -&gt; &#39;Program&#39;:
+        &#39;&#39;&#39;
+        Add the program to the given backend with an optional mapping.
+
+        Note that the output table cannot be added to the backend for technical
+        reasons. This has to be taken care of by the user. See for example the
+        `Remapping` class, which provides functionality for this.
+
+        Returns a reference to self.
+        &#39;&#39;&#39;
+
+        _add_stms_to_backend(self.shows, backend, mapping)
+        _add_stms_to_backend(self.facts, backend, mapping)
+        _add_stms_to_backend(self.rules, backend, mapping)
+        _add_stms_to_backend(self.weight_rules, backend, mapping)
+        _add_stms_to_backend(self.heuristics, backend, mapping)
+        _add_stms_to_backend(self.edges, backend, mapping)
+        _add_stms_to_backend(self.minimizes, backend, mapping)
+        _add_stms_to_backend(self.externals, backend, mapping)
+        if self.projects is not None:
+            if self.projects:
+                _add_stms_to_backend(self.projects, backend, mapping)
+            else:
+                backend.add_project([])
+
+        backend.add_assume(_remap_lit(lit, mapping) if mapping else lit
+                           for lit in self.assumptions)
+
+        return self
+
+    def pretty_str(self, sort: bool = True) -&gt; str:
+        &#39;&#39;&#39;
+        Return a readable string represenation of the program.
+        &#39;&#39;&#39;
+        return &#39;\n&#39;.join(chain(
+            self._pretty_stms(self.shows, sort),
+            self._pretty_stms(self.facts, sort),
+            self._pretty_stms(self.rules, sort),
+            self._pretty_stms(self.weight_rules, sort),
+            self._pretty_stms(self.heuristics, sort),
+            self._pretty_stms(self.edges, sort),
+            self._pretty_stms(self.minimizes, sort),
+            self._pretty_stms(self.externals, sort),
+            self._pretty_projects(sort),
+            self._pretty_assumptions(sort)))
+
+    def copy(self) -&gt; &#39;Program&#39;:
+        &#39;&#39;&#39;
+        Return a shallow copy of the program.
+
+        This copies all mutable state.
+        &#39;&#39;&#39;
+        return copy(self)
+
+    def __str__(self) -&gt; str:
+        &#39;&#39;&#39;
+        Return a readable string represenation of the program.
+        &#39;&#39;&#39;
+        return self.pretty_str()</code></pre>
+</details>
+<h3>Class variables</h3>
+<dl>
+<dt id="clingox.program.Program.projects"><code class="name">var <span class="ident">projects</span> : Union[List[<a title="clingox.program.Project" href="#clingox.program.Project">Project</a>], NoneType]</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+<h3>Methods</h3>
+<dl>
+<dt id="clingox.program.Program.add_to_backend"><code class="name flex">
+<span>def <span class="ident">add_to_backend</span></span>(<span>self, backend: clingo.Backend, mapping: Union[Callable[[int], int], NoneType] = None) ‑> <a title="clingox.program.Program" href="#clingox.program.Program">Program</a></span>
+</code></dt>
+<dd>
+<div class="desc"><p>Add the program to the given backend with an optional mapping.</p>
+<p>Note that the output table cannot be added to the backend for technical
+reasons. This has to be taken care of by the user. See for example the
+<code><a title="clingox.program.Remapping" href="#clingox.program.Remapping">Remapping</a></code> class, which provides functionality for this.</p>
+<p>Returns a reference to self.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def add_to_backend(self, backend: Backend, mapping: Optional[AtomMap] = None) -&gt; &#39;Program&#39;:
+    &#39;&#39;&#39;
+    Add the program to the given backend with an optional mapping.
+
+    Note that the output table cannot be added to the backend for technical
+    reasons. This has to be taken care of by the user. See for example the
+    `Remapping` class, which provides functionality for this.
+
+    Returns a reference to self.
+    &#39;&#39;&#39;
+
+    _add_stms_to_backend(self.shows, backend, mapping)
+    _add_stms_to_backend(self.facts, backend, mapping)
+    _add_stms_to_backend(self.rules, backend, mapping)
+    _add_stms_to_backend(self.weight_rules, backend, mapping)
+    _add_stms_to_backend(self.heuristics, backend, mapping)
+    _add_stms_to_backend(self.edges, backend, mapping)
+    _add_stms_to_backend(self.minimizes, backend, mapping)
+    _add_stms_to_backend(self.externals, backend, mapping)
+    if self.projects is not None:
+        if self.projects:
+            _add_stms_to_backend(self.projects, backend, mapping)
+        else:
+            backend.add_project([])
+
+    backend.add_assume(_remap_lit(lit, mapping) if mapping else lit
+                       for lit in self.assumptions)
+
+    return self</code></pre>
+</details>
+</dd>
+<dt id="clingox.program.Program.copy"><code class="name flex">
+<span>def <span class="ident">copy</span></span>(<span>self) ‑> <a title="clingox.program.Program" href="#clingox.program.Program">Program</a></span>
+</code></dt>
+<dd>
+<div class="desc"><p>Return a shallow copy of the program.</p>
+<p>This copies all mutable state.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def copy(self) -&gt; &#39;Program&#39;:
+    &#39;&#39;&#39;
+    Return a shallow copy of the program.
+
+    This copies all mutable state.
+    &#39;&#39;&#39;
+    return copy(self)</code></pre>
+</details>
+</dd>
+<dt id="clingox.program.Program.pretty_str"><code class="name flex">
+<span>def <span class="ident">pretty_str</span></span>(<span>self, sort: bool = True) ‑> str</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Return a readable string represenation of the program.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def pretty_str(self, sort: bool = True) -&gt; str:
+    &#39;&#39;&#39;
+    Return a readable string represenation of the program.
+    &#39;&#39;&#39;
+    return &#39;\n&#39;.join(chain(
+        self._pretty_stms(self.shows, sort),
+        self._pretty_stms(self.facts, sort),
+        self._pretty_stms(self.rules, sort),
+        self._pretty_stms(self.weight_rules, sort),
+        self._pretty_stms(self.heuristics, sort),
+        self._pretty_stms(self.edges, sort),
+        self._pretty_stms(self.minimizes, sort),
+        self._pretty_stms(self.externals, sort),
+        self._pretty_projects(sort),
+        self._pretty_assumptions(sort)))</code></pre>
+</details>
+</dd>
+<dt id="clingox.program.Program.remap"><code class="name flex">
+<span>def <span class="ident">remap</span></span>(<span>self, mapping: Callable[[int], int]) ‑> <a title="clingox.program.Program" href="#clingox.program.Program">Program</a></span>
+</code></dt>
+<dd>
+<div class="desc"><p>Remap the literals in the program inplace.</p>
+<p>Returns a reference to self.</p>
+<p>Note: It might also be nice to sort statement bodies and conditions.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def remap(self, mapping: AtomMap) -&gt; &#39;Program&#39;:
+    &#39;&#39;&#39;
+    Remap the literals in the program inplace.
+
+    Returns a reference to self.
+
+    Note: It might also be nice to sort statement bodies and conditions.
+    &#39;&#39;&#39;
+    _remap_stms(self.shows, mapping)
+    _remap_stms(self.facts, mapping)
+    _remap_stms(self.rules, mapping)
+    _remap_stms(self.weight_rules, mapping)
+    _remap_stms(self.heuristics, mapping)
+    _remap_stms(self.edges, mapping)
+    _remap_stms(self.minimizes, mapping)
+    _remap_stms(self.externals, mapping)
+    if self.projects is not None:
+        _remap_stms(self.projects, mapping)
+    for i, lit in enumerate(self.assumptions):
+        self.assumptions[i] = _remap_lit(lit, mapping)
+    self.output_atoms = {mapping(lit): sym for lit, sym in self.output_atoms.items()}
+
+    return self</code></pre>
+</details>
+</dd>
+<dt id="clingox.program.Program.sort"><code class="name flex">
+<span>def <span class="ident">sort</span></span>(<span>self) ‑> <a title="clingox.program.Program" href="#clingox.program.Program">Program</a></span>
+</code></dt>
+<dd>
+<div class="desc"><p>Sort the statements in the program inplace.</p>
+<p>Returns a reference to self.</p>
+<p>Note: It might also be nice to sort statement bodies and conditions.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def sort(self) -&gt; &#39;Program&#39;:
+    &#39;&#39;&#39;
+    Sort the statements in the program inplace.
+
+    Returns a reference to self.
+
+    Note: It might also be nice to sort statement bodies and conditions.
+    &#39;&#39;&#39;
+    self.shows.sort()
+    self.facts.sort()
+    self.rules.sort()
+    self.weight_rules.sort()
+    self.heuristics.sort()
+    self.edges.sort()
+    self.minimizes.sort()
+    self.externals.sort()
+    if self.projects is not None:
+        self.projects.sort()
+    self.assumptions.sort()
+
+    return self</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="clingox.program.ProgramObserver"><code class="flex name class">
+<span>class <span class="ident">ProgramObserver</span></span>
+<span>(</span><span>program: <a title="clingox.program.Program" href="#clingox.program.Program">Program</a>)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Program observer to build a ground program representation while grounding.</p>
+<p>This class explicitly ignores theory atoms because they already have a
+ground representation.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class ProgramObserver(Observer):
+    &#39;&#39;&#39;
+    Program observer to build a ground program representation while grounding.
+
+    This class explicitly ignores theory atoms because they already have a
+    ground representation.
+    &#39;&#39;&#39;
+    _program: Program
+
+    def __init__(self, program: Program):
+        self._program = program
+
+    def begin_step(self) -&gt; None:
+        &#39;&#39;&#39;
+        Resets the assumptions.
+        &#39;&#39;&#39;
+        self._program.assumptions.clear()
+
+    def output_atom(self, symbol: Symbol, atom: Atom) -&gt; None:
+        &#39;&#39;&#39;
+        Add the given atom to the list of facts or output table.
+        &#39;&#39;&#39;
+        if atom != 0:
+            self._program.output_atoms[atom] = symbol
+        else:
+            self._program.facts.append(Fact(symbol))
+
+    def output_term(self, symbol: Symbol, condition: Sequence[Literal]) -&gt; None:
+        &#39;&#39;&#39;
+        Add a term to the output table.
+        &#39;&#39;&#39;
+        self._program.shows.append(Show(symbol, condition))
+
+    def rule(self, choice: bool, head: Sequence[Atom], body: Sequence[Literal]) -&gt; None:
+        &#39;&#39;&#39;
+        Add a rule to the ground representation.
+        &#39;&#39;&#39;
+        self._program.rules.append(Rule(choice, head, body))
+
+    def weight_rule(self, choice: bool, head: Sequence[Atom], lower_bound: Weight,
+                    body: Sequence[Tuple[Literal, Weight]]) -&gt; None:
+        &#39;&#39;&#39;
+        Add a weight rule to the ground representation.
+        &#39;&#39;&#39;
+        self._program.weight_rules.append(WeightRule(choice, head, lower_bound, body))
+
+    def project(self, atoms: Sequence[Atom]) -&gt; None:
+        &#39;&#39;&#39;
+        Add a project statement to the ground representation.
+        &#39;&#39;&#39;
+        if self._program.projects is None:
+            self._program.projects = []
+        self._program.projects.extend(Project(atom) for atom in atoms)
+
+    def external(self, atom: Atom, value: TruthValue) -&gt; None:
+        &#39;&#39;&#39;
+        Add an external statement to the ground representation.
+        &#39;&#39;&#39;
+        self._program.externals.append(External(atom, value))
+
+    def assume(self, literals: Sequence[Literal]) -&gt; None:
+        &#39;&#39;&#39;
+        Extend the program with the given assumptions.
+        &#39;&#39;&#39;
+        self._program.assumptions.extend(literals)
+
+    def minimize(self, priority: Weight, literals: Sequence[Tuple[Literal, Weight]]) -&gt; None:
+        &#39;&#39;&#39;
+        Add a minimize statement to the ground representation.
+        &#39;&#39;&#39;
+        self._program.minimizes.append(Minimize(priority, literals))
+
+    def acyc_edge(self, node_u: int, node_v: int, condition: Sequence[Literal]) -&gt; None:
+        &#39;&#39;&#39;
+        Add an edge statement to the gronud representation.
+        &#39;&#39;&#39;
+        self._program.edges.append(Edge(node_u, node_v, condition))
+
+    def heuristic(self, atom: Atom, type_: HeuristicType, bias: Weight, priority: Weight,
+                  condition: Sequence[Literal]) -&gt; None:
+        &#39;&#39;&#39;
+        Add heurisitic statement to the gronud representation.
+        &#39;&#39;&#39;
+        self._program.heuristics.append(Heuristic(atom, type_, bias, priority, condition))</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>importlib._bootstrap.Observer</li>
+</ul>
+<h3>Methods</h3>
+<dl>
+<dt id="clingox.program.ProgramObserver.acyc_edge"><code class="name flex">
+<span>def <span class="ident">acyc_edge</span></span>(<span>self, node_u: int, node_v: int, condition: Sequence[int]) ‑> NoneType</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Add an edge statement to the gronud representation.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def acyc_edge(self, node_u: int, node_v: int, condition: Sequence[Literal]) -&gt; None:
+    &#39;&#39;&#39;
+    Add an edge statement to the gronud representation.
+    &#39;&#39;&#39;
+    self._program.edges.append(Edge(node_u, node_v, condition))</code></pre>
+</details>
+</dd>
+<dt id="clingox.program.ProgramObserver.assume"><code class="name flex">
+<span>def <span class="ident">assume</span></span>(<span>self, literals: Sequence[int]) ‑> NoneType</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Extend the program with the given assumptions.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def assume(self, literals: Sequence[Literal]) -&gt; None:
+    &#39;&#39;&#39;
+    Extend the program with the given assumptions.
+    &#39;&#39;&#39;
+    self._program.assumptions.extend(literals)</code></pre>
+</details>
+</dd>
+<dt id="clingox.program.ProgramObserver.begin_step"><code class="name flex">
+<span>def <span class="ident">begin_step</span></span>(<span>self) ‑> NoneType</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Resets the assumptions.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def begin_step(self) -&gt; None:
+    &#39;&#39;&#39;
+    Resets the assumptions.
+    &#39;&#39;&#39;
+    self._program.assumptions.clear()</code></pre>
+</details>
+</dd>
+<dt id="clingox.program.ProgramObserver.external"><code class="name flex">
+<span>def <span class="ident">external</span></span>(<span>self, atom: int, value: clingo.TruthValue) ‑> NoneType</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Add an external statement to the ground representation.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def external(self, atom: Atom, value: TruthValue) -&gt; None:
+    &#39;&#39;&#39;
+    Add an external statement to the ground representation.
+    &#39;&#39;&#39;
+    self._program.externals.append(External(atom, value))</code></pre>
+</details>
+</dd>
+<dt id="clingox.program.ProgramObserver.heuristic"><code class="name flex">
+<span>def <span class="ident">heuristic</span></span>(<span>self, atom: int, type_: clingo.HeuristicType, bias: int, priority: int, condition: Sequence[int]) ‑> NoneType</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Add heurisitic statement to the gronud representation.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def heuristic(self, atom: Atom, type_: HeuristicType, bias: Weight, priority: Weight,
+              condition: Sequence[Literal]) -&gt; None:
+    &#39;&#39;&#39;
+    Add heurisitic statement to the gronud representation.
+    &#39;&#39;&#39;
+    self._program.heuristics.append(Heuristic(atom, type_, bias, priority, condition))</code></pre>
+</details>
+</dd>
+<dt id="clingox.program.ProgramObserver.minimize"><code class="name flex">
+<span>def <span class="ident">minimize</span></span>(<span>self, priority: int, literals: Sequence[Tuple[int, int]]) ‑> NoneType</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Add a minimize statement to the ground representation.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def minimize(self, priority: Weight, literals: Sequence[Tuple[Literal, Weight]]) -&gt; None:
+    &#39;&#39;&#39;
+    Add a minimize statement to the ground representation.
+    &#39;&#39;&#39;
+    self._program.minimizes.append(Minimize(priority, literals))</code></pre>
+</details>
+</dd>
+<dt id="clingox.program.ProgramObserver.output_atom"><code class="name flex">
+<span>def <span class="ident">output_atom</span></span>(<span>self, symbol: clingo.Symbol, atom: int) ‑> NoneType</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Add the given atom to the list of facts or output table.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def output_atom(self, symbol: Symbol, atom: Atom) -&gt; None:
+    &#39;&#39;&#39;
+    Add the given atom to the list of facts or output table.
+    &#39;&#39;&#39;
+    if atom != 0:
+        self._program.output_atoms[atom] = symbol
+    else:
+        self._program.facts.append(Fact(symbol))</code></pre>
+</details>
+</dd>
+<dt id="clingox.program.ProgramObserver.output_term"><code class="name flex">
+<span>def <span class="ident">output_term</span></span>(<span>self, symbol: clingo.Symbol, condition: Sequence[int]) ‑> NoneType</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Add a term to the output table.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def output_term(self, symbol: Symbol, condition: Sequence[Literal]) -&gt; None:
+    &#39;&#39;&#39;
+    Add a term to the output table.
+    &#39;&#39;&#39;
+    self._program.shows.append(Show(symbol, condition))</code></pre>
+</details>
+</dd>
+<dt id="clingox.program.ProgramObserver.project"><code class="name flex">
+<span>def <span class="ident">project</span></span>(<span>self, atoms: Sequence[int]) ‑> NoneType</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Add a project statement to the ground representation.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def project(self, atoms: Sequence[Atom]) -&gt; None:
+    &#39;&#39;&#39;
+    Add a project statement to the ground representation.
+    &#39;&#39;&#39;
+    if self._program.projects is None:
+        self._program.projects = []
+    self._program.projects.extend(Project(atom) for atom in atoms)</code></pre>
+</details>
+</dd>
+<dt id="clingox.program.ProgramObserver.rule"><code class="name flex">
+<span>def <span class="ident">rule</span></span>(<span>self, choice: bool, head: Sequence[int], body: Sequence[int]) ‑> NoneType</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Add a rule to the ground representation.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def rule(self, choice: bool, head: Sequence[Atom], body: Sequence[Literal]) -&gt; None:
+    &#39;&#39;&#39;
+    Add a rule to the ground representation.
+    &#39;&#39;&#39;
+    self._program.rules.append(Rule(choice, head, body))</code></pre>
+</details>
+</dd>
+<dt id="clingox.program.ProgramObserver.weight_rule"><code class="name flex">
+<span>def <span class="ident">weight_rule</span></span>(<span>self, choice: bool, head: Sequence[int], lower_bound: int, body: Sequence[Tuple[int, int]]) ‑> NoneType</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Add a weight rule to the ground representation.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def weight_rule(self, choice: bool, head: Sequence[Atom], lower_bound: Weight,
+                body: Sequence[Tuple[Literal, Weight]]) -&gt; None:
+    &#39;&#39;&#39;
+    Add a weight rule to the ground representation.
+    &#39;&#39;&#39;
+    self._program.weight_rules.append(WeightRule(choice, head, lower_bound, body))</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="clingox.program.Project"><code class="flex name class">
+<span>class <span class="ident">Project</span></span>
+<span>(</span><span>atom: int)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Ground representation of project statements.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class Project(NamedTuple):
+    &#39;&#39;&#39;
+    Ground representation of project statements.
+    &#39;&#39;&#39;
+    atom: Atom</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>builtins.tuple</li>
+</ul>
+<h3>Instance variables</h3>
+<dl>
+<dt id="clingox.program.Project.atom"><code class="name">var <span class="ident">atom</span> : int</code></dt>
+<dd>
+<div class="desc"><p>Alias for field number 0</p></div>
+</dd>
+</dl>
+</dd>
+<dt id="clingox.program.Remapping"><code class="flex name class">
+<span>class <span class="ident">Remapping</span></span>
+<span>(</span><span>backend: clingo.Backend, output_atoms: Mapping[int, clingo.Symbol], facts: Iterable[<a title="clingox.program.Fact" href="#clingox.program.Fact">Fact</a>] = None)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>This class maps existing literals to fresh literals as created by the
+backend.</p>
+<p>Initializes the mapping with the literals in the given output table.</p>
+<p>Furthemore, it associates a fresh literal with each given fact.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class Remapping:
+    &#39;&#39;&#39;
+    This class maps existing literals to fresh literals as created by the
+    backend.
+    &#39;&#39;&#39;
+    _backend: Backend
+    _map: MutableMapping[Atom, Atom]
+
+    def __init__(self, backend: Backend, output_atoms: OutputTable, facts: Iterable[Fact] = None):
+        &#39;&#39;&#39;
+        Initializes the mapping with the literals in the given output table.
+
+        Furthemore, it associates a fresh literal with each given fact.
+        &#39;&#39;&#39;
+        self._backend = backend
+        self._map = {}
+        for atom, sym in output_atoms.items():
+            assert atom not in self._map
+            self._map[atom] = self._backend.add_atom(sym)
+        if facts is not None:
+            for fact in facts:
+                backend.add_rule([backend.add_atom(fact.symbol)])
+
+    def __call__(self, atom: Atom) -&gt; Atom:
+        &#39;&#39;&#39;
+        Map the given literal to the corresponding literal in the backend.
+
+        If the literal was not mapped during initialization, a new literal is
+        associated with it.
+        &#39;&#39;&#39;
+        if atom not in self._map:
+            self._map[atom] = self._backend.add_atom()
+
+        return self._map[atom]</code></pre>
+</details>
+</dd>
+<dt id="clingox.program.Rule"><code class="flex name class">
+<span>class <span class="ident">Rule</span></span>
+<span>(</span><span>choice: bool, head: Sequence[int], body: Sequence[int])</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Ground representation of disjunctive and choice rules.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class Rule(NamedTuple):
+    &#39;&#39;&#39;
+    Ground representation of disjunctive and choice rules.
+    &#39;&#39;&#39;
+    choice: bool
+    head: Sequence[Atom]
+    body: Sequence[Literal]</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>builtins.tuple</li>
+</ul>
+<h3>Instance variables</h3>
+<dl>
+<dt id="clingox.program.Rule.body"><code class="name">var <span class="ident">body</span> : Sequence[int]</code></dt>
+<dd>
+<div class="desc"><p>Alias for field number 2</p></div>
+</dd>
+<dt id="clingox.program.Rule.choice"><code class="name">var <span class="ident">choice</span> : bool</code></dt>
+<dd>
+<div class="desc"><p>Alias for field number 0</p></div>
+</dd>
+<dt id="clingox.program.Rule.head"><code class="name">var <span class="ident">head</span> : Sequence[int]</code></dt>
+<dd>
+<div class="desc"><p>Alias for field number 1</p></div>
+</dd>
+</dl>
+</dd>
+<dt id="clingox.program.Show"><code class="flex name class">
+<span>class <span class="ident">Show</span></span>
+<span>(</span><span>symbol: clingo.Symbol, condition: Sequence[int])</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Ground representation of a show statements.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class Show(NamedTuple):
+    &#39;&#39;&#39;
+    Ground representation of a show statements.
+    &#39;&#39;&#39;
+    symbol: Symbol
+    condition: Sequence[Literal]</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>builtins.tuple</li>
+</ul>
+<h3>Instance variables</h3>
+<dl>
+<dt id="clingox.program.Show.condition"><code class="name">var <span class="ident">condition</span> : Sequence[int]</code></dt>
+<dd>
+<div class="desc"><p>Alias for field number 1</p></div>
+</dd>
+<dt id="clingox.program.Show.symbol"><code class="name">var <span class="ident">symbol</span> : clingo.Symbol</code></dt>
+<dd>
+<div class="desc"><p>Alias for field number 0</p></div>
+</dd>
+</dl>
+</dd>
+<dt id="clingox.program.WeightRule"><code class="flex name class">
+<span>class <span class="ident">WeightRule</span></span>
+<span>(</span><span>choice: bool, head: Sequence[int], lower_bound: int, body: Sequence[Tuple[int, int]])</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Ground representation of rules with a weight constraint in the body.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class WeightRule(NamedTuple):
+    &#39;&#39;&#39;
+    Ground representation of rules with a weight constraint in the body.
+    &#39;&#39;&#39;
+    choice: bool
+    head: Sequence[Atom]
+    lower_bound: Weight
+    body: Sequence[Tuple[Literal, Weight]]</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>builtins.tuple</li>
+</ul>
+<h3>Instance variables</h3>
+<dl>
+<dt id="clingox.program.WeightRule.body"><code class="name">var <span class="ident">body</span> : Sequence[Tuple[int, int]]</code></dt>
+<dd>
+<div class="desc"><p>Alias for field number 3</p></div>
+</dd>
+<dt id="clingox.program.WeightRule.choice"><code class="name">var <span class="ident">choice</span> : bool</code></dt>
+<dd>
+<div class="desc"><p>Alias for field number 0</p></div>
+</dd>
+<dt id="clingox.program.WeightRule.head"><code class="name">var <span class="ident">head</span> : Sequence[int]</code></dt>
+<dd>
+<div class="desc"><p>Alias for field number 1</p></div>
+</dd>
+<dt id="clingox.program.WeightRule.lower_bound"><code class="name">var <span class="ident">lower_bound</span> : int</code></dt>
+<dd>
+<div class="desc"><p>Alias for field number 2</p></div>
+</dd>
+</dl>
+</dd>
+</dl>
+</section>
+</article>
+<nav id="sidebar">
+<h1>Index</h1>
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="clingox" href="index.html">clingox</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-functions">Functions</a></h3>
+<ul class="">
+<li><code><a title="clingox.program.add_to_backend" href="#clingox.program.add_to_backend">add_to_backend</a></code></li>
+<li><code><a title="clingox.program.pretty_str" href="#clingox.program.pretty_str">pretty_str</a></code></li>
+<li><code><a title="clingox.program.remap" href="#clingox.program.remap">remap</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="clingox.program.Edge" href="#clingox.program.Edge">Edge</a></code></h4>
+<ul class="">
+<li><code><a title="clingox.program.Edge.condition" href="#clingox.program.Edge.condition">condition</a></code></li>
+<li><code><a title="clingox.program.Edge.u" href="#clingox.program.Edge.u">u</a></code></li>
+<li><code><a title="clingox.program.Edge.v" href="#clingox.program.Edge.v">v</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="clingox.program.External" href="#clingox.program.External">External</a></code></h4>
+<ul class="">
+<li><code><a title="clingox.program.External.atom" href="#clingox.program.External.atom">atom</a></code></li>
+<li><code><a title="clingox.program.External.value" href="#clingox.program.External.value">value</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="clingox.program.Fact" href="#clingox.program.Fact">Fact</a></code></h4>
+<ul class="">
+<li><code><a title="clingox.program.Fact.symbol" href="#clingox.program.Fact.symbol">symbol</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="clingox.program.Heuristic" href="#clingox.program.Heuristic">Heuristic</a></code></h4>
+<ul class="">
+<li><code><a title="clingox.program.Heuristic.atom" href="#clingox.program.Heuristic.atom">atom</a></code></li>
+<li><code><a title="clingox.program.Heuristic.bias" href="#clingox.program.Heuristic.bias">bias</a></code></li>
+<li><code><a title="clingox.program.Heuristic.condition" href="#clingox.program.Heuristic.condition">condition</a></code></li>
+<li><code><a title="clingox.program.Heuristic.priority" href="#clingox.program.Heuristic.priority">priority</a></code></li>
+<li><code><a title="clingox.program.Heuristic.type_" href="#clingox.program.Heuristic.type_">type_</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="clingox.program.Minimize" href="#clingox.program.Minimize">Minimize</a></code></h4>
+<ul class="">
+<li><code><a title="clingox.program.Minimize.literals" href="#clingox.program.Minimize.literals">literals</a></code></li>
+<li><code><a title="clingox.program.Minimize.priority" href="#clingox.program.Minimize.priority">priority</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="clingox.program.Program" href="#clingox.program.Program">Program</a></code></h4>
+<ul class="two-column">
+<li><code><a title="clingox.program.Program.add_to_backend" href="#clingox.program.Program.add_to_backend">add_to_backend</a></code></li>
+<li><code><a title="clingox.program.Program.copy" href="#clingox.program.Program.copy">copy</a></code></li>
+<li><code><a title="clingox.program.Program.pretty_str" href="#clingox.program.Program.pretty_str">pretty_str</a></code></li>
+<li><code><a title="clingox.program.Program.projects" href="#clingox.program.Program.projects">projects</a></code></li>
+<li><code><a title="clingox.program.Program.remap" href="#clingox.program.Program.remap">remap</a></code></li>
+<li><code><a title="clingox.program.Program.sort" href="#clingox.program.Program.sort">sort</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="clingox.program.ProgramObserver" href="#clingox.program.ProgramObserver">ProgramObserver</a></code></h4>
+<ul class="two-column">
+<li><code><a title="clingox.program.ProgramObserver.acyc_edge" href="#clingox.program.ProgramObserver.acyc_edge">acyc_edge</a></code></li>
+<li><code><a title="clingox.program.ProgramObserver.assume" href="#clingox.program.ProgramObserver.assume">assume</a></code></li>
+<li><code><a title="clingox.program.ProgramObserver.begin_step" href="#clingox.program.ProgramObserver.begin_step">begin_step</a></code></li>
+<li><code><a title="clingox.program.ProgramObserver.external" href="#clingox.program.ProgramObserver.external">external</a></code></li>
+<li><code><a title="clingox.program.ProgramObserver.heuristic" href="#clingox.program.ProgramObserver.heuristic">heuristic</a></code></li>
+<li><code><a title="clingox.program.ProgramObserver.minimize" href="#clingox.program.ProgramObserver.minimize">minimize</a></code></li>
+<li><code><a title="clingox.program.ProgramObserver.output_atom" href="#clingox.program.ProgramObserver.output_atom">output_atom</a></code></li>
+<li><code><a title="clingox.program.ProgramObserver.output_term" href="#clingox.program.ProgramObserver.output_term">output_term</a></code></li>
+<li><code><a title="clingox.program.ProgramObserver.project" href="#clingox.program.ProgramObserver.project">project</a></code></li>
+<li><code><a title="clingox.program.ProgramObserver.rule" href="#clingox.program.ProgramObserver.rule">rule</a></code></li>
+<li><code><a title="clingox.program.ProgramObserver.weight_rule" href="#clingox.program.ProgramObserver.weight_rule">weight_rule</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="clingox.program.Project" href="#clingox.program.Project">Project</a></code></h4>
+<ul class="">
+<li><code><a title="clingox.program.Project.atom" href="#clingox.program.Project.atom">atom</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="clingox.program.Remapping" href="#clingox.program.Remapping">Remapping</a></code></h4>
+</li>
+<li>
+<h4><code><a title="clingox.program.Rule" href="#clingox.program.Rule">Rule</a></code></h4>
+<ul class="">
+<li><code><a title="clingox.program.Rule.body" href="#clingox.program.Rule.body">body</a></code></li>
+<li><code><a title="clingox.program.Rule.choice" href="#clingox.program.Rule.choice">choice</a></code></li>
+<li><code><a title="clingox.program.Rule.head" href="#clingox.program.Rule.head">head</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="clingox.program.Show" href="#clingox.program.Show">Show</a></code></h4>
+<ul class="">
+<li><code><a title="clingox.program.Show.condition" href="#clingox.program.Show.condition">condition</a></code></li>
+<li><code><a title="clingox.program.Show.symbol" href="#clingox.program.Show.symbol">symbol</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="clingox.program.WeightRule" href="#clingox.program.WeightRule">WeightRule</a></code></h4>
+<ul class="">
+<li><code><a title="clingox.program.WeightRule.body" href="#clingox.program.WeightRule.body">body</a></code></li>
+<li><code><a title="clingox.program.WeightRule.choice" href="#clingox.program.WeightRule.choice">choice</a></code></li>
+<li><code><a title="clingox.program.WeightRule.head" href="#clingox.program.WeightRule.head">head</a></code></li>
+<li><code><a title="clingox.program.WeightRule.lower_bound" href="#clingox.program.WeightRule.lower_bound">lower_bound</a></code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.8.4</a>.</p>
+</footer>
+</body>
+</html>

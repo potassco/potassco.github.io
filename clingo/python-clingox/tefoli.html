@@ -1,0 +1,1302 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<meta name="generator" content="pdoc 0.8.4" />
+<title>clingox.tefoli API documentation</title>
+<meta name="description" content="This module defines a single Theory class for using a C theory with
+clingo&#39;s python library." />
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
+<link rel="stylesheet preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.1/styles/github.min.css" crossorigin>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.1/highlight.min.js" integrity="sha256-eOgo0OtLL4cdq7RdwRUiGKLX9XsIJ7nGhWEKbohmVAQ=" crossorigin></script>
+<script>window.addEventListener('DOMContentLoaded', () => hljs.initHighlighting())</script>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>clingox.tefoli</code></h1>
+</header>
+<section id="section-intro">
+<p>This module defines a single Theory class for using a C theory with
+clingo's python library.</p>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">&#34;&#34;&#34;
+This module defines a single Theory class for using a C theory with
+clingo&#39;s python library.
+&#34;&#34;&#34;
+
+import ctypes
+from typing import Optional, Union, Iterator, Tuple, Callable
+from ctypes import (c_bool, c_void_p, c_int, c_double, c_uint, c_uint64, c_size_t, c_char_p, Structure,
+                    POINTER, byref, CFUNCTYPE, cdll)
+from ctypes.util import find_library
+
+from clingo import (_error_message, _error_code, _Symbol, # type: ignore
+                    Control, ApplicationOptions, Model, StatisticsMap, Symbol)
+from clingo.ast import AST
+
+
+ValueType = Union[int, float, Symbol]
+
+
+class _c_value(ctypes.Union):
+    # pylint: disable=W,C,R
+    _fields_ = [ (&#34;integer&#34;, c_int)
+               , (&#34;double&#34;, c_double)
+               , (&#34;symbol&#34;, c_uint64)
+               ]
+
+
+class _c_variant(Structure):
+    # pylint: disable=W,C,R
+    _fields_ = [ (&#34;type&#34;, c_int)
+               , (&#34;value&#34;, _c_value)
+               ]
+
+
+_add_stm = CFUNCTYPE(c_bool, c_void_p, c_void_p) # pylint: disable=invalid-name
+
+
+class Theory:
+    &#34;&#34;&#34;
+    Interface to call functions from a C-library extending clingo&#39;s C/Python
+    library.
+
+    The functions in here are designed to be used with a `Application`
+    object but can also be used with a standalone `Control` object.
+
+    Notes
+    -----
+    The C library must implement the following functions:
+
+    - `bool create(theory_t **theory)`
+    - `bool destroy(theory_t *theory)`
+    - `bool register(theory_t *theory, clingo_control_t* control)`
+    - `bool rewrite_statement(theory_t *theory, clingo_ast_statement_t const *stm, rewrite_callback_t add, void *data)`
+    - `bool prepare(theory_t *theory, clingo_control_t* control)`
+    - `bool register_options(theory_t *theory, clingo_options_t* options)`
+    - `bool validate_options(theory_t *theory)`
+    - `bool on_model(theory_t *theory, clingo_model_t* model)`
+    - `bool on_statistics(theory_t *theory, clingo_statistics_t* step, clingo_statistics_t* accu)`
+    - `bool lookup_symbol(theory_t *theory, clingo_symbol_t symbol, size_t *index)`
+    - `clingo_symbol_t get_symbol(theory_t *theory, size_t index)`
+    - `void assignment_begin(theory_t *theory, uint32_t thread_id, size_t *index)`
+    - `bool assignment_next(theory_t *theory, uint32_t thread_id, size_t *index)`
+    - `void assignment_has_value(theory_t *theory, uint32_t thread_id, size_t index)`
+    - `void assignment_get_value(theory_t *theory, uint32_t thread_id, size_t index, value_t *value)`
+    - `bool configure(theory_t *theory, char const *key, char const *value)`
+    &#34;&#34;&#34;
+    # pylint: disable=too-many-instance-attributes,line-too-long,protected-access
+
+    def __init__(self, prefix: str, lib: str):
+        &#34;&#34;&#34;
+        Loads a given library.
+
+        Arguments
+        ---------
+        prefix: str
+            Prefix of functions in the library.
+        lib: str
+            Name of the library to load.
+        &#34;&#34;&#34;
+        self.__c_theory = None
+
+        # load library
+        opt_lib = find_library(lib)
+        if opt_lib is None:
+            raise RuntimeError(&#39;could not find library&#39;)
+        self.__theory = cdll.LoadLibrary(opt_lib)
+
+        # bool create(theory_t **theory);
+        self.__create = self.__fun(prefix, &#34;create&#34;, c_bool, [POINTER(c_void_p)])
+
+        # bool destroy(theory_t *theory);
+        self.__destroy = self.__fun(prefix, &#34;destroy&#34;, c_bool, [c_void_p])
+
+        # bool register(theory_t *theory, clingo_control_t* control);
+        self.__register = self.__fun(prefix, &#34;register&#34;, c_bool, [c_void_p, c_void_p])
+
+        # bool rewrite_statement(theory_t *theory, clingo_ast_statement_t const *stm, rewrite_callback_t add, void *data)
+        try:
+            self.__rewrite_statement = self.__fun(prefix, &#34;rewrite_statement&#34;, c_bool, [c_void_p, c_void_p, c_void_p])
+        except AttributeError:
+            self.__rewrite_statement = None
+
+        # bool prepare(theory_t *theory, clingo_control_t* control);
+        self.__prepare = self.__fun(prefix, &#34;prepare&#34;, c_bool, [c_void_p, c_void_p])
+
+        # bool register_options(theory_t *theory, clingo_options_t* options);
+        self.__register_options = self.__fun(prefix, &#34;register_options&#34;, c_bool, [c_void_p, c_void_p])
+
+        # bool validate_options(theory_t *theory);
+        self.__validate_options = self.__fun(prefix, &#34;validate_options&#34;, c_bool, [c_void_p])
+
+        # bool on_model(theory_t *theory, clingo_model_t* model);
+        self.__on_model = self.__fun(prefix, &#34;on_model&#34;, c_bool, [c_void_p, c_void_p])
+
+        # bool on_statistics(theory_t *theory, clingo_statistics_t* step, clingo_statistics_t* accu);
+        self.__on_statistics = self.__fun(prefix, &#34;on_statistics&#34;, c_bool, [c_void_p, c_void_p, c_void_p])
+
+        # bool lookup_symbol(theory_t *theory, clingo_symbol_t symbol, size_t *index);
+        self.__lookup_symbol = self.__fun(prefix, &#34;lookup_symbol&#34;, c_bool, [c_void_p, c_uint64, POINTER(c_size_t)], False)
+
+        # clingo_symbol_t get_symbol(theory_t *theory, size_t index);
+        self.__get_symbol = self.__fun(prefix, &#34;get_symbol&#34;, c_uint64, [c_void_p, c_size_t], False)
+
+        # void assignment_begin(theory_t *theory, uint32_t thread_id, size_t *index);
+        self.__assignment_begin = self.__fun(prefix, &#34;assignment_begin&#34;, None, [c_void_p, c_uint, POINTER(c_size_t)], False)
+
+        # bool assignment_next(theory_t *theory, uint32_t thread_id, size_t *index);
+        self.__assignment_next = self.__fun(prefix, &#34;assignment_next&#34;, c_bool, [c_void_p, c_uint, POINTER(c_size_t)], False)
+
+        # void assignment_has_value(theory_t *theory, uint32_t thread_id, size_t index);
+        self.__assignment_has_value = self.__fun(prefix, &#34;assignment_has_value&#34;, c_bool, [c_void_p, c_uint, c_size_t], False)
+
+        # void assignment_get_value(theory_t *theory, uint32_t thread_id, size_t index, value_t *value);
+        self.__assignment_get_value = self.__fun(prefix, &#34;assignment_get_value&#34;, None, [c_void_p, c_uint, c_size_t, POINTER(_c_variant)], False)
+
+        # bool configure(theory_t *theory, char const *key, char const *value);
+        self.__configure = self.__fun(prefix, &#34;configure&#34;, c_bool, [c_void_p, c_char_p, c_char_p])
+
+        # create theory
+        c_theory = c_void_p()
+        self.__create(byref(c_theory))
+        self.__c_theory = c_theory
+
+    def __del__(self):
+        if self.__c_theory is not None:
+            self.__destroy(self.__c_theory)
+            self.__c_theory = None
+
+    def configure(self, key: str, value: str) -&gt; None:
+        &#34;&#34;&#34;
+        Allows for configuring a theory via key/value pairs similar to
+        command line options.
+
+        This function must be called before the theory is registered.
+
+        Arguments
+        ---------
+        key: str
+            The name of the option.
+        value: str
+            The value of the option.
+        &#34;&#34;&#34;
+        self.__configure(self.__c_theory, key.encode(), value.encode())
+
+    def register(self, control: Control) -&gt; None:
+        &#34;&#34;&#34;
+        Register the theory with the given control object.
+
+        Arguments
+        ---------
+        control: Control
+            Target to register with.
+        &#34;&#34;&#34;
+        self.__register(self.__c_theory, control._to_c) # type: ignore
+
+    def prepare(self, control: Control) -&gt; None:
+        &#34;&#34;&#34;
+        Prepare the theory.
+
+        Must be called between ground and solve.
+
+        Arguments
+        ---------
+        control: Control
+            The associated control object.
+        &#34;&#34;&#34;
+        self.__prepare(self.__c_theory, control._to_c) # type: ignore
+
+    def rewrite_statement(self, stm: AST, add: Callable[[AST], None]) -&gt; None:
+        &#34;&#34;&#34;
+        Rewrite the given statement and call add on the rewritten version(s).
+
+        Must be called for some theories that have to perform rewritings on the
+        AST.
+
+        Arguments
+        ---------
+        stm: AST
+            Statement to translate.
+        add: Callable[[AST], None]
+            Callback for adding translated statements.
+        &#34;&#34;&#34;
+        def py_add(stm, data):
+            # pylint: disable=unused-argument,bare-except
+            try:
+                add(AST._from_c(stm))
+            except:
+                return False
+            return True
+        self.__rewrite_statement(self.__c_theory, stm._to_c, _add_stm(py_add), None)
+
+    def register_options(self, options: ApplicationOptions) -&gt; None:
+        &#34;&#34;&#34;
+        Register the theory&#39;s options with the given application options
+        object.
+
+        Arguments
+        ---------
+        options: ApplicationOptions
+            Target to register with.
+        &#34;&#34;&#34;
+
+        self.__register_options(self.__c_theory, options._to_c) # type: ignore
+
+    def validate_options(self) -&gt; None:
+        &#34;&#34;&#34;
+        Validate the options of the theory.
+        &#34;&#34;&#34;
+        self.__validate_options(self.__c_theory)
+
+    def on_model(self, model: Model) -&gt; None:
+        &#34;&#34;&#34;
+        Inform the theory that a model has been found.
+
+        Arguments
+        ---------
+        model: Model
+            The current model.
+        &#34;&#34;&#34;
+        self.__on_model(self.__c_theory, model._to_c) # type: ignore
+
+    def on_statistics(self, step: StatisticsMap, accu: StatisticsMap) -&gt; None:
+        &#34;&#34;&#34;
+        Add the theory&#39;s statistics to the given maps.
+
+        Arguments
+        ---------
+        step: StatisticsMap
+            Map for per step statistics.
+        accu: StatisticsMap
+            Map for accumulated statistics.
+        &#34;&#34;&#34;
+        self.__on_statistics(self.__c_theory, step._to_c, accu._to_c) # type: ignore
+
+    def lookup_symbol(self, symbol: Symbol) -&gt; Optional[int]:
+        &#34;&#34;&#34;
+        Get the integer index of a symbol assigned by the theory when a
+        model is found.
+
+        Using indices allows for efficent retreival of values.
+
+        Arguments
+        ---------
+        symbol: Symbol
+            The symbol to look up.
+
+        Returns
+        -------
+        Optional[int]
+            The index of the value if found.
+        &#34;&#34;&#34;
+        c_index = c_size_t()
+        if self.__lookup_symbol(self.__c_theory, symbol._to_c, byref(c_index)): # type: ignore
+            return c_index.value
+        return None
+
+    def get_symbol(self, index: int) -&gt; Symbol:
+        &#34;&#34;&#34;
+        Get the symbol associated with an index.
+
+        The index must be valid.
+
+        Arguments
+        ---------
+        index: int
+            Index to retreive.
+
+        Returns
+        -------
+        Symbol
+            The associated symbol.
+        &#34;&#34;&#34;
+        return _Symbol(self.__get_symbol(self.__c_theory, index))
+
+    def has_value(self, thread_id: int, index: int) -&gt; bool:
+        &#34;&#34;&#34;
+        Check if the given symbol index has a value in the current model.
+
+        Arguments
+        ---------
+        thread_id: int
+            The index of the solving thread that found the model.
+        index: int
+            Index to retreive.
+
+        Returns
+        -------
+        bool
+            Whether the given index has a value.
+        &#34;&#34;&#34;
+        return self.__assignment_has_value(self.__c_theory, thread_id, index)
+
+    def get_value(self, thread_id: int, index: int) -&gt; ValueType:
+        &#34;&#34;&#34;
+        Get the value of the symbol index in the current model.
+
+        Arguments
+        ---------
+        thread_id: int
+            The index of the solving thread that found the model.
+        index: int
+            Index to retreive.
+
+        Returns
+        -------
+        ValueType
+            The value of the index in form of an int, float, or Symbol.
+        &#34;&#34;&#34;
+        c_value = _c_variant()
+        self.__assignment_get_value(self.__c_theory, thread_id, index, byref(c_value))
+        if c_value.type == 0:
+            return c_value.value.integer
+        if c_value.type == 1:
+            return c_value.value.double
+        if c_value.type == 2:
+            return _Symbol(c_value.value.symbol)
+        raise RuntimeError(&#34;must not happen&#34;)
+
+    def assignment(self, thread_id: int) -&gt; Iterator[Tuple[Symbol, ValueType]]:
+        &#34;&#34;&#34;
+        Get all values symbol/value pairs assigned by the theory in the
+        current model.
+
+        Arguments
+        ---------
+        thread_id: int
+            The index of the solving thread that found the model.
+
+        Returns
+        -------
+        Iterator[Tuple[Symbol,ValueType]]
+            An iterator over symbol/value pairs.
+        &#34;&#34;&#34;
+        c_index = c_size_t()
+        self.__assignment_begin(self.__c_theory, thread_id, byref(c_index))
+        while self.__assignment_next(self.__c_theory, thread_id, byref(c_index)):
+            yield (self.get_symbol(c_index.value), self.get_value(thread_id, c_index.value))
+
+    def __fun(self, prefix, name, res, args, error=True):
+        ret = self.__theory[&#34;{}_{}&#34;.format(prefix, name)]
+        ret.restype = res
+        ret.argtypes = args
+        ret.errcheck = self.__handle_error if error else self.__skip_error
+        return ret
+
+    def __skip_error(self, ret, func, arguments):
+        # pylint: disable=unused-argument
+        return ret
+
+    def __handle_error(self, success, func, arguments):
+        # pylint: disable=unused-argument
+        if not success:
+            msg = _error_message()
+            code = _error_code()
+            if msg is None:
+                msg = &#34;no message&#34;
+            if code in (1, 2, 4):
+                raise RuntimeError(msg)
+            if code == 3:
+                raise MemoryError(msg)
+            raise RuntimeError(&#34;unknow error&#34;)</code></pre>
+</details>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="clingox.tefoli.Theory"><code class="flex name class">
+<span>class <span class="ident">Theory</span></span>
+<span>(</span><span>prefix: str, lib: str)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Interface to call functions from a C-library extending clingo's C/Python
+library.</p>
+<p>The functions in here are designed to be used with a <code>Application</code>
+object but can also be used with a standalone <code>Control</code> object.</p>
+<h2 id="notes">Notes</h2>
+<p>The C library must implement the following functions:</p>
+<ul>
+<li><code>bool create(theory_t **theory)</code></li>
+<li><code>bool destroy(theory_t *theory)</code></li>
+<li><code>bool register(theory_t *theory, clingo_control_t* control)</code></li>
+<li><code>bool rewrite_statement(theory_t *theory, clingo_ast_statement_t const *stm, rewrite_callback_t add, void *data)</code></li>
+<li><code>bool prepare(theory_t *theory, clingo_control_t* control)</code></li>
+<li><code>bool register_options(theory_t *theory, clingo_options_t* options)</code></li>
+<li><code>bool validate_options(theory_t *theory)</code></li>
+<li><code>bool on_model(theory_t *theory, clingo_model_t* model)</code></li>
+<li><code>bool on_statistics(theory_t *theory, clingo_statistics_t* step, clingo_statistics_t* accu)</code></li>
+<li><code>bool lookup_symbol(theory_t *theory, clingo_symbol_t symbol, size_t *index)</code></li>
+<li><code>clingo_symbol_t get_symbol(theory_t *theory, size_t index)</code></li>
+<li><code>void assignment_begin(theory_t *theory, uint32_t thread_id, size_t *index)</code></li>
+<li><code>bool assignment_next(theory_t *theory, uint32_t thread_id, size_t *index)</code></li>
+<li><code>void assignment_has_value(theory_t *theory, uint32_t thread_id, size_t index)</code></li>
+<li><code>void assignment_get_value(theory_t *theory, uint32_t thread_id, size_t index, value_t *value)</code></li>
+<li><code>bool configure(theory_t *theory, char const *key, char const *value)</code></li>
+</ul>
+<p>Loads a given library.</p>
+<h2 id="arguments">Arguments</h2>
+<dl>
+<dt><strong><code>prefix</code></strong> :&ensp;<code>str</code></dt>
+<dd>Prefix of functions in the library.</dd>
+<dt><strong><code>lib</code></strong> :&ensp;<code>str</code></dt>
+<dd>Name of the library to load.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class Theory:
+    &#34;&#34;&#34;
+    Interface to call functions from a C-library extending clingo&#39;s C/Python
+    library.
+
+    The functions in here are designed to be used with a `Application`
+    object but can also be used with a standalone `Control` object.
+
+    Notes
+    -----
+    The C library must implement the following functions:
+
+    - `bool create(theory_t **theory)`
+    - `bool destroy(theory_t *theory)`
+    - `bool register(theory_t *theory, clingo_control_t* control)`
+    - `bool rewrite_statement(theory_t *theory, clingo_ast_statement_t const *stm, rewrite_callback_t add, void *data)`
+    - `bool prepare(theory_t *theory, clingo_control_t* control)`
+    - `bool register_options(theory_t *theory, clingo_options_t* options)`
+    - `bool validate_options(theory_t *theory)`
+    - `bool on_model(theory_t *theory, clingo_model_t* model)`
+    - `bool on_statistics(theory_t *theory, clingo_statistics_t* step, clingo_statistics_t* accu)`
+    - `bool lookup_symbol(theory_t *theory, clingo_symbol_t symbol, size_t *index)`
+    - `clingo_symbol_t get_symbol(theory_t *theory, size_t index)`
+    - `void assignment_begin(theory_t *theory, uint32_t thread_id, size_t *index)`
+    - `bool assignment_next(theory_t *theory, uint32_t thread_id, size_t *index)`
+    - `void assignment_has_value(theory_t *theory, uint32_t thread_id, size_t index)`
+    - `void assignment_get_value(theory_t *theory, uint32_t thread_id, size_t index, value_t *value)`
+    - `bool configure(theory_t *theory, char const *key, char const *value)`
+    &#34;&#34;&#34;
+    # pylint: disable=too-many-instance-attributes,line-too-long,protected-access
+
+    def __init__(self, prefix: str, lib: str):
+        &#34;&#34;&#34;
+        Loads a given library.
+
+        Arguments
+        ---------
+        prefix: str
+            Prefix of functions in the library.
+        lib: str
+            Name of the library to load.
+        &#34;&#34;&#34;
+        self.__c_theory = None
+
+        # load library
+        opt_lib = find_library(lib)
+        if opt_lib is None:
+            raise RuntimeError(&#39;could not find library&#39;)
+        self.__theory = cdll.LoadLibrary(opt_lib)
+
+        # bool create(theory_t **theory);
+        self.__create = self.__fun(prefix, &#34;create&#34;, c_bool, [POINTER(c_void_p)])
+
+        # bool destroy(theory_t *theory);
+        self.__destroy = self.__fun(prefix, &#34;destroy&#34;, c_bool, [c_void_p])
+
+        # bool register(theory_t *theory, clingo_control_t* control);
+        self.__register = self.__fun(prefix, &#34;register&#34;, c_bool, [c_void_p, c_void_p])
+
+        # bool rewrite_statement(theory_t *theory, clingo_ast_statement_t const *stm, rewrite_callback_t add, void *data)
+        try:
+            self.__rewrite_statement = self.__fun(prefix, &#34;rewrite_statement&#34;, c_bool, [c_void_p, c_void_p, c_void_p])
+        except AttributeError:
+            self.__rewrite_statement = None
+
+        # bool prepare(theory_t *theory, clingo_control_t* control);
+        self.__prepare = self.__fun(prefix, &#34;prepare&#34;, c_bool, [c_void_p, c_void_p])
+
+        # bool register_options(theory_t *theory, clingo_options_t* options);
+        self.__register_options = self.__fun(prefix, &#34;register_options&#34;, c_bool, [c_void_p, c_void_p])
+
+        # bool validate_options(theory_t *theory);
+        self.__validate_options = self.__fun(prefix, &#34;validate_options&#34;, c_bool, [c_void_p])
+
+        # bool on_model(theory_t *theory, clingo_model_t* model);
+        self.__on_model = self.__fun(prefix, &#34;on_model&#34;, c_bool, [c_void_p, c_void_p])
+
+        # bool on_statistics(theory_t *theory, clingo_statistics_t* step, clingo_statistics_t* accu);
+        self.__on_statistics = self.__fun(prefix, &#34;on_statistics&#34;, c_bool, [c_void_p, c_void_p, c_void_p])
+
+        # bool lookup_symbol(theory_t *theory, clingo_symbol_t symbol, size_t *index);
+        self.__lookup_symbol = self.__fun(prefix, &#34;lookup_symbol&#34;, c_bool, [c_void_p, c_uint64, POINTER(c_size_t)], False)
+
+        # clingo_symbol_t get_symbol(theory_t *theory, size_t index);
+        self.__get_symbol = self.__fun(prefix, &#34;get_symbol&#34;, c_uint64, [c_void_p, c_size_t], False)
+
+        # void assignment_begin(theory_t *theory, uint32_t thread_id, size_t *index);
+        self.__assignment_begin = self.__fun(prefix, &#34;assignment_begin&#34;, None, [c_void_p, c_uint, POINTER(c_size_t)], False)
+
+        # bool assignment_next(theory_t *theory, uint32_t thread_id, size_t *index);
+        self.__assignment_next = self.__fun(prefix, &#34;assignment_next&#34;, c_bool, [c_void_p, c_uint, POINTER(c_size_t)], False)
+
+        # void assignment_has_value(theory_t *theory, uint32_t thread_id, size_t index);
+        self.__assignment_has_value = self.__fun(prefix, &#34;assignment_has_value&#34;, c_bool, [c_void_p, c_uint, c_size_t], False)
+
+        # void assignment_get_value(theory_t *theory, uint32_t thread_id, size_t index, value_t *value);
+        self.__assignment_get_value = self.__fun(prefix, &#34;assignment_get_value&#34;, None, [c_void_p, c_uint, c_size_t, POINTER(_c_variant)], False)
+
+        # bool configure(theory_t *theory, char const *key, char const *value);
+        self.__configure = self.__fun(prefix, &#34;configure&#34;, c_bool, [c_void_p, c_char_p, c_char_p])
+
+        # create theory
+        c_theory = c_void_p()
+        self.__create(byref(c_theory))
+        self.__c_theory = c_theory
+
+    def __del__(self):
+        if self.__c_theory is not None:
+            self.__destroy(self.__c_theory)
+            self.__c_theory = None
+
+    def configure(self, key: str, value: str) -&gt; None:
+        &#34;&#34;&#34;
+        Allows for configuring a theory via key/value pairs similar to
+        command line options.
+
+        This function must be called before the theory is registered.
+
+        Arguments
+        ---------
+        key: str
+            The name of the option.
+        value: str
+            The value of the option.
+        &#34;&#34;&#34;
+        self.__configure(self.__c_theory, key.encode(), value.encode())
+
+    def register(self, control: Control) -&gt; None:
+        &#34;&#34;&#34;
+        Register the theory with the given control object.
+
+        Arguments
+        ---------
+        control: Control
+            Target to register with.
+        &#34;&#34;&#34;
+        self.__register(self.__c_theory, control._to_c) # type: ignore
+
+    def prepare(self, control: Control) -&gt; None:
+        &#34;&#34;&#34;
+        Prepare the theory.
+
+        Must be called between ground and solve.
+
+        Arguments
+        ---------
+        control: Control
+            The associated control object.
+        &#34;&#34;&#34;
+        self.__prepare(self.__c_theory, control._to_c) # type: ignore
+
+    def rewrite_statement(self, stm: AST, add: Callable[[AST], None]) -&gt; None:
+        &#34;&#34;&#34;
+        Rewrite the given statement and call add on the rewritten version(s).
+
+        Must be called for some theories that have to perform rewritings on the
+        AST.
+
+        Arguments
+        ---------
+        stm: AST
+            Statement to translate.
+        add: Callable[[AST], None]
+            Callback for adding translated statements.
+        &#34;&#34;&#34;
+        def py_add(stm, data):
+            # pylint: disable=unused-argument,bare-except
+            try:
+                add(AST._from_c(stm))
+            except:
+                return False
+            return True
+        self.__rewrite_statement(self.__c_theory, stm._to_c, _add_stm(py_add), None)
+
+    def register_options(self, options: ApplicationOptions) -&gt; None:
+        &#34;&#34;&#34;
+        Register the theory&#39;s options with the given application options
+        object.
+
+        Arguments
+        ---------
+        options: ApplicationOptions
+            Target to register with.
+        &#34;&#34;&#34;
+
+        self.__register_options(self.__c_theory, options._to_c) # type: ignore
+
+    def validate_options(self) -&gt; None:
+        &#34;&#34;&#34;
+        Validate the options of the theory.
+        &#34;&#34;&#34;
+        self.__validate_options(self.__c_theory)
+
+    def on_model(self, model: Model) -&gt; None:
+        &#34;&#34;&#34;
+        Inform the theory that a model has been found.
+
+        Arguments
+        ---------
+        model: Model
+            The current model.
+        &#34;&#34;&#34;
+        self.__on_model(self.__c_theory, model._to_c) # type: ignore
+
+    def on_statistics(self, step: StatisticsMap, accu: StatisticsMap) -&gt; None:
+        &#34;&#34;&#34;
+        Add the theory&#39;s statistics to the given maps.
+
+        Arguments
+        ---------
+        step: StatisticsMap
+            Map for per step statistics.
+        accu: StatisticsMap
+            Map for accumulated statistics.
+        &#34;&#34;&#34;
+        self.__on_statistics(self.__c_theory, step._to_c, accu._to_c) # type: ignore
+
+    def lookup_symbol(self, symbol: Symbol) -&gt; Optional[int]:
+        &#34;&#34;&#34;
+        Get the integer index of a symbol assigned by the theory when a
+        model is found.
+
+        Using indices allows for efficent retreival of values.
+
+        Arguments
+        ---------
+        symbol: Symbol
+            The symbol to look up.
+
+        Returns
+        -------
+        Optional[int]
+            The index of the value if found.
+        &#34;&#34;&#34;
+        c_index = c_size_t()
+        if self.__lookup_symbol(self.__c_theory, symbol._to_c, byref(c_index)): # type: ignore
+            return c_index.value
+        return None
+
+    def get_symbol(self, index: int) -&gt; Symbol:
+        &#34;&#34;&#34;
+        Get the symbol associated with an index.
+
+        The index must be valid.
+
+        Arguments
+        ---------
+        index: int
+            Index to retreive.
+
+        Returns
+        -------
+        Symbol
+            The associated symbol.
+        &#34;&#34;&#34;
+        return _Symbol(self.__get_symbol(self.__c_theory, index))
+
+    def has_value(self, thread_id: int, index: int) -&gt; bool:
+        &#34;&#34;&#34;
+        Check if the given symbol index has a value in the current model.
+
+        Arguments
+        ---------
+        thread_id: int
+            The index of the solving thread that found the model.
+        index: int
+            Index to retreive.
+
+        Returns
+        -------
+        bool
+            Whether the given index has a value.
+        &#34;&#34;&#34;
+        return self.__assignment_has_value(self.__c_theory, thread_id, index)
+
+    def get_value(self, thread_id: int, index: int) -&gt; ValueType:
+        &#34;&#34;&#34;
+        Get the value of the symbol index in the current model.
+
+        Arguments
+        ---------
+        thread_id: int
+            The index of the solving thread that found the model.
+        index: int
+            Index to retreive.
+
+        Returns
+        -------
+        ValueType
+            The value of the index in form of an int, float, or Symbol.
+        &#34;&#34;&#34;
+        c_value = _c_variant()
+        self.__assignment_get_value(self.__c_theory, thread_id, index, byref(c_value))
+        if c_value.type == 0:
+            return c_value.value.integer
+        if c_value.type == 1:
+            return c_value.value.double
+        if c_value.type == 2:
+            return _Symbol(c_value.value.symbol)
+        raise RuntimeError(&#34;must not happen&#34;)
+
+    def assignment(self, thread_id: int) -&gt; Iterator[Tuple[Symbol, ValueType]]:
+        &#34;&#34;&#34;
+        Get all values symbol/value pairs assigned by the theory in the
+        current model.
+
+        Arguments
+        ---------
+        thread_id: int
+            The index of the solving thread that found the model.
+
+        Returns
+        -------
+        Iterator[Tuple[Symbol,ValueType]]
+            An iterator over symbol/value pairs.
+        &#34;&#34;&#34;
+        c_index = c_size_t()
+        self.__assignment_begin(self.__c_theory, thread_id, byref(c_index))
+        while self.__assignment_next(self.__c_theory, thread_id, byref(c_index)):
+            yield (self.get_symbol(c_index.value), self.get_value(thread_id, c_index.value))
+
+    def __fun(self, prefix, name, res, args, error=True):
+        ret = self.__theory[&#34;{}_{}&#34;.format(prefix, name)]
+        ret.restype = res
+        ret.argtypes = args
+        ret.errcheck = self.__handle_error if error else self.__skip_error
+        return ret
+
+    def __skip_error(self, ret, func, arguments):
+        # pylint: disable=unused-argument
+        return ret
+
+    def __handle_error(self, success, func, arguments):
+        # pylint: disable=unused-argument
+        if not success:
+            msg = _error_message()
+            code = _error_code()
+            if msg is None:
+                msg = &#34;no message&#34;
+            if code in (1, 2, 4):
+                raise RuntimeError(msg)
+            if code == 3:
+                raise MemoryError(msg)
+            raise RuntimeError(&#34;unknow error&#34;)</code></pre>
+</details>
+<h3>Methods</h3>
+<dl>
+<dt id="clingox.tefoli.Theory.assignment"><code class="name flex">
+<span>def <span class="ident">assignment</span></span>(<span>self, thread_id: int) ‑> Iterator[Tuple[clingo.Symbol, Union[int, float, clingo.Symbol]]]</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Get all values symbol/value pairs assigned by the theory in the
+current model.</p>
+<h2 id="arguments">Arguments</h2>
+<dl>
+<dt><strong><code>thread_id</code></strong> :&ensp;<code>int</code></dt>
+<dd>The index of the solving thread that found the model.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>Iterator[Tuple[Symbol,ValueType]]</code></dt>
+<dd>An iterator over symbol/value pairs.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def assignment(self, thread_id: int) -&gt; Iterator[Tuple[Symbol, ValueType]]:
+    &#34;&#34;&#34;
+    Get all values symbol/value pairs assigned by the theory in the
+    current model.
+
+    Arguments
+    ---------
+    thread_id: int
+        The index of the solving thread that found the model.
+
+    Returns
+    -------
+    Iterator[Tuple[Symbol,ValueType]]
+        An iterator over symbol/value pairs.
+    &#34;&#34;&#34;
+    c_index = c_size_t()
+    self.__assignment_begin(self.__c_theory, thread_id, byref(c_index))
+    while self.__assignment_next(self.__c_theory, thread_id, byref(c_index)):
+        yield (self.get_symbol(c_index.value), self.get_value(thread_id, c_index.value))</code></pre>
+</details>
+</dd>
+<dt id="clingox.tefoli.Theory.configure"><code class="name flex">
+<span>def <span class="ident">configure</span></span>(<span>self, key: str, value: str) ‑> NoneType</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Allows for configuring a theory via key/value pairs similar to
+command line options.</p>
+<p>This function must be called before the theory is registered.</p>
+<h2 id="arguments">Arguments</h2>
+<dl>
+<dt><strong><code>key</code></strong> :&ensp;<code>str</code></dt>
+<dd>The name of the option.</dd>
+<dt><strong><code>value</code></strong> :&ensp;<code>str</code></dt>
+<dd>The value of the option.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def configure(self, key: str, value: str) -&gt; None:
+    &#34;&#34;&#34;
+    Allows for configuring a theory via key/value pairs similar to
+    command line options.
+
+    This function must be called before the theory is registered.
+
+    Arguments
+    ---------
+    key: str
+        The name of the option.
+    value: str
+        The value of the option.
+    &#34;&#34;&#34;
+    self.__configure(self.__c_theory, key.encode(), value.encode())</code></pre>
+</details>
+</dd>
+<dt id="clingox.tefoli.Theory.get_symbol"><code class="name flex">
+<span>def <span class="ident">get_symbol</span></span>(<span>self, index: int) ‑> clingo.Symbol</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Get the symbol associated with an index.</p>
+<p>The index must be valid.</p>
+<h2 id="arguments">Arguments</h2>
+<dl>
+<dt><strong><code>index</code></strong> :&ensp;<code>int</code></dt>
+<dd>Index to retreive.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>Symbol</code></dt>
+<dd>The associated symbol.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_symbol(self, index: int) -&gt; Symbol:
+    &#34;&#34;&#34;
+    Get the symbol associated with an index.
+
+    The index must be valid.
+
+    Arguments
+    ---------
+    index: int
+        Index to retreive.
+
+    Returns
+    -------
+    Symbol
+        The associated symbol.
+    &#34;&#34;&#34;
+    return _Symbol(self.__get_symbol(self.__c_theory, index))</code></pre>
+</details>
+</dd>
+<dt id="clingox.tefoli.Theory.get_value"><code class="name flex">
+<span>def <span class="ident">get_value</span></span>(<span>self, thread_id: int, index: int) ‑> Union[int, float, clingo.Symbol]</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Get the value of the symbol index in the current model.</p>
+<h2 id="arguments">Arguments</h2>
+<dl>
+<dt><strong><code>thread_id</code></strong> :&ensp;<code>int</code></dt>
+<dd>The index of the solving thread that found the model.</dd>
+<dt><strong><code>index</code></strong> :&ensp;<code>int</code></dt>
+<dd>Index to retreive.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>ValueType</code></dt>
+<dd>The value of the index in form of an int, float, or Symbol.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_value(self, thread_id: int, index: int) -&gt; ValueType:
+    &#34;&#34;&#34;
+    Get the value of the symbol index in the current model.
+
+    Arguments
+    ---------
+    thread_id: int
+        The index of the solving thread that found the model.
+    index: int
+        Index to retreive.
+
+    Returns
+    -------
+    ValueType
+        The value of the index in form of an int, float, or Symbol.
+    &#34;&#34;&#34;
+    c_value = _c_variant()
+    self.__assignment_get_value(self.__c_theory, thread_id, index, byref(c_value))
+    if c_value.type == 0:
+        return c_value.value.integer
+    if c_value.type == 1:
+        return c_value.value.double
+    if c_value.type == 2:
+        return _Symbol(c_value.value.symbol)
+    raise RuntimeError(&#34;must not happen&#34;)</code></pre>
+</details>
+</dd>
+<dt id="clingox.tefoli.Theory.has_value"><code class="name flex">
+<span>def <span class="ident">has_value</span></span>(<span>self, thread_id: int, index: int) ‑> bool</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Check if the given symbol index has a value in the current model.</p>
+<h2 id="arguments">Arguments</h2>
+<dl>
+<dt><strong><code>thread_id</code></strong> :&ensp;<code>int</code></dt>
+<dd>The index of the solving thread that found the model.</dd>
+<dt><strong><code>index</code></strong> :&ensp;<code>int</code></dt>
+<dd>Index to retreive.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>bool</code></dt>
+<dd>Whether the given index has a value.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def has_value(self, thread_id: int, index: int) -&gt; bool:
+    &#34;&#34;&#34;
+    Check if the given symbol index has a value in the current model.
+
+    Arguments
+    ---------
+    thread_id: int
+        The index of the solving thread that found the model.
+    index: int
+        Index to retreive.
+
+    Returns
+    -------
+    bool
+        Whether the given index has a value.
+    &#34;&#34;&#34;
+    return self.__assignment_has_value(self.__c_theory, thread_id, index)</code></pre>
+</details>
+</dd>
+<dt id="clingox.tefoli.Theory.lookup_symbol"><code class="name flex">
+<span>def <span class="ident">lookup_symbol</span></span>(<span>self, symbol: clingo.Symbol) ‑> Union[int, NoneType]</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Get the integer index of a symbol assigned by the theory when a
+model is found.</p>
+<p>Using indices allows for efficent retreival of values.</p>
+<h2 id="arguments">Arguments</h2>
+<dl>
+<dt><strong><code>symbol</code></strong> :&ensp;<code>Symbol</code></dt>
+<dd>The symbol to look up.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>Optional[int]</code></dt>
+<dd>The index of the value if found.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def lookup_symbol(self, symbol: Symbol) -&gt; Optional[int]:
+    &#34;&#34;&#34;
+    Get the integer index of a symbol assigned by the theory when a
+    model is found.
+
+    Using indices allows for efficent retreival of values.
+
+    Arguments
+    ---------
+    symbol: Symbol
+        The symbol to look up.
+
+    Returns
+    -------
+    Optional[int]
+        The index of the value if found.
+    &#34;&#34;&#34;
+    c_index = c_size_t()
+    if self.__lookup_symbol(self.__c_theory, symbol._to_c, byref(c_index)): # type: ignore
+        return c_index.value
+    return None</code></pre>
+</details>
+</dd>
+<dt id="clingox.tefoli.Theory.on_model"><code class="name flex">
+<span>def <span class="ident">on_model</span></span>(<span>self, model: clingo.Model) ‑> NoneType</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Inform the theory that a model has been found.</p>
+<h2 id="arguments">Arguments</h2>
+<dl>
+<dt><strong><code>model</code></strong> :&ensp;<code>Model</code></dt>
+<dd>The current model.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def on_model(self, model: Model) -&gt; None:
+    &#34;&#34;&#34;
+    Inform the theory that a model has been found.
+
+    Arguments
+    ---------
+    model: Model
+        The current model.
+    &#34;&#34;&#34;
+    self.__on_model(self.__c_theory, model._to_c) # type: ignore</code></pre>
+</details>
+</dd>
+<dt id="clingox.tefoli.Theory.on_statistics"><code class="name flex">
+<span>def <span class="ident">on_statistics</span></span>(<span>self, step: clingo.StatisticsMap, accu: clingo.StatisticsMap) ‑> NoneType</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Add the theory's statistics to the given maps.</p>
+<h2 id="arguments">Arguments</h2>
+<dl>
+<dt><strong><code>step</code></strong> :&ensp;<code>StatisticsMap</code></dt>
+<dd>Map for per step statistics.</dd>
+<dt><strong><code>accu</code></strong> :&ensp;<code>StatisticsMap</code></dt>
+<dd>Map for accumulated statistics.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def on_statistics(self, step: StatisticsMap, accu: StatisticsMap) -&gt; None:
+    &#34;&#34;&#34;
+    Add the theory&#39;s statistics to the given maps.
+
+    Arguments
+    ---------
+    step: StatisticsMap
+        Map for per step statistics.
+    accu: StatisticsMap
+        Map for accumulated statistics.
+    &#34;&#34;&#34;
+    self.__on_statistics(self.__c_theory, step._to_c, accu._to_c) # type: ignore</code></pre>
+</details>
+</dd>
+<dt id="clingox.tefoli.Theory.prepare"><code class="name flex">
+<span>def <span class="ident">prepare</span></span>(<span>self, control: clingo.Control) ‑> NoneType</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Prepare the theory.</p>
+<p>Must be called between ground and solve.</p>
+<h2 id="arguments">Arguments</h2>
+<dl>
+<dt><strong><code>control</code></strong> :&ensp;<code>Control</code></dt>
+<dd>The associated control object.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def prepare(self, control: Control) -&gt; None:
+    &#34;&#34;&#34;
+    Prepare the theory.
+
+    Must be called between ground and solve.
+
+    Arguments
+    ---------
+    control: Control
+        The associated control object.
+    &#34;&#34;&#34;
+    self.__prepare(self.__c_theory, control._to_c) # type: ignore</code></pre>
+</details>
+</dd>
+<dt id="clingox.tefoli.Theory.register"><code class="name flex">
+<span>def <span class="ident">register</span></span>(<span>self, control: clingo.Control) ‑> NoneType</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Register the theory with the given control object.</p>
+<h2 id="arguments">Arguments</h2>
+<dl>
+<dt><strong><code>control</code></strong> :&ensp;<code>Control</code></dt>
+<dd>Target to register with.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def register(self, control: Control) -&gt; None:
+    &#34;&#34;&#34;
+    Register the theory with the given control object.
+
+    Arguments
+    ---------
+    control: Control
+        Target to register with.
+    &#34;&#34;&#34;
+    self.__register(self.__c_theory, control._to_c) # type: ignore</code></pre>
+</details>
+</dd>
+<dt id="clingox.tefoli.Theory.register_options"><code class="name flex">
+<span>def <span class="ident">register_options</span></span>(<span>self, options: clingo.ApplicationOptions) ‑> NoneType</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Register the theory's options with the given application options
+object.</p>
+<h2 id="arguments">Arguments</h2>
+<dl>
+<dt><strong><code>options</code></strong> :&ensp;<code>ApplicationOptions</code></dt>
+<dd>Target to register with.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def register_options(self, options: ApplicationOptions) -&gt; None:
+    &#34;&#34;&#34;
+    Register the theory&#39;s options with the given application options
+    object.
+
+    Arguments
+    ---------
+    options: ApplicationOptions
+        Target to register with.
+    &#34;&#34;&#34;
+
+    self.__register_options(self.__c_theory, options._to_c) # type: ignore</code></pre>
+</details>
+</dd>
+<dt id="clingox.tefoli.Theory.rewrite_statement"><code class="name flex">
+<span>def <span class="ident">rewrite_statement</span></span>(<span>self, stm: clingo.ast.AST, add: Callable[[clingo.ast.AST], NoneType]) ‑> NoneType</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Rewrite the given statement and call add on the rewritten version(s).</p>
+<p>Must be called for some theories that have to perform rewritings on the
+AST.</p>
+<h2 id="arguments">Arguments</h2>
+<dl>
+<dt><strong><code>stm</code></strong> :&ensp;<code>AST</code></dt>
+<dd>Statement to translate.</dd>
+<dt><strong><code>add</code></strong> :&ensp;<code>Callable[[AST], None]</code></dt>
+<dd>Callback for adding translated statements.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def rewrite_statement(self, stm: AST, add: Callable[[AST], None]) -&gt; None:
+    &#34;&#34;&#34;
+    Rewrite the given statement and call add on the rewritten version(s).
+
+    Must be called for some theories that have to perform rewritings on the
+    AST.
+
+    Arguments
+    ---------
+    stm: AST
+        Statement to translate.
+    add: Callable[[AST], None]
+        Callback for adding translated statements.
+    &#34;&#34;&#34;
+    def py_add(stm, data):
+        # pylint: disable=unused-argument,bare-except
+        try:
+            add(AST._from_c(stm))
+        except:
+            return False
+        return True
+    self.__rewrite_statement(self.__c_theory, stm._to_c, _add_stm(py_add), None)</code></pre>
+</details>
+</dd>
+<dt id="clingox.tefoli.Theory.validate_options"><code class="name flex">
+<span>def <span class="ident">validate_options</span></span>(<span>self) ‑> NoneType</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Validate the options of the theory.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def validate_options(self) -&gt; None:
+    &#34;&#34;&#34;
+    Validate the options of the theory.
+    &#34;&#34;&#34;
+    self.__validate_options(self.__c_theory)</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+</dl>
+</section>
+</article>
+<nav id="sidebar">
+<h1>Index</h1>
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="clingox" href="index.html">clingox</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="clingox.tefoli.Theory" href="#clingox.tefoli.Theory">Theory</a></code></h4>
+<ul class="two-column">
+<li><code><a title="clingox.tefoli.Theory.assignment" href="#clingox.tefoli.Theory.assignment">assignment</a></code></li>
+<li><code><a title="clingox.tefoli.Theory.configure" href="#clingox.tefoli.Theory.configure">configure</a></code></li>
+<li><code><a title="clingox.tefoli.Theory.get_symbol" href="#clingox.tefoli.Theory.get_symbol">get_symbol</a></code></li>
+<li><code><a title="clingox.tefoli.Theory.get_value" href="#clingox.tefoli.Theory.get_value">get_value</a></code></li>
+<li><code><a title="clingox.tefoli.Theory.has_value" href="#clingox.tefoli.Theory.has_value">has_value</a></code></li>
+<li><code><a title="clingox.tefoli.Theory.lookup_symbol" href="#clingox.tefoli.Theory.lookup_symbol">lookup_symbol</a></code></li>
+<li><code><a title="clingox.tefoli.Theory.on_model" href="#clingox.tefoli.Theory.on_model">on_model</a></code></li>
+<li><code><a title="clingox.tefoli.Theory.on_statistics" href="#clingox.tefoli.Theory.on_statistics">on_statistics</a></code></li>
+<li><code><a title="clingox.tefoli.Theory.prepare" href="#clingox.tefoli.Theory.prepare">prepare</a></code></li>
+<li><code><a title="clingox.tefoli.Theory.register" href="#clingox.tefoli.Theory.register">register</a></code></li>
+<li><code><a title="clingox.tefoli.Theory.register_options" href="#clingox.tefoli.Theory.register_options">register_options</a></code></li>
+<li><code><a title="clingox.tefoli.Theory.rewrite_statement" href="#clingox.tefoli.Theory.rewrite_statement">rewrite_statement</a></code></li>
+<li><code><a title="clingox.tefoli.Theory.validate_options" href="#clingox.tefoli.Theory.validate_options">validate_options</a></code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.8.4</a>.</p>
+</footer>
+</body>
+</html>

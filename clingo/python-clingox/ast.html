@@ -1,0 +1,1517 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<meta name="generator" content="pdoc 0.8.4" />
+<title>clingox.ast API documentation</title>
+<meta name="description" content="This module provides highlevel functions to work with clingo&#39;s AST …" />
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
+<link rel="stylesheet preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.1/styles/github.min.css" crossorigin>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.1/highlight.min.js" integrity="sha256-eOgo0OtLL4cdq7RdwRUiGKLX9XsIJ7nGhWEKbohmVAQ=" crossorigin></script>
+<script>window.addEventListener('DOMContentLoaded', () => hljs.initHighlighting())</script>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>clingox.ast</code></h1>
+</header>
+<section id="section-intro">
+<p>This module provides highlevel functions to work with clingo's AST.</p>
+<p>TODO:
+- unpooling as in clingcon</p>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">&#39;&#39;&#39;
+This module provides highlevel functions to work with clingo&#39;s AST.
+
+TODO:
+- unpooling as in clingcon
+&#39;&#39;&#39;
+
+from typing import Any, cast, Iterator, List, Mapping, Optional, Set, Tuple, TypeVar, Union
+from copy import copy
+
+from clingo.ast import AST, ASTType, TheoryFunction, TheoryAtomType, TheoryOperatorType
+from .theory import is_operator
+
+
+UNARY: bool = True
+BINARY: bool = not UNARY
+LEFT: bool = True
+RIGHT: bool = not LEFT
+NONE: bool = RIGHT
+
+ASTChild = TypeVar(&#39;ASTChild&#39;, AST, List[AST])
+
+class Visitor:
+    &#39;&#39;&#39;
+    A visitor for clingo&#39;s abstart syntaxt tree.
+
+    This class should be derived from. Implementing functions with name
+    `visit_&lt;type&gt;` can be used to visit nodes of the given type.
+    &#39;&#39;&#39;
+    def visit_children(self, x: AST, *args: Any, **kwargs: Any):
+        &#39;&#39;&#39;
+        Visit the children of an AST node.
+        &#39;&#39;&#39;
+        for key in x.child_keys:
+            y = getattr(x, key)
+            if y is not None:
+                self.visit(y, *args, **kwargs)
+
+    def visit_list(self, x: List[AST], *args: Any, **kwargs: Any):
+        &#39;&#39;&#39;
+        Visit a sequence of AST nodes.
+        &#39;&#39;&#39;
+        for y in x:
+            self.visit(y, *args, **kwargs)
+
+    def visit(self, x: ASTChild, *args: Any, **kwargs: Any):
+        &#39;&#39;&#39;
+        Generic visit method dispatching to specific member functions to visit
+        child nodes.
+        &#39;&#39;&#39;
+        if isinstance(x, AST):
+            attr = &#34;visit_&#34; + str(x.type)
+            if hasattr(self, attr):
+                getattr(self, attr)(x, *args, **kwargs)
+            else:
+                self.visit_children(x, *args, **kwargs)
+        elif isinstance(x, list):
+            self.visit_list(x, *args, **kwargs)
+        else:
+            raise TypeError(&#34;unexpected type: {}&#34;.format(x))
+
+    def __call__(self, x: ASTChild, *args: Any, **kwargs: Any):
+        &#39;&#39;&#39;
+        Alternative to call visit.
+        &#39;&#39;&#39;
+        self.visit(x, *args, **kwargs)
+
+
+class Transformer:
+    &#39;&#39;&#39;
+    This class is similar to the `Visitor` but allows for mutating the AST by
+    returning modified AST nodes from the visit methods.
+    &#39;&#39;&#39;
+    def visit_children(self, x: AST, *args: Any, **kwargs: Any) -&gt; AST:
+        &#39;&#39;&#39;
+        Visit the children of an AST node.
+        &#39;&#39;&#39;
+        copied = False
+        for key in x.child_keys:
+            y = getattr(x, key)
+            z = None if y is None else self.visit(y, *args, **kwargs)
+            if y is z:
+                continue
+            if not copied:
+                copied = True
+                x = copy(x)
+            setattr(x, key, z)
+        return x
+
+    def _seq(self, i: int, z: Optional[AST], x: List[AST], *args: Any, **kwargs: Any) -&gt; Iterator[Optional[AST]]:
+        for y in x[:i]:
+            yield y
+        yield z
+        for y in x[i+1:]:
+            yield self.visit(y, *args, **kwargs)
+
+    def visit_list(self, x: List[AST], *args: Any, **kwargs: Any) -&gt; List[AST]:
+        &#39;&#39;&#39;
+        Visit a sequence of AST nodes.
+
+        If a transformer returns None, the element is removed from the list.
+        &#39;&#39;&#39;
+        for i, y in enumerate(x):
+            z = self.visit(y, *args, **kwargs)
+            if y is not z:
+                return list(w for w in self._seq(i, z, x, *args, **kwargs) if w is not None)
+        return x
+
+    def visit(self, x: ASTChild, *args: Any, **kwargs: Any) -&gt; Optional[ASTChild]:
+        &#39;&#39;&#39;
+        Generic visit method dispatching to specific member functions to visit
+        child nodes.
+        &#39;&#39;&#39;
+        if isinstance(x, AST):
+            attr = &#34;visit_&#34; + str(x.type)
+            if hasattr(self, attr):
+                return getattr(self, attr)(x, *args, **kwargs)
+            return self.visit_children(x, *args, **kwargs)
+        if isinstance(x, list):
+            return self.visit_list(x, *args, **kwargs)
+        raise TypeError(&#34;unexpected type: {}&#34;.format(x))
+
+    def __call__(self, x: ASTChild, *args: Any, **kwargs: Any) -&gt; Optional[ASTChild]:
+        &#39;&#39;&#39;
+        Alternative to call visit.
+        &#39;&#39;&#39;
+        return self.visit(x, *args, **kwargs)
+
+
+def str_location(loc: Any) -&gt; str:
+    &#34;&#34;&#34;
+    This function takes a location from a clingo AST and transforms it into a
+    readable format.
+    &#34;&#34;&#34;
+    begin = loc[&#34;begin&#34;]
+    end = loc[&#34;end&#34;]
+    ret = &#34;{}:{}:{}&#34;.format(begin[&#34;filename&#34;], begin[&#34;line&#34;], begin[&#34;column&#34;])
+    dash = True
+    eq = begin[&#34;filename&#34;] == end[&#34;filename&#34;]
+    if not eq:
+        ret += &#34;{}{}&#34;.format(&#34;-&#34; if dash else &#34;:&#34;, end[&#34;filename&#34;])
+        dash = False
+    eq = eq and begin[&#34;line&#34;] == end[&#34;line&#34;]
+    if not eq:
+        ret += &#34;{}{}&#34;.format(&#34;-&#34; if dash else &#34;:&#34;, end[&#34;line&#34;])
+        dash = False
+    eq = eq and begin[&#34;column&#34;] == end[&#34;column&#34;]
+    if not eq:
+        ret += &#34;{}{}&#34;.format(&#34;-&#34; if dash else &#34;:&#34;, end[&#34;column&#34;])
+        dash = False
+    return ret
+
+
+class TheoryUnparsedTermParser:
+    &#34;&#34;&#34;
+    Parser for unparsed theory terms in clingo&#39;s AST that works like the
+    inbuilt one.
+    &#34;&#34;&#34;
+    _stack: List[Tuple[str, bool]]
+    _terms: List[AST]
+
+    def __init__(self, table: Mapping[Tuple[str, bool], Tuple[int, bool]]):
+        &#34;&#34;&#34;
+        Initializes the parser with the given operators.
+
+        Example table
+        -------------
+        { (&#34;-&#34;,  UNARY):  (3, RIGHT), # associativity is ignored
+          (&#34;**&#34;, BINARY): (2, RIGHT),
+          (&#34;*&#34;,  BINARY): (1, LEFT),
+          (&#34;+&#34;,  BINARY): (0, LEFT),
+          (&#34;-&#34;,  BINARY): (0, LEFT) }
+        &#34;&#34;&#34;
+        self._stack = []
+        self._terms = []
+        self._table = table
+
+    def _priority_and_associativity(self, operator: str) -&gt; Tuple[int, bool]:
+        &#34;&#34;&#34;
+        Get priority and associativity of the given binary operator.
+        &#34;&#34;&#34;
+        return self._table[(operator, BINARY)]
+
+    def _priority(self, operator: str, unary: bool) -&gt; int:
+        &#34;&#34;&#34;
+        Get priority of the given unary or binary operator.
+        &#34;&#34;&#34;
+        return self._table[(operator, unary)][0]
+
+    def _check(self, operator: str) -&gt; bool:
+        &#34;&#34;&#34;
+        Returns true if the stack has to be reduced because of the precedence
+        of the given binary operator is lower than the preceeding operator on
+        the stack.
+        &#34;&#34;&#34;
+        if not self._stack:
+            return False
+        priority, associativity = self._priority_and_associativity(operator)
+        previous_priority = self._priority(*self._stack[-1])
+        return previous_priority &gt; priority or (previous_priority == priority and associativity)
+
+    def _reduce(self) -&gt; None:
+        &#34;&#34;&#34;
+        Combines the last unary or binary term on the stack.
+        &#34;&#34;&#34;
+        b = self._terms.pop()
+        operator, unary = self._stack.pop()
+        if unary:
+            self._terms.append(TheoryFunction(b.location, operator, [b]))
+        else:
+            a = self._terms.pop()
+            l = {&#34;begin&#34;: a.location[&#34;begin&#34;], &#34;end&#34;: b.location[&#34;end&#34;]}
+            self._terms.append(TheoryFunction(l, operator, [a, b]))
+
+    def check_operator(self, operator: str, unary: bool, location: Any):
+        &#34;&#34;&#34;
+        Check if the given operator is in the parse table.
+        &#34;&#34;&#34;
+        if not (operator, unary) in self._table:
+            raise RuntimeError(&#34;cannot parse operator `{}`: {}&#34;.format(operator, str_location(location)))
+
+    def parse(self, x: AST) -&gt; AST:
+        &#34;&#34;&#34;
+        Parses the given unparsed term, replacing it by nested theory
+        functions.
+        &#34;&#34;&#34;
+        del self._stack[:]
+        del self._terms[:]
+
+        unary = True
+
+        for element in x.elements:
+            for operator in element.operators:
+                self.check_operator(operator, unary, x.location)
+
+                while not unary and self._check(operator):
+                    self._reduce()
+
+                self._stack.append((operator, unary))
+                unary = True
+
+            self._terms.append(element.term)
+            unary = False
+
+        while self._stack:
+            self._reduce()
+
+        return self._terms[0]
+
+TermTable = Mapping[Tuple[str, bool],
+                    Tuple[int, bool]]
+AtomTable = Mapping[Tuple[str, int],
+                    Tuple[TheoryAtomType,
+                          str,
+                          Optional[Tuple[List[str], str]]]]
+
+class TheoryTermParser(Transformer):
+    &#34;&#34;&#34;
+    Parser for theory terms in clingo&#39;s AST that works like the inbuilt one.
+
+    This is implemented as a transformer that traverses the AST replacing all
+    terms found.
+    &#34;&#34;&#34;
+    # pylint: disable=invalid-name
+
+    def __init__(self, table: TermTable):
+        &#34;&#34;&#34;
+        Initializes the parser with the given operators.
+        &#34;&#34;&#34;
+        self._parser = TheoryUnparsedTermParser(table)
+
+    def visit_TheoryFunction(self, x) -&gt; AST:
+        &#34;&#34;&#34;
+        Parse the theory function and check if it agrees with the grammar.
+        &#34;&#34;&#34;
+        unary = len(x.arguments) == 1
+        binary = len(x.arguments) == 2
+        if (unary or binary) and is_operator(x.name):
+            self._parser.check_operator(x.name, unary, x.location)
+
+        return self.visit_children(x)
+
+    def visit_TheoryUnparsedTerm(self, x: AST) -&gt; AST:
+        &#34;&#34;&#34;
+        Parse the given unparsed term.
+        &#34;&#34;&#34;
+        return cast(AST, self(self._parser.parse(x)))
+
+
+class TheoryParser(Transformer):
+    &#34;&#34;&#34;
+    This class parses theory atoms in the same way as clingo&#39;s internal parser.
+    &#34;&#34;&#34;
+    # pylint: disable=invalid-name
+    _table: Mapping[Tuple[str, int],
+                    Tuple[TheoryAtomType,
+                          TheoryTermParser,
+                          Optional[Tuple[Set[str], TheoryTermParser]]]]
+    in_body: bool
+    in_head: bool
+    is_directive: bool
+
+    def __init__(self, terms: Mapping[str, Union[TermTable, TheoryTermParser]], atoms: AtomTable):
+        self._reset()
+
+        term_parsers = {}
+        for term_key, parser in terms.items():
+            if isinstance(parser, TheoryTermParser):
+                term_parsers[term_key] = parser
+            else:
+                term_parsers[term_key] = TheoryTermParser(parser)
+
+        self._table = {}
+        for atom_key, (atom_type, term_key, guard) in atoms.items():
+            guard_table = None
+            if guard is not None:
+                guard_table = (set(guard[0]), term_parsers[guard[1]])
+            self._table[atom_key] = (atom_type, term_parsers[term_key], guard_table)
+
+    def _reset(self, in_head=True, in_body=True, is_directive=True):
+        &#34;&#34;&#34;
+        Set state information about active scope.
+        &#34;&#34;&#34;
+        self.in_head = in_head
+        self.in_body = in_body
+        self.is_directive = is_directive
+
+    def _visit_body(self, x: AST) -&gt; AST:
+        try:
+            self._reset(False, True, False)
+            body = self.visit_list(x.body)
+            if body is not x.body:
+                x = copy(x)
+                x.body = body
+        finally:
+            self._reset()
+        return x
+
+    def visit_Rule(self, x: AST) -&gt; AST:
+        &#34;&#34;&#34;
+        Parse theory atoms in body and head.
+        &#34;&#34;&#34;
+        try:
+            ret = self._visit_body(x)
+            self._reset(True, False, not x.body)
+            head = self(x.head)
+            if head is not x.head:
+                if ret is x:
+                    ret = copy(ret)
+                ret.head = head
+        finally:
+            self._reset()
+
+        return ret
+
+    def visit_ShowTerm(self, x: AST) -&gt; AST:
+        &#34;&#34;&#34;
+        Parse theory atoms in body.
+        &#34;&#34;&#34;
+        return self._visit_body(x)
+
+    def visit_Minimize(self, x: AST) -&gt; AST:
+        &#34;&#34;&#34;
+        Parse theory atoms in body.
+        &#34;&#34;&#34;
+        return self._visit_body(x)
+
+    def visit_Edge(self, x: AST) -&gt; AST:
+        &#34;&#34;&#34;
+        Parse theory atoms in body.
+        &#34;&#34;&#34;
+        return self._visit_body(x)
+
+    def visit_Heuristic(self, x: AST) -&gt; AST:
+        &#34;&#34;&#34;
+        Parse theory atoms in body.
+        &#34;&#34;&#34;
+        return self._visit_body(x)
+
+    def visit_ProjectAtom(self, x: AST) -&gt; AST:
+        &#34;&#34;&#34;
+        Parse theory atoms in body.
+        &#34;&#34;&#34;
+        return self._visit_body(x)
+
+    def visit_TheoryAtom(self, x: AST) -&gt; AST:
+        &#34;&#34;&#34;
+        Parse the given unparsed term.
+        &#34;&#34;&#34;
+        name = x.term.name
+        arity = len(x.term.arguments)
+        if (name, arity) not in self._table:
+            raise RuntimeError(f&#34;theory atom definiton not found: {str_location(x.location)}&#34;)
+
+        type_, element_parser, guard_table = self._table[(name, arity)]
+        if type_ is TheoryAtomType.Head and not self.in_head:
+            raise RuntimeError(f&#34;theory atom only accepted in head: {str_location(x.location)}&#34;)
+        if type_ is TheoryAtomType.Body and not self.in_body:
+            raise RuntimeError(f&#34;theory atom only accepted in body: {str_location(x.location)}&#34;)
+        if type_ is TheoryAtomType.Directive and not (self.in_head and self.is_directive):
+            raise RuntimeError(f&#34;theory atom must be a directive: {str_location(x.location)}&#34;)
+
+        x = copy(x)
+        x.term = element_parser(x.term)
+        x.elements = element_parser.visit_list(x.elements)
+
+        if x.guard is not None:
+            if guard_table is None:
+                raise RuntimeError(f&#34;unexpected guard in theory atom: {str_location(x.location)}&#34;)
+
+            guards, guard_parser = guard_table
+            if x.guard.operator_name not in guards:
+                raise RuntimeError(f&#34;unexpected guard in theory atom: {str_location(x.location)}&#34;)
+
+            x.guard = copy(x.guard)
+            x.guard.term = guard_parser(x.guard.term)
+
+        return x
+
+def theory_parser_from_definition(x: AST) -&gt; TheoryParser:
+    &#34;&#34;&#34;
+    Turn an AST node of type TheoryDefinition into a TheoryParser.
+    &#34;&#34;&#34;
+    assert x.type is ASTType.TheoryDefinition
+
+    terms = {}
+    atoms = {}
+
+    for term_def in x.terms:
+        term_table = {}
+
+        for op_def in term_def.operators:
+            if op_def.operator_type is TheoryOperatorType.BinaryLeft:
+                op_type = BINARY
+                op_assoc = LEFT
+            elif op_def.operator_type is TheoryOperatorType.BinaryRight:
+                op_type = BINARY
+                op_assoc = RIGHT
+            else:
+                op_type = UNARY
+                op_assoc = NONE
+
+            term_table[(op_def.name, op_type)] = (op_def.priority, op_assoc)
+
+        terms[term_def.name] = term_table
+
+    for atom_def in x.atoms:
+        guard = None
+        if atom_def.guard is not None:
+            guard = (atom_def.guard.operators, atom_def.guard.term)
+
+        atoms[(atom_def.name, atom_def.arity)] = (atom_def.atom_type, atom_def.elements, guard)
+
+    return TheoryParser(terms, atoms)</code></pre>
+</details>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-functions">Functions</h2>
+<dl>
+<dt id="clingox.ast.str_location"><code class="name flex">
+<span>def <span class="ident">str_location</span></span>(<span>loc: Any) ‑> str</span>
+</code></dt>
+<dd>
+<div class="desc"><p>This function takes a location from a clingo AST and transforms it into a
+readable format.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def str_location(loc: Any) -&gt; str:
+    &#34;&#34;&#34;
+    This function takes a location from a clingo AST and transforms it into a
+    readable format.
+    &#34;&#34;&#34;
+    begin = loc[&#34;begin&#34;]
+    end = loc[&#34;end&#34;]
+    ret = &#34;{}:{}:{}&#34;.format(begin[&#34;filename&#34;], begin[&#34;line&#34;], begin[&#34;column&#34;])
+    dash = True
+    eq = begin[&#34;filename&#34;] == end[&#34;filename&#34;]
+    if not eq:
+        ret += &#34;{}{}&#34;.format(&#34;-&#34; if dash else &#34;:&#34;, end[&#34;filename&#34;])
+        dash = False
+    eq = eq and begin[&#34;line&#34;] == end[&#34;line&#34;]
+    if not eq:
+        ret += &#34;{}{}&#34;.format(&#34;-&#34; if dash else &#34;:&#34;, end[&#34;line&#34;])
+        dash = False
+    eq = eq and begin[&#34;column&#34;] == end[&#34;column&#34;]
+    if not eq:
+        ret += &#34;{}{}&#34;.format(&#34;-&#34; if dash else &#34;:&#34;, end[&#34;column&#34;])
+        dash = False
+    return ret</code></pre>
+</details>
+</dd>
+<dt id="clingox.ast.theory_parser_from_definition"><code class="name flex">
+<span>def <span class="ident">theory_parser_from_definition</span></span>(<span>x: clingo.ast.AST) ‑> <a title="clingox.ast.TheoryParser" href="#clingox.ast.TheoryParser">TheoryParser</a></span>
+</code></dt>
+<dd>
+<div class="desc"><p>Turn an AST node of type TheoryDefinition into a TheoryParser.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def theory_parser_from_definition(x: AST) -&gt; TheoryParser:
+    &#34;&#34;&#34;
+    Turn an AST node of type TheoryDefinition into a TheoryParser.
+    &#34;&#34;&#34;
+    assert x.type is ASTType.TheoryDefinition
+
+    terms = {}
+    atoms = {}
+
+    for term_def in x.terms:
+        term_table = {}
+
+        for op_def in term_def.operators:
+            if op_def.operator_type is TheoryOperatorType.BinaryLeft:
+                op_type = BINARY
+                op_assoc = LEFT
+            elif op_def.operator_type is TheoryOperatorType.BinaryRight:
+                op_type = BINARY
+                op_assoc = RIGHT
+            else:
+                op_type = UNARY
+                op_assoc = NONE
+
+            term_table[(op_def.name, op_type)] = (op_def.priority, op_assoc)
+
+        terms[term_def.name] = term_table
+
+    for atom_def in x.atoms:
+        guard = None
+        if atom_def.guard is not None:
+            guard = (atom_def.guard.operators, atom_def.guard.term)
+
+        atoms[(atom_def.name, atom_def.arity)] = (atom_def.atom_type, atom_def.elements, guard)
+
+    return TheoryParser(terms, atoms)</code></pre>
+</details>
+</dd>
+</dl>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="clingox.ast.TheoryParser"><code class="flex name class">
+<span>class <span class="ident">TheoryParser</span></span>
+<span>(</span><span>terms: Mapping[str, Union[Mapping[Tuple[str, bool], Tuple[int, bool]], <a title="clingox.ast.TheoryTermParser" href="#clingox.ast.TheoryTermParser">TheoryTermParser</a>]], atoms: Mapping[Tuple[str, int], Tuple[clingo.ast.TheoryAtomType, str, Union[Tuple[List[str], str], NoneType]]])</span>
+</code></dt>
+<dd>
+<div class="desc"><p>This class parses theory atoms in the same way as clingo's internal parser.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class TheoryParser(Transformer):
+    &#34;&#34;&#34;
+    This class parses theory atoms in the same way as clingo&#39;s internal parser.
+    &#34;&#34;&#34;
+    # pylint: disable=invalid-name
+    _table: Mapping[Tuple[str, int],
+                    Tuple[TheoryAtomType,
+                          TheoryTermParser,
+                          Optional[Tuple[Set[str], TheoryTermParser]]]]
+    in_body: bool
+    in_head: bool
+    is_directive: bool
+
+    def __init__(self, terms: Mapping[str, Union[TermTable, TheoryTermParser]], atoms: AtomTable):
+        self._reset()
+
+        term_parsers = {}
+        for term_key, parser in terms.items():
+            if isinstance(parser, TheoryTermParser):
+                term_parsers[term_key] = parser
+            else:
+                term_parsers[term_key] = TheoryTermParser(parser)
+
+        self._table = {}
+        for atom_key, (atom_type, term_key, guard) in atoms.items():
+            guard_table = None
+            if guard is not None:
+                guard_table = (set(guard[0]), term_parsers[guard[1]])
+            self._table[atom_key] = (atom_type, term_parsers[term_key], guard_table)
+
+    def _reset(self, in_head=True, in_body=True, is_directive=True):
+        &#34;&#34;&#34;
+        Set state information about active scope.
+        &#34;&#34;&#34;
+        self.in_head = in_head
+        self.in_body = in_body
+        self.is_directive = is_directive
+
+    def _visit_body(self, x: AST) -&gt; AST:
+        try:
+            self._reset(False, True, False)
+            body = self.visit_list(x.body)
+            if body is not x.body:
+                x = copy(x)
+                x.body = body
+        finally:
+            self._reset()
+        return x
+
+    def visit_Rule(self, x: AST) -&gt; AST:
+        &#34;&#34;&#34;
+        Parse theory atoms in body and head.
+        &#34;&#34;&#34;
+        try:
+            ret = self._visit_body(x)
+            self._reset(True, False, not x.body)
+            head = self(x.head)
+            if head is not x.head:
+                if ret is x:
+                    ret = copy(ret)
+                ret.head = head
+        finally:
+            self._reset()
+
+        return ret
+
+    def visit_ShowTerm(self, x: AST) -&gt; AST:
+        &#34;&#34;&#34;
+        Parse theory atoms in body.
+        &#34;&#34;&#34;
+        return self._visit_body(x)
+
+    def visit_Minimize(self, x: AST) -&gt; AST:
+        &#34;&#34;&#34;
+        Parse theory atoms in body.
+        &#34;&#34;&#34;
+        return self._visit_body(x)
+
+    def visit_Edge(self, x: AST) -&gt; AST:
+        &#34;&#34;&#34;
+        Parse theory atoms in body.
+        &#34;&#34;&#34;
+        return self._visit_body(x)
+
+    def visit_Heuristic(self, x: AST) -&gt; AST:
+        &#34;&#34;&#34;
+        Parse theory atoms in body.
+        &#34;&#34;&#34;
+        return self._visit_body(x)
+
+    def visit_ProjectAtom(self, x: AST) -&gt; AST:
+        &#34;&#34;&#34;
+        Parse theory atoms in body.
+        &#34;&#34;&#34;
+        return self._visit_body(x)
+
+    def visit_TheoryAtom(self, x: AST) -&gt; AST:
+        &#34;&#34;&#34;
+        Parse the given unparsed term.
+        &#34;&#34;&#34;
+        name = x.term.name
+        arity = len(x.term.arguments)
+        if (name, arity) not in self._table:
+            raise RuntimeError(f&#34;theory atom definiton not found: {str_location(x.location)}&#34;)
+
+        type_, element_parser, guard_table = self._table[(name, arity)]
+        if type_ is TheoryAtomType.Head and not self.in_head:
+            raise RuntimeError(f&#34;theory atom only accepted in head: {str_location(x.location)}&#34;)
+        if type_ is TheoryAtomType.Body and not self.in_body:
+            raise RuntimeError(f&#34;theory atom only accepted in body: {str_location(x.location)}&#34;)
+        if type_ is TheoryAtomType.Directive and not (self.in_head and self.is_directive):
+            raise RuntimeError(f&#34;theory atom must be a directive: {str_location(x.location)}&#34;)
+
+        x = copy(x)
+        x.term = element_parser(x.term)
+        x.elements = element_parser.visit_list(x.elements)
+
+        if x.guard is not None:
+            if guard_table is None:
+                raise RuntimeError(f&#34;unexpected guard in theory atom: {str_location(x.location)}&#34;)
+
+            guards, guard_parser = guard_table
+            if x.guard.operator_name not in guards:
+                raise RuntimeError(f&#34;unexpected guard in theory atom: {str_location(x.location)}&#34;)
+
+            x.guard = copy(x.guard)
+            x.guard.term = guard_parser(x.guard.term)
+
+        return x</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="clingox.ast.Transformer" href="#clingox.ast.Transformer">Transformer</a></li>
+</ul>
+<h3>Methods</h3>
+<dl>
+<dt id="clingox.ast.TheoryParser.visit_Edge"><code class="name flex">
+<span>def <span class="ident">visit_Edge</span></span>(<span>self, x: clingo.ast.AST) ‑> clingo.ast.AST</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Parse theory atoms in body.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def visit_Edge(self, x: AST) -&gt; AST:
+    &#34;&#34;&#34;
+    Parse theory atoms in body.
+    &#34;&#34;&#34;
+    return self._visit_body(x)</code></pre>
+</details>
+</dd>
+<dt id="clingox.ast.TheoryParser.visit_Heuristic"><code class="name flex">
+<span>def <span class="ident">visit_Heuristic</span></span>(<span>self, x: clingo.ast.AST) ‑> clingo.ast.AST</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Parse theory atoms in body.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def visit_Heuristic(self, x: AST) -&gt; AST:
+    &#34;&#34;&#34;
+    Parse theory atoms in body.
+    &#34;&#34;&#34;
+    return self._visit_body(x)</code></pre>
+</details>
+</dd>
+<dt id="clingox.ast.TheoryParser.visit_Minimize"><code class="name flex">
+<span>def <span class="ident">visit_Minimize</span></span>(<span>self, x: clingo.ast.AST) ‑> clingo.ast.AST</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Parse theory atoms in body.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def visit_Minimize(self, x: AST) -&gt; AST:
+    &#34;&#34;&#34;
+    Parse theory atoms in body.
+    &#34;&#34;&#34;
+    return self._visit_body(x)</code></pre>
+</details>
+</dd>
+<dt id="clingox.ast.TheoryParser.visit_ProjectAtom"><code class="name flex">
+<span>def <span class="ident">visit_ProjectAtom</span></span>(<span>self, x: clingo.ast.AST) ‑> clingo.ast.AST</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Parse theory atoms in body.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def visit_ProjectAtom(self, x: AST) -&gt; AST:
+    &#34;&#34;&#34;
+    Parse theory atoms in body.
+    &#34;&#34;&#34;
+    return self._visit_body(x)</code></pre>
+</details>
+</dd>
+<dt id="clingox.ast.TheoryParser.visit_Rule"><code class="name flex">
+<span>def <span class="ident">visit_Rule</span></span>(<span>self, x: clingo.ast.AST) ‑> clingo.ast.AST</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Parse theory atoms in body and head.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def visit_Rule(self, x: AST) -&gt; AST:
+    &#34;&#34;&#34;
+    Parse theory atoms in body and head.
+    &#34;&#34;&#34;
+    try:
+        ret = self._visit_body(x)
+        self._reset(True, False, not x.body)
+        head = self(x.head)
+        if head is not x.head:
+            if ret is x:
+                ret = copy(ret)
+            ret.head = head
+    finally:
+        self._reset()
+
+    return ret</code></pre>
+</details>
+</dd>
+<dt id="clingox.ast.TheoryParser.visit_ShowTerm"><code class="name flex">
+<span>def <span class="ident">visit_ShowTerm</span></span>(<span>self, x: clingo.ast.AST) ‑> clingo.ast.AST</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Parse theory atoms in body.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def visit_ShowTerm(self, x: AST) -&gt; AST:
+    &#34;&#34;&#34;
+    Parse theory atoms in body.
+    &#34;&#34;&#34;
+    return self._visit_body(x)</code></pre>
+</details>
+</dd>
+<dt id="clingox.ast.TheoryParser.visit_TheoryAtom"><code class="name flex">
+<span>def <span class="ident">visit_TheoryAtom</span></span>(<span>self, x: clingo.ast.AST) ‑> clingo.ast.AST</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Parse the given unparsed term.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def visit_TheoryAtom(self, x: AST) -&gt; AST:
+    &#34;&#34;&#34;
+    Parse the given unparsed term.
+    &#34;&#34;&#34;
+    name = x.term.name
+    arity = len(x.term.arguments)
+    if (name, arity) not in self._table:
+        raise RuntimeError(f&#34;theory atom definiton not found: {str_location(x.location)}&#34;)
+
+    type_, element_parser, guard_table = self._table[(name, arity)]
+    if type_ is TheoryAtomType.Head and not self.in_head:
+        raise RuntimeError(f&#34;theory atom only accepted in head: {str_location(x.location)}&#34;)
+    if type_ is TheoryAtomType.Body and not self.in_body:
+        raise RuntimeError(f&#34;theory atom only accepted in body: {str_location(x.location)}&#34;)
+    if type_ is TheoryAtomType.Directive and not (self.in_head and self.is_directive):
+        raise RuntimeError(f&#34;theory atom must be a directive: {str_location(x.location)}&#34;)
+
+    x = copy(x)
+    x.term = element_parser(x.term)
+    x.elements = element_parser.visit_list(x.elements)
+
+    if x.guard is not None:
+        if guard_table is None:
+            raise RuntimeError(f&#34;unexpected guard in theory atom: {str_location(x.location)}&#34;)
+
+        guards, guard_parser = guard_table
+        if x.guard.operator_name not in guards:
+            raise RuntimeError(f&#34;unexpected guard in theory atom: {str_location(x.location)}&#34;)
+
+        x.guard = copy(x.guard)
+        x.guard.term = guard_parser(x.guard.term)
+
+    return x</code></pre>
+</details>
+</dd>
+</dl>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="clingox.ast.Transformer" href="#clingox.ast.Transformer">Transformer</a></b></code>:
+<ul class="hlist">
+<li><code><a title="clingox.ast.Transformer.visit" href="#clingox.ast.Transformer.visit">visit</a></code></li>
+<li><code><a title="clingox.ast.Transformer.visit_children" href="#clingox.ast.Transformer.visit_children">visit_children</a></code></li>
+<li><code><a title="clingox.ast.Transformer.visit_list" href="#clingox.ast.Transformer.visit_list">visit_list</a></code></li>
+</ul>
+</li>
+</ul>
+</dd>
+<dt id="clingox.ast.TheoryTermParser"><code class="flex name class">
+<span>class <span class="ident">TheoryTermParser</span></span>
+<span>(</span><span>table: Mapping[Tuple[str, bool], Tuple[int, bool]])</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Parser for theory terms in clingo's AST that works like the inbuilt one.</p>
+<p>This is implemented as a transformer that traverses the AST replacing all
+terms found.</p>
+<p>Initializes the parser with the given operators.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class TheoryTermParser(Transformer):
+    &#34;&#34;&#34;
+    Parser for theory terms in clingo&#39;s AST that works like the inbuilt one.
+
+    This is implemented as a transformer that traverses the AST replacing all
+    terms found.
+    &#34;&#34;&#34;
+    # pylint: disable=invalid-name
+
+    def __init__(self, table: TermTable):
+        &#34;&#34;&#34;
+        Initializes the parser with the given operators.
+        &#34;&#34;&#34;
+        self._parser = TheoryUnparsedTermParser(table)
+
+    def visit_TheoryFunction(self, x) -&gt; AST:
+        &#34;&#34;&#34;
+        Parse the theory function and check if it agrees with the grammar.
+        &#34;&#34;&#34;
+        unary = len(x.arguments) == 1
+        binary = len(x.arguments) == 2
+        if (unary or binary) and is_operator(x.name):
+            self._parser.check_operator(x.name, unary, x.location)
+
+        return self.visit_children(x)
+
+    def visit_TheoryUnparsedTerm(self, x: AST) -&gt; AST:
+        &#34;&#34;&#34;
+        Parse the given unparsed term.
+        &#34;&#34;&#34;
+        return cast(AST, self(self._parser.parse(x)))</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="clingox.ast.Transformer" href="#clingox.ast.Transformer">Transformer</a></li>
+</ul>
+<h3>Methods</h3>
+<dl>
+<dt id="clingox.ast.TheoryTermParser.visit_TheoryFunction"><code class="name flex">
+<span>def <span class="ident">visit_TheoryFunction</span></span>(<span>self, x) ‑> clingo.ast.AST</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Parse the theory function and check if it agrees with the grammar.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def visit_TheoryFunction(self, x) -&gt; AST:
+    &#34;&#34;&#34;
+    Parse the theory function and check if it agrees with the grammar.
+    &#34;&#34;&#34;
+    unary = len(x.arguments) == 1
+    binary = len(x.arguments) == 2
+    if (unary or binary) and is_operator(x.name):
+        self._parser.check_operator(x.name, unary, x.location)
+
+    return self.visit_children(x)</code></pre>
+</details>
+</dd>
+<dt id="clingox.ast.TheoryTermParser.visit_TheoryUnparsedTerm"><code class="name flex">
+<span>def <span class="ident">visit_TheoryUnparsedTerm</span></span>(<span>self, x: clingo.ast.AST) ‑> clingo.ast.AST</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Parse the given unparsed term.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def visit_TheoryUnparsedTerm(self, x: AST) -&gt; AST:
+    &#34;&#34;&#34;
+    Parse the given unparsed term.
+    &#34;&#34;&#34;
+    return cast(AST, self(self._parser.parse(x)))</code></pre>
+</details>
+</dd>
+</dl>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="clingox.ast.Transformer" href="#clingox.ast.Transformer">Transformer</a></b></code>:
+<ul class="hlist">
+<li><code><a title="clingox.ast.Transformer.visit" href="#clingox.ast.Transformer.visit">visit</a></code></li>
+<li><code><a title="clingox.ast.Transformer.visit_children" href="#clingox.ast.Transformer.visit_children">visit_children</a></code></li>
+<li><code><a title="clingox.ast.Transformer.visit_list" href="#clingox.ast.Transformer.visit_list">visit_list</a></code></li>
+</ul>
+</li>
+</ul>
+</dd>
+<dt id="clingox.ast.TheoryUnparsedTermParser"><code class="flex name class">
+<span>class <span class="ident">TheoryUnparsedTermParser</span></span>
+<span>(</span><span>table: Mapping[Tuple[str, bool], Tuple[int, bool]])</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Parser for unparsed theory terms in clingo's AST that works like the
+inbuilt one.</p>
+<p>Initializes the parser with the given operators.</p>
+<h2 id="example-table">Example Table</h2>
+<p>{ ("-",
+UNARY):
+(3, RIGHT), # associativity is ignored
+("*<em>", BINARY): (2, RIGHT),
+("</em>",
+BINARY): (1, LEFT),
+("+",
+BINARY): (0, LEFT),
+("-",
+BINARY): (0, LEFT) }</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class TheoryUnparsedTermParser:
+    &#34;&#34;&#34;
+    Parser for unparsed theory terms in clingo&#39;s AST that works like the
+    inbuilt one.
+    &#34;&#34;&#34;
+    _stack: List[Tuple[str, bool]]
+    _terms: List[AST]
+
+    def __init__(self, table: Mapping[Tuple[str, bool], Tuple[int, bool]]):
+        &#34;&#34;&#34;
+        Initializes the parser with the given operators.
+
+        Example table
+        -------------
+        { (&#34;-&#34;,  UNARY):  (3, RIGHT), # associativity is ignored
+          (&#34;**&#34;, BINARY): (2, RIGHT),
+          (&#34;*&#34;,  BINARY): (1, LEFT),
+          (&#34;+&#34;,  BINARY): (0, LEFT),
+          (&#34;-&#34;,  BINARY): (0, LEFT) }
+        &#34;&#34;&#34;
+        self._stack = []
+        self._terms = []
+        self._table = table
+
+    def _priority_and_associativity(self, operator: str) -&gt; Tuple[int, bool]:
+        &#34;&#34;&#34;
+        Get priority and associativity of the given binary operator.
+        &#34;&#34;&#34;
+        return self._table[(operator, BINARY)]
+
+    def _priority(self, operator: str, unary: bool) -&gt; int:
+        &#34;&#34;&#34;
+        Get priority of the given unary or binary operator.
+        &#34;&#34;&#34;
+        return self._table[(operator, unary)][0]
+
+    def _check(self, operator: str) -&gt; bool:
+        &#34;&#34;&#34;
+        Returns true if the stack has to be reduced because of the precedence
+        of the given binary operator is lower than the preceeding operator on
+        the stack.
+        &#34;&#34;&#34;
+        if not self._stack:
+            return False
+        priority, associativity = self._priority_and_associativity(operator)
+        previous_priority = self._priority(*self._stack[-1])
+        return previous_priority &gt; priority or (previous_priority == priority and associativity)
+
+    def _reduce(self) -&gt; None:
+        &#34;&#34;&#34;
+        Combines the last unary or binary term on the stack.
+        &#34;&#34;&#34;
+        b = self._terms.pop()
+        operator, unary = self._stack.pop()
+        if unary:
+            self._terms.append(TheoryFunction(b.location, operator, [b]))
+        else:
+            a = self._terms.pop()
+            l = {&#34;begin&#34;: a.location[&#34;begin&#34;], &#34;end&#34;: b.location[&#34;end&#34;]}
+            self._terms.append(TheoryFunction(l, operator, [a, b]))
+
+    def check_operator(self, operator: str, unary: bool, location: Any):
+        &#34;&#34;&#34;
+        Check if the given operator is in the parse table.
+        &#34;&#34;&#34;
+        if not (operator, unary) in self._table:
+            raise RuntimeError(&#34;cannot parse operator `{}`: {}&#34;.format(operator, str_location(location)))
+
+    def parse(self, x: AST) -&gt; AST:
+        &#34;&#34;&#34;
+        Parses the given unparsed term, replacing it by nested theory
+        functions.
+        &#34;&#34;&#34;
+        del self._stack[:]
+        del self._terms[:]
+
+        unary = True
+
+        for element in x.elements:
+            for operator in element.operators:
+                self.check_operator(operator, unary, x.location)
+
+                while not unary and self._check(operator):
+                    self._reduce()
+
+                self._stack.append((operator, unary))
+                unary = True
+
+            self._terms.append(element.term)
+            unary = False
+
+        while self._stack:
+            self._reduce()
+
+        return self._terms[0]</code></pre>
+</details>
+<h3>Methods</h3>
+<dl>
+<dt id="clingox.ast.TheoryUnparsedTermParser.check_operator"><code class="name flex">
+<span>def <span class="ident">check_operator</span></span>(<span>self, operator: str, unary: bool, location: Any)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Check if the given operator is in the parse table.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def check_operator(self, operator: str, unary: bool, location: Any):
+    &#34;&#34;&#34;
+    Check if the given operator is in the parse table.
+    &#34;&#34;&#34;
+    if not (operator, unary) in self._table:
+        raise RuntimeError(&#34;cannot parse operator `{}`: {}&#34;.format(operator, str_location(location)))</code></pre>
+</details>
+</dd>
+<dt id="clingox.ast.TheoryUnparsedTermParser.parse"><code class="name flex">
+<span>def <span class="ident">parse</span></span>(<span>self, x: clingo.ast.AST) ‑> clingo.ast.AST</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Parses the given unparsed term, replacing it by nested theory
+functions.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def parse(self, x: AST) -&gt; AST:
+    &#34;&#34;&#34;
+    Parses the given unparsed term, replacing it by nested theory
+    functions.
+    &#34;&#34;&#34;
+    del self._stack[:]
+    del self._terms[:]
+
+    unary = True
+
+    for element in x.elements:
+        for operator in element.operators:
+            self.check_operator(operator, unary, x.location)
+
+            while not unary and self._check(operator):
+                self._reduce()
+
+            self._stack.append((operator, unary))
+            unary = True
+
+        self._terms.append(element.term)
+        unary = False
+
+    while self._stack:
+        self._reduce()
+
+    return self._terms[0]</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="clingox.ast.Transformer"><code class="flex name class">
+<span>class <span class="ident">Transformer</span></span>
+</code></dt>
+<dd>
+<div class="desc"><p>This class is similar to the <code><a title="clingox.ast.Visitor" href="#clingox.ast.Visitor">Visitor</a></code> but allows for mutating the AST by
+returning modified AST nodes from the visit methods.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class Transformer:
+    &#39;&#39;&#39;
+    This class is similar to the `Visitor` but allows for mutating the AST by
+    returning modified AST nodes from the visit methods.
+    &#39;&#39;&#39;
+    def visit_children(self, x: AST, *args: Any, **kwargs: Any) -&gt; AST:
+        &#39;&#39;&#39;
+        Visit the children of an AST node.
+        &#39;&#39;&#39;
+        copied = False
+        for key in x.child_keys:
+            y = getattr(x, key)
+            z = None if y is None else self.visit(y, *args, **kwargs)
+            if y is z:
+                continue
+            if not copied:
+                copied = True
+                x = copy(x)
+            setattr(x, key, z)
+        return x
+
+    def _seq(self, i: int, z: Optional[AST], x: List[AST], *args: Any, **kwargs: Any) -&gt; Iterator[Optional[AST]]:
+        for y in x[:i]:
+            yield y
+        yield z
+        for y in x[i+1:]:
+            yield self.visit(y, *args, **kwargs)
+
+    def visit_list(self, x: List[AST], *args: Any, **kwargs: Any) -&gt; List[AST]:
+        &#39;&#39;&#39;
+        Visit a sequence of AST nodes.
+
+        If a transformer returns None, the element is removed from the list.
+        &#39;&#39;&#39;
+        for i, y in enumerate(x):
+            z = self.visit(y, *args, **kwargs)
+            if y is not z:
+                return list(w for w in self._seq(i, z, x, *args, **kwargs) if w is not None)
+        return x
+
+    def visit(self, x: ASTChild, *args: Any, **kwargs: Any) -&gt; Optional[ASTChild]:
+        &#39;&#39;&#39;
+        Generic visit method dispatching to specific member functions to visit
+        child nodes.
+        &#39;&#39;&#39;
+        if isinstance(x, AST):
+            attr = &#34;visit_&#34; + str(x.type)
+            if hasattr(self, attr):
+                return getattr(self, attr)(x, *args, **kwargs)
+            return self.visit_children(x, *args, **kwargs)
+        if isinstance(x, list):
+            return self.visit_list(x, *args, **kwargs)
+        raise TypeError(&#34;unexpected type: {}&#34;.format(x))
+
+    def __call__(self, x: ASTChild, *args: Any, **kwargs: Any) -&gt; Optional[ASTChild]:
+        &#39;&#39;&#39;
+        Alternative to call visit.
+        &#39;&#39;&#39;
+        return self.visit(x, *args, **kwargs)</code></pre>
+</details>
+<h3>Subclasses</h3>
+<ul class="hlist">
+<li><a title="clingox.ast.TheoryParser" href="#clingox.ast.TheoryParser">TheoryParser</a></li>
+<li><a title="clingox.ast.TheoryTermParser" href="#clingox.ast.TheoryTermParser">TheoryTermParser</a></li>
+</ul>
+<h3>Methods</h3>
+<dl>
+<dt id="clingox.ast.Transformer.visit"><code class="name flex">
+<span>def <span class="ident">visit</span></span>(<span>self, x: ~ASTChild, *args: Any, **kwargs: Any) ‑> Union[~ASTChild, NoneType]</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Generic visit method dispatching to specific member functions to visit
+child nodes.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def visit(self, x: ASTChild, *args: Any, **kwargs: Any) -&gt; Optional[ASTChild]:
+    &#39;&#39;&#39;
+    Generic visit method dispatching to specific member functions to visit
+    child nodes.
+    &#39;&#39;&#39;
+    if isinstance(x, AST):
+        attr = &#34;visit_&#34; + str(x.type)
+        if hasattr(self, attr):
+            return getattr(self, attr)(x, *args, **kwargs)
+        return self.visit_children(x, *args, **kwargs)
+    if isinstance(x, list):
+        return self.visit_list(x, *args, **kwargs)
+    raise TypeError(&#34;unexpected type: {}&#34;.format(x))</code></pre>
+</details>
+</dd>
+<dt id="clingox.ast.Transformer.visit_children"><code class="name flex">
+<span>def <span class="ident">visit_children</span></span>(<span>self, x: clingo.ast.AST, *args: Any, **kwargs: Any) ‑> clingo.ast.AST</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Visit the children of an AST node.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def visit_children(self, x: AST, *args: Any, **kwargs: Any) -&gt; AST:
+    &#39;&#39;&#39;
+    Visit the children of an AST node.
+    &#39;&#39;&#39;
+    copied = False
+    for key in x.child_keys:
+        y = getattr(x, key)
+        z = None if y is None else self.visit(y, *args, **kwargs)
+        if y is z:
+            continue
+        if not copied:
+            copied = True
+            x = copy(x)
+        setattr(x, key, z)
+    return x</code></pre>
+</details>
+</dd>
+<dt id="clingox.ast.Transformer.visit_list"><code class="name flex">
+<span>def <span class="ident">visit_list</span></span>(<span>self, x: List[clingo.ast.AST], *args: Any, **kwargs: Any) ‑> List[clingo.ast.AST]</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Visit a sequence of AST nodes.</p>
+<p>If a transformer returns None, the element is removed from the list.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def visit_list(self, x: List[AST], *args: Any, **kwargs: Any) -&gt; List[AST]:
+    &#39;&#39;&#39;
+    Visit a sequence of AST nodes.
+
+    If a transformer returns None, the element is removed from the list.
+    &#39;&#39;&#39;
+    for i, y in enumerate(x):
+        z = self.visit(y, *args, **kwargs)
+        if y is not z:
+            return list(w for w in self._seq(i, z, x, *args, **kwargs) if w is not None)
+    return x</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="clingox.ast.Visitor"><code class="flex name class">
+<span>class <span class="ident">Visitor</span></span>
+</code></dt>
+<dd>
+<div class="desc"><p>A visitor for clingo's abstart syntaxt tree.</p>
+<p>This class should be derived from. Implementing functions with name
+<code>visit_&lt;type&gt;</code> can be used to visit nodes of the given type.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class Visitor:
+    &#39;&#39;&#39;
+    A visitor for clingo&#39;s abstart syntaxt tree.
+
+    This class should be derived from. Implementing functions with name
+    `visit_&lt;type&gt;` can be used to visit nodes of the given type.
+    &#39;&#39;&#39;
+    def visit_children(self, x: AST, *args: Any, **kwargs: Any):
+        &#39;&#39;&#39;
+        Visit the children of an AST node.
+        &#39;&#39;&#39;
+        for key in x.child_keys:
+            y = getattr(x, key)
+            if y is not None:
+                self.visit(y, *args, **kwargs)
+
+    def visit_list(self, x: List[AST], *args: Any, **kwargs: Any):
+        &#39;&#39;&#39;
+        Visit a sequence of AST nodes.
+        &#39;&#39;&#39;
+        for y in x:
+            self.visit(y, *args, **kwargs)
+
+    def visit(self, x: ASTChild, *args: Any, **kwargs: Any):
+        &#39;&#39;&#39;
+        Generic visit method dispatching to specific member functions to visit
+        child nodes.
+        &#39;&#39;&#39;
+        if isinstance(x, AST):
+            attr = &#34;visit_&#34; + str(x.type)
+            if hasattr(self, attr):
+                getattr(self, attr)(x, *args, **kwargs)
+            else:
+                self.visit_children(x, *args, **kwargs)
+        elif isinstance(x, list):
+            self.visit_list(x, *args, **kwargs)
+        else:
+            raise TypeError(&#34;unexpected type: {}&#34;.format(x))
+
+    def __call__(self, x: ASTChild, *args: Any, **kwargs: Any):
+        &#39;&#39;&#39;
+        Alternative to call visit.
+        &#39;&#39;&#39;
+        self.visit(x, *args, **kwargs)</code></pre>
+</details>
+<h3>Methods</h3>
+<dl>
+<dt id="clingox.ast.Visitor.visit"><code class="name flex">
+<span>def <span class="ident">visit</span></span>(<span>self, x: ~ASTChild, *args: Any, **kwargs: Any)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Generic visit method dispatching to specific member functions to visit
+child nodes.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def visit(self, x: ASTChild, *args: Any, **kwargs: Any):
+    &#39;&#39;&#39;
+    Generic visit method dispatching to specific member functions to visit
+    child nodes.
+    &#39;&#39;&#39;
+    if isinstance(x, AST):
+        attr = &#34;visit_&#34; + str(x.type)
+        if hasattr(self, attr):
+            getattr(self, attr)(x, *args, **kwargs)
+        else:
+            self.visit_children(x, *args, **kwargs)
+    elif isinstance(x, list):
+        self.visit_list(x, *args, **kwargs)
+    else:
+        raise TypeError(&#34;unexpected type: {}&#34;.format(x))</code></pre>
+</details>
+</dd>
+<dt id="clingox.ast.Visitor.visit_children"><code class="name flex">
+<span>def <span class="ident">visit_children</span></span>(<span>self, x: clingo.ast.AST, *args: Any, **kwargs: Any)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Visit the children of an AST node.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def visit_children(self, x: AST, *args: Any, **kwargs: Any):
+    &#39;&#39;&#39;
+    Visit the children of an AST node.
+    &#39;&#39;&#39;
+    for key in x.child_keys:
+        y = getattr(x, key)
+        if y is not None:
+            self.visit(y, *args, **kwargs)</code></pre>
+</details>
+</dd>
+<dt id="clingox.ast.Visitor.visit_list"><code class="name flex">
+<span>def <span class="ident">visit_list</span></span>(<span>self, x: List[clingo.ast.AST], *args: Any, **kwargs: Any)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Visit a sequence of AST nodes.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def visit_list(self, x: List[AST], *args: Any, **kwargs: Any):
+    &#39;&#39;&#39;
+    Visit a sequence of AST nodes.
+    &#39;&#39;&#39;
+    for y in x:
+        self.visit(y, *args, **kwargs)</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+</dl>
+</section>
+</article>
+<nav id="sidebar">
+<h1>Index</h1>
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="clingox" href="index.html">clingox</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-functions">Functions</a></h3>
+<ul class="">
+<li><code><a title="clingox.ast.str_location" href="#clingox.ast.str_location">str_location</a></code></li>
+<li><code><a title="clingox.ast.theory_parser_from_definition" href="#clingox.ast.theory_parser_from_definition">theory_parser_from_definition</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="clingox.ast.TheoryParser" href="#clingox.ast.TheoryParser">TheoryParser</a></code></h4>
+<ul class="two-column">
+<li><code><a title="clingox.ast.TheoryParser.visit_Edge" href="#clingox.ast.TheoryParser.visit_Edge">visit_Edge</a></code></li>
+<li><code><a title="clingox.ast.TheoryParser.visit_Heuristic" href="#clingox.ast.TheoryParser.visit_Heuristic">visit_Heuristic</a></code></li>
+<li><code><a title="clingox.ast.TheoryParser.visit_Minimize" href="#clingox.ast.TheoryParser.visit_Minimize">visit_Minimize</a></code></li>
+<li><code><a title="clingox.ast.TheoryParser.visit_ProjectAtom" href="#clingox.ast.TheoryParser.visit_ProjectAtom">visit_ProjectAtom</a></code></li>
+<li><code><a title="clingox.ast.TheoryParser.visit_Rule" href="#clingox.ast.TheoryParser.visit_Rule">visit_Rule</a></code></li>
+<li><code><a title="clingox.ast.TheoryParser.visit_ShowTerm" href="#clingox.ast.TheoryParser.visit_ShowTerm">visit_ShowTerm</a></code></li>
+<li><code><a title="clingox.ast.TheoryParser.visit_TheoryAtom" href="#clingox.ast.TheoryParser.visit_TheoryAtom">visit_TheoryAtom</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="clingox.ast.TheoryTermParser" href="#clingox.ast.TheoryTermParser">TheoryTermParser</a></code></h4>
+<ul class="">
+<li><code><a title="clingox.ast.TheoryTermParser.visit_TheoryFunction" href="#clingox.ast.TheoryTermParser.visit_TheoryFunction">visit_TheoryFunction</a></code></li>
+<li><code><a title="clingox.ast.TheoryTermParser.visit_TheoryUnparsedTerm" href="#clingox.ast.TheoryTermParser.visit_TheoryUnparsedTerm">visit_TheoryUnparsedTerm</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="clingox.ast.TheoryUnparsedTermParser" href="#clingox.ast.TheoryUnparsedTermParser">TheoryUnparsedTermParser</a></code></h4>
+<ul class="">
+<li><code><a title="clingox.ast.TheoryUnparsedTermParser.check_operator" href="#clingox.ast.TheoryUnparsedTermParser.check_operator">check_operator</a></code></li>
+<li><code><a title="clingox.ast.TheoryUnparsedTermParser.parse" href="#clingox.ast.TheoryUnparsedTermParser.parse">parse</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="clingox.ast.Transformer" href="#clingox.ast.Transformer">Transformer</a></code></h4>
+<ul class="">
+<li><code><a title="clingox.ast.Transformer.visit" href="#clingox.ast.Transformer.visit">visit</a></code></li>
+<li><code><a title="clingox.ast.Transformer.visit_children" href="#clingox.ast.Transformer.visit_children">visit_children</a></code></li>
+<li><code><a title="clingox.ast.Transformer.visit_list" href="#clingox.ast.Transformer.visit_list">visit_list</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="clingox.ast.Visitor" href="#clingox.ast.Visitor">Visitor</a></code></h4>
+<ul class="">
+<li><code><a title="clingox.ast.Visitor.visit" href="#clingox.ast.Visitor.visit">visit</a></code></li>
+<li><code><a title="clingox.ast.Visitor.visit_children" href="#clingox.ast.Visitor.visit_children">visit_children</a></code></li>
+<li><code><a title="clingox.ast.Visitor.visit_list" href="#clingox.ast.Visitor.visit_list">visit_list</a></code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.8.4</a>.</p>
+</footer>
+</body>
+</html>
