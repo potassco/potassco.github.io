@@ -74,7 +74,7 @@ a subset of the language of clingo.
 The foundations and algorithms underlying the grounding and solving technology used in clingo
 as well as various modeling techniques are described in detail in the [Potassco book](/book/).
 
-Teaching material and links to further tutorials can be found in the [teaching](/teaching/) and [tutorials](/doc/tutorials/) sections;
+Teaching material and links to further tutorials can be found in the [teaching](https://teaching.potassco.org) and [tutorials](/doc/tutorials/) sections;
 similarly the [video](/doc/videos/) section may find your interest.
 
 # Venturing

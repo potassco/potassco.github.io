@@ -47,6 +47,6 @@ while illustrating the overall solving process by practical examples.
 # Resources
 
 - Example programs ([zip](/files/listings.zip), [tgz](/files/listings.tgz))
-- [Slides](/teaching/)
+- [Slides](https://teaching.potassco.org/)
 - [Videos](/doc/videos/)
 - [Guide](https://github.com/potassco/guide/releases/)

@@ -23,7 +23,9 @@
         {% assign pages = site.pages | sort: 'weight' %}
         {% for my_page in pages %}
           {% if my_page.menu == 'main' %}
-            {% if my_page.title %}
+            {% if my_page.redirect %}
+            <a class="page-link" href="{{ my_page.redirect }}">{{ my_page.navtitle | default: my_page.title | escape }}</a>
+            {% elsif my_page.title %}
             <a class="page-link" href="{{ my_page.url | prepend: full_base_url }}">{{ my_page.navtitle | default: my_page.title | escape }}</a>
             {% endif %}
           {% endif %}
