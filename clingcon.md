@@ -73,7 +73,10 @@ See [INSTALL](https://github.com/potassco/clingcon/blob/master/README.md) for mo
 - [Experiments for new-old]({{ site.resourceurl }}/clingcon/experiments-newold.tar.xz)
 
 # Citing
-
+- Max Ostrowski,
+  [Modern Constraint Answer Set Solving]({{ site.publicationurl }}/#DBLP:phd/dnb/Ostrowski18), Thesis, 2018 (for version 3)
+- Mutsunori Banbara, Benjamin Kaufmann, Max Ostrowski and Torsten Schaub,
+  [Clingcon: The Next Generation]({{ site.publicationurl }}/#DBLP:journals/tplp/BanbaraKOS17), TPLP, 2017 (for version 3)
 - Max Ostrowski and Torsten Schaub,
   [ASP modulo CSP: The clingcon system]({{ site.publicationurl }}/#DBLP:journals/tplp/OstrowskiS12), TPLP, 2012 (for version 2)
 - Martin Gebser, Max Ostrowski and Torsten Schaub,
