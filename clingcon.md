@@ -63,7 +63,7 @@ More examples can be found in the [example](https://github.com/potassco/clingcon
 
 # Building
 
-See [INSTALL](https://github.com/potassco/clingcon/blob/master/INSTALL.md) for more details.
+See [INSTALL](https://github.com/potassco/clingcon/blob/master/README.md) for more details.
 
 # Benchmarks
 
