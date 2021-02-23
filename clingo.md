@@ -46,17 +46,35 @@ The language did not change in version 5 but there were many API changes.
 
 # Packages
 
-- The easiest way to obtain Python enabled clingo packages is using [Anaconda][conda].
-  Packages are available in the [Potassco channel][conda-channel].
-  First [install either Anaconda or Miniconda][conda-install] and then run:
-  `conda install -c potassco clingo`
-- Packages for clingo are available in the Linux distributions
-  [Debian][package-debian],
-  [Ubuntu][package-ubuntu], and
-  [Arch Linux][package-arch].
-- For Mac OS X, clingo packages are available in
-  [homebrew][package-brew] and
-  [macports][package-macports].
+The easiest way to obtain Python enabled clingo packages is using [Anaconda][conda].
+Packages are available in the [Potassco channel][conda-channel].
+First [install either Anaconda or Miniconda][conda-install] and then run
+
+    conda install -c potassco clingo
+
+or 
+
+    conda install -c potassco/label/dev clingo
+
+to install the latest development version of clingo.
+
+We also provide pip packages for Python. Once clingo-5.5 has been released,
+packages can be installed from [test.pypy.org](https://pypi.org/user/kaminski/):
+
+    python3 -m pip install --user --upgrade clingo
+
+Development packgaes can already be installed from [test.pypy.org](https://test.pypi.org/user/kaminski/):
+
+    python3 -m pip install --user --upgrade --extra-index-url https://test.pypi.org/simple/ clingo-cffi
+
+Packages for clingo are available for some Linux distributions
+- [Debian][package-debian],
+- [Ubuntu PPA][package-ubuntu], and
+- [Arch Linux][package-arch].
+
+For Mac OS X, clingo packages are available in
+- [homebrew][package-brew], and
+- [macports][package-macports].
 
 # Related Projects
 
@@ -106,4 +124,4 @@ The language did not change in version 5 but there were many API changes.
 [package-brew]: https://formulae.brew.sh/formula/clingo
 [package-debian]: https://packages.debian.org/gringo
 [package-macports]: https://www.macports.org/ports.php?by=name&substr=gringo
-[package-ubuntu]: https://packages.ubuntu.com/gringo
+[package-ubuntu]: https://launchpad.net/~potassco
