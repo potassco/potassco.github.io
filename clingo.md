@@ -59,15 +59,15 @@ or
 to install the latest development version of clingo.
 
 We also provide pip packages for Python. Once clingo-5.5 has been released,
-packages can be installed from [test.pypy.org](https://pypi.org/user/kaminski/):
+packages can be installed from [pypy.org](https://pypi.org/user/kaminski/):
 
     python3 -m pip install --user --upgrade clingo
 
-Development packgaes can already be installed from [test.pypy.org](https://test.pypi.org/user/kaminski/):
+Development packages can already be installed from [test.pypy.org](https://test.pypi.org/user/kaminski/):
 
     python3 -m pip install --user --upgrade --extra-index-url https://test.pypi.org/simple/ clingo-cffi
 
-Packages for clingo are available for some Linux distributions
+Packages for clingo are available for some Linux distributions:
 - [Debian][package-debian],
 - [Ubuntu PPA][package-ubuntu], and
 - [Arch Linux][package-arch].
@@ -78,10 +78,10 @@ For Mac OS X, clingo packages are available in
 
 # Related Projects
 
-- The [clorm] python library provides an object relational mapper-like interface to clingo.
+- The [clorm] Python library provides an object relational mapper-like interface to clingo.
   It allows facts to be asserted and extracted in an intuitive and easy to use way.
 - The [clingo-rs] project provides rust bindings to the clingo library.
-- The [clingo-haskell] project provides haskell bindings to the clingo library.
+- The [clingo-haskell] project provides Haskell bindings to the clingo library.
 - There are also rudimentary [prolog bindings][clingo-pl] to clingo.
 - There is a [project][clingo-js] offering rudimentary JavaScript support to run clingo in the browser.
 - There are abandoned [java bindings][clingo-java] to clingo.
