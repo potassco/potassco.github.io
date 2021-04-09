@@ -52,7 +52,7 @@ First [install either Anaconda or Miniconda][conda-install] and then run
 
     conda install -c potassco clingo
 
-or 
+or
 
     conda install -c potassco/label/dev clingo
 
@@ -90,15 +90,7 @@ For Mac OS X, clingo packages are available in
 # Citing
 
 - Martin Gebser, Roland Kaminski, Benjamin Kaufmann and Torsten Schaub,
-  [Clingo = ASP + Control: Preliminary Report]({{ site.publicationurl }}/#DBLP:journals/corr/GebserKKS14), 2014
-
-- Martin Gebser, Roland Kaminski, Benjamin Kaufmann, Arne König and Torsten Schaub,
-  [Advances in gringo Series 3]({{ site.publicationurl }}/#DBLP:conf/lpnmr/GebserKKS11), LPNMR, 2011
-
-# Publications
-
-- Martin Gebser, Roland Kaminski, Benjamin Kaufmann and Torsten Schaub,
-  [Multi-shot ASP solving with clingo]({{ site.publicationurl }}/#DBLP:journals/corr/GebserKKS17), TPLP, 2018
+  [Multi-shot ASP solving with clingo]({{ site.publicationurl }}/#DBLP:journals/corr/GebserKKS17), TPLP, 19(1), 27–82, 2019
   \[[Experiments]({{ site.resourceurl }}/clingo/experiments-multishot.tar.xz)\]
 
 [ag]: https://www.cs.utexas.edu/users/vl/papers/AG.pdf
