@@ -31,12 +31,14 @@ The language did not change in version 5 but there were many API changes.
 - [Potassco guide on Sourceforge][guide-sf] for series 4 and earlier
 - [Formal language specification][ag]
 - [Python API Reference](/clingo/python-api/current/) (versions
+  [5.5](/clingo/python-api/5.5/),
   [5.4](/clingo/python-api/5.4/),
   [5.3](/clingo/python-api/5.3/clingo.html),
   [5.2](/clingo/python-api/5.2/clingo.html),
   [5.1](/clingo/python-api/5.1/clingo.html),
   [5.0](/clingo/python-api/5.0/clingo.html))
 - [C API Reference](/clingo/c-api/current/) (versions
+  [5.5](/clingo/c-api/5.5/),
   [5.4](/clingo/c-api/5.4/),
   [5.3](/clingo/c-api/5.3/),
   [5.2](/clingo/c-api/5.2/),
@@ -58,12 +60,13 @@ or
 
 to install the latest development version of clingo.
 
-We also provide pip packages for Python. Once clingo-5.5 has been released,
-packages can be installed from [pypy.org](https://pypi.org/user/kaminski/):
+We also provide pip packages for Python. Packages can be installed from
+[pypi.org](https://pypi.org/user/kaminski/):
 
     python3 -m pip install --user --upgrade clingo
 
-Development packages can already be installed from [test.pypy.org](https://test.pypi.org/user/kaminski/):
+Development packages can be installed from
+[test.pypi.org](https://test.pypi.org/user/kaminski/):
 
     python3 -m pip install --user --upgrade --extra-index-url https://test.pypi.org/simple/ clingo-cffi
 
