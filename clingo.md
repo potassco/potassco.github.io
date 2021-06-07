@@ -49,26 +49,23 @@ The language did not change in version 5 but there were many API changes.
 # Packages
 
 The easiest way to obtain Python enabled clingo packages is using [Anaconda][conda].
-Packages are available in the [Potassco channel][conda-channel].
+Packages are available in the [conda-forge channel][conda-channel].
 First [install either Anaconda or Miniconda][conda-install] and then run
 
-    conda install -c potassco clingo
+    conda create -n potassco -c conda-forge clingo
+    conda activate potassco
 
-or
+Further packages, including development packages, are available from the [potassco channel][potassco-channel].
 
-    conda install -c potassco/label/dev clingo
-
-to install the latest development version of clingo.
-
-We also provide pip packages for Python. Packages can be installed from
-[pypi.org](https://pypi.org/user/kaminski/):
+We also provide pip packages for Python. Packages can be installed from [pypi.org][pypi-packages]:
 
     python3 -m pip install --user --upgrade clingo
 
-Development packages can be installed from
-[test.pypi.org](https://test.pypi.org/user/kaminski/):
+Development packages can be installed from [test.pypi.org][test.pypi-packages].
 
-    python3 -m pip install --user --upgrade --extra-index-url https://test.pypi.org/simple/ clingo-cffi
+Furthemore, clingo can be installed using [spack][spack], a package manager targetting HPC environments.
+Interestingly, spack uses clingo internally to compute which packages to install:
+- [Clingo spack package][spack-clingo].
 
 Packages for clingo are available for some Linux distributions:
 - [Debian][package-debian],
@@ -109,7 +106,7 @@ For Mac OS X, clingo packages are available in
 [clingo-sf]: https://sourceforge.net/projects/potassco/files/clingo
 [clingo-vim]: https://github.com/rkaminsk/vim-syntax-clingo
 [clorm]: https://github.com/daveraja/clorm
-[conda-channel]: https://anaconda.org/potassco/clingo
+[conda-channel]: https://anaconda.org/conda-forge/clingo
 [conda]: https://conda.io
 [conda-install]: https://conda.io/projects/conda/en/latest/user-guide/install/index.html
 [gringo-sf]: https://sourceforge.net/projects/potassco/files/gringo
@@ -120,3 +117,8 @@ For Mac OS X, clingo packages are available in
 [package-debian]: https://packages.debian.org/gringo
 [package-macports]: https://www.macports.org/ports.php?by=name&substr=gringo
 [package-ubuntu]: https://launchpad.net/~potassco
+[potassco-channel]: https://anaconda.org/potassco
+[pypi-packages]: https://pypi.org/user/kaminski
+[spack-clingo]: https://spack.readthedocs.io/en/latest/package_list.html#clingo
+[spack]: https://spack.io/
+[test.pypi-packages]: https://test.pypi.org/user/kaminski
