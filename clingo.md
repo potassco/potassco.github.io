@@ -63,7 +63,7 @@ We also provide pip packages for Python. Packages can be installed from [pypi.or
 
 Development packages can be installed from [test.pypi.org][test.pypi-packages].
 
-Furthemore, clingo can be installed using [spack][spack], a package manager targetting HPC environments.
+Furthermore, clingo can be installed using [spack][spack], a package manager targeting HPC environments.
 Interestingly, spack uses clingo internally to compute which packages to install:
 - [Clingo spack package][spack-clingo].
 
