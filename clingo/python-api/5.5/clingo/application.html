@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
-<meta name="generator" content="pdoc 0.9.2" />
+<meta name="generator" content="pdoc 0.10.0" />
 <title>clingo.application API documentation</title>
 <meta name="description" content="Functions and classes to implement applications based on clingo …" />
 <link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
@@ -373,7 +373,7 @@ def _pyclingo_application_validate_options(data):
 <h2 class="section-title" id="header-functions">Functions</h2>
 <dl>
 <dt id="clingo.application.clingo_main"><code class="name flex">
-<span>def <span class="ident">clingo_main</span></span>(<span>application: <a title="clingo.application.Application" href="#clingo.application.Application">Application</a>, arguments: Union[Sequence[str], NoneType] = None) ‑> int</span>
+<span>def <span class="ident">clingo_main</span></span>(<span>application: <a title="clingo.application.Application" href="#clingo.application.Application">Application</a>, arguments: Optional[Sequence[str]] = None) ‑> int</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Runs the given application using clingo's default output and signal handling.</p>
@@ -559,7 +559,7 @@ other members are optional.</p></div>
 <h3>Methods</h3>
 <dl>
 <dt id="clingo.application.Application.logger"><code class="name flex">
-<span>def <span class="ident">logger</span></span>(<span>self, code: <a title="clingo.core.MessageCode" href="core.html#clingo.core.MessageCode">MessageCode</a>, message: str) ‑> NoneType</span>
+<span>def <span class="ident">logger</span></span>(<span>self, code: <a title="clingo.core.MessageCode" href="core.html#clingo.core.MessageCode">MessageCode</a>, message: str) ‑> None</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Function to intercept messages normally printed to standard error.</p>
@@ -597,7 +597,7 @@ other members are optional.</p></div>
 </details>
 </dd>
 <dt id="clingo.application.Application.main"><code class="name flex">
-<span>def <span class="ident">main</span></span>(<span>self, control: <a title="clingo.control.Control" href="control.html#clingo.control.Control">Control</a>, files: Sequence[str]) ‑> NoneType</span>
+<span>def <span class="ident">main</span></span>(<span>self, control: <a title="clingo.control.Control" href="control.html#clingo.control.Control">Control</a>, files: Sequence[str]) ‑> None</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Function to replace clingo's default main function.</p>
@@ -630,7 +630,7 @@ def main(self, control: Control, files: Sequence[str]) -&gt; None:
 </details>
 </dd>
 <dt id="clingo.application.Application.print_model"><code class="name flex">
-<span>def <span class="ident">print_model</span></span>(<span>self, model: <a title="clingo.solving.Model" href="solving.html#clingo.solving.Model">Model</a>, printer: Callable[[], NoneType]) ‑> NoneType</span>
+<span>def <span class="ident">print_model</span></span>(<span>self, model: <a title="clingo.solving.Model" href="solving.html#clingo.solving.Model">Model</a>, printer: Callable[[], None]) ‑> None</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Function to print additional information when the text output is used.</p>
@@ -659,7 +659,7 @@ def main(self, control: Control, files: Sequence[str]) -&gt; None:
 </details>
 </dd>
 <dt id="clingo.application.Application.register_options"><code class="name flex">
-<span>def <span class="ident">register_options</span></span>(<span>self, options: <a title="clingo.application.ApplicationOptions" href="#clingo.application.ApplicationOptions">ApplicationOptions</a>) ‑> NoneType</span>
+<span>def <span class="ident">register_options</span></span>(<span>self, options: <a title="clingo.application.ApplicationOptions" href="#clingo.application.ApplicationOptions">ApplicationOptions</a>) ‑> None</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Function to register custom options.</p>
@@ -792,7 +792,7 @@ def main(self, control: Control, files: Sequence[str]) -&gt; None:
 <h3>Methods</h3>
 <dl>
 <dt id="clingo.application.ApplicationOptions.add"><code class="name flex">
-<span>def <span class="ident">add</span></span>(<span>self, group: str, option: str, description: str, parser: Callable[[str], bool], multi: bool = False, argument: Union[str, NoneType] = None) ‑> NoneType</span>
+<span>def <span class="ident">add</span></span>(<span>self, group: str, option: str, description: str, parser: Callable[[str], bool], multi: bool = False, argument: Optional[str] = None) ‑> None</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Add an option that is processed with a custom parser.</p>
@@ -864,7 +864,7 @@ the option somewhere.</p></div>
 </details>
 </dd>
 <dt id="clingo.application.ApplicationOptions.add_flag"><code class="name flex">
-<span>def <span class="ident">add_flag</span></span>(<span>self, group: str, option: str, description: str, target: <a title="clingo.application.Flag" href="#clingo.application.Flag">Flag</a>) ‑> NoneType</span>
+<span>def <span class="ident">add_flag</span></span>(<span>self, group: str, option: str, description: str, target: <a title="clingo.application.Flag" href="#clingo.application.Flag">Flag</a>) ‑> None</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Add an option that is a simple flag.</p>
@@ -1031,7 +1031,7 @@ def flag(self) -&gt; bool:
 </nav>
 </main>
 <footer id="footer">
-<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.9.2</a>.</p>
+<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.10.0</a>.</p>
 </footer>
 </body>
 </html>

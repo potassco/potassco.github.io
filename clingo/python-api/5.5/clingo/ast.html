@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
-<meta name="generator" content="pdoc 0.9.2" />
+<meta name="generator" content="pdoc 0.10.0" />
 <title>clingo.ast API documentation</title>
 <meta name="description" content="Module to work with clingo&#39;s non-ground program representation …" />
 <link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
@@ -1028,6 +1028,13 @@ class ASTSequence(abc.MutableSequence):
     def insert(self, index, value):
         _handle_error(_lib.clingo_ast_attribute_insert_ast_at(self._rep, self._attribute, index, value._rep))
 
+    def clear(self):
+        &#39;&#39;&#39;
+        Remove all elements from the sequence.
+        &#39;&#39;&#39;
+        for i in range(len(self), 0, -1):
+            del self[i - 1]
+
     def __str__(self):
         return str(list(self))
 
@@ -1080,6 +1087,13 @@ class StrSequence(abc.MutableSequence):
 
     def insert(self, index, value):
         _handle_error(_lib.clingo_ast_attribute_insert_string_at(self._rep, self._attribute, index, value.encode()))
+
+    def clear(self):
+        &#39;&#39;&#39;
+        Remove all elements from the sequence.
+        &#39;&#39;&#39;
+        for i in range(len(self), 0, -1):
+            del self[i - 1]
 
     def __str__(self):
         return str(list(self))
@@ -1649,7 +1663,7 @@ def Pool(location: Location, arguments: Sequence[AST]) -&gt; AST:
         _ffi.cast(&#39;size_t&#39;, len(arguments))))
     return AST(p_ast[0])
 
-def CspProduct(location: Location, coefficient: AST, variable: AST) -&gt; AST:
+def CspProduct(location: Location, coefficient: AST, variable: Optional[AST]) -&gt; AST:
     &#39;&#39;&#39;
     Construct an AST node of type `ASTType.CspProduct`.
     &#39;&#39;&#39;
@@ -1659,10 +1673,10 @@ def CspProduct(location: Location, coefficient: AST, variable: AST) -&gt; AST:
         _lib.clingo_ast_type_csp_product, p_ast,
         c_location[0],
         coefficient._rep,
-        variable._rep))
+        _ffi.NULL if variable is None else variable._rep))
     return AST(p_ast[0])
 
-def CspSum(location: Location, coefficient: AST, variable: AST) -&gt; AST:
+def CspSum(location: Location, terms: Sequence[AST]) -&gt; AST:
     &#39;&#39;&#39;
     Construct an AST node of type `ASTType.CspSum`.
     &#39;&#39;&#39;
@@ -1671,19 +1685,17 @@ def CspSum(location: Location, coefficient: AST, variable: AST) -&gt; AST:
     _handle_error(_lib.clingo_ast_build(
         _lib.clingo_ast_type_csp_sum, p_ast,
         c_location[0],
-        coefficient._rep,
-        variable._rep))
+        _ffi.new(&#39;clingo_ast_t*[]&#39;, [ x._rep for x in terms ]),
+        _ffi.cast(&#39;size_t&#39;, len(terms))))
     return AST(p_ast[0])
 
-def CspGuard(location: Location, comparison: int, term: AST) -&gt; AST:
+def CspGuard(comparison: int, term: AST) -&gt; AST:
     &#39;&#39;&#39;
     Construct an AST node of type `ASTType.CspGuard`.
     &#39;&#39;&#39;
     p_ast = _ffi.new(&#39;clingo_ast_t**&#39;)
-    c_location = _c_location(location)
     _handle_error(_lib.clingo_ast_build(
         _lib.clingo_ast_type_csp_guard, p_ast,
-        c_location[0],
         _ffi.cast(&#39;int&#39;, comparison),
         term._rep))
     return AST(p_ast[0])
@@ -2256,7 +2268,7 @@ def TheoryDefinition(location: Location, name: str, terms: Sequence[AST], atoms:
 <h2 class="section-title" id="header-functions">Functions</h2>
 <dl>
 <dt id="clingo.ast.Aggregate"><code class="name flex">
-<span>def <span class="ident">Aggregate</span></span>(<span>location: <a title="clingo.ast.Location" href="#clingo.ast.Location">Location</a>, left_guard: Union[<a title="clingo.ast.AST" href="#clingo.ast.AST">AST</a>, NoneType], elements: Sequence[<a title="clingo.ast.AST" href="#clingo.ast.AST">AST</a>], right_guard: Union[<a title="clingo.ast.AST" href="#clingo.ast.AST">AST</a>, NoneType]) ‑> <a title="clingo.ast.AST" href="#clingo.ast.AST">AST</a></span>
+<span>def <span class="ident">Aggregate</span></span>(<span>location: <a title="clingo.ast.Location" href="#clingo.ast.Location">Location</a>, left_guard: Optional[<a title="clingo.ast.AST" href="#clingo.ast.AST">AST</a>], elements: Sequence[<a title="clingo.ast.AST" href="#clingo.ast.AST">AST</a>], right_guard: Optional[<a title="clingo.ast.AST" href="#clingo.ast.AST">AST</a>]) ‑> <a title="clingo.ast.AST" href="#clingo.ast.AST">AST</a></span>
 </code></dt>
 <dd>
 <div class="desc"><p>Construct an AST node of type <code><a title="clingo.ast.ASTType.Aggregate" href="#clingo.ast.ASTType.Aggregate">ASTType.Aggregate</a></code>.</p></div>
@@ -2327,7 +2339,7 @@ def TheoryDefinition(location: Location, name: str, terms: Sequence[AST], atoms:
 </details>
 </dd>
 <dt id="clingo.ast.BodyAggregate"><code class="name flex">
-<span>def <span class="ident">BodyAggregate</span></span>(<span>location: <a title="clingo.ast.Location" href="#clingo.ast.Location">Location</a>, left_guard: Union[<a title="clingo.ast.AST" href="#clingo.ast.AST">AST</a>, NoneType], function: int, elements: Sequence[<a title="clingo.ast.AST" href="#clingo.ast.AST">AST</a>], right_guard: Union[<a title="clingo.ast.AST" href="#clingo.ast.AST">AST</a>, NoneType]) ‑> <a title="clingo.ast.AST" href="#clingo.ast.AST">AST</a></span>
+<span>def <span class="ident">BodyAggregate</span></span>(<span>location: <a title="clingo.ast.Location" href="#clingo.ast.Location">Location</a>, left_guard: Optional[<a title="clingo.ast.AST" href="#clingo.ast.AST">AST</a>], function: int, elements: Sequence[<a title="clingo.ast.AST" href="#clingo.ast.AST">AST</a>], right_guard: Optional[<a title="clingo.ast.AST" href="#clingo.ast.AST">AST</a>]) ‑> <a title="clingo.ast.AST" href="#clingo.ast.AST">AST</a></span>
 </code></dt>
 <dd>
 <div class="desc"><p>Construct an AST node of type <code><a title="clingo.ast.ASTType.BodyAggregate" href="#clingo.ast.ASTType.BodyAggregate">ASTType.BodyAggregate</a></code>.</p></div>
@@ -2443,7 +2455,7 @@ def TheoryDefinition(location: Location, name: str, terms: Sequence[AST], atoms:
 </details>
 </dd>
 <dt id="clingo.ast.CspGuard"><code class="name flex">
-<span>def <span class="ident">CspGuard</span></span>(<span>location: <a title="clingo.ast.Location" href="#clingo.ast.Location">Location</a>, comparison: int, term: <a title="clingo.ast.AST" href="#clingo.ast.AST">AST</a>) ‑> <a title="clingo.ast.AST" href="#clingo.ast.AST">AST</a></span>
+<span>def <span class="ident">CspGuard</span></span>(<span>comparison: int, term: <a title="clingo.ast.AST" href="#clingo.ast.AST">AST</a>) ‑> <a title="clingo.ast.AST" href="#clingo.ast.AST">AST</a></span>
 </code></dt>
 <dd>
 <div class="desc"><p>Construct an AST node of type <code><a title="clingo.ast.ASTType.CspGuard" href="#clingo.ast.ASTType.CspGuard">ASTType.CspGuard</a></code>.</p></div>
@@ -2451,15 +2463,13 @@ def TheoryDefinition(location: Location, name: str, terms: Sequence[AST], atoms:
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def CspGuard(location: Location, comparison: int, term: AST) -&gt; AST:
+<pre><code class="python">def CspGuard(comparison: int, term: AST) -&gt; AST:
     &#39;&#39;&#39;
     Construct an AST node of type `ASTType.CspGuard`.
     &#39;&#39;&#39;
     p_ast = _ffi.new(&#39;clingo_ast_t**&#39;)
-    c_location = _c_location(location)
     _handle_error(_lib.clingo_ast_build(
         _lib.clingo_ast_type_csp_guard, p_ast,
-        c_location[0],
         _ffi.cast(&#39;int&#39;, comparison),
         term._rep))
     return AST(p_ast[0])</code></pre>
@@ -2490,7 +2500,7 @@ def TheoryDefinition(location: Location, name: str, terms: Sequence[AST], atoms:
 </details>
 </dd>
 <dt id="clingo.ast.CspProduct"><code class="name flex">
-<span>def <span class="ident">CspProduct</span></span>(<span>location: <a title="clingo.ast.Location" href="#clingo.ast.Location">Location</a>, coefficient: <a title="clingo.ast.AST" href="#clingo.ast.AST">AST</a>, variable: <a title="clingo.ast.AST" href="#clingo.ast.AST">AST</a>) ‑> <a title="clingo.ast.AST" href="#clingo.ast.AST">AST</a></span>
+<span>def <span class="ident">CspProduct</span></span>(<span>location: <a title="clingo.ast.Location" href="#clingo.ast.Location">Location</a>, coefficient: <a title="clingo.ast.AST" href="#clingo.ast.AST">AST</a>, variable: Optional[<a title="clingo.ast.AST" href="#clingo.ast.AST">AST</a>]) ‑> <a title="clingo.ast.AST" href="#clingo.ast.AST">AST</a></span>
 </code></dt>
 <dd>
 <div class="desc"><p>Construct an AST node of type <code><a title="clingo.ast.ASTType.CspProduct" href="#clingo.ast.ASTType.CspProduct">ASTType.CspProduct</a></code>.</p></div>
@@ -2498,7 +2508,7 @@ def TheoryDefinition(location: Location, name: str, terms: Sequence[AST], atoms:
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def CspProduct(location: Location, coefficient: AST, variable: AST) -&gt; AST:
+<pre><code class="python">def CspProduct(location: Location, coefficient: AST, variable: Optional[AST]) -&gt; AST:
     &#39;&#39;&#39;
     Construct an AST node of type `ASTType.CspProduct`.
     &#39;&#39;&#39;
@@ -2508,12 +2518,12 @@ def TheoryDefinition(location: Location, name: str, terms: Sequence[AST], atoms:
         _lib.clingo_ast_type_csp_product, p_ast,
         c_location[0],
         coefficient._rep,
-        variable._rep))
+        _ffi.NULL if variable is None else variable._rep))
     return AST(p_ast[0])</code></pre>
 </details>
 </dd>
 <dt id="clingo.ast.CspSum"><code class="name flex">
-<span>def <span class="ident">CspSum</span></span>(<span>location: <a title="clingo.ast.Location" href="#clingo.ast.Location">Location</a>, coefficient: <a title="clingo.ast.AST" href="#clingo.ast.AST">AST</a>, variable: <a title="clingo.ast.AST" href="#clingo.ast.AST">AST</a>) ‑> <a title="clingo.ast.AST" href="#clingo.ast.AST">AST</a></span>
+<span>def <span class="ident">CspSum</span></span>(<span>location: <a title="clingo.ast.Location" href="#clingo.ast.Location">Location</a>, terms: Sequence[<a title="clingo.ast.AST" href="#clingo.ast.AST">AST</a>]) ‑> <a title="clingo.ast.AST" href="#clingo.ast.AST">AST</a></span>
 </code></dt>
 <dd>
 <div class="desc"><p>Construct an AST node of type <code><a title="clingo.ast.ASTType.CspSum" href="#clingo.ast.ASTType.CspSum">ASTType.CspSum</a></code>.</p></div>
@@ -2521,7 +2531,7 @@ def TheoryDefinition(location: Location, name: str, terms: Sequence[AST], atoms:
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def CspSum(location: Location, coefficient: AST, variable: AST) -&gt; AST:
+<pre><code class="python">def CspSum(location: Location, terms: Sequence[AST]) -&gt; AST:
     &#39;&#39;&#39;
     Construct an AST node of type `ASTType.CspSum`.
     &#39;&#39;&#39;
@@ -2530,8 +2540,8 @@ def TheoryDefinition(location: Location, name: str, terms: Sequence[AST], atoms:
     _handle_error(_lib.clingo_ast_build(
         _lib.clingo_ast_type_csp_sum, p_ast,
         c_location[0],
-        coefficient._rep,
-        variable._rep))
+        _ffi.new(&#39;clingo_ast_t*[]&#39;, [ x._rep for x in terms ]),
+        _ffi.cast(&#39;size_t&#39;, len(terms))))
     return AST(p_ast[0])</code></pre>
 </details>
 </dd>
@@ -2731,7 +2741,7 @@ def TheoryDefinition(location: Location, name: str, terms: Sequence[AST], atoms:
 </details>
 </dd>
 <dt id="clingo.ast.HeadAggregate"><code class="name flex">
-<span>def <span class="ident">HeadAggregate</span></span>(<span>location: <a title="clingo.ast.Location" href="#clingo.ast.Location">Location</a>, left_guard: Union[<a title="clingo.ast.AST" href="#clingo.ast.AST">AST</a>, NoneType], function: int, elements: Sequence[<a title="clingo.ast.AST" href="#clingo.ast.AST">AST</a>], right_guard: Union[<a title="clingo.ast.AST" href="#clingo.ast.AST">AST</a>, NoneType]) ‑> <a title="clingo.ast.AST" href="#clingo.ast.AST">AST</a></span>
+<span>def <span class="ident">HeadAggregate</span></span>(<span>location: <a title="clingo.ast.Location" href="#clingo.ast.Location">Location</a>, left_guard: Optional[<a title="clingo.ast.AST" href="#clingo.ast.AST">AST</a>], function: int, elements: Sequence[<a title="clingo.ast.AST" href="#clingo.ast.AST">AST</a>], right_guard: Optional[<a title="clingo.ast.AST" href="#clingo.ast.AST">AST</a>]) ‑> <a title="clingo.ast.AST" href="#clingo.ast.AST">AST</a></span>
 </code></dt>
 <dd>
 <div class="desc"><p>Construct an AST node of type <code><a title="clingo.ast.ASTType.HeadAggregate" href="#clingo.ast.ASTType.HeadAggregate">ASTType.HeadAggregate</a></code>.</p></div>
@@ -3116,7 +3126,7 @@ def TheoryDefinition(location: Location, name: str, terms: Sequence[AST], atoms:
 </details>
 </dd>
 <dt id="clingo.ast.TheoryAtom"><code class="name flex">
-<span>def <span class="ident">TheoryAtom</span></span>(<span>location: <a title="clingo.ast.Location" href="#clingo.ast.Location">Location</a>, term: <a title="clingo.ast.AST" href="#clingo.ast.AST">AST</a>, elements: Sequence[<a title="clingo.ast.AST" href="#clingo.ast.AST">AST</a>], guard: Union[<a title="clingo.ast.AST" href="#clingo.ast.AST">AST</a>, NoneType]) ‑> <a title="clingo.ast.AST" href="#clingo.ast.AST">AST</a></span>
+<span>def <span class="ident">TheoryAtom</span></span>(<span>location: <a title="clingo.ast.Location" href="#clingo.ast.Location">Location</a>, term: <a title="clingo.ast.AST" href="#clingo.ast.AST">AST</a>, elements: Sequence[<a title="clingo.ast.AST" href="#clingo.ast.AST">AST</a>], guard: Optional[<a title="clingo.ast.AST" href="#clingo.ast.AST">AST</a>]) ‑> <a title="clingo.ast.AST" href="#clingo.ast.AST">AST</a></span>
 </code></dt>
 <dd>
 <div class="desc"><p>Construct an AST node of type <code><a title="clingo.ast.ASTType.TheoryAtom" href="#clingo.ast.ASTType.TheoryAtom">ASTType.TheoryAtom</a></code>.</p></div>
@@ -3141,7 +3151,7 @@ def TheoryDefinition(location: Location, name: str, terms: Sequence[AST], atoms:
 </details>
 </dd>
 <dt id="clingo.ast.TheoryAtomDefinition"><code class="name flex">
-<span>def <span class="ident">TheoryAtomDefinition</span></span>(<span>location: <a title="clingo.ast.Location" href="#clingo.ast.Location">Location</a>, atom_type: int, name: str, arity: int, term: str, guard: Union[<a title="clingo.ast.AST" href="#clingo.ast.AST">AST</a>, NoneType]) ‑> <a title="clingo.ast.AST" href="#clingo.ast.AST">AST</a></span>
+<span>def <span class="ident">TheoryAtomDefinition</span></span>(<span>location: <a title="clingo.ast.Location" href="#clingo.ast.Location">Location</a>, atom_type: int, name: str, arity: int, term: str, guard: Optional[<a title="clingo.ast.AST" href="#clingo.ast.AST">AST</a>]) ‑> <a title="clingo.ast.AST" href="#clingo.ast.AST">AST</a></span>
 </code></dt>
 <dd>
 <div class="desc"><p>Construct an AST node of type <code><a title="clingo.ast.ASTType.TheoryAtomDefinition" href="#clingo.ast.ASTType.TheoryAtomDefinition">ASTType.TheoryAtomDefinition</a></code>.</p></div>
@@ -3448,7 +3458,7 @@ def TheoryDefinition(location: Location, name: str, terms: Sequence[AST], atoms:
 </details>
 </dd>
 <dt id="clingo.ast.parse_files"><code class="name flex">
-<span>def <span class="ident">parse_files</span></span>(<span>files: Sequence[str], callback: Callable[[<a title="clingo.ast.AST" href="#clingo.ast.AST">AST</a>], NoneType], logger: Union[Callable[[<a title="clingo.core.MessageCode" href="core.html#clingo.core.MessageCode">MessageCode</a>, str], NoneType], NoneType] = None, message_limit: int = 20) ‑> NoneType</span>
+<span>def <span class="ident">parse_files</span></span>(<span>files: Sequence[str], callback: Callable[[<a title="clingo.ast.AST" href="#clingo.ast.AST">AST</a>], None], logger: Optional[Callable[[<a title="clingo.core.MessageCode" href="core.html#clingo.core.MessageCode">MessageCode</a>, str], None]] = None, message_limit: int = 20) ‑> None</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Parse the programs in the given files and return an abstract syntax tree for
@@ -3516,7 +3526,7 @@ read from stdin.</p>
 </details>
 </dd>
 <dt id="clingo.ast.parse_string"><code class="name flex">
-<span>def <span class="ident">parse_string</span></span>(<span>program: str, callback: Callable[[<a title="clingo.ast.AST" href="#clingo.ast.AST">AST</a>], NoneType], logger: Union[Callable[[<a title="clingo.core.MessageCode" href="core.html#clingo.core.MessageCode">MessageCode</a>, str], NoneType], NoneType] = None, message_limit: int = 20) ‑> NoneType</span>
+<span>def <span class="ident">parse_string</span></span>(<span>program: str, callback: Callable[[<a title="clingo.ast.AST" href="#clingo.ast.AST">AST</a>], None], logger: Optional[Callable[[<a title="clingo.core.MessageCode" href="core.html#clingo.core.MessageCode">MessageCode</a>, str], None]] = None, message_limit: int = 20) ‑> None</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Parse the given program and return an abstract syntax tree for each
@@ -3845,7 +3855,7 @@ def child_keys(self) -&gt; List[str]:
 <h3>Methods</h3>
 <dl>
 <dt id="clingo.ast.AST.items"><code class="name flex">
-<span>def <span class="ident">items</span></span>(<span>self) ‑> List[Tuple[str, Union[str, int, <a title="clingo.symbol.Symbol" href="symbol.html#clingo.symbol.Symbol">Symbol</a>, <a title="clingo.ast.Location" href="#clingo.ast.Location">Location</a>, NoneType, <a title="clingo.ast.AST" href="#clingo.ast.AST">AST</a>, <a title="clingo.ast.StrSequence" href="#clingo.ast.StrSequence">StrSequence</a>, <a title="clingo.ast.ASTSequence" href="#clingo.ast.ASTSequence">ASTSequence</a>]]]</span>
+<span>def <span class="ident">items</span></span>(<span>self) ‑> List[Tuple[str, Union[str, int, <a title="clingo.symbol.Symbol" href="symbol.html#clingo.symbol.Symbol">Symbol</a>, <a title="clingo.ast.Location" href="#clingo.ast.Location">Location</a>, None, <a title="clingo.ast.AST" href="#clingo.ast.AST">AST</a>, <a title="clingo.ast.StrSequence" href="#clingo.ast.StrSequence">StrSequence</a>, <a title="clingo.ast.ASTSequence" href="#clingo.ast.ASTSequence">ASTSequence</a>]]]</span>
 </code></dt>
 <dd>
 <div class="desc"><p>The list of items of the AST node.</p></div>
@@ -3922,7 +3932,7 @@ literals.</dd>
 </details>
 </dd>
 <dt id="clingo.ast.AST.update"><code class="name flex">
-<span>def <span class="ident">update</span></span>(<span>self, **kwargs: Union[str, int, <a title="clingo.symbol.Symbol" href="symbol.html#clingo.symbol.Symbol">Symbol</a>, <a title="clingo.ast.Location" href="#clingo.ast.Location">Location</a>, NoneType, ForwardRef('<a title="clingo.ast.AST" href="#clingo.ast.AST">AST</a>'), Sequence[str], Sequence[ForwardRef('<a title="clingo.ast.AST" href="#clingo.ast.AST">AST</a>')]]) ‑> <a title="clingo.ast.AST" href="#clingo.ast.AST">AST</a></span>
+<span>def <span class="ident">update</span></span>(<span>self, **kwargs: Union[str, int, <a title="clingo.symbol.Symbol" href="symbol.html#clingo.symbol.Symbol">Symbol</a>, <a title="clingo.ast.Location" href="#clingo.ast.Location">Location</a>, None, ForwardRef('<a title="clingo.ast.AST" href="#clingo.ast.AST">AST</a>'), Sequence[str], Sequence[ForwardRef('<a title="clingo.ast.AST" href="#clingo.ast.AST">AST</a>')]]) ‑> <a title="clingo.ast.AST" href="#clingo.ast.AST">AST</a></span>
 </code></dt>
 <dd>
 <div class="desc"><p>Return a copy of the AST also updating the given attributes.</p>
@@ -3954,7 +3964,7 @@ given.</p></div>
 </details>
 </dd>
 <dt id="clingo.ast.AST.values"><code class="name flex">
-<span>def <span class="ident">values</span></span>(<span>self) ‑> List[Union[str, int, <a title="clingo.symbol.Symbol" href="symbol.html#clingo.symbol.Symbol">Symbol</a>, <a title="clingo.ast.Location" href="#clingo.ast.Location">Location</a>, NoneType, <a title="clingo.ast.AST" href="#clingo.ast.AST">AST</a>, <a title="clingo.ast.StrSequence" href="#clingo.ast.StrSequence">StrSequence</a>, <a title="clingo.ast.ASTSequence" href="#clingo.ast.ASTSequence">ASTSequence</a>]]</span>
+<span>def <span class="ident">values</span></span>(<span>self) ‑> List[Union[str, int, <a title="clingo.symbol.Symbol" href="symbol.html#clingo.symbol.Symbol">Symbol</a>, <a title="clingo.ast.Location" href="#clingo.ast.Location">Location</a>, None, <a title="clingo.ast.AST" href="#clingo.ast.AST">AST</a>, <a title="clingo.ast.StrSequence" href="#clingo.ast.StrSequence">StrSequence</a>, <a title="clingo.ast.ASTSequence" href="#clingo.ast.ASTSequence">ASTSequence</a>]]</span>
 </code></dt>
 <dd>
 <div class="desc"><p>The list of values of the AST node.</p></div>
@@ -4028,6 +4038,13 @@ given.</p></div>
     def insert(self, index, value):
         _handle_error(_lib.clingo_ast_attribute_insert_ast_at(self._rep, self._attribute, index, value._rep))
 
+    def clear(self):
+        &#39;&#39;&#39;
+        Remove all elements from the sequence.
+        &#39;&#39;&#39;
+        for i in range(len(self), 0, -1):
+            del self[i - 1]
+
     def __str__(self):
         return str(list(self))
 
@@ -4046,6 +4063,23 @@ given.</p></div>
 </ul>
 <h3>Methods</h3>
 <dl>
+<dt id="clingo.ast.ASTSequence.clear"><code class="name flex">
+<span>def <span class="ident">clear</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Remove all elements from the sequence.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def clear(self):
+    &#39;&#39;&#39;
+    Remove all elements from the sequence.
+    &#39;&#39;&#39;
+    for i in range(len(self), 0, -1):
+        del self[i - 1]</code></pre>
+</details>
+</dd>
 <dt id="clingo.ast.ASTSequence.insert"><code class="name flex">
 <span>def <span class="ident">insert</span></span>(<span>self, index, value)</span>
 </code></dt>
@@ -4729,7 +4763,7 @@ statement.</p></div>
 <h3>Methods</h3>
 <dl>
 <dt id="clingo.ast.ProgramBuilder.add"><code class="name flex">
-<span>def <span class="ident">add</span></span>(<span>self, statement: <a title="clingo.ast.AST" href="#clingo.ast.AST">AST</a>) ‑> NoneType</span>
+<span>def <span class="ident">add</span></span>(<span>self, statement: <a title="clingo.ast.AST" href="#clingo.ast.AST">AST</a>) ‑> None</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Adds a statement in form of an <code><a title="clingo.ast.AST" href="#clingo.ast.AST">AST</a></code> node to the program.</p>
@@ -4862,6 +4896,13 @@ statement.</p></div>
     def insert(self, index, value):
         _handle_error(_lib.clingo_ast_attribute_insert_string_at(self._rep, self._attribute, index, value.encode()))
 
+    def clear(self):
+        &#39;&#39;&#39;
+        Remove all elements from the sequence.
+        &#39;&#39;&#39;
+        for i in range(len(self), 0, -1):
+            del self[i - 1]
+
     def __str__(self):
         return str(list(self))
 
@@ -4880,6 +4921,23 @@ statement.</p></div>
 </ul>
 <h3>Methods</h3>
 <dl>
+<dt id="clingo.ast.StrSequence.clear"><code class="name flex">
+<span>def <span class="ident">clear</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Remove all elements from the sequence.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def clear(self):
+    &#39;&#39;&#39;
+    Remove all elements from the sequence.
+    &#39;&#39;&#39;
+    for i in range(len(self), 0, -1):
+        del self[i - 1]</code></pre>
+</details>
+</dd>
 <dt id="clingo.ast.StrSequence.insert"><code class="name flex">
 <span>def <span class="ident">insert</span></span>(<span>self, index, value)</span>
 </code></dt>
@@ -5170,7 +5228,7 @@ children of the given AST if it is missing.</p></div>
 </details>
 </dd>
 <dt id="clingo.ast.Transformer.visit_children"><code class="name flex">
-<span>def <span class="ident">visit_children</span></span>(<span>self, ast: <a title="clingo.ast.AST" href="#clingo.ast.AST">AST</a>, *args: Any, **kwargs: Any) ‑> Dict[str, Union[str, int, <a title="clingo.symbol.Symbol" href="symbol.html#clingo.symbol.Symbol">Symbol</a>, <a title="clingo.ast.Location" href="#clingo.ast.Location">Location</a>, NoneType, <a title="clingo.ast.AST" href="#clingo.ast.AST">AST</a>, Sequence[str], Sequence[<a title="clingo.ast.AST" href="#clingo.ast.AST">AST</a>]]]</span>
+<span>def <span class="ident">visit_children</span></span>(<span>self, ast: <a title="clingo.ast.AST" href="#clingo.ast.AST">AST</a>, *args: Any, **kwargs: Any) ‑> Dict[str, Union[str, int, <a title="clingo.symbol.Symbol" href="symbol.html#clingo.symbol.Symbol">Symbol</a>, <a title="clingo.ast.Location" href="#clingo.ast.Location">Location</a>, None, <a title="clingo.ast.AST" href="#clingo.ast.AST">AST</a>, Sequence[str], Sequence[<a title="clingo.ast.AST" href="#clingo.ast.AST">AST</a>]]]</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Visit and transform the children of the given AST.</p>
@@ -5364,6 +5422,7 @@ changes or a list of ASTs otherwise.</p></div>
 <li>
 <h4><code><a title="clingo.ast.ASTSequence" href="#clingo.ast.ASTSequence">ASTSequence</a></code></h4>
 <ul class="">
+<li><code><a title="clingo.ast.ASTSequence.clear" href="#clingo.ast.ASTSequence.clear">clear</a></code></li>
 <li><code><a title="clingo.ast.ASTSequence.insert" href="#clingo.ast.ASTSequence.insert">insert</a></code></li>
 </ul>
 </li>
@@ -5490,6 +5549,7 @@ changes or a list of ASTs otherwise.</p></div>
 <li>
 <h4><code><a title="clingo.ast.StrSequence" href="#clingo.ast.StrSequence">StrSequence</a></code></h4>
 <ul class="">
+<li><code><a title="clingo.ast.StrSequence.clear" href="#clingo.ast.StrSequence.clear">clear</a></code></li>
 <li><code><a title="clingo.ast.StrSequence.insert" href="#clingo.ast.StrSequence.insert">insert</a></code></li>
 </ul>
 </li>
@@ -5540,7 +5600,7 @@ changes or a list of ASTs otherwise.</p></div>
 </nav>
 </main>
 <footer id="footer">
-<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.9.2</a>.</p>
+<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.10.0</a>.</p>
 </footer>
 </body>
 </html>

@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
-<meta name="generator" content="pdoc 0.9.2" />
+<meta name="generator" content="pdoc 0.10.0" />
 <title>clingo.theory API documentation</title>
 <meta name="description" content="This module defines the `Theory` class for using a [CFFI] based module with
 clingo&#39;s Python package …" />
@@ -74,6 +74,7 @@ typedef bool (*PREFIX_ast_callback_t)(clingo_ast_t *ast, void *data);
 
 bool PREFIX_create(PREFIX_theory_t **theory)
 bool PREFIX_destroy(PREFIX_theory_t *theory)
+bool PREFIX_version(PREFIX_theory_t **theory, int *major, int *minor, int *patch);
 bool PREFIX_register(PREFIX_theory_t *theory, clingo_control_t* control)
 bool PREFIX_rewrite_ast(PREFIX_theory_t *theory, clingo_ast_t *ast, PREFIX_ast_callback_t add, void *data);
 bool PREFIX_prepare(PREFIX_theory_t *theory, clingo_control_t* control)
@@ -151,6 +152,7 @@ typedef bool (*PREFIX_ast_callback_t)(clingo_ast_t *ast, void *data);
 
 bool PREFIX_create(PREFIX_theory_t **theory)
 bool PREFIX_destroy(PREFIX_theory_t *theory)
+bool PREFIX_version(PREFIX_theory_t **theory, int *major, int *minor, int *patch);
 bool PREFIX_register(PREFIX_theory_t *theory, clingo_control_t* control)
 bool PREFIX_rewrite_ast(PREFIX_theory_t *theory, clingo_ast_t *ast, PREFIX_ast_callback_t add, void *data);
 bool PREFIX_prepare(PREFIX_theory_t *theory, clingo_control_t* control)
@@ -273,6 +275,19 @@ class Theory:
             self.__call0(&#39;destroy&#39;, self._theory)
             self._theory = None
 
+    def version(self) -&gt; Tuple[int, int, int]:
+        &#39;&#39;&#39;
+        This function returns the version of the theory.
+
+        Returns
+        -------
+        A 3-tuple of integers representing major and minor version as well as
+        the patch level.
+        &#39;&#39;&#39;
+        p_version = self._ffi.new(&#39;int[3]&#39;)
+        self.__call(&#39;version&#39;, p_version, p_version + 1, p_version + 2)
+        return p_version[0], p_version[1], p_version[2]
+
     def configure(self, key: str, value: str) -&gt; None:
         &#39;&#39;&#39;
         Allows for configuring a theory via key/value pairs similar to
@@ -382,7 +397,7 @@ class Theory:
         Get the integer index of a symbol assigned by the theory when a
         model is found.
 
-        Using indices allows for efficent retreival of values.
+        Using indices allows for efficent retrieval of values.
 
         Arguments
         ---------
@@ -592,6 +607,19 @@ object but can also be used with a standalone <code>Control</code> object.</p>
             self.__call0(&#39;destroy&#39;, self._theory)
             self._theory = None
 
+    def version(self) -&gt; Tuple[int, int, int]:
+        &#39;&#39;&#39;
+        This function returns the version of the theory.
+
+        Returns
+        -------
+        A 3-tuple of integers representing major and minor version as well as
+        the patch level.
+        &#39;&#39;&#39;
+        p_version = self._ffi.new(&#39;int[3]&#39;)
+        self.__call(&#39;version&#39;, p_version, p_version + 1, p_version + 2)
+        return p_version[0], p_version[1], p_version[2]
+
     def configure(self, key: str, value: str) -&gt; None:
         &#39;&#39;&#39;
         Allows for configuring a theory via key/value pairs similar to
@@ -701,7 +729,7 @@ object but can also be used with a standalone <code>Control</code> object.</p>
         Get the integer index of a symbol assigned by the theory when a
         model is found.
 
-        Using indices allows for efficent retreival of values.
+        Using indices allows for efficent retrieval of values.
 
         Arguments
         ---------
@@ -835,7 +863,7 @@ current model.</p>
 </details>
 </dd>
 <dt id="clingo.theory.Theory.configure"><code class="name flex">
-<span>def <span class="ident">configure</span></span>(<span>self, key: str, value: str) ‑> NoneType</span>
+<span>def <span class="ident">configure</span></span>(<span>self, key: str, value: str) ‑> None</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Allows for configuring a theory via key/value pairs similar to
@@ -985,12 +1013,12 @@ command line options.</p>
 </details>
 </dd>
 <dt id="clingo.theory.Theory.lookup_symbol"><code class="name flex">
-<span>def <span class="ident">lookup_symbol</span></span>(<span>self, symbol: <a title="clingo.symbol.Symbol" href="symbol.html#clingo.symbol.Symbol">Symbol</a>) ‑> Union[int, NoneType]</span>
+<span>def <span class="ident">lookup_symbol</span></span>(<span>self, symbol: <a title="clingo.symbol.Symbol" href="symbol.html#clingo.symbol.Symbol">Symbol</a>) ‑> Optional[int]</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Get the integer index of a symbol assigned by the theory when a
 model is found.</p>
-<p>Using indices allows for efficent retreival of values.</p>
+<p>Using indices allows for efficent retrieval of values.</p>
 <h2 id="arguments">Arguments</h2>
 <dl>
 <dt><strong><code>symbol</code></strong></dt>
@@ -1007,7 +1035,7 @@ model is found.</p>
     Get the integer index of a symbol assigned by the theory when a
     model is found.
 
-    Using indices allows for efficent retreival of values.
+    Using indices allows for efficent retrieval of values.
 
     Arguments
     ---------
@@ -1025,7 +1053,7 @@ model is found.</p>
 </details>
 </dd>
 <dt id="clingo.theory.Theory.on_model"><code class="name flex">
-<span>def <span class="ident">on_model</span></span>(<span>self, model: <a title="clingo.solving.Model" href="solving.html#clingo.solving.Model">Model</a>) ‑> NoneType</span>
+<span>def <span class="ident">on_model</span></span>(<span>self, model: <a title="clingo.solving.Model" href="solving.html#clingo.solving.Model">Model</a>) ‑> None</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Inform the theory that a model has been found.</p>
@@ -1052,7 +1080,7 @@ model is found.</p>
 </details>
 </dd>
 <dt id="clingo.theory.Theory.on_statistics"><code class="name flex">
-<span>def <span class="ident">on_statistics</span></span>(<span>self, step: <a title="clingo.statistics.StatisticsMap" href="statistics.html#clingo.statistics.StatisticsMap">StatisticsMap</a>, accu: <a title="clingo.statistics.StatisticsMap" href="statistics.html#clingo.statistics.StatisticsMap">StatisticsMap</a>) ‑> NoneType</span>
+<span>def <span class="ident">on_statistics</span></span>(<span>self, step: <a title="clingo.statistics.StatisticsMap" href="statistics.html#clingo.statistics.StatisticsMap">StatisticsMap</a>, accu: <a title="clingo.statistics.StatisticsMap" href="statistics.html#clingo.statistics.StatisticsMap">StatisticsMap</a>) ‑> None</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Add the theory's statistics to the given maps.</p>
@@ -1084,7 +1112,7 @@ model is found.</p>
 </details>
 </dd>
 <dt id="clingo.theory.Theory.prepare"><code class="name flex">
-<span>def <span class="ident">prepare</span></span>(<span>self, control: <a title="clingo.control.Control" href="control.html#clingo.control.Control">Control</a>) ‑> NoneType</span>
+<span>def <span class="ident">prepare</span></span>(<span>self, control: <a title="clingo.control.Control" href="control.html#clingo.control.Control">Control</a>) ‑> None</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Prepare the theory.</p>
@@ -1113,7 +1141,7 @@ model is found.</p>
 </details>
 </dd>
 <dt id="clingo.theory.Theory.register"><code class="name flex">
-<span>def <span class="ident">register</span></span>(<span>self, control: <a title="clingo.control.Control" href="control.html#clingo.control.Control">Control</a>) ‑> NoneType</span>
+<span>def <span class="ident">register</span></span>(<span>self, control: <a title="clingo.control.Control" href="control.html#clingo.control.Control">Control</a>) ‑> None</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Register the theory with the given control object.</p>
@@ -1139,7 +1167,7 @@ model is found.</p>
 </details>
 </dd>
 <dt id="clingo.theory.Theory.register_options"><code class="name flex">
-<span>def <span class="ident">register_options</span></span>(<span>self, options: <a title="clingo.application.ApplicationOptions" href="application.html#clingo.application.ApplicationOptions">ApplicationOptions</a>) ‑> NoneType</span>
+<span>def <span class="ident">register_options</span></span>(<span>self, options: <a title="clingo.application.ApplicationOptions" href="application.html#clingo.application.ApplicationOptions">ApplicationOptions</a>) ‑> None</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Register the theory's options with the given application options
@@ -1167,7 +1195,7 @@ object.</p>
 </details>
 </dd>
 <dt id="clingo.theory.Theory.rewrite_ast"><code class="name flex">
-<span>def <span class="ident">rewrite_ast</span></span>(<span>self, stm: <a title="clingo.ast.AST" href="ast.html#clingo.ast.AST">AST</a>, add: Callable[[<a title="clingo.ast.AST" href="ast.html#clingo.ast.AST">AST</a>], NoneType]) ‑> NoneType</span>
+<span>def <span class="ident">rewrite_ast</span></span>(<span>self, stm: <a title="clingo.ast.AST" href="ast.html#clingo.ast.AST">AST</a>, add: Callable[[<a title="clingo.ast.AST" href="ast.html#clingo.ast.AST">AST</a>], None]) ‑> None</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Rewrite the given statement and call add on the rewritten version(s).</p>
@@ -1205,7 +1233,7 @@ AST.</p>
 </details>
 </dd>
 <dt id="clingo.theory.Theory.validate_options"><code class="name flex">
-<span>def <span class="ident">validate_options</span></span>(<span>self) ‑> NoneType</span>
+<span>def <span class="ident">validate_options</span></span>(<span>self) ‑> None</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Validate the options of the theory.</p></div>
@@ -1218,6 +1246,35 @@ AST.</p>
     Validate the options of the theory.
     &#39;&#39;&#39;
     self.__call0(&#39;validate_options&#39;, self._theory)</code></pre>
+</details>
+</dd>
+<dt id="clingo.theory.Theory.version"><code class="name flex">
+<span>def <span class="ident">version</span></span>(<span>self) ‑> Tuple[int, int, int]</span>
+</code></dt>
+<dd>
+<div class="desc"><p>This function returns the version of the theory.</p>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>A 3-tuple</code> of <code>integers representing major and minor version as well as</code></dt>
+<dd>&nbsp;</dd>
+</dl>
+<p>the patch level.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def version(self) -&gt; Tuple[int, int, int]:
+    &#39;&#39;&#39;
+    This function returns the version of the theory.
+
+    Returns
+    -------
+    A 3-tuple of integers representing major and minor version as well as
+    the patch level.
+    &#39;&#39;&#39;
+    p_version = self._ffi.new(&#39;int[3]&#39;)
+    self.__call(&#39;version&#39;, p_version, p_version + 1, p_version + 2)
+    return p_version[0], p_version[1], p_version[2]</code></pre>
 </details>
 </dd>
 </dl>
@@ -1257,6 +1314,7 @@ AST.</p>
 <li><code><a title="clingo.theory.Theory.register_options" href="#clingo.theory.Theory.register_options">register_options</a></code></li>
 <li><code><a title="clingo.theory.Theory.rewrite_ast" href="#clingo.theory.Theory.rewrite_ast">rewrite_ast</a></code></li>
 <li><code><a title="clingo.theory.Theory.validate_options" href="#clingo.theory.Theory.validate_options">validate_options</a></code></li>
+<li><code><a title="clingo.theory.Theory.version" href="#clingo.theory.Theory.version">version</a></code></li>
 </ul>
 </li>
 </ul>
@@ -1265,7 +1323,7 @@ AST.</p>
 </nav>
 </main>
 <footer id="footer">
-<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.9.2</a>.</p>
+<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.10.0</a>.</p>
 </footer>
 </body>
 </html>

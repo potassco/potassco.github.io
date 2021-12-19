@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
-<meta name="generator" content="pdoc 0.9.2" />
+<meta name="generator" content="pdoc 0.10.0" />
 <title>clingo.propagator API documentation</title>
 <meta name="description" content="Functions and classes to implement custom propagators …" />
 <link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
@@ -844,6 +844,8 @@ class Propagator(metaclass=ABCMeta):
         decision. If all propagators return 0, then the fallback literal is
         used.
         &#39;&#39;&#39;
+        # pylint: disable=unused-argument
+        return fallback
 
 @_ffi.def_extern(onerror=_cb_error_handler(&#39;data&#39;), name=&#39;pyclingo_propagator_init&#39;)
 def _pyclingo_propagator_init(init, data):
@@ -1350,7 +1352,7 @@ assigned - i.e., <code>value(lit) is not None</code>.</p></div>
 </details>
 </dd>
 <dt id="clingo.propagator.Assignment.value"><code class="name flex">
-<span>def <span class="ident">value</span></span>(<span>self, literal) ‑> Union[bool, NoneType]</span>
+<span>def <span class="ident">value</span></span>(<span>self, literal) ‑> Optional[bool]</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Get the truth value of the given literal or <code>None</code> if it has none.</p>
@@ -1639,7 +1641,7 @@ are deleted after the current search.</p>
 </details>
 </dd>
 <dt id="clingo.propagator.PropagateControl.add_watch"><code class="name flex">
-<span>def <span class="ident">add_watch</span></span>(<span>self, literal: int) ‑> NoneType</span>
+<span>def <span class="ident">add_watch</span></span>(<span>self, literal: int) ‑> None</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Add a watch for the solver literal in the given phase.</p>
@@ -1727,7 +1729,7 @@ solver threads but just the current one.</p></div>
 </details>
 </dd>
 <dt id="clingo.propagator.PropagateControl.remove_watch"><code class="name flex">
-<span>def <span class="ident">remove_watch</span></span>(<span>self, literal: int) ‑> NoneType</span>
+<span>def <span class="ident">remove_watch</span></span>(<span>self, literal: int) ‑> None</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Removes the watch (if any) for the given solver literal.</p>
@@ -2175,7 +2177,7 @@ during preprocessing.</p>
 </details>
 </dd>
 <dt id="clingo.propagator.PropagateInit.add_minimize"><code class="name flex">
-<span>def <span class="ident">add_minimize</span></span>(<span>self, literal: int, weight: int, priority: int = 0) ‑> NoneType</span>
+<span>def <span class="ident">add_minimize</span></span>(<span>self, literal: int, weight: int, priority: int = 0) ‑> None</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Extends the solver's minimize constraint with the given weighted
@@ -2211,7 +2213,7 @@ literal.</p>
 </details>
 </dd>
 <dt id="clingo.propagator.PropagateInit.add_watch"><code class="name flex">
-<span>def <span class="ident">add_watch</span></span>(<span>self, literal: int, thread_id: Union[int, NoneType] = None) ‑> NoneType</span>
+<span>def <span class="ident">add_watch</span></span>(<span>self, literal: int, thread_id: Optional[int] = None) ‑> None</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Add a watch for the solver literal in the given phase.</p>
@@ -2320,7 +2322,7 @@ functions of the <code><a title="clingo.propagator.PropagateInit" href="#clingo.
 </details>
 </dd>
 <dt id="clingo.propagator.PropagateInit.freeze_literal"><code class="name flex">
-<span>def <span class="ident">freeze_literal</span></span>(<span>self, literal: int) ‑> NoneType</span>
+<span>def <span class="ident">freeze_literal</span></span>(<span>self, literal: int) ‑> None</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Freeze the given solver literal.</p>
@@ -2396,7 +2398,7 @@ called.</p></div>
 </details>
 </dd>
 <dt id="clingo.propagator.PropagateInit.remove_watch"><code class="name flex">
-<span>def <span class="ident">remove_watch</span></span>(<span>self, literal: int, thread_id: Union[int, NoneType] = None) ‑> NoneType</span>
+<span>def <span class="ident">remove_watch</span></span>(<span>self, literal: int, thread_id: Optional[int] = None) ‑> None</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Remove the watch for the solver literal in the given phase.</p>
@@ -2609,12 +2611,14 @@ can be omitted if not needed.</p></div>
         function can return 0 to let a propagator registered later make a
         decision. If all propagators return 0, then the fallback literal is
         used.
-        &#39;&#39;&#39;</code></pre>
+        &#39;&#39;&#39;
+        # pylint: disable=unused-argument
+        return fallback</code></pre>
 </details>
 <h3>Methods</h3>
 <dl>
 <dt id="clingo.propagator.Propagator.check"><code class="name flex">
-<span>def <span class="ident">check</span></span>(<span>self, control: <a title="clingo.propagator.PropagateControl" href="#clingo.propagator.PropagateControl">PropagateControl</a>) ‑> NoneType</span>
+<span>def <span class="ident">check</span></span>(<span>self, control: <a title="clingo.propagator.PropagateControl" href="#clingo.propagator.PropagateControl">PropagateControl</a>) ‑> None</span>
 </code></dt>
 <dd>
 <div class="desc"><p>This function is similar to propagate but is called without a change
@@ -2706,11 +2710,13 @@ used.</p></div>
     function can return 0 to let a propagator registered later make a
     decision. If all propagators return 0, then the fallback literal is
     used.
-    &#39;&#39;&#39;</code></pre>
+    &#39;&#39;&#39;
+    # pylint: disable=unused-argument
+    return fallback</code></pre>
 </details>
 </dd>
 <dt id="clingo.propagator.Propagator.init"><code class="name flex">
-<span>def <span class="ident">init</span></span>(<span>self, init: <a title="clingo.propagator.PropagateInit" href="#clingo.propagator.PropagateInit">PropagateInit</a>) ‑> NoneType</span>
+<span>def <span class="ident">init</span></span>(<span>self, init: <a title="clingo.propagator.PropagateInit" href="#clingo.propagator.PropagateInit">PropagateInit</a>) ‑> None</span>
 </code></dt>
 <dd>
 <div class="desc"><p>This function is called once before each solving step.</p>
@@ -2751,7 +2757,7 @@ started, they are no longer accessible.</p></div>
 </details>
 </dd>
 <dt id="clingo.propagator.Propagator.propagate"><code class="name flex">
-<span>def <span class="ident">propagate</span></span>(<span>self, control: <a title="clingo.propagator.PropagateControl" href="#clingo.propagator.PropagateControl">PropagateControl</a>, changes: Sequence[int]) ‑> NoneType</span>
+<span>def <span class="ident">propagate</span></span>(<span>self, control: <a title="clingo.propagator.PropagateControl" href="#clingo.propagator.PropagateControl">PropagateControl</a>, changes: Sequence[int]) ‑> None</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Can be used to propagate solver literals given a partial assignment.</p>
@@ -2817,7 +2823,7 @@ Each thread has its own assignment and id, which can be obtained using
 </details>
 </dd>
 <dt id="clingo.propagator.Propagator.undo"><code class="name flex">
-<span>def <span class="ident">undo</span></span>(<span>self, thread_id: int, assignment: <a title="clingo.propagator.Assignment" href="#clingo.propagator.Assignment">Assignment</a>, changes: Sequence[int]) ‑> NoneType</span>
+<span>def <span class="ident">undo</span></span>(<span>self, thread_id: int, assignment: <a title="clingo.propagator.Assignment" href="#clingo.propagator.Assignment">Assignment</a>, changes: Sequence[int]) ‑> None</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Called whenever a solver with the given id undos assignments to watched
@@ -3163,7 +3169,7 @@ literal in the trail.</p>
 </nav>
 </main>
 <footer id="footer">
-<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.9.2</a>.</p>
+<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.10.0</a>.</p>
 </footer>
 </body>
 </html>

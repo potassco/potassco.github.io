@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
-<meta name="generator" content="pdoc 0.9.2" />
+<meta name="generator" content="pdoc 0.10.0" />
 <title>clingo.util API documentation</title>
 <meta name="description" content="Utility functions and classes." />
 <link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
@@ -35,21 +35,10 @@
 Utility functions and classes.
 &#34;&#34;&#34;
 
-from typing import Collection, Generic, MutableSequence, Sequence, Optional, TypeVar
-from abc import abstractmethod
+from typing import Optional, cast
 from collections import abc
 
 # pylint: disable=too-many-ancestors
-
-Key = TypeVar(&#39;Key&#39;)
-Value = TypeVar(&#39;Value&#39;)
-class Lookup(Generic[Key, Value], Collection[Value]):
-    &#39;&#39;&#39;
-    A collection of values with additional lookup by key.
-    &#39;&#39;&#39;
-    @abstractmethod
-    def __getitem__(self, key: Key) -&gt; Optional[Value]:
-        pass
 
 class Slice:
     &#39;&#39;&#39;
@@ -74,7 +63,7 @@ class SlicedSequence(abc.Sequence):
     &#39;&#39;&#39;
     Helper to slice sequences.
     &#39;&#39;&#39;
-    def __init__(self, seq: Sequence, slc: Slice):
+    def __init__(self, seq: abc.Sequence, slc: Slice):
         self._seq = seq
         self._slc = slc
         self._len = -1
@@ -111,21 +100,25 @@ class SlicedMutableSequence(SlicedSequence, abc.MutableSequence):
     &#39;&#39;&#39;
     Helper to slice sequences.
     &#39;&#39;&#39;
-    def __init__(self, seq: MutableSequence, slc: Slice):
+    def __init__(self, seq: abc.MutableSequence, slc: Slice):
         super().__init__(seq, slc)
+
+    @property
+    def _mut_seq(self):
+        return cast(abc.MutableSequence, self._seq)
 
     def __setitem__(self, index, ast):
         if isinstance(index, slice):
             raise TypeError(&#39;slicing not implemented&#39;)
-        self._seq[self._rng[index]] = ast
+        self._mut_seq[self._rng[index]] = ast
 
     def __delitem__(self, index):
         if isinstance(index, slice):
             raise TypeError(&#39;slicing not implemented&#39;)
-        del self._seq[self._rng[index]]
+        del self._mut_seq[self._rng[index]]
 
     def insert(self, index, value):
-        self._seq[self._rng[index]] = value</code></pre>
+        self._mut_seq[self._rng[index]] = value</code></pre>
 </details>
 </section>
 <section>
@@ -137,40 +130,9 @@ class SlicedMutableSequence(SlicedSequence, abc.MutableSequence):
 <section>
 <h2 class="section-title" id="header-classes">Classes</h2>
 <dl>
-<dt id="clingo.util.Lookup"><code class="flex name class">
-<span>class <span class="ident">Lookup</span></span>
-<span>(</span><span>*args, **kwds)</span>
-</code></dt>
-<dd>
-<div class="desc"><p>A collection of values with additional lookup by key.</p></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">class Lookup(Generic[Key, Value], Collection[Value]):
-    &#39;&#39;&#39;
-    A collection of values with additional lookup by key.
-    &#39;&#39;&#39;
-    @abstractmethod
-    def __getitem__(self, key: Key) -&gt; Optional[Value]:
-        pass</code></pre>
-</details>
-<h3>Ancestors</h3>
-<ul class="hlist">
-<li>collections.abc.Collection</li>
-<li>collections.abc.Sized</li>
-<li>collections.abc.Iterable</li>
-<li>collections.abc.Container</li>
-<li>typing.Generic</li>
-</ul>
-<h3>Subclasses</h3>
-<ul class="hlist">
-<li><a title="clingo.symbolic_atoms.SymbolicAtoms" href="symbolic_atoms.html#clingo.symbolic_atoms.SymbolicAtoms">SymbolicAtoms</a></li>
-</ul>
-</dd>
 <dt id="clingo.util.Slice"><code class="flex name class">
 <span>class <span class="ident">Slice</span></span>
-<span>(</span><span>slc: slice, rec: Union[ForwardRef('<a title="clingo.util.Slice" href="#clingo.util.Slice">Slice</a>'), NoneType] = None)</span>
+<span>(</span><span>slc: slice, rec: Optional[ForwardRef('<a title="clingo.util.Slice" href="#clingo.util.Slice">Slice</a>')] = None)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Wrapper for Python's slice that computes index ranges to slice sequences.</p>
@@ -223,7 +185,7 @@ to combine the involved slices into one.</p></div>
 </dd>
 <dt id="clingo.util.SlicedMutableSequence"><code class="flex name class">
 <span>class <span class="ident">SlicedMutableSequence</span></span>
-<span>(</span><span>seq: MutableSequence, slc: <a title="clingo.util.Slice" href="#clingo.util.Slice">Slice</a>)</span>
+<span>(</span><span>seq: collections.abc.MutableSequence, slc: <a title="clingo.util.Slice" href="#clingo.util.Slice">Slice</a>)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Helper to slice sequences.</p></div>
@@ -235,21 +197,25 @@ to combine the involved slices into one.</p></div>
     &#39;&#39;&#39;
     Helper to slice sequences.
     &#39;&#39;&#39;
-    def __init__(self, seq: MutableSequence, slc: Slice):
+    def __init__(self, seq: abc.MutableSequence, slc: Slice):
         super().__init__(seq, slc)
+
+    @property
+    def _mut_seq(self):
+        return cast(abc.MutableSequence, self._seq)
 
     def __setitem__(self, index, ast):
         if isinstance(index, slice):
             raise TypeError(&#39;slicing not implemented&#39;)
-        self._seq[self._rng[index]] = ast
+        self._mut_seq[self._rng[index]] = ast
 
     def __delitem__(self, index):
         if isinstance(index, slice):
             raise TypeError(&#39;slicing not implemented&#39;)
-        del self._seq[self._rng[index]]
+        del self._mut_seq[self._rng[index]]
 
     def insert(self, index, value):
-        self._seq[self._rng[index]] = value</code></pre>
+        self._mut_seq[self._rng[index]] = value</code></pre>
 </details>
 <h3>Ancestors</h3>
 <ul class="hlist">
@@ -274,14 +240,14 @@ to combine the involved slices into one.</p></div>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def insert(self, index, value):
-    self._seq[self._rng[index]] = value</code></pre>
+    self._mut_seq[self._rng[index]] = value</code></pre>
 </details>
 </dd>
 </dl>
 </dd>
 <dt id="clingo.util.SlicedSequence"><code class="flex name class">
 <span>class <span class="ident">SlicedSequence</span></span>
-<span>(</span><span>seq: Sequence, slc: <a title="clingo.util.Slice" href="#clingo.util.Slice">Slice</a>)</span>
+<span>(</span><span>seq: collections.abc.Sequence, slc: <a title="clingo.util.Slice" href="#clingo.util.Slice">Slice</a>)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Helper to slice sequences.</p></div>
@@ -293,7 +259,7 @@ to combine the involved slices into one.</p></div>
     &#39;&#39;&#39;
     Helper to slice sequences.
     &#39;&#39;&#39;
-    def __init__(self, seq: Sequence, slc: Slice):
+    def __init__(self, seq: abc.Sequence, slc: Slice):
         self._seq = seq
         self._slc = slc
         self._len = -1
@@ -356,9 +322,6 @@ to combine the involved slices into one.</p></div>
 <li><h3><a href="#header-classes">Classes</a></h3>
 <ul>
 <li>
-<h4><code><a title="clingo.util.Lookup" href="#clingo.util.Lookup">Lookup</a></code></h4>
-</li>
-<li>
 <h4><code><a title="clingo.util.Slice" href="#clingo.util.Slice">Slice</a></code></h4>
 <ul class="">
 <li><code><a title="clingo.util.Slice.rng" href="#clingo.util.Slice.rng">rng</a></code></li>
@@ -379,7 +342,7 @@ to combine the involved slices into one.</p></div>
 </nav>
 </main>
 <footer id="footer">
-<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.9.2</a>.</p>
+<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.10.0</a>.</p>
 </footer>
 </body>
 </html>

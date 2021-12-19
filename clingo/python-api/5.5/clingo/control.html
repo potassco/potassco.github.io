@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
-<meta name="generator" content="pdoc 0.9.2" />
+<meta name="generator" content="pdoc 0.10.0" />
 <title>clingo.control API documentation</title>
 <meta name="description" content="This module contains the `clingo.control.Control` class responsible for
 controling grounding and solving …" />
@@ -528,11 +528,11 @@ class Control:
 
     def solve(self,
               assumptions: Sequence[Union[Tuple[Symbol,bool],int]]=[],
-              on_model: Callable[[Model],Optional[bool]]=None,
-              on_unsat: Callable[[Sequence[int]],None]=None,
-              on_statistics : Callable[[StatisticsMap,StatisticsMap],None]=None,
-              on_finish: Callable[[SolveResult],None]=None,
-              on_core: Callable[[Sequence[int]],None]=None,
+              on_model: Optional[Callable[[Model],Optional[bool]]]=None,
+              on_unsat: Optional[Callable[[Sequence[int]],None]]=None,
+              on_statistics : Optional[Callable[[StatisticsMap,StatisticsMap],None]]=None,
+              on_finish: Optional[Callable[[SolveResult],None]]=None,
+              on_core: Optional[Callable[[Sequence[int]],None]]=None,
               yield_: bool=False,
               async_: bool=False) -&gt; Union[SolveHandle,SolveResult]:
         &#39;&#39;&#39;
@@ -631,7 +631,7 @@ class Control:
                 p_ass, len(assumptions),
                 _lib.pyclingo_solve_event_callback, self._handler,
                 handler=data),
-            handler)
+            data)
 
         if not yield_ and not async_:
             with handle:
@@ -778,7 +778,7 @@ class Control:
 <dl>
 <dt id="clingo.control.Control"><code class="flex name class">
 <span>class <span class="ident">Control</span></span>
-<span>(</span><span>arguments: Sequence[str] = [], logger: Union[Callable[[<a title="clingo.core.MessageCode" href="core.html#clingo.core.MessageCode">MessageCode</a>, str], NoneType], NoneType] = None, message_limit: int = 20)</span>
+<span>(</span><span>arguments: Sequence[str] = [], logger: Optional[Callable[[<a title="clingo.core.MessageCode" href="core.html#clingo.core.MessageCode">MessageCode</a>, str], None]] = None, message_limit: int = 20)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Control object for the grounding/solving process.</p>
@@ -1151,11 +1151,11 @@ object while a solve call is active.</p></div>
 
     def solve(self,
               assumptions: Sequence[Union[Tuple[Symbol,bool],int]]=[],
-              on_model: Callable[[Model],Optional[bool]]=None,
-              on_unsat: Callable[[Sequence[int]],None]=None,
-              on_statistics : Callable[[StatisticsMap,StatisticsMap],None]=None,
-              on_finish: Callable[[SolveResult],None]=None,
-              on_core: Callable[[Sequence[int]],None]=None,
+              on_model: Optional[Callable[[Model],Optional[bool]]]=None,
+              on_unsat: Optional[Callable[[Sequence[int]],None]]=None,
+              on_statistics : Optional[Callable[[StatisticsMap,StatisticsMap],None]]=None,
+              on_finish: Optional[Callable[[SolveResult],None]]=None,
+              on_core: Optional[Callable[[Sequence[int]],None]]=None,
               yield_: bool=False,
               async_: bool=False) -&gt; Union[SolveHandle,SolveResult]:
         &#39;&#39;&#39;
@@ -1254,7 +1254,7 @@ object while a solve call is active.</p></div>
                 p_ass, len(assumptions),
                 _lib.pyclingo_solve_event_callback, self._handler,
                 handler=data),
-            handler)
+            data)
 
         if not yield_ and not async_:
             with handle:
@@ -1599,7 +1599,7 @@ def theory_atoms(self) -&gt; Iterator[TheoryAtom]:
 <h3>Methods</h3>
 <dl>
 <dt id="clingo.control.Control.add"><code class="name flex">
-<span>def <span class="ident">add</span></span>(<span>self, name: str, parameters: Sequence[str], program: str) ‑> NoneType</span>
+<span>def <span class="ident">add</span></span>(<span>self, name: str, parameters: Sequence[str], program: str) ‑> None</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Extend the logic program with the given non-ground logic program in string form.</p>
@@ -1644,7 +1644,7 @@ def theory_atoms(self) -&gt; Iterator[TheoryAtom]:
 </details>
 </dd>
 <dt id="clingo.control.Control.assign_external"><code class="name flex">
-<span>def <span class="ident">assign_external</span></span>(<span>self, external: Union[<a title="clingo.symbol.Symbol" href="symbol.html#clingo.symbol.Symbol">Symbol</a>, int], truth: Union[bool, NoneType]) ‑> NoneType</span>
+<span>def <span class="ident">assign_external</span></span>(<span>self, external: Union[<a title="clingo.symbol.Symbol" href="symbol.html#clingo.symbol.Symbol">Symbol</a>, int], truth: Optional[bool]) ‑> None</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Assign a truth value to an external atom.</p>
@@ -1736,7 +1736,7 @@ logic program.</p>
 </details>
 </dd>
 <dt id="clingo.control.Control.cleanup"><code class="name flex">
-<span>def <span class="ident">cleanup</span></span>(<span>self) ‑> NoneType</span>
+<span>def <span class="ident">cleanup</span></span>(<span>self) ‑> None</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Cleanup the domain used for grounding by incorporating information from
@@ -1793,7 +1793,7 @@ automatic cleanups are enabled by default.</p></div>
 </details>
 </dd>
 <dt id="clingo.control.Control.get_const"><code class="name flex">
-<span>def <span class="ident">get_const</span></span>(<span>self, name: str) ‑> Union[<a title="clingo.symbol.Symbol" href="symbol.html#clingo.symbol.Symbol">Symbol</a>, NoneType]</span>
+<span>def <span class="ident">get_const</span></span>(<span>self, name: str) ‑> Optional[<a title="clingo.symbol.Symbol" href="symbol.html#clingo.symbol.Symbol">Symbol</a>]</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Return the symbol for a constant definition of form:</p>
@@ -1832,7 +1832,7 @@ automatic cleanups are enabled by default.</p></div>
 </details>
 </dd>
 <dt id="clingo.control.Control.ground"><code class="name flex">
-<span>def <span class="ident">ground</span></span>(<span>self, parts: Sequence[Tuple[str, Sequence[<a title="clingo.symbol.Symbol" href="symbol.html#clingo.symbol.Symbol">Symbol</a>]]], context: Any = None) ‑> NoneType</span>
+<span>def <span class="ident">ground</span></span>(<span>self, parts: Sequence[Tuple[str, Sequence[<a title="clingo.symbol.Symbol" href="symbol.html#clingo.symbol.Symbol">Symbol</a>]]], context: Any = None) ‑> None</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Ground the given list of program parts specified by tuples of names and
@@ -1894,7 +1894,7 @@ arguments.</p></div>
 </details>
 </dd>
 <dt id="clingo.control.Control.interrupt"><code class="name flex">
-<span>def <span class="ident">interrupt</span></span>(<span>self) ‑> NoneType</span>
+<span>def <span class="ident">interrupt</span></span>(<span>self) ‑> None</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Interrupt the active solve call.</p>
@@ -1922,7 +1922,7 @@ interrupted.</p></div>
 </details>
 </dd>
 <dt id="clingo.control.Control.load"><code class="name flex">
-<span>def <span class="ident">load</span></span>(<span>self, path: str) ‑> NoneType</span>
+<span>def <span class="ident">load</span></span>(<span>self, path: str) ‑> None</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Extend the logic program with a (non-ground) logic program in a file.</p>
@@ -1948,7 +1948,7 @@ interrupted.</p></div>
 </details>
 </dd>
 <dt id="clingo.control.Control.register_observer"><code class="name flex">
-<span>def <span class="ident">register_observer</span></span>(<span>self, observer: <a title="clingo.backend.Observer" href="backend.html#clingo.backend.Observer">Observer</a>, replace: bool = False) ‑> NoneType</span>
+<span>def <span class="ident">register_observer</span></span>(<span>self, observer: <a title="clingo.backend.Observer" href="backend.html#clingo.backend.Observer">Observer</a>, replace: bool = False) ‑> None</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Registers the given observer to inspect the produced grounding.</p>
@@ -2012,7 +2012,7 @@ the underlying solver (or any previously registered observers).</dd>
 </details>
 </dd>
 <dt id="clingo.control.Control.register_propagator"><code class="name flex">
-<span>def <span class="ident">register_propagator</span></span>(<span>self, propagator: <a title="clingo.propagator.Propagator" href="propagator.html#clingo.propagator.Propagator">Propagator</a>) ‑> NoneType</span>
+<span>def <span class="ident">register_propagator</span></span>(<span>self, propagator: <a title="clingo.propagator.Propagator" href="propagator.html#clingo.propagator.Propagator">Propagator</a>) ‑> None</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Registers the given propagator with all solvers.</p>
@@ -2053,7 +2053,7 @@ the underlying solver (or any previously registered observers).</dd>
 </details>
 </dd>
 <dt id="clingo.control.Control.release_external"><code class="name flex">
-<span>def <span class="ident">release_external</span></span>(<span>self, external: Union[<a title="clingo.symbol.Symbol" href="symbol.html#clingo.symbol.Symbol">Symbol</a>, int]) ‑> NoneType</span>
+<span>def <span class="ident">release_external</span></span>(<span>self, external: Union[<a title="clingo.symbol.Symbol" href="symbol.html#clingo.symbol.Symbol">Symbol</a>, int]) ‑> None</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Release an external atom represented by the given symbol or program
@@ -2132,7 +2132,7 @@ SAT
 </details>
 </dd>
 <dt id="clingo.control.Control.solve"><code class="name flex">
-<span>def <span class="ident">solve</span></span>(<span>self, assumptions: Sequence[Union[Tuple[<a title="clingo.symbol.Symbol" href="symbol.html#clingo.symbol.Symbol">Symbol</a>, bool], int]] = [], on_model: Callable[[<a title="clingo.solving.Model" href="solving.html#clingo.solving.Model">Model</a>], Union[bool, NoneType]] = None, on_unsat: Callable[[Sequence[int]], NoneType] = None, on_statistics: Callable[[<a title="clingo.statistics.StatisticsMap" href="statistics.html#clingo.statistics.StatisticsMap">StatisticsMap</a>, <a title="clingo.statistics.StatisticsMap" href="statistics.html#clingo.statistics.StatisticsMap">StatisticsMap</a>], NoneType] = None, on_finish: Callable[[<a title="clingo.solving.SolveResult" href="solving.html#clingo.solving.SolveResult">SolveResult</a>], NoneType] = None, on_core: Callable[[Sequence[int]], NoneType] = None, yield_: bool = False, async_: bool = False) ‑> Union[<a title="clingo.solving.SolveHandle" href="solving.html#clingo.solving.SolveHandle">SolveHandle</a>, <a title="clingo.solving.SolveResult" href="solving.html#clingo.solving.SolveResult">SolveResult</a>]</span>
+<span>def <span class="ident">solve</span></span>(<span>self, assumptions: Sequence[Union[Tuple[<a title="clingo.symbol.Symbol" href="symbol.html#clingo.symbol.Symbol">Symbol</a>, bool], int]] = [], on_model: Optional[Callable[[<a title="clingo.solving.Model" href="solving.html#clingo.solving.Model">Model</a>], Optional[bool]]] = None, on_unsat: Optional[Callable[[Sequence[int]], None]] = None, on_statistics: Optional[Callable[[<a title="clingo.statistics.StatisticsMap" href="statistics.html#clingo.statistics.StatisticsMap">StatisticsMap</a>, <a title="clingo.statistics.StatisticsMap" href="statistics.html#clingo.statistics.StatisticsMap">StatisticsMap</a>], None]] = None, on_finish: Optional[Callable[[<a title="clingo.solving.SolveResult" href="solving.html#clingo.solving.SolveResult">SolveResult</a>], None]] = None, on_core: Optional[Callable[[Sequence[int]], None]] = None, yield_: bool = False, async_: bool = False) ‑> Union[<a title="clingo.solving.SolveHandle" href="solving.html#clingo.solving.SolveHandle">SolveHandle</a>, <a title="clingo.solving.SolveResult" href="solving.html#clingo.solving.SolveResult">SolveResult</a>]</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Starts a search.</p>
@@ -2193,11 +2193,11 @@ sure to not use any functions that block Python's GIL indefinitely.</p>
 </summary>
 <pre><code class="python">def solve(self,
           assumptions: Sequence[Union[Tuple[Symbol,bool],int]]=[],
-          on_model: Callable[[Model],Optional[bool]]=None,
-          on_unsat: Callable[[Sequence[int]],None]=None,
-          on_statistics : Callable[[StatisticsMap,StatisticsMap],None]=None,
-          on_finish: Callable[[SolveResult],None]=None,
-          on_core: Callable[[Sequence[int]],None]=None,
+          on_model: Optional[Callable[[Model],Optional[bool]]]=None,
+          on_unsat: Optional[Callable[[Sequence[int]],None]]=None,
+          on_statistics : Optional[Callable[[StatisticsMap,StatisticsMap],None]]=None,
+          on_finish: Optional[Callable[[SolveResult],None]]=None,
+          on_core: Optional[Callable[[Sequence[int]],None]]=None,
           yield_: bool=False,
           async_: bool=False) -&gt; Union[SolveHandle,SolveResult]:
     &#39;&#39;&#39;
@@ -2296,7 +2296,7 @@ sure to not use any functions that block Python's GIL indefinitely.</p>
             p_ass, len(assumptions),
             _lib.pyclingo_solve_event_callback, self._handler,
             handler=data),
-        handler)
+        data)
 
     if not yield_ and not async_:
         with handle:
@@ -2357,7 +2357,7 @@ sure to not use any functions that block Python's GIL indefinitely.</p>
 </nav>
 </main>
 <footer id="footer">
-<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.9.2</a>.</p>
+<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.10.0</a>.</p>
 </footer>
 </body>
 </html>

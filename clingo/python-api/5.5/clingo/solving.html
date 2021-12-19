@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
-<meta name="generator" content="pdoc 0.9.2" />
+<meta name="generator" content="pdoc 0.10.0" />
 <title>clingo.solving API documentation</title>
 <meta name="description" content="Functions and classes related to solving …" />
 <link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
@@ -175,6 +175,7 @@ from typing import ContextManager, Iterator, List, Optional, Sequence, Tuple, Un
 from enum import Enum
 
 from ._internal import _c_call, _c_call2, _ffi, _handle_error, _lib
+from .util import Slice, SlicedSequence
 from .symbol import Symbol
 from .symbolic_atoms import SymbolicAtoms
 
@@ -317,6 +318,35 @@ class ModelType(Enum):
     The model captures a stable model.
     &#39;&#39;&#39;
 
+class _SymbolSequence(Sequence[Symbol]):
+    &#39;&#39;&#39;
+    Helper class to efficiently store sequences of symbols.
+    &#39;&#39;&#39;
+    def __init__(self, p_symbols):
+        self._p_symbols = p_symbols
+
+    def __len__(self):
+        return len(self._p_symbols)
+
+    def __getitem__(self, slc):
+        if isinstance(slc, slice):
+            return SlicedSequence(self, Slice(slc))
+        if slc &lt; 0:
+            slc += len(self)
+        if slc &lt; 0 or slc &gt;= len(self):
+            raise IndexError(&#39;invalid index&#39;)
+        return Symbol(self._p_symbols[slc])
+
+    def __iter__(self):
+        for i in range(len(self)):
+            yield Symbol(self._p_symbols[i])
+
+    def __str__(self):
+        return f&#39;[{&#34;, &#34;.join(str(sym) for sym in self)}]&#39;
+
+    def __repr__(self):
+        return f&#39;[{&#34;, &#34;.join(repr(sym) for sym in self)}]&#39;
+
 class Model:
     &#39;&#39;&#39;
     Provides access to a model during a solve call and provides a
@@ -392,7 +422,7 @@ class Model:
         return _c_call(&#39;bool&#39;, _lib.clingo_model_is_true, self._rep, literal)
 
     def symbols(self, atoms: bool=False, terms: bool=False, shown: bool=False, csp: bool=False,
-                theory: bool=False, complement: bool=False) -&gt; List[Symbol]:
+                theory: bool=False, complement: bool=False) -&gt; Sequence[Symbol]:
         &#39;&#39;&#39;
         Return the list of atoms, terms, or CSP assignments in the model.
 
@@ -442,10 +472,7 @@ class Model:
         p_symbols = _ffi.new(&#39;clingo_symbol_t[]&#39;, size)
         _handle_error(_lib.clingo_model_symbols(self._rep, show, p_symbols, size))
 
-        symbols = []
-        for c_symbol in p_symbols:
-            symbols.append(Symbol(c_symbol))
-        return symbols
+        return _SymbolSequence(p_symbols)
 
     def __str__(self):
         return &#34; &#34;.join(map(str, self.symbols(shown=True)))
@@ -720,7 +747,7 @@ use.</p></div>
         return _c_call(&#39;bool&#39;, _lib.clingo_model_is_true, self._rep, literal)
 
     def symbols(self, atoms: bool=False, terms: bool=False, shown: bool=False, csp: bool=False,
-                theory: bool=False, complement: bool=False) -&gt; List[Symbol]:
+                theory: bool=False, complement: bool=False) -&gt; Sequence[Symbol]:
         &#39;&#39;&#39;
         Return the list of atoms, terms, or CSP assignments in the model.
 
@@ -770,10 +797,7 @@ use.</p></div>
         p_symbols = _ffi.new(&#39;clingo_symbol_t[]&#39;, size)
         _handle_error(_lib.clingo_model_symbols(self._rep, show, p_symbols, size))
 
-        symbols = []
-        for c_symbol in p_symbols:
-            symbols.append(Symbol(c_symbol))
-        return symbols
+        return _SymbolSequence(p_symbols)
 
     def __str__(self):
         return &#34; &#34;.join(map(str, self.symbols(shown=True)))
@@ -975,7 +999,7 @@ def type(self) -&gt; ModelType:
 </details>
 </dd>
 <dt id="clingo.solving.Model.extend"><code class="name flex">
-<span>def <span class="ident">extend</span></span>(<span>self, symbols: Sequence[<a title="clingo.symbol.Symbol" href="symbol.html#clingo.symbol.Symbol">Symbol</a>]) ‑> NoneType</span>
+<span>def <span class="ident">extend</span></span>(<span>self, symbols: Sequence[<a title="clingo.symbol.Symbol" href="symbol.html#clingo.symbol.Symbol">Symbol</a>]) ‑> None</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Extend a model with the given symbols.</p>
@@ -1045,7 +1069,7 @@ which will print the added symbols.</p></div>
 </details>
 </dd>
 <dt id="clingo.solving.Model.symbols"><code class="name flex">
-<span>def <span class="ident">symbols</span></span>(<span>self, atoms: bool = False, terms: bool = False, shown: bool = False, csp: bool = False, theory: bool = False, complement: bool = False) ‑> List[<a title="clingo.symbol.Symbol" href="symbol.html#clingo.symbol.Symbol">Symbol</a>]</span>
+<span>def <span class="ident">symbols</span></span>(<span>self, atoms: bool = False, terms: bool = False, shown: bool = False, csp: bool = False, theory: bool = False, complement: bool = False) ‑> Sequence[<a title="clingo.symbol.Symbol" href="symbol.html#clingo.symbol.Symbol">Symbol</a>]</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Return the list of atoms, terms, or CSP assignments in the model.</p>
@@ -1077,7 +1101,7 @@ value.</p></div>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def symbols(self, atoms: bool=False, terms: bool=False, shown: bool=False, csp: bool=False,
-            theory: bool=False, complement: bool=False) -&gt; List[Symbol]:
+            theory: bool=False, complement: bool=False) -&gt; Sequence[Symbol]:
     &#39;&#39;&#39;
     Return the list of atoms, terms, or CSP assignments in the model.
 
@@ -1127,10 +1151,7 @@ value.</p></div>
     p_symbols = _ffi.new(&#39;clingo_symbol_t[]&#39;, size)
     _handle_error(_lib.clingo_model_symbols(self._rep, show, p_symbols, size))
 
-    symbols = []
-    for c_symbol in p_symbols:
-        symbols.append(Symbol(c_symbol))
-    return symbols</code></pre>
+    return _SymbolSequence(p_symbols)</code></pre>
 </details>
 </dd>
 </dl>
@@ -1270,7 +1291,7 @@ def symbolic_atoms(self) -&gt; SymbolicAtoms:
 <h3>Methods</h3>
 <dl>
 <dt id="clingo.solving.SolveControl.add_clause"><code class="name flex">
-<span>def <span class="ident">add_clause</span></span>(<span>self, literals: Sequence[Union[Tuple[<a title="clingo.symbol.Symbol" href="symbol.html#clingo.symbol.Symbol">Symbol</a>, bool], int]]) ‑> NoneType</span>
+<span>def <span class="ident">add_clause</span></span>(<span>self, literals: Sequence[Union[Tuple[<a title="clingo.symbol.Symbol" href="symbol.html#clingo.symbol.Symbol">Symbol</a>, bool], int]]) ‑> None</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Add a clause that applies to the current solving step during the search.</p>
@@ -1319,7 +1340,7 @@ when using a <code><a title="clingo.solving.SolveHandle" href="#clingo.solving.S
 </details>
 </dd>
 <dt id="clingo.solving.SolveControl.add_nogood"><code class="name flex">
-<span>def <span class="ident">add_nogood</span></span>(<span>self, literals: Sequence[Union[Tuple[<a title="clingo.symbol.Symbol" href="symbol.html#clingo.symbol.Symbol">Symbol</a>, bool], int]]) ‑> NoneType</span>
+<span>def <span class="ident">add_nogood</span></span>(<span>self, literals: Sequence[Union[Tuple[<a title="clingo.symbol.Symbol" href="symbol.html#clingo.symbol.Symbol">Symbol</a>, bool], int]]) ‑> None</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Equivalent to <code><a title="clingo.solving.SolveControl.add_clause" href="#clingo.solving.SolveControl.add_clause">SolveControl.add_clause()</a></code> with the literals inverted.</p></div>
@@ -1477,7 +1498,7 @@ though.</p></div>
 <h3>Methods</h3>
 <dl>
 <dt id="clingo.solving.SolveHandle.cancel"><code class="name flex">
-<span>def <span class="ident">cancel</span></span>(<span>self) ‑> NoneType</span>
+<span>def <span class="ident">cancel</span></span>(<span>self) ‑> None</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Cancel the running search.</p>
@@ -1539,7 +1560,7 @@ result is ready.</p></div>
 </details>
 </dd>
 <dt id="clingo.solving.SolveHandle.model"><code class="name flex">
-<span>def <span class="ident">model</span></span>(<span>self) ‑> Union[<a title="clingo.solving.Model" href="#clingo.solving.Model">Model</a>, NoneType]</span>
+<span>def <span class="ident">model</span></span>(<span>self) ‑> Optional[<a title="clingo.solving.Model" href="#clingo.solving.Model">Model</a>]</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Get the current model if there is any.</p></div>
@@ -1561,7 +1582,7 @@ result is ready.</p></div>
 </details>
 </dd>
 <dt id="clingo.solving.SolveHandle.resume"><code class="name flex">
-<span>def <span class="ident">resume</span></span>(<span>self) ‑> NoneType</span>
+<span>def <span class="ident">resume</span></span>(<span>self) ‑> None</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Discards the last model and starts searching for the next one.</p>
@@ -1585,7 +1606,7 @@ search in the background.</p></div>
 </details>
 </dd>
 <dt id="clingo.solving.SolveHandle.wait"><code class="name flex">
-<span>def <span class="ident">wait</span></span>(<span>self, timeout: Union[float, NoneType] = None) ‑> bool</span>
+<span>def <span class="ident">wait</span></span>(<span>self, timeout: Optional[float] = None) ‑> bool</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Wait for solve call to finish or the next result with an optional timeout.</p>
@@ -1739,7 +1760,7 @@ def interrupted(self) -&gt; bool:
     return (_lib.clingo_solve_result_interrupted &amp; self._rep) != 0</code></pre>
 </details>
 </dd>
-<dt id="clingo.solving.SolveResult.satisfiable"><code class="name">var <span class="ident">satisfiable</span> : Union[bool, NoneType]</code></dt>
+<dt id="clingo.solving.SolveResult.satisfiable"><code class="name">var <span class="ident">satisfiable</span> : Optional[bool]</code></dt>
 <dd>
 <div class="desc"><p><code>True</code> if the problem is satisfiable, <code>False</code> if the problem is
 unsatisfiable, or <code>None</code> if the satisfiablity is not known.</p></div>
@@ -1778,7 +1799,7 @@ def unknown(self) -&gt; bool:
     return self.satisfiable is None</code></pre>
 </details>
 </dd>
-<dt id="clingo.solving.SolveResult.unsatisfiable"><code class="name">var <span class="ident">unsatisfiable</span> : Union[bool, NoneType]</code></dt>
+<dt id="clingo.solving.SolveResult.unsatisfiable"><code class="name">var <span class="ident">unsatisfiable</span> : Optional[bool]</code></dt>
 <dd>
 <div class="desc"><p><code>True</code> if the problem is unsatisfiable, <code>False</code> if the problem is
 satisfiable, or <code>None</code> if the satisfiablity is not known.</p></div>
@@ -1877,7 +1898,7 @@ def unsatisfiable(self) -&gt; Optional[bool]:
 </nav>
 </main>
 <footer id="footer">
-<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.9.2</a>.</p>
+<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.10.0</a>.</p>
 </footer>
 </body>
 </html>

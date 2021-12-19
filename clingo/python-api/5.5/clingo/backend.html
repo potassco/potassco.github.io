@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
-<meta name="generator" content="pdoc 0.9.2" />
+<meta name="generator" content="pdoc 0.10.0" />
 <title>clingo.backend API documentation</title>
 <meta name="description" content="Functions and classes to observe or add ground statements …" />
 <link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
@@ -946,7 +946,7 @@ statement.</p></div>
 <h3>Methods</h3>
 <dl>
 <dt id="clingo.backend.Backend.add_acyc_edge"><code class="name flex">
-<span>def <span class="ident">add_acyc_edge</span></span>(<span>self, node_u: int, node_v: int, condition: Sequence[int]) ‑> NoneType</span>
+<span>def <span class="ident">add_acyc_edge</span></span>(<span>self, node_u: int, node_v: int, condition: Sequence[int]) ‑> None</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Add an edge directive to the program.</p>
@@ -980,7 +980,7 @@ statement.</p></div>
 </details>
 </dd>
 <dt id="clingo.backend.Backend.add_assume"><code class="name flex">
-<span>def <span class="ident">add_assume</span></span>(<span>self, literals: Sequence[int]) ‑> NoneType</span>
+<span>def <span class="ident">add_assume</span></span>(<span>self, literals: Sequence[int]) ‑> None</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Add assumptions to the program.</p>
@@ -1006,7 +1006,7 @@ statement.</p></div>
 </details>
 </dd>
 <dt id="clingo.backend.Backend.add_atom"><code class="name flex">
-<span>def <span class="ident">add_atom</span></span>(<span>self, symbol: Union[<a title="clingo.symbol.Symbol" href="symbol.html#clingo.symbol.Symbol">Symbol</a>, NoneType] = None) ‑> int</span>
+<span>def <span class="ident">add_atom</span></span>(<span>self, symbol: Optional[<a title="clingo.symbol.Symbol" href="symbol.html#clingo.symbol.Symbol">Symbol</a>] = None) ‑> int</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Return a fresh program atom or the atom associated with the given symbol.</p>
@@ -1049,7 +1049,7 @@ atoms will be used in subequents calls to ground for instantiation.</p>
 </details>
 </dd>
 <dt id="clingo.backend.Backend.add_external"><code class="name flex">
-<span>def <span class="ident">add_external</span></span>(<span>self, atom: int, value: <a title="clingo.core.TruthValue" href="core.html#clingo.core.TruthValue">TruthValue</a> = TruthValue.False_) ‑> NoneType</span>
+<span>def <span class="ident">add_external</span></span>(<span>self, atom: int, value: <a title="clingo.core.TruthValue" href="core.html#clingo.core.TruthValue">TruthValue</a> = TruthValue.False_) ‑> None</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Mark a program atom as external optionally fixing its truth value.</p>
@@ -1085,7 +1085,7 @@ atoms will be used in subequents calls to ground for instantiation.</p>
 </details>
 </dd>
 <dt id="clingo.backend.Backend.add_heuristic"><code class="name flex">
-<span>def <span class="ident">add_heuristic</span></span>(<span>self, atom: int, type_: <a title="clingo.backend.HeuristicType" href="#clingo.backend.HeuristicType">HeuristicType</a>, bias: int, priority: int, condition: Sequence[int]) ‑> NoneType</span>
+<span>def <span class="ident">add_heuristic</span></span>(<span>self, atom: int, type_: <a title="clingo.backend.HeuristicType" href="#clingo.backend.HeuristicType">HeuristicType</a>, bias: int, priority: int, condition: Sequence[int]) ‑> None</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Add a heuristic directive to the program.</p>
@@ -1129,7 +1129,7 @@ atoms will be used in subequents calls to ground for instantiation.</p>
 </details>
 </dd>
 <dt id="clingo.backend.Backend.add_minimize"><code class="name flex">
-<span>def <span class="ident">add_minimize</span></span>(<span>self, priority: int, literals: Sequence[Tuple[int, int]]) ‑> NoneType</span>
+<span>def <span class="ident">add_minimize</span></span>(<span>self, priority: int, literals: Sequence[Tuple[int, int]]) ‑> None</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Add a minimize constraint to the program.</p>
@@ -1159,7 +1159,7 @@ atoms will be used in subequents calls to ground for instantiation.</p>
 </details>
 </dd>
 <dt id="clingo.backend.Backend.add_project"><code class="name flex">
-<span>def <span class="ident">add_project</span></span>(<span>self, atoms: Sequence[int]) ‑> NoneType</span>
+<span>def <span class="ident">add_project</span></span>(<span>self, atoms: Sequence[int]) ‑> None</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Add a project statement to the program.</p>
@@ -1185,7 +1185,7 @@ atoms will be used in subequents calls to ground for instantiation.</p>
 </details>
 </dd>
 <dt id="clingo.backend.Backend.add_rule"><code class="name flex">
-<span>def <span class="ident">add_rule</span></span>(<span>self, head: Sequence[int], body: Sequence[int] = [], choice: bool = False) ‑> NoneType</span>
+<span>def <span class="ident">add_rule</span></span>(<span>self, head: Sequence[int], body: Sequence[int] = [], choice: bool = False) ‑> None</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Add a disjuntive or choice rule to the program.</p>
@@ -1228,7 +1228,7 @@ singleton head list, respectively.</p></div>
 </details>
 </dd>
 <dt id="clingo.backend.Backend.add_weight_rule"><code class="name flex">
-<span>def <span class="ident">add_weight_rule</span></span>(<span>self, head: Sequence[int], lower: int, body: Sequence[Tuple[int, int]], choice: bool = False) ‑> NoneType</span>
+<span>def <span class="ident">add_weight_rule</span></span>(<span>self, head: Sequence[int], lower: int, body: Sequence[Tuple[int, int]], choice: bool = False) ‑> None</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Add a disjuntive or choice rule with one weight constraint with a lower bound
@@ -1650,7 +1650,7 @@ be omitted if not needed.</p></div>
 <h3>Methods</h3>
 <dl>
 <dt id="clingo.backend.Observer.acyc_edge"><code class="name flex">
-<span>def <span class="ident">acyc_edge</span></span>(<span>self, node_u: int, node_v: int, condition: Sequence[int]) ‑> NoneType</span>
+<span>def <span class="ident">acyc_edge</span></span>(<span>self, node_u: int, node_v: int, condition: Sequence[int]) ‑> None</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Observe edge directives passed to the solver.</p>
@@ -1686,7 +1686,7 @@ add the edge.</dd>
 </details>
 </dd>
 <dt id="clingo.backend.Observer.assume"><code class="name flex">
-<span>def <span class="ident">assume</span></span>(<span>self, literals: Sequence[int]) ‑> NoneType</span>
+<span>def <span class="ident">assume</span></span>(<span>self, literals: Sequence[int]) ‑> None</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Observe assumption directives passed to the solver.</p>
@@ -1713,7 +1713,7 @@ negative literals false for the next solve call).</dd>
 </details>
 </dd>
 <dt id="clingo.backend.Observer.begin_step"><code class="name flex">
-<span>def <span class="ident">begin_step</span></span>(<span>self) ‑> NoneType</span>
+<span>def <span class="ident">begin_step</span></span>(<span>self) ‑> None</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Marks the beginning of a block of directives passed to the solver.</p></div>
@@ -1728,7 +1728,7 @@ negative literals false for the next solve call).</dd>
 </details>
 </dd>
 <dt id="clingo.backend.Observer.end_step"><code class="name flex">
-<span>def <span class="ident">end_step</span></span>(<span>self) ‑> NoneType</span>
+<span>def <span class="ident">end_step</span></span>(<span>self) ‑> None</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Marks the end of a block of directives passed to the solver.</p>
@@ -1746,7 +1746,7 @@ negative literals false for the next solve call).</dd>
 </details>
 </dd>
 <dt id="clingo.backend.Observer.external"><code class="name flex">
-<span>def <span class="ident">external</span></span>(<span>self, atom: int, value: <a title="clingo.core.TruthValue" href="core.html#clingo.core.TruthValue">TruthValue</a>) ‑> NoneType</span>
+<span>def <span class="ident">external</span></span>(<span>self, atom: int, value: <a title="clingo.core.TruthValue" href="core.html#clingo.core.TruthValue">TruthValue</a>) ‑> None</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Observe external statements passed to the solver.</p>
@@ -1775,7 +1775,7 @@ negative literals false for the next solve call).</dd>
 </details>
 </dd>
 <dt id="clingo.backend.Observer.heuristic"><code class="name flex">
-<span>def <span class="ident">heuristic</span></span>(<span>self, atom: int, type_: <a title="clingo.backend.HeuristicType" href="#clingo.backend.HeuristicType">HeuristicType</a>, bias: int, priority: int, condition: Sequence[int]) ‑> NoneType</span>
+<span>def <span class="ident">heuristic</span></span>(<span>self, atom: int, type_: <a title="clingo.backend.HeuristicType" href="#clingo.backend.HeuristicType">HeuristicType</a>, bias: int, priority: int, condition: Sequence[int]) ‑> None</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Observe heuristic directives passed to the solver.</p>
@@ -1817,7 +1817,7 @@ negative literals false for the next solve call).</dd>
 </details>
 </dd>
 <dt id="clingo.backend.Observer.init_program"><code class="name flex">
-<span>def <span class="ident">init_program</span></span>(<span>self, incremental: bool) ‑> NoneType</span>
+<span>def <span class="ident">init_program</span></span>(<span>self, incremental: bool) ‑> None</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Called once in the beginning.</p>
@@ -1844,7 +1844,7 @@ true, there can be multiple calls to <code><a title="clingo.control.Control.solv
 </details>
 </dd>
 <dt id="clingo.backend.Observer.minimize"><code class="name flex">
-<span>def <span class="ident">minimize</span></span>(<span>self, priority: int, literals: Sequence[Tuple[int, int]]) ‑> NoneType</span>
+<span>def <span class="ident">minimize</span></span>(<span>self, priority: int, literals: Sequence[Tuple[int, int]]) ‑> None</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Observe minimize directives (or weak constraints) passed to the
@@ -1877,7 +1877,7 @@ and weight).</dd>
 </details>
 </dd>
 <dt id="clingo.backend.Observer.output_atom"><code class="name flex">
-<span>def <span class="ident">output_atom</span></span>(<span>self, symbol: <a title="clingo.symbol.Symbol" href="symbol.html#clingo.symbol.Symbol">Symbol</a>, atom: int) ‑> NoneType</span>
+<span>def <span class="ident">output_atom</span></span>(<span>self, symbol: <a title="clingo.symbol.Symbol" href="symbol.html#clingo.symbol.Symbol">Symbol</a>, atom: int) ‑> None</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Observe shown atoms passed to the solver.
@@ -1909,7 +1909,7 @@ associated program atom. The value of the atom is set to zero.</p>
 </details>
 </dd>
 <dt id="clingo.backend.Observer.output_csp"><code class="name flex">
-<span>def <span class="ident">output_csp</span></span>(<span>self, symbol: <a title="clingo.symbol.Symbol" href="symbol.html#clingo.symbol.Symbol">Symbol</a>, value: int, condition: Sequence[int]) ‑> NoneType</span>
+<span>def <span class="ident">output_csp</span></span>(<span>self, symbol: <a title="clingo.symbol.Symbol" href="symbol.html#clingo.symbol.Symbol">Symbol</a>, value: int, condition: Sequence[int]) ‑> None</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Observe shown csp variables passed to the solver.</p>
@@ -1945,7 +1945,7 @@ variable with its value.</dd>
 </details>
 </dd>
 <dt id="clingo.backend.Observer.output_term"><code class="name flex">
-<span>def <span class="ident">output_term</span></span>(<span>self, symbol: <a title="clingo.symbol.Symbol" href="symbol.html#clingo.symbol.Symbol">Symbol</a>, condition: Sequence[int]) ‑> NoneType</span>
+<span>def <span class="ident">output_term</span></span>(<span>self, symbol: <a title="clingo.symbol.Symbol" href="symbol.html#clingo.symbol.Symbol">Symbol</a>, condition: Sequence[int]) ‑> None</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Observe shown terms passed to the solver.</p>
@@ -1976,7 +1976,7 @@ term.</dd>
 </details>
 </dd>
 <dt id="clingo.backend.Observer.project"><code class="name flex">
-<span>def <span class="ident">project</span></span>(<span>self, atoms: Sequence[int]) ‑> NoneType</span>
+<span>def <span class="ident">project</span></span>(<span>self, atoms: Sequence[int]) ‑> None</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Observe projection directives passed to the solver.</p>
@@ -2001,7 +2001,7 @@ term.</dd>
 </details>
 </dd>
 <dt id="clingo.backend.Observer.rule"><code class="name flex">
-<span>def <span class="ident">rule</span></span>(<span>self, choice: bool, head: Sequence[int], body: Sequence[int]) ‑> NoneType</span>
+<span>def <span class="ident">rule</span></span>(<span>self, choice: bool, head: Sequence[int], body: Sequence[int]) ‑> None</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Observe rules passed to the solver.</p>
@@ -2034,7 +2034,7 @@ term.</dd>
 </details>
 </dd>
 <dt id="clingo.backend.Observer.theory_atom"><code class="name flex">
-<span>def <span class="ident">theory_atom</span></span>(<span>self, atom_id_or_zero: int, term_id: int, elements: Sequence[int]) ‑> NoneType</span>
+<span>def <span class="ident">theory_atom</span></span>(<span>self, atom_id_or_zero: int, term_id: int, elements: Sequence[int]) ‑> None</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Observe theory atoms without guard.</p>
@@ -2068,7 +2068,7 @@ term.</dd>
 </details>
 </dd>
 <dt id="clingo.backend.Observer.theory_atom_with_guard"><code class="name flex">
-<span>def <span class="ident">theory_atom_with_guard</span></span>(<span>self, atom_id_or_zero: int, term_id: int, elements: Sequence[int], operator_id: int, right_hand_side_id: int) ‑> NoneType</span>
+<span>def <span class="ident">theory_atom_with_guard</span></span>(<span>self, atom_id_or_zero: int, term_id: int, elements: Sequence[int], operator_id: int, right_hand_side_id: int) ‑> None</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Observe theory atoms with guard.</p>
@@ -2111,7 +2111,7 @@ term.</dd>
 </details>
 </dd>
 <dt id="clingo.backend.Observer.theory_element"><code class="name flex">
-<span>def <span class="ident">theory_element</span></span>(<span>self, element_id: int, terms: Sequence[int], condition: Sequence[int]) ‑> NoneType</span>
+<span>def <span class="ident">theory_element</span></span>(<span>self, element_id: int, terms: Sequence[int], condition: Sequence[int]) ‑> None</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Observe theory elements.</p>
@@ -2145,7 +2145,7 @@ term.</dd>
 </details>
 </dd>
 <dt id="clingo.backend.Observer.theory_term_compound"><code class="name flex">
-<span>def <span class="ident">theory_term_compound</span></span>(<span>self, term_id: int, name_id_or_type: int, arguments: Sequence[int]) ‑> NoneType</span>
+<span>def <span class="ident">theory_term_compound</span></span>(<span>self, term_id: int, name_id_or_type: int, arguments: Sequence[int]) ‑> None</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Observe compound theory terms.</p>
@@ -2183,7 +2183,7 @@ the name (in form of a string term).</dd>
 </details>
 </dd>
 <dt id="clingo.backend.Observer.theory_term_number"><code class="name flex">
-<span>def <span class="ident">theory_term_number</span></span>(<span>self, term_id: int, number: int) ‑> NoneType</span>
+<span>def <span class="ident">theory_term_number</span></span>(<span>self, term_id: int, number: int) ‑> None</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Observe numeric theory terms.</p>
@@ -2212,7 +2212,7 @@ the name (in form of a string term).</dd>
 </details>
 </dd>
 <dt id="clingo.backend.Observer.theory_term_string"><code class="name flex">
-<span>def <span class="ident">theory_term_string</span></span>(<span>self, term_id: int, name: str) ‑> NoneType</span>
+<span>def <span class="ident">theory_term_string</span></span>(<span>self, term_id: int, name: str) ‑> None</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Observe string theory terms.</p>
@@ -2241,7 +2241,7 @@ the name (in form of a string term).</dd>
 </details>
 </dd>
 <dt id="clingo.backend.Observer.weight_rule"><code class="name flex">
-<span>def <span class="ident">weight_rule</span></span>(<span>self, choice: bool, head: Sequence[int], lower_bound: int, body: Sequence[Tuple[int, int]]) ‑> NoneType</span>
+<span>def <span class="ident">weight_rule</span></span>(<span>self, choice: bool, head: Sequence[int], lower_bound: int, body: Sequence[Tuple[int, int]]) ‑> None</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Observe rules with one weight constraint in the body passed to the
@@ -2358,7 +2358,7 @@ elements of the weight constraint.</dd>
 </nav>
 </main>
 <footer id="footer">
-<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.9.2</a>.</p>
+<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.10.0</a>.</p>
 </footer>
 </body>
 </html>

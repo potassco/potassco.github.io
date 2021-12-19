@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
-<meta name="generator" content="pdoc 0.9.2" />
+<meta name="generator" content="pdoc 0.10.0" />
 <title>clingox.backend API documentation</title>
 <meta name="description" content="This module provides a backend wrapper to work with symbols instead of integer
 literals …" />
@@ -598,7 +598,7 @@ integers to represent literals.</p>
 <h3>Methods</h3>
 <dl>
 <dt id="clingox.backend.SymbolicBackend.add_acyc_edge"><code class="name flex">
-<span>def <span class="ident">add_acyc_edge</span></span>(<span>self, node_u: int, node_v: int, pos_condition: Sequence[<a title="clingo.symbol.Symbol" href="../clingo/symbol.html#clingo.symbol.Symbol">Symbol</a>], neg_condition: Sequence[<a title="clingo.symbol.Symbol" href="../clingo/symbol.html#clingo.symbol.Symbol">Symbol</a>]) ‑> NoneType</span>
+<span>def <span class="ident">add_acyc_edge</span></span>(<span>self, node_u: int, node_v: int, pos_condition: Sequence[<a title="clingo.symbol.Symbol" href="../clingo/symbol.html#clingo.symbol.Symbol">Symbol</a>], neg_condition: Sequence[<a title="clingo.symbol.Symbol" href="../clingo/symbol.html#clingo.symbol.Symbol">Symbol</a>]) ‑> None</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Add an edge directive to the underlying backend.</p>
@@ -638,7 +638,7 @@ integers to represent literals.</p>
 </details>
 </dd>
 <dt id="clingox.backend.SymbolicBackend.add_assume"><code class="name flex">
-<span>def <span class="ident">add_assume</span></span>(<span>self, pos_atoms: Sequence[<a title="clingo.symbol.Symbol" href="../clingo/symbol.html#clingo.symbol.Symbol">Symbol</a>] = (), neg_atoms: Sequence[<a title="clingo.symbol.Symbol" href="../clingo/symbol.html#clingo.symbol.Symbol">Symbol</a>] = ()) ‑> NoneType</span>
+<span>def <span class="ident">add_assume</span></span>(<span>self, pos_atoms: Sequence[<a title="clingo.symbol.Symbol" href="../clingo/symbol.html#clingo.symbol.Symbol">Symbol</a>] = (), neg_atoms: Sequence[<a title="clingo.symbol.Symbol" href="../clingo/symbol.html#clingo.symbol.Symbol">Symbol</a>] = ()) ‑> None</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Add assumptions to the underlying backend.</p>
@@ -669,7 +669,7 @@ integers to represent literals.</p>
 </details>
 </dd>
 <dt id="clingox.backend.SymbolicBackend.add_external"><code class="name flex">
-<span>def <span class="ident">add_external</span></span>(<span>self, atom: <a title="clingo.symbol.Symbol" href="../clingo/symbol.html#clingo.symbol.Symbol">Symbol</a>, value: <a title="clingo.core.TruthValue" href="../clingo/core.html#clingo.core.TruthValue">TruthValue</a> = TruthValue.False_) ‑> NoneType</span>
+<span>def <span class="ident">add_external</span></span>(<span>self, atom: <a title="clingo.symbol.Symbol" href="../clingo/symbol.html#clingo.symbol.Symbol">Symbol</a>, value: <a title="clingo.core.TruthValue" href="../clingo/core.html#clingo.core.TruthValue">TruthValue</a> = TruthValue.False_) ‑> None</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Mark an atom as external and set its truth value.</p>
@@ -705,7 +705,7 @@ integers to represent literals.</p>
 </details>
 </dd>
 <dt id="clingox.backend.SymbolicBackend.add_heuristic"><code class="name flex">
-<span>def <span class="ident">add_heuristic</span></span>(<span>self, atom: <a title="clingo.symbol.Symbol" href="../clingo/symbol.html#clingo.symbol.Symbol">Symbol</a>, type_: <a title="clingo.backend.HeuristicType" href="../clingo/backend.html#clingo.backend.HeuristicType">HeuristicType</a>, bias: int, priority: int, pos_condition: Sequence[<a title="clingo.symbol.Symbol" href="../clingo/symbol.html#clingo.symbol.Symbol">Symbol</a>], neg_condition: Sequence[<a title="clingo.symbol.Symbol" href="../clingo/symbol.html#clingo.symbol.Symbol">Symbol</a>]) ‑> NoneType</span>
+<span>def <span class="ident">add_heuristic</span></span>(<span>self, atom: <a title="clingo.symbol.Symbol" href="../clingo/symbol.html#clingo.symbol.Symbol">Symbol</a>, type_: <a title="clingo.backend.HeuristicType" href="../clingo/backend.html#clingo.backend.HeuristicType">HeuristicType</a>, bias: int, priority: int, pos_condition: Sequence[<a title="clingo.symbol.Symbol" href="../clingo/symbol.html#clingo.symbol.Symbol">Symbol</a>], neg_condition: Sequence[<a title="clingo.symbol.Symbol" href="../clingo/symbol.html#clingo.symbol.Symbol">Symbol</a>]) ‑> None</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Add a heuristic directive to the underlying backend.</p>
@@ -755,7 +755,7 @@ condition.</dd>
 </details>
 </dd>
 <dt id="clingox.backend.SymbolicBackend.add_minimize"><code class="name flex">
-<span>def <span class="ident">add_minimize</span></span>(<span>self, priority: int, pos_literals: Sequence[Tuple[<a title="clingo.symbol.Symbol" href="../clingo/symbol.html#clingo.symbol.Symbol">Symbol</a>, int]], neg_literals: Sequence[Tuple[<a title="clingo.symbol.Symbol" href="../clingo/symbol.html#clingo.symbol.Symbol">Symbol</a>, int]]) ‑> NoneType</span>
+<span>def <span class="ident">add_minimize</span></span>(<span>self, priority: int, pos_literals: Sequence[Tuple[<a title="clingo.symbol.Symbol" href="../clingo/symbol.html#clingo.symbol.Symbol">Symbol</a>, int]], neg_literals: Sequence[Tuple[<a title="clingo.symbol.Symbol" href="../clingo/symbol.html#clingo.symbol.Symbol">Symbol</a>, int]]) ‑> None</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Add a minimize constraint to the underlying backend.</p>
@@ -795,7 +795,7 @@ part of the condition.</dd>
 </details>
 </dd>
 <dt id="clingox.backend.SymbolicBackend.add_project"><code class="name flex">
-<span>def <span class="ident">add_project</span></span>(<span>self, atoms: Sequence[<a title="clingo.symbol.Symbol" href="../clingo/symbol.html#clingo.symbol.Symbol">Symbol</a>]) ‑> NoneType</span>
+<span>def <span class="ident">add_project</span></span>(<span>self, atoms: Sequence[<a title="clingo.symbol.Symbol" href="../clingo/symbol.html#clingo.symbol.Symbol">Symbol</a>]) ‑> None</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Add a project statement to the underlying backend.</p>
@@ -821,7 +821,7 @@ part of the condition.</dd>
 </details>
 </dd>
 <dt id="clingox.backend.SymbolicBackend.add_rule"><code class="name flex">
-<span>def <span class="ident">add_rule</span></span>(<span>self, head: Sequence[<a title="clingo.symbol.Symbol" href="../clingo/symbol.html#clingo.symbol.Symbol">Symbol</a>] = (), pos_body: Sequence[<a title="clingo.symbol.Symbol" href="../clingo/symbol.html#clingo.symbol.Symbol">Symbol</a>] = (), neg_body: Sequence[<a title="clingo.symbol.Symbol" href="../clingo/symbol.html#clingo.symbol.Symbol">Symbol</a>] = (), choice: bool = False) ‑> NoneType</span>
+<span>def <span class="ident">add_rule</span></span>(<span>self, head: Sequence[<a title="clingo.symbol.Symbol" href="../clingo/symbol.html#clingo.symbol.Symbol">Symbol</a>] = (), pos_body: Sequence[<a title="clingo.symbol.Symbol" href="../clingo/symbol.html#clingo.symbol.Symbol">Symbol</a>] = (), neg_body: Sequence[<a title="clingo.symbol.Symbol" href="../clingo/symbol.html#clingo.symbol.Symbol">Symbol</a>] = (), choice: bool = False) ‑> None</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Add a disjuntive or choice rule to the underlying backend.</p>
@@ -869,7 +869,7 @@ singleton head list, respectively.</p></div>
 </details>
 </dd>
 <dt id="clingox.backend.SymbolicBackend.add_weight_rule"><code class="name flex">
-<span>def <span class="ident">add_weight_rule</span></span>(<span>self, head: Sequence[<a title="clingo.symbol.Symbol" href="../clingo/symbol.html#clingo.symbol.Symbol">Symbol</a>], lower: int, pos_body: Sequence[Tuple[<a title="clingo.symbol.Symbol" href="../clingo/symbol.html#clingo.symbol.Symbol">Symbol</a>, int]], neg_body: Sequence[Tuple[<a title="clingo.symbol.Symbol" href="../clingo/symbol.html#clingo.symbol.Symbol">Symbol</a>, int]], choice: bool = False) ‑> NoneType</span>
+<span>def <span class="ident">add_weight_rule</span></span>(<span>self, head: Sequence[<a title="clingo.symbol.Symbol" href="../clingo/symbol.html#clingo.symbol.Symbol">Symbol</a>], lower: int, pos_body: Sequence[Tuple[<a title="clingo.symbol.Symbol" href="../clingo/symbol.html#clingo.symbol.Symbol">Symbol</a>, int]], neg_body: Sequence[Tuple[<a title="clingo.symbol.Symbol" href="../clingo/symbol.html#clingo.symbol.Symbol">Symbol</a>, int]], choice: bool = False) ‑> None</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Add a disjunctive or choice rule with one weight constraint with a lower
@@ -958,7 +958,7 @@ negative body of the weight constraint.</dd>
 </nav>
 </main>
 <footer id="footer">
-<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.9.2</a>.</p>
+<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.10.0</a>.</p>
 </footer>
 </body>
 </html>
