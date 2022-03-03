@@ -84,7 +84,7 @@ For Mac OS X, clingo packages are available in
 - The [clingo-haskell] project provides Haskell bindings to the clingo library.
 - There are also rudimentary [prolog bindings][clingo-pl] to clingo.
 - There is a [project][clingo-js] offering rudimentary JavaScript support to run clingo in the browser.
-- There are abandoned [java bindings][clingo-java] to clingo.
+- There are [java bindings][clingo-java] to clingo.
 - Syntax highlighting is available for [vim][clingo-vim] and [emacs][clingo-emacs].
 
 # Citing
@@ -98,7 +98,7 @@ For Mac OS X, clingo packages are available in
 [clingo-emacs]: https://github.com/santifa/pasp-mode
 [clingo-github]: https://github.com/potassco/clingo
 [clingo-haskell]: https://github.com/tsahyt/clingo-haskell
-[clingo-java]: https://github.com/clingo4j/clingo4j
+[clingo-java]: https://github.com/kherud/jclingo
 [clingo-js]: https://github.com/domoritz/clingo-wasm
 [clingo-pl]: https://github.com/JanWielemaker/clingo
 [clingo-releases]: https://github.com/potassco/clingo/releases
