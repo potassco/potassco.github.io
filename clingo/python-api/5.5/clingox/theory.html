@@ -92,10 +92,13 @@ Example
 ```
 &#39;&#39;&#39;
 
-from clingo import Symbol, Function, String, Tuple_, Number, SymbolType, TheoryTerm, TheoryTermType
+from typing import Any
 
-__all__ = [&#39;evaluate&#39;, &#39;invert_symbol&#39;, &#39;is_operator&#39;, &#39;require_number&#39;, &#39;TermEvaluator&#39;]
+from clingo import Symbol, Function, String, Tuple_, Number, SymbolType, TheoryTermType
+
+__all__ = [&#39;evaluate&#39;, &#39;invert_symbol&#39;, &#39;is_clingo_operator&#39;, &#39;is_operator&#39;, &#39;require_number&#39;, &#39;TermEvaluator&#39;]
 __pdoc__ = {}
+
 
 def require_number(x: Symbol) -&gt; int:
     &#39;&#39;&#39;
@@ -106,6 +109,7 @@ def require_number(x: Symbol) -&gt; int:
         return x.number
 
     raise TypeError(&#39;number exepected&#39;)
+
 
 def invert_symbol(sym: Symbol) -&gt; Symbol:
     &#39;&#39;&#39;
@@ -128,6 +132,15 @@ def invert_symbol(sym: Symbol) -&gt; Symbol:
 
     raise TypeError(&#39;cannot invert symbol&#39;)
 
+
+def is_clingo_operator(op: str):
+    &#39;&#39;&#39;
+    Return true if the given string is a operator as supported by the
+    Evaluator.
+    &#39;&#39;&#39;
+    return op in (&#39;+&#39;, &#39;-&#39;, &#39;*&#39;, &#39;\\&#39;, &#39;/&#39;)
+
+
 def is_operator(op: str):
     &#39;&#39;&#39;
     Return true if the given string is an operator.
@@ -142,6 +155,7 @@ def is_operator(op: str):
     Whether the string is an operator name.
     &#39;&#39;&#39;
     return op and op[0] in &#34;/!&lt;=&gt;+-*\\?&amp;@|:;~^.&#34;
+
 
 def _unquote(s: str) -&gt; str:
     &#39;&#39;&#39;
@@ -237,7 +251,7 @@ class TermEvaluator:
 
         return Function(op, [arg])
 
-    def __call__(self, term: TheoryTerm):
+    def __call__(self, term: Any):
         &#39;&#39;&#39;
         Evaluate the given term.
 
@@ -281,12 +295,17 @@ class TermEvaluator:
 
         raise RuntimeError(&#34;cannot evaluate term&#34;)
 
+
 __pdoc__[&#39;TermEvaluator.__call__&#39;] = True
 
-def evaluate(term: TheoryTerm) -&gt; Symbol:
+
+def evaluate(term: Any) -&gt; Symbol:
     &#39;&#39;&#39;
     Evaluates the operators in a theory term in the same fashion as clingo
     evaluates its arithmetic functions.
+
+    We use `Any` as a type hint here to allow for evaluating terms that are
+    duck typing copmatible with clingo&#39;s `TheoryTerm` class.
 
     Parameters
     ----------
@@ -308,11 +327,13 @@ def evaluate(term: TheoryTerm) -&gt; Symbol:
 <h2 class="section-title" id="header-functions">Functions</h2>
 <dl>
 <dt id="clingox.theory.evaluate"><code class="name flex">
-<span>def <span class="ident">evaluate</span></span>(<span>term: <a title="clingo.theory_atoms.TheoryTerm" href="../clingo/theory_atoms.html#clingo.theory_atoms.TheoryTerm">TheoryTerm</a>) ‑> <a title="clingo.symbol.Symbol" href="../clingo/symbol.html#clingo.symbol.Symbol">Symbol</a></span>
+<span>def <span class="ident">evaluate</span></span>(<span>term: Any) ‑> <a title="clingo.symbol.Symbol" href="../clingo/symbol.html#clingo.symbol.Symbol">Symbol</a></span>
 </code></dt>
 <dd>
 <div class="desc"><p>Evaluates the operators in a theory term in the same fashion as clingo
 evaluates its arithmetic functions.</p>
+<p>We use <code>Any</code> as a type hint here to allow for evaluating terms that are
+duck typing copmatible with clingo's <code>TheoryTerm</code> class.</p>
 <h2 id="parameters">Parameters</h2>
 <dl>
 <dt><strong><code>term</code></strong></dt>
@@ -324,10 +345,13 @@ evaluates its arithmetic functions.</p>
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def evaluate(term: TheoryTerm) -&gt; Symbol:
+<pre><code class="python">def evaluate(term: Any) -&gt; Symbol:
     &#39;&#39;&#39;
     Evaluates the operators in a theory term in the same fashion as clingo
     evaluates its arithmetic functions.
+
+    We use `Any` as a type hint here to allow for evaluating terms that are
+    duck typing copmatible with clingo&#39;s `TheoryTerm` class.
 
     Parameters
     ----------
@@ -377,6 +401,24 @@ evaluates its arithmetic functions.</p>
         return Function(sym.name, sym.arguments, not sym.positive)
 
     raise TypeError(&#39;cannot invert symbol&#39;)</code></pre>
+</details>
+</dd>
+<dt id="clingox.theory.is_clingo_operator"><code class="name flex">
+<span>def <span class="ident">is_clingo_operator</span></span>(<span>op: str)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Return true if the given string is a operator as supported by the
+Evaluator.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def is_clingo_operator(op: str):
+    &#39;&#39;&#39;
+    Return true if the given string is a operator as supported by the
+    Evaluator.
+    &#39;&#39;&#39;
+    return op in (&#39;+&#39;, &#39;-&#39;, &#39;*&#39;, &#39;\\&#39;, &#39;/&#39;)</code></pre>
 </details>
 </dd>
 <dt id="clingox.theory.is_operator"><code class="name flex">
@@ -521,7 +563,7 @@ operators.</p></div>
 
         return Function(op, [arg])
 
-    def __call__(self, term: TheoryTerm):
+    def __call__(self, term: Any):
         &#39;&#39;&#39;
         Evaluate the given term.
 
@@ -568,7 +610,7 @@ operators.</p></div>
 <h3>Methods</h3>
 <dl>
 <dt id="clingox.theory.TermEvaluator.__call__"><code class="name flex">
-<span>def <span class="ident">__call__</span></span>(<span>self, term: <a title="clingo.theory_atoms.TheoryTerm" href="../clingo/theory_atoms.html#clingo.theory_atoms.TheoryTerm">TheoryTerm</a>)</span>
+<span>def <span class="ident">__call__</span></span>(<span>self, term: Any)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Evaluate the given term.</p>
@@ -583,7 +625,7 @@ operators.</p></div>
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def __call__(self, term: TheoryTerm):
+<pre><code class="python">def __call__(self, term: Any):
     &#39;&#39;&#39;
     Evaluate the given term.
 
@@ -753,6 +795,7 @@ operators.</p></div>
 <ul class="">
 <li><code><a title="clingox.theory.evaluate" href="#clingox.theory.evaluate">evaluate</a></code></li>
 <li><code><a title="clingox.theory.invert_symbol" href="#clingox.theory.invert_symbol">invert_symbol</a></code></li>
+<li><code><a title="clingox.theory.is_clingo_operator" href="#clingox.theory.is_clingo_operator">is_clingo_operator</a></code></li>
 <li><code><a title="clingox.theory.is_operator" href="#clingox.theory.is_operator">is_operator</a></code></li>
 <li><code><a title="clingox.theory.require_number" href="#clingox.theory.require_number">require_number</a></code></li>
 </ul>

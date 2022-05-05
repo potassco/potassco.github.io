@@ -228,7 +228,7 @@ Another interesting feature is to convert ASTs to YAML:
 ```
 &#39;&#39;&#39;
 
-from typing import Any, Callable, cast, List, Mapping, Optional, Set, Tuple, Union
+from typing import Any, Callable, List, Mapping, Optional, Sequence, Set, Tuple, Union, cast
 from functools import singledispatch
 from copy import copy
 from re import fullmatch
@@ -239,31 +239,34 @@ from clingo import ast
 from clingo.ast import (
     AST, ASTSequence, ASTType, Function, Location, Position, StrSequence,
     SymbolicTerm, SymbolicAtom, TheoryAtomType, TheoryFunction,
-    TheoryOperatorType, Transformer)
+    TheoryOperatorType, Transformer, UnaryOperation)
 from .theory import is_operator
 
 __all__ = [&#39;ast_to_dict&#39;, &#39;dict_to_ast&#39;, &#39;location_to_str&#39;,
            &#39;prefix_symbolic_atoms&#39;, &#39;rename_symbolic_atoms&#39;, &#39;str_to_location&#39;,
            &#39;theory_parser_from_definition&#39;, &#39;Arity&#39;, &#39;Associativity&#39;,
-           &#39;AtomTable&#39;, &#39;OperatorTable&#39;, &#39;SymbolicAtomRenamer&#39;, &#39;TheoryParser&#39;,
-           &#39;TheoryTermParser&#39;, &#39;TheoryUnparsedTermParser&#39;,
-           &#39;TheoryUnparsedTermParser&#39;]
+           &#39;AtomTable&#39;, &#39;OperatorTable&#39;, &#39;TheoryParser&#39;, &#39;TheoryTermParser&#39;,
+           &#39;TheoryUnparsedTermParser&#39;, &#39;TheoryUnparsedTermParser&#39;]
 
 
 class Arity(Enum):
     &#39;&#39;&#39;
     Enumeration of operator arities.
     &#39;&#39;&#39;
+    # pylint:disable=invalid-name
     Unary = 1
     Binary = 2
+
 
 class Associativity(Enum):
     &#39;&#39;&#39;
     Enumeration of operator associativities.
     &#39;&#39;&#39;
+    # pylint: disable=invalid-name
     Left = auto()
     Right = auto()
     NoAssociativity = auto()
+
 
 def _s(m, a: str, b: str):
     &#39;&#39;&#39;
@@ -271,11 +274,14 @@ def _s(m, a: str, b: str):
     &#39;&#39;&#39;
     return m[a] if m[b] is None else m[b]
 
+
 def _quote(s: str) -&gt; str:
     return s.replace(&#39;\\&#39;, &#39;\\\\&#39;).replace(&#39;:&#39;, &#39;\\:&#39;)
 
+
 def _unquote(s: str) -&gt; str:
     return s.replace(&#39;\\:&#39;, &#39;:&#39;).replace(&#39;\\\\&#39;, &#39;\\&#39;)
+
 
 def location_to_str(loc: Location) -&gt; str:
     &#34;&#34;&#34;
@@ -295,20 +301,21 @@ def location_to_str(loc: Location) -&gt; str:
     &#34;&#34;&#34;
     begin, end = loc.begin, loc.end
     bf, ef = _quote(begin.filename), _quote(end.filename)
-    ret = &#34;{}:{}:{}&#34;.format(bf, begin.line, begin.column)
+    ret = f&#34;{bf}:{begin.line}:{begin.column}&#34;
     dash, eq = True, bf == ef
     if not eq:
-        ret += &#34;{}{}&#34;.format(&#34;-&#34; if dash else &#34;:&#34;, ef)
+        ret += f&#34;{&#39;-&#39; if dash else &#39;:&#39;}{ef}&#34;
         dash = False
     eq = eq and begin.line == end.line
     if not eq:
-        ret += &#34;{}{}&#34;.format(&#34;-&#34; if dash else &#34;:&#34;, end.line)
+        ret += f&#34;{&#39;-&#39; if dash else &#39;:&#39;}{end.line}&#34;
         dash = False
     eq = eq and begin.column == end.column
     if not eq:
-        ret += &#34;{}{}&#34;.format(&#34;-&#34; if dash else &#34;:&#34;, end.column)
+        ret += f&#34;{&#39;-&#39; if dash else &#39;:&#39;}{end.column}&#34;
         dash = False
     return ret
+
 
 def str_to_location(loc: str) -&gt; Location:
     &#34;&#34;&#34;
@@ -336,12 +343,14 @@ def str_to_location(loc: str) -&gt; Location:
     end = Position(_unquote(_s(m, &#39;bf&#39;, &#39;ef&#39;)), int(_s(m, &#39;bl&#39;, &#39;el&#39;)), int(_s(m, &#39;bc&#39;, &#39;ec&#39;)))
     return Location(begin, end)
 
+
 OperatorTable = Mapping[Tuple[str, Arity],
-                    Tuple[int, Associativity]]
+                        Tuple[int, Associativity]]
 AtomTable = Mapping[Tuple[str, int],
                     Tuple[TheoryAtomType,
                           str,
                           Optional[Tuple[List[str], str]]]]
+
 
 class TheoryUnparsedTermParser:
     &#34;&#34;&#34;
@@ -400,8 +409,8 @@ class TheoryUnparsedTermParser:
             self._terms.append(TheoryFunction(b.location, operator, [b]))
         else:
             a = self._terms.pop()
-            l = Location(a.location.begin, b.location.end)
-            self._terms.append(TheoryFunction(l, operator, [a, b]))
+            loc = Location(a.location.begin, b.location.end)
+            self._terms.append(TheoryFunction(loc, operator, [a, b]))
 
     def check_operator(self, operator: str, arity: Arity, location: Location) -&gt; None:
         &#34;&#34;&#34;
@@ -418,7 +427,7 @@ class TheoryUnparsedTermParser:
             Location of the operator for error reporting.
         &#34;&#34;&#34;
         if (operator, arity) not in self._table:
-            raise RuntimeError(&#34;cannot parse operator `{}`: {}&#34;.format(operator, location_to_str(location)))
+            raise RuntimeError(f&#34;cannot parse operator `{operator}`: {location_to_str(location)}&#34;)
 
     def parse(self, x: AST) -&gt; AST:
         &#34;&#34;&#34;
@@ -456,6 +465,7 @@ class TheoryUnparsedTermParser:
             self._reduce()
 
         return self._terms[0]
+
 
 class TheoryTermParser(Transformer):
     &#34;&#34;&#34;
@@ -515,6 +525,7 @@ class TheoryTermParser(Transformer):
         The rewritten AST.
         &#34;&#34;&#34;
         return cast(AST, self(self._parser.parse(x)))
+
 
 class TheoryParser(Transformer):
     &#34;&#34;&#34;
@@ -717,6 +728,7 @@ class TheoryParser(Transformer):
 
         return x
 
+
 def theory_parser_from_definition(x: AST) -&gt; TheoryParser:
     &#34;&#34;&#34;
     Turn an AST node of type TheoryDefinition into a TheoryParser.
@@ -764,27 +776,18 @@ def theory_parser_from_definition(x: AST) -&gt; TheoryParser:
     return TheoryParser(terms, atoms)
 
 
-class SymbolicAtomRenamer(Transformer):
+class _SymbolicAtomTransformer(Transformer):
     &#39;&#39;&#39;
-    A transformer to rename symbolic atoms.
-
-    Parameters
-    ----------
-    rename_function
-        A function for renaming symbols.
-
-    See Also
-    --------
-    rename_symbolic_atoms
+    Transforms symbolic atoms with the given function.
     &#39;&#39;&#39;
     # pylint: disable=invalid-name
 
-    def __init__(self, rename_function: Callable[[str], str]):
-        self._rename_function = rename_function
+    def __init__(self, transformer_function: Callable[[AST], AST]):
+        self._transformer_function = transformer_function
 
     def visit_SymbolicAtom(self, x: AST) -&gt; AST:
         &#39;&#39;&#39;
-        Rename the given symbolic atom and return the renamed version.
+        Transform the given symbolic.
 
         Parameters
         ----------
@@ -796,13 +799,28 @@ class SymbolicAtomRenamer(Transformer):
         The rewritten AST.
         &#39;&#39;&#39;
         term = x.symbol
-        if term.ast_type == ASTType.SymbolicTerm:
-            sym = term.symbol
-            term = SymbolicTerm(term.location,
-                                clingo.Function(self._rename_function(sym.name), sym.arguments, sym.positive))
-        elif term.ast_type == ASTType.Function:
-            term = Function(term.location, self._rename_function(term.name), term.arguments, term.external)
-        return SymbolicAtom(term)
+        new_term = self._transformer_function(term)
+        return x if new_term is term else SymbolicAtom(new_term)
+
+
+def rewrite_symbolic_atoms(x: AST, rewrite_function: Callable[[AST], AST]) -&gt; AST:
+    &#39;&#39;&#39;
+    Rewrite all symbolic atoms in the given AST node with the given function.
+
+    Parameters
+    ----------
+    x
+        The ast in which to rename symbolic atoms.
+    rename_function
+        A function applied to the term representation of the symbolic atom. The
+        function has to return a term compatible with symbolic atoms.
+
+    Returns
+    -------
+    The rewritten AST.
+    &#39;&#39;&#39;
+    return cast(AST, _SymbolicAtomTransformer(rewrite_function)(x))
+
 
 def rename_symbolic_atoms(x: AST, rename_function: Callable[[str], str]) -&gt; AST:
     &#39;&#39;&#39;
@@ -819,7 +837,19 @@ def rename_symbolic_atoms(x: AST, rename_function: Callable[[str], str]) -&gt; A
     -------
     The rewritten AST.
     &#39;&#39;&#39;
-    return cast(AST, SymbolicAtomRenamer(rename_function)(x))
+    def renamer(term: AST):
+        if term.ast_type == ASTType.UnaryOperation:
+            return UnaryOperation(term.location, term.operator_type, renamer(term.argument))
+        if term.ast_type == ASTType.SymbolicTerm:
+            sym = term.symbol
+            new_name = rename_function(sym.name)
+            return SymbolicTerm(term.location, clingo.Function(new_name, sym.arguments, sym.positive))
+        if term.ast_type == ASTType.Function:
+            return Function(term.location, rename_function(term.name), term.arguments, term.external)
+        return term
+
+    return rewrite_symbolic_atoms(x, renamer)
+
 
 def prefix_symbolic_atoms(x: AST, prefix: str) -&gt; AST:
     &#39;&#39;&#39;
@@ -843,37 +873,84 @@ def prefix_symbolic_atoms(x: AST, prefix: str) -&gt; AST:
     return rename_symbolic_atoms(x, lambda s: prefix + s)
 
 
+def reify_symbolic_atoms(x: AST, name: str,
+                         argument_extender: Callable[[AST], Sequence[AST]] = None,
+                         reify_strong_negation: bool = False) -&gt; AST:
+    &#39;&#39;&#39;
+    Reify all symbolic atoms in the given AST node with the given name and
+    function.
+
+    Parameters
+    ----------
+    x
+        The ast in which to rename symbolic atoms.
+    name
+        A string to serve as name of the new symbolic atom.
+    argument_extender
+        A function to provide extra arguments. If not provided, no extra
+        arguments are added. The term passed as argument should be placed in
+        the correct position.
+    reify_strong_negation
+        Boolean indicating how to encode strong negation. If false, `-p(X)` is
+        reified as `-name(p(X))`. If true, then -p(X) is reified as
+        name(-p(X)). In the latter case, this means that stable models
+        containing both `name(p(a))` and `name(-p(a))` are possible. Clingo
+        style consistency can be restored by adding the constraint
+        `:- name(X), name(-X), X&lt;-X.`
+
+    Returns
+    -------
+    The rewritten AST.
+    &#39;&#39;&#39;
+
+    def reifier(term: AST):
+        if term.ast_type == ASTType.UnaryOperation and not reify_strong_negation:
+            return UnaryOperation(term.location, term.operator_type, reifier(term.argument))
+        arguments = argument_extender(term) if argument_extender else [term]
+        return Function(term.location, name, arguments, False)
+
+    return rewrite_symbolic_atoms(x, reifier)
+
+
 @singledispatch
 def _encode(x: Any) -&gt; Any:
     assert False, f&#34;unknown value to encode: {x}&#34;
 
-@_encode.register
+
+@_encode.register(str)
 def _encode_str(x: str) -&gt; str:
     return x
 
-@_encode.register
+
+@_encode.register(clingo.Symbol)
 def _encode_symbol(x: clingo.Symbol) -&gt; str:
     return str(x)
 
-@_encode.register
+
+@_encode.register(int)
 def _encode_int(x: int) -&gt; int:
     return x
 
-@_encode.register
+
+@_encode.register(ASTSequence)
 def _encode_ast_seq(x: ASTSequence) -&gt; List[Any]:
     return [_encode(y) for y in x]
 
-@_encode.register
+
+@_encode.register(StrSequence)
 def _encode_str_seq(x: StrSequence) -&gt; List[Any]:
     return [_encode(y) for y in x]
 
-@_encode.register
+
+@_encode.register(type(None))
 def _encode_none(x: None) -&gt; None:
     return x
 
-@_encode.register
+
+@_encode.register(AST)
 def _encode_ast(x: AST) -&gt; Any:
     return ast_to_dict(x)
+
 
 def ast_to_dict(x: AST) -&gt; dict:
     &#34;&#34;&#34;
@@ -911,7 +988,8 @@ def ast_to_dict(x: AST) -&gt; dict:
 def _decode(x: Any, key: str) -&gt; Any:
     raise RuntimeError(f&#34;unknown key/value to decode: {key}: {x}&#34;)
 
-@_decode.register
+
+@_decode.register(str)
 def _decode_str(x: str, key: str) -&gt; Any:
     if key == &#34;location&#34;:
         return str_to_location(x)
@@ -922,25 +1000,30 @@ def _decode_str(x: str, key: str) -&gt; Any:
     assert key in (&#34;name&#34;, &#34;id&#34;, &#34;code&#34;, &#34;elements&#34;, &#34;term&#34;, &#34;list&#34;, &#34;operator_name&#34;)
     return x
 
-@_decode.register
+
+@_decode.register(int)
 def _decode_int(x: int, key: str) -&gt; Any:
     # pylint: disable=unused-argument
     return x
 
-@_decode.register
+
+@_decode.register(type(None))
 def _decode_none(x: None, key: str) -&gt; Any:
     # pylint: disable=unused-argument
     return x
 
-@_decode.register
+
+@_decode.register(list)
 def _decode_list(x: list, key_: str) -&gt; Any:
     # pylint: disable=unused-argument
     return [_decode(y, &#34;list&#34;) for y in x]
 
-@_decode.register
+
+@_decode.register(dict)
 def _decode_dict(x: dict, key_: str) -&gt; Any:
     # pylint: disable=unused-argument
     return dict_to_ast(x)
+
 
 def dict_to_ast(x: dict) -&gt; AST:
     &#34;&#34;&#34;
@@ -1096,18 +1179,18 @@ parsable using <code><a title="clingox.ast.str_to_location" href="#clingox.ast.s
     &#34;&#34;&#34;
     begin, end = loc.begin, loc.end
     bf, ef = _quote(begin.filename), _quote(end.filename)
-    ret = &#34;{}:{}:{}&#34;.format(bf, begin.line, begin.column)
+    ret = f&#34;{bf}:{begin.line}:{begin.column}&#34;
     dash, eq = True, bf == ef
     if not eq:
-        ret += &#34;{}{}&#34;.format(&#34;-&#34; if dash else &#34;:&#34;, ef)
+        ret += f&#34;{&#39;-&#39; if dash else &#39;:&#39;}{ef}&#34;
         dash = False
     eq = eq and begin.line == end.line
     if not eq:
-        ret += &#34;{}{}&#34;.format(&#34;-&#34; if dash else &#34;:&#34;, end.line)
+        ret += f&#34;{&#39;-&#39; if dash else &#39;:&#39;}{end.line}&#34;
         dash = False
     eq = eq and begin.column == end.column
     if not eq:
-        ret += &#34;{}{}&#34;.format(&#34;-&#34; if dash else &#34;:&#34;, end.column)
+        ret += f&#34;{&#39;-&#39; if dash else &#39;:&#39;}{end.column}&#34;
         dash = False
     return ret</code></pre>
 </details>
@@ -1187,7 +1270,18 @@ parsable using <code><a title="clingox.ast.str_to_location" href="#clingox.ast.s
     -------
     The rewritten AST.
     &#39;&#39;&#39;
-    return cast(AST, SymbolicAtomRenamer(rename_function)(x))</code></pre>
+    def renamer(term: AST):
+        if term.ast_type == ASTType.UnaryOperation:
+            return UnaryOperation(term.location, term.operator_type, renamer(term.argument))
+        if term.ast_type == ASTType.SymbolicTerm:
+            sym = term.symbol
+            new_name = rename_function(sym.name)
+            return SymbolicTerm(term.location, clingo.Function(new_name, sym.arguments, sym.positive))
+        if term.ast_type == ASTType.Function:
+            return Function(term.location, rename_function(term.name), term.arguments, term.external)
+        return term
+
+    return rewrite_symbolic_atoms(x, renamer)</code></pre>
 </details>
 </dd>
 <dt id="clingox.ast.str_to_location"><code class="name flex">
@@ -1317,6 +1411,7 @@ parsable using <code><a title="clingox.ast.str_to_location" href="#clingox.ast.s
     &#39;&#39;&#39;
     Enumeration of operator arities.
     &#39;&#39;&#39;
+    # pylint:disable=invalid-name
     Unary = 1
     Binary = 2</code></pre>
 </details>
@@ -1350,6 +1445,7 @@ parsable using <code><a title="clingox.ast.str_to_location" href="#clingox.ast.s
     &#39;&#39;&#39;
     Enumeration of operator associativities.
     &#39;&#39;&#39;
+    # pylint: disable=invalid-name
     Left = auto()
     Right = auto()
     NoAssociativity = auto()</code></pre>
@@ -1373,120 +1469,6 @@ parsable using <code><a title="clingox.ast.str_to_location" href="#clingox.ast.s
 <div class="desc"></div>
 </dd>
 </dl>
-</dd>
-<dt id="clingox.ast.SymbolicAtomRenamer"><code class="flex name class">
-<span>class <span class="ident">SymbolicAtomRenamer</span></span>
-<span>(</span><span>rename_function: Callable[[str], str])</span>
-</code></dt>
-<dd>
-<div class="desc"><p>A transformer to rename symbolic atoms.</p>
-<h2 id="parameters">Parameters</h2>
-<dl>
-<dt><strong><code>rename_function</code></strong></dt>
-<dd>A function for renaming symbols.</dd>
-</dl>
-<h2 id="see-also">See Also</h2>
-<p><code><a title="clingox.ast.rename_symbolic_atoms" href="#clingox.ast.rename_symbolic_atoms">rename_symbolic_atoms()</a></code></p></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">class SymbolicAtomRenamer(Transformer):
-    &#39;&#39;&#39;
-    A transformer to rename symbolic atoms.
-
-    Parameters
-    ----------
-    rename_function
-        A function for renaming symbols.
-
-    See Also
-    --------
-    rename_symbolic_atoms
-    &#39;&#39;&#39;
-    # pylint: disable=invalid-name
-
-    def __init__(self, rename_function: Callable[[str], str]):
-        self._rename_function = rename_function
-
-    def visit_SymbolicAtom(self, x: AST) -&gt; AST:
-        &#39;&#39;&#39;
-        Rename the given symbolic atom and return the renamed version.
-
-        Parameters
-        ----------
-        x
-            The AST to rewrite.
-
-        Returns
-        -------
-        The rewritten AST.
-        &#39;&#39;&#39;
-        term = x.symbol
-        if term.ast_type == ASTType.SymbolicTerm:
-            sym = term.symbol
-            term = SymbolicTerm(term.location,
-                                clingo.Function(self._rename_function(sym.name), sym.arguments, sym.positive))
-        elif term.ast_type == ASTType.Function:
-            term = Function(term.location, self._rename_function(term.name), term.arguments, term.external)
-        return SymbolicAtom(term)</code></pre>
-</details>
-<h3>Ancestors</h3>
-<ul class="hlist">
-<li><a title="clingo.ast.Transformer" href="../clingo/ast.html#clingo.ast.Transformer">Transformer</a></li>
-</ul>
-<h3>Methods</h3>
-<dl>
-<dt id="clingox.ast.SymbolicAtomRenamer.visit_SymbolicAtom"><code class="name flex">
-<span>def <span class="ident">visit_SymbolicAtom</span></span>(<span>self, x: <a title="clingo.ast.AST" href="../clingo/ast.html#clingo.ast.AST">AST</a>) ‑> <a title="clingo.ast.AST" href="../clingo/ast.html#clingo.ast.AST">AST</a></span>
-</code></dt>
-<dd>
-<div class="desc"><p>Rename the given symbolic atom and return the renamed version.</p>
-<h2 id="parameters">Parameters</h2>
-<dl>
-<dt><strong><code>x</code></strong></dt>
-<dd>The AST to rewrite.</dd>
-</dl>
-<h2 id="returns">Returns</h2>
-<p>The rewritten AST.</p></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def visit_SymbolicAtom(self, x: AST) -&gt; AST:
-    &#39;&#39;&#39;
-    Rename the given symbolic atom and return the renamed version.
-
-    Parameters
-    ----------
-    x
-        The AST to rewrite.
-
-    Returns
-    -------
-    The rewritten AST.
-    &#39;&#39;&#39;
-    term = x.symbol
-    if term.ast_type == ASTType.SymbolicTerm:
-        sym = term.symbol
-        term = SymbolicTerm(term.location,
-                            clingo.Function(self._rename_function(sym.name), sym.arguments, sym.positive))
-    elif term.ast_type == ASTType.Function:
-        term = Function(term.location, self._rename_function(term.name), term.arguments, term.external)
-    return SymbolicAtom(term)</code></pre>
-</details>
-</dd>
-</dl>
-<h3>Inherited members</h3>
-<ul class="hlist">
-<li><code><b><a title="clingo.ast.Transformer" href="../clingo/ast.html#clingo.ast.Transformer">Transformer</a></b></code>:
-<ul class="hlist">
-<li><code><a title="clingo.ast.Transformer.visit" href="../clingo/ast.html#clingo.ast.Transformer.visit">visit</a></code></li>
-<li><code><a title="clingo.ast.Transformer.visit_children" href="../clingo/ast.html#clingo.ast.Transformer.visit_children">visit_children</a></code></li>
-<li><code><a title="clingo.ast.Transformer.visit_sequence" href="../clingo/ast.html#clingo.ast.Transformer.visit_sequence">visit_sequence</a></code></li>
-</ul>
-</li>
-</ul>
 </dd>
 <dt id="clingox.ast.TheoryParser"><code class="flex name class">
 <span>class <span class="ident">TheoryParser</span></span>
@@ -2232,8 +2214,8 @@ operators must use either <code><a title="clingox.ast.Associativity.Left" href="
             self._terms.append(TheoryFunction(b.location, operator, [b]))
         else:
             a = self._terms.pop()
-            l = Location(a.location.begin, b.location.end)
-            self._terms.append(TheoryFunction(l, operator, [a, b]))
+            loc = Location(a.location.begin, b.location.end)
+            self._terms.append(TheoryFunction(loc, operator, [a, b]))
 
     def check_operator(self, operator: str, arity: Arity, location: Location) -&gt; None:
         &#34;&#34;&#34;
@@ -2250,7 +2232,7 @@ operators must use either <code><a title="clingox.ast.Associativity.Left" href="
             Location of the operator for error reporting.
         &#34;&#34;&#34;
         if (operator, arity) not in self._table:
-            raise RuntimeError(&#34;cannot parse operator `{}`: {}&#34;.format(operator, location_to_str(location)))
+            raise RuntimeError(f&#34;cannot parse operator `{operator}`: {location_to_str(location)}&#34;)
 
     def parse(self, x: AST) -&gt; AST:
         &#34;&#34;&#34;
@@ -2325,7 +2307,7 @@ error if absent.</p>
         Location of the operator for error reporting.
     &#34;&#34;&#34;
     if (operator, arity) not in self._table:
-        raise RuntimeError(&#34;cannot parse operator `{}`: {}&#34;.format(operator, location_to_str(location)))</code></pre>
+        raise RuntimeError(f&#34;cannot parse operator `{operator}`: {location_to_str(location)}&#34;)</code></pre>
 </details>
 </dd>
 <dt id="clingox.ast.TheoryUnparsedTermParser.parse"><code class="name flex">
@@ -2428,12 +2410,6 @@ functions.</p>
 <li><code><a title="clingox.ast.Associativity.Left" href="#clingox.ast.Associativity.Left">Left</a></code></li>
 <li><code><a title="clingox.ast.Associativity.NoAssociativity" href="#clingox.ast.Associativity.NoAssociativity">NoAssociativity</a></code></li>
 <li><code><a title="clingox.ast.Associativity.Right" href="#clingox.ast.Associativity.Right">Right</a></code></li>
-</ul>
-</li>
-<li>
-<h4><code><a title="clingox.ast.SymbolicAtomRenamer" href="#clingox.ast.SymbolicAtomRenamer">SymbolicAtomRenamer</a></code></h4>
-<ul class="">
-<li><code><a title="clingox.ast.SymbolicAtomRenamer.visit_SymbolicAtom" href="#clingox.ast.SymbolicAtomRenamer.visit_SymbolicAtom">visit_SymbolicAtom</a></code></li>
 </ul>
 </li>
 <li>
