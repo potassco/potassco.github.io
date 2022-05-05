@@ -243,7 +243,8 @@ from clingo.ast import (
 from .theory import is_operator
 
 __all__ = [&#39;ast_to_dict&#39;, &#39;dict_to_ast&#39;, &#39;location_to_str&#39;,
-           &#39;prefix_symbolic_atoms&#39;, &#39;rename_symbolic_atoms&#39;, &#39;str_to_location&#39;,
+           &#39;prefix_symbolic_atoms&#39;, &#39;reify_symbolic_atoms&#39;,
+           &#39;rename_symbolic_atoms&#39;, &#39;str_to_location&#39;,
            &#39;theory_parser_from_definition&#39;, &#39;Arity&#39;, &#39;Associativity&#39;,
            &#39;AtomTable&#39;, &#39;OperatorTable&#39;, &#39;TheoryParser&#39;, &#39;TheoryTermParser&#39;,
            &#39;TheoryUnparsedTermParser&#39;, &#39;TheoryUnparsedTermParser&#39;]
@@ -1235,6 +1236,75 @@ parsable using <code><a title="clingox.ast.str_to_location" href="#clingox.ast.s
     rename_symbolic_atoms
     &#39;&#39;&#39;
     return rename_symbolic_atoms(x, lambda s: prefix + s)</code></pre>
+</details>
+</dd>
+<dt id="clingox.ast.reify_symbolic_atoms"><code class="name flex">
+<span>def <span class="ident">reify_symbolic_atoms</span></span>(<span>x: <a title="clingo.ast.AST" href="../clingo/ast.html#clingo.ast.AST">AST</a>, name: str, argument_extender: Callable[[<a title="clingo.ast.AST" href="../clingo/ast.html#clingo.ast.AST">AST</a>], Sequence[<a title="clingo.ast.AST" href="../clingo/ast.html#clingo.ast.AST">AST</a>]] = None, reify_strong_negation: bool = False) ‑> <a title="clingo.ast.AST" href="../clingo/ast.html#clingo.ast.AST">AST</a></span>
+</code></dt>
+<dd>
+<div class="desc"><p>Reify all symbolic atoms in the given AST node with the given name and
+function.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>x</code></strong></dt>
+<dd>The ast in which to rename symbolic atoms.</dd>
+<dt><strong><code>name</code></strong></dt>
+<dd>A string to serve as name of the new symbolic atom.</dd>
+<dt><strong><code>argument_extender</code></strong></dt>
+<dd>A function to provide extra arguments. If not provided, no extra
+arguments are added. The term passed as argument should be placed in
+the correct position.</dd>
+<dt><strong><code>reify_strong_negation</code></strong></dt>
+<dd>Boolean indicating how to encode strong negation. If false, <code>-p(X)</code> is
+reified as <code>-name(p(X))</code>. If true, then -p(X) is reified as
+name(-p(X)). In the latter case, this means that stable models
+containing both <code>name(p(a))</code> and <code>name(-p(a))</code> are possible. Clingo
+style consistency can be restored by adding the constraint
+<code>:- name(X), name(-X), X&lt;-X.</code></dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<p>The rewritten AST.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def reify_symbolic_atoms(x: AST, name: str,
+                         argument_extender: Callable[[AST], Sequence[AST]] = None,
+                         reify_strong_negation: bool = False) -&gt; AST:
+    &#39;&#39;&#39;
+    Reify all symbolic atoms in the given AST node with the given name and
+    function.
+
+    Parameters
+    ----------
+    x
+        The ast in which to rename symbolic atoms.
+    name
+        A string to serve as name of the new symbolic atom.
+    argument_extender
+        A function to provide extra arguments. If not provided, no extra
+        arguments are added. The term passed as argument should be placed in
+        the correct position.
+    reify_strong_negation
+        Boolean indicating how to encode strong negation. If false, `-p(X)` is
+        reified as `-name(p(X))`. If true, then -p(X) is reified as
+        name(-p(X)). In the latter case, this means that stable models
+        containing both `name(p(a))` and `name(-p(a))` are possible. Clingo
+        style consistency can be restored by adding the constraint
+        `:- name(X), name(-X), X&lt;-X.`
+
+    Returns
+    -------
+    The rewritten AST.
+    &#39;&#39;&#39;
+
+    def reifier(term: AST):
+        if term.ast_type == ASTType.UnaryOperation and not reify_strong_negation:
+            return UnaryOperation(term.location, term.operator_type, reifier(term.argument))
+        arguments = argument_extender(term) if argument_extender else [term]
+        return Function(term.location, name, arguments, False)
+
+    return rewrite_symbolic_atoms(x, reifier)</code></pre>
 </details>
 </dd>
 <dt id="clingox.ast.rename_symbolic_atoms"><code class="name flex">
@@ -2390,6 +2460,7 @@ functions.</p>
 <li><code><a title="clingox.ast.dict_to_ast" href="#clingox.ast.dict_to_ast">dict_to_ast</a></code></li>
 <li><code><a title="clingox.ast.location_to_str" href="#clingox.ast.location_to_str">location_to_str</a></code></li>
 <li><code><a title="clingox.ast.prefix_symbolic_atoms" href="#clingox.ast.prefix_symbolic_atoms">prefix_symbolic_atoms</a></code></li>
+<li><code><a title="clingox.ast.reify_symbolic_atoms" href="#clingox.ast.reify_symbolic_atoms">reify_symbolic_atoms</a></code></li>
 <li><code><a title="clingox.ast.rename_symbolic_atoms" href="#clingox.ast.rename_symbolic_atoms">rename_symbolic_atoms</a></code></li>
 <li><code><a title="clingox.ast.str_to_location" href="#clingox.ast.str_to_location">str_to_location</a></code></li>
 <li><code><a title="clingox.ast.theory_parser_from_definition" href="#clingox.ast.theory_parser_from_definition">theory_parser_from_definition</a></code></li>
