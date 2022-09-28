@@ -1679,20 +1679,6 @@ def type(self) -&gt; TheoryTermType:
             self._output(&#39;scc&#39;, [Number(idx), Number(atm)])</code></pre>
 </details>
 </dd>
-<dt id="clingox.reify.Reifier.output_csp"><code class="name flex">
-<span>def <span class="ident">output_csp</span></span>(<span>self, symbol: <a title="clingo.symbol.Symbol" href="../clingo/symbol.html#clingo.symbol.Symbol">Symbol</a>, value: int, condition: Sequence[int]) ‑> None</span>
-</code></dt>
-<dd>
-<div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def output_csp(self, symbol: Symbol, value: int,
-               condition: Sequence[int]) -&gt; None:
-    self._output(&#34;output_csp&#34;, [symbol, Number(value), self._lit_tuple(condition)])</code></pre>
-</details>
-</dd>
 </dl>
 <h3>Inherited members</h3>
 <ul class="hlist">
@@ -1707,6 +1693,7 @@ def type(self) -&gt; TheoryTermType:
 <li><code><a title="clingo.backend.Observer.init_program" href="../clingo/backend.html#clingo.backend.Observer.init_program">init_program</a></code></li>
 <li><code><a title="clingo.backend.Observer.minimize" href="../clingo/backend.html#clingo.backend.Observer.minimize">minimize</a></code></li>
 <li><code><a title="clingo.backend.Observer.output_atom" href="../clingo/backend.html#clingo.backend.Observer.output_atom">output_atom</a></code></li>
+<li><code><a title="clingo.backend.Observer.output_csp" href="../clingo/backend.html#clingo.backend.Observer.output_csp">output_csp</a></code></li>
 <li><code><a title="clingo.backend.Observer.output_term" href="../clingo/backend.html#clingo.backend.Observer.output_term">output_term</a></code></li>
 <li><code><a title="clingo.backend.Observer.project" href="../clingo/backend.html#clingo.backend.Observer.project">project</a></code></li>
 <li><code><a title="clingo.backend.Observer.rule" href="../clingo/backend.html#clingo.backend.Observer.rule">rule</a></code></li>
@@ -1786,7 +1773,6 @@ def type(self) -&gt; TheoryTermType:
 <h4><code><a title="clingox.reify.Reifier" href="#clingox.reify.Reifier">Reifier</a></code></h4>
 <ul class="">
 <li><code><a title="clingox.reify.Reifier.calculate_sccs" href="#clingox.reify.Reifier.calculate_sccs">calculate_sccs</a></code></li>
-<li><code><a title="clingox.reify.Reifier.output_csp" href="#clingox.reify.Reifier.output_csp">output_csp</a></code></li>
 </ul>
 </li>
 </ul>

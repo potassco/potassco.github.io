@@ -94,25 +94,32 @@ Example
 
 from typing import Any
 
-from clingo import Symbol, Function, String, Tuple_, Number, SymbolType, TheoryTermType
+from clingo import Function, Number, String, Symbol, SymbolType, TheoryTermType, Tuple_
 
-__all__ = [&#39;evaluate&#39;, &#39;invert_symbol&#39;, &#39;is_clingo_operator&#39;, &#39;is_operator&#39;, &#39;require_number&#39;, &#39;TermEvaluator&#39;]
+__all__ = [
+    &#34;evaluate&#34;,
+    &#34;invert_symbol&#34;,
+    &#34;is_clingo_operator&#34;,
+    &#34;is_operator&#34;,
+    &#34;require_number&#34;,
+    &#34;TermEvaluator&#34;,
+]
 __pdoc__ = {}
 
 
 def require_number(x: Symbol) -&gt; int:
-    &#39;&#39;&#39;
+    &#34;&#34;&#34;
     Requires the argument to be a number returning the given number or throwing
     a type error.
-    &#39;&#39;&#39;
+    &#34;&#34;&#34;
     if x.type == SymbolType.Number:
         return x.number
 
-    raise TypeError(&#39;number exepected&#39;)
+    raise TypeError(&#34;number exepected&#34;)
 
 
 def invert_symbol(sym: Symbol) -&gt; Symbol:
-    &#39;&#39;&#39;
+    &#34;&#34;&#34;
     Inverts the given symbol.
 
     Parameters
@@ -123,26 +130,26 @@ def invert_symbol(sym: Symbol) -&gt; Symbol:
     Returns
     -------
     The inverted symbol.
-    &#39;&#39;&#39;
+    &#34;&#34;&#34;
     if sym.type == SymbolType.Number:
         return Number(-sym.number)
 
     if sym.type == SymbolType.Function and sym.name:
         return Function(sym.name, sym.arguments, not sym.positive)
 
-    raise TypeError(&#39;cannot invert symbol&#39;)
+    raise TypeError(&#34;cannot invert symbol&#34;)
 
 
 def is_clingo_operator(op: str):
-    &#39;&#39;&#39;
+    &#34;&#34;&#34;
     Return true if the given string is a operator as supported by the
     Evaluator.
-    &#39;&#39;&#39;
-    return op in (&#39;+&#39;, &#39;-&#39;, &#39;*&#39;, &#39;\\&#39;, &#39;/&#39;)
+    &#34;&#34;&#34;
+    return op in (&#34;+&#34;, &#34;-&#34;, &#34;*&#34;, &#34;\\&#34;, &#34;/&#34;)
 
 
 def is_operator(op: str):
-    &#39;&#39;&#39;
+    &#34;&#34;&#34;
     Return true if the given string is an operator.
 
     Parameters
@@ -153,43 +160,43 @@ def is_operator(op: str):
     Returns
     -------
     Whether the string is an operator name.
-    &#39;&#39;&#39;
-    return op and op[0] in &#34;/!&lt;=&gt;+-*\\?&amp;@|:;~^.&#34;
+    &#34;&#34;&#34;
+    return (op and op[0] in &#34;/!&lt;=&gt;+-*\\?&amp;@|:;~^.&#34;) or (op == &#34;not&#34;)
 
 
 def _unquote(s: str) -&gt; str:
-    &#39;&#39;&#39;
+    &#34;&#34;&#34;
     Remove quotes in the same fashion as clingo.
-    &#39;&#39;&#39;
+    &#34;&#34;&#34;
     ret = []
     slash = False
     for c in s:
         if slash:
-            if c == &#39;n&#39;:
-                ret.append(&#39;\n&#39;)
+            if c == &#34;n&#34;:
+                ret.append(&#34;\n&#34;)
             else:
                 assert c in &#39;\\&#34;&#39;
                 ret.append(c)
             slash = False
-        elif c == &#39;\\&#39;:
+        elif c == &#34;\\&#34;:
             slash = True
         else:
             ret.append(c)
 
-    return &#39;&#39;.join(ret)
+    return &#34;&#34;.join(ret)
 
 
 class TermEvaluator:
-    &#39;&#39;&#39;
+    &#34;&#34;&#34;
     This class provides a call operator to evaluate the operators in a theory
     term in the same fashion as clingo evaluates its arithmetic functions.
 
     This class can easily be extended for additional binary and unary
     operators.
-    &#39;&#39;&#39;
+    &#34;&#34;&#34;
 
     def evaluate_binary(self, op: str, lhs: Symbol, rhs: Symbol) -&gt; Symbol:
-        &#39;&#39;&#39;
+        &#34;&#34;&#34;
         Evaluate binary terms as clingo would.
 
         Parameters
@@ -204,7 +211,7 @@ class TermEvaluator:
         Returns
         -------
         The evaluated operator in form of a symbol.
-        &#39;&#39;&#39;
+        &#34;&#34;&#34;
         if op == &#34;+&#34;:
             return Number(require_number(lhs) + require_number(rhs))
         if op == &#34;-&#34;:
@@ -223,12 +230,12 @@ class TermEvaluator:
             return Number(require_number(lhs) // require_number(rhs))
 
         if is_operator(op):
-            raise AttributeError(&#39;unexpected operator&#39;)
+            raise AttributeError(&#34;unexpected operator&#34;)
 
         return Function(op, [lhs, rhs])
 
     def evaluate_unary(self, op: str, arg: Symbol):
-        &#39;&#39;&#39;
+        &#34;&#34;&#34;
         Evaluate unary terms as clingo would.
 
         Parameters
@@ -241,18 +248,18 @@ class TermEvaluator:
         Returns
         -------
         The evaluated operator in form of a symbol.
-        &#39;&#39;&#39;
+        &#34;&#34;&#34;
         if op == &#34;+&#34;:
             return Number(require_number(arg))
         if op == &#34;-&#34;:
             return invert_symbol(arg)
         if is_operator(op):
-            raise AttributeError(&#39;unexpected operator&#39;)
+            raise AttributeError(&#34;unexpected operator&#34;)
 
         return Function(op, [arg])
 
     def __call__(self, term: Any):
-        &#39;&#39;&#39;
+        &#34;&#34;&#34;
         Evaluate the given term.
 
         Parameters
@@ -263,7 +270,7 @@ class TermEvaluator:
         Returns
         -------
         The evaluated term in form of a symbol.
-        &#39;&#39;&#39;
+        &#34;&#34;&#34;
         # tuples
         if term.type == TheoryTermType.Tuple:
             return Tuple_([self(x) for x in term.arguments])
@@ -296,11 +303,11 @@ class TermEvaluator:
         raise RuntimeError(&#34;cannot evaluate term&#34;)
 
 
-__pdoc__[&#39;TermEvaluator.__call__&#39;] = True
+__pdoc__[&#34;TermEvaluator.__call__&#34;] = True
 
 
 def evaluate(term: Any) -&gt; Symbol:
-    &#39;&#39;&#39;
+    &#34;&#34;&#34;
     Evaluates the operators in a theory term in the same fashion as clingo
     evaluates its arithmetic functions.
 
@@ -315,7 +322,7 @@ def evaluate(term: Any) -&gt; Symbol:
     Returns
     -------
     The evaluated term in form of a symbol.
-    &#39;&#39;&#39;
+    &#34;&#34;&#34;
     return TermEvaluator()(term)</code></pre>
 </details>
 </section>
@@ -346,7 +353,7 @@ duck typing copmatible with clingo's <code>TheoryTerm</code> class.</p>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def evaluate(term: Any) -&gt; Symbol:
-    &#39;&#39;&#39;
+    &#34;&#34;&#34;
     Evaluates the operators in a theory term in the same fashion as clingo
     evaluates its arithmetic functions.
 
@@ -361,7 +368,7 @@ duck typing copmatible with clingo's <code>TheoryTerm</code> class.</p>
     Returns
     -------
     The evaluated term in form of a symbol.
-    &#39;&#39;&#39;
+    &#34;&#34;&#34;
     return TermEvaluator()(term)</code></pre>
 </details>
 </dd>
@@ -382,7 +389,7 @@ duck typing copmatible with clingo's <code>TheoryTerm</code> class.</p>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def invert_symbol(sym: Symbol) -&gt; Symbol:
-    &#39;&#39;&#39;
+    &#34;&#34;&#34;
     Inverts the given symbol.
 
     Parameters
@@ -393,14 +400,14 @@ duck typing copmatible with clingo's <code>TheoryTerm</code> class.</p>
     Returns
     -------
     The inverted symbol.
-    &#39;&#39;&#39;
+    &#34;&#34;&#34;
     if sym.type == SymbolType.Number:
         return Number(-sym.number)
 
     if sym.type == SymbolType.Function and sym.name:
         return Function(sym.name, sym.arguments, not sym.positive)
 
-    raise TypeError(&#39;cannot invert symbol&#39;)</code></pre>
+    raise TypeError(&#34;cannot invert symbol&#34;)</code></pre>
 </details>
 </dd>
 <dt id="clingox.theory.is_clingo_operator"><code class="name flex">
@@ -414,11 +421,11 @@ Evaluator.</p></div>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def is_clingo_operator(op: str):
-    &#39;&#39;&#39;
+    &#34;&#34;&#34;
     Return true if the given string is a operator as supported by the
     Evaluator.
-    &#39;&#39;&#39;
-    return op in (&#39;+&#39;, &#39;-&#39;, &#39;*&#39;, &#39;\\&#39;, &#39;/&#39;)</code></pre>
+    &#34;&#34;&#34;
+    return op in (&#34;+&#34;, &#34;-&#34;, &#34;*&#34;, &#34;\\&#34;, &#34;/&#34;)</code></pre>
 </details>
 </dd>
 <dt id="clingox.theory.is_operator"><code class="name flex">
@@ -438,7 +445,7 @@ Evaluator.</p></div>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def is_operator(op: str):
-    &#39;&#39;&#39;
+    &#34;&#34;&#34;
     Return true if the given string is an operator.
 
     Parameters
@@ -449,8 +456,8 @@ Evaluator.</p></div>
     Returns
     -------
     Whether the string is an operator name.
-    &#39;&#39;&#39;
-    return op and op[0] in &#34;/!&lt;=&gt;+-*\\?&amp;@|:;~^.&#34;</code></pre>
+    &#34;&#34;&#34;
+    return (op and op[0] in &#34;/!&lt;=&gt;+-*\\?&amp;@|:;~^.&#34;) or (op == &#34;not&#34;)</code></pre>
 </details>
 </dd>
 <dt id="clingox.theory.require_number"><code class="name flex">
@@ -464,14 +471,14 @@ a type error.</p></div>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def require_number(x: Symbol) -&gt; int:
-    &#39;&#39;&#39;
+    &#34;&#34;&#34;
     Requires the argument to be a number returning the given number or throwing
     a type error.
-    &#39;&#39;&#39;
+    &#34;&#34;&#34;
     if x.type == SymbolType.Number:
         return x.number
 
-    raise TypeError(&#39;number exepected&#39;)</code></pre>
+    raise TypeError(&#34;number exepected&#34;)</code></pre>
 </details>
 </dd>
 </dl>
@@ -492,16 +499,16 @@ operators.</p></div>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">class TermEvaluator:
-    &#39;&#39;&#39;
+    &#34;&#34;&#34;
     This class provides a call operator to evaluate the operators in a theory
     term in the same fashion as clingo evaluates its arithmetic functions.
 
     This class can easily be extended for additional binary and unary
     operators.
-    &#39;&#39;&#39;
+    &#34;&#34;&#34;
 
     def evaluate_binary(self, op: str, lhs: Symbol, rhs: Symbol) -&gt; Symbol:
-        &#39;&#39;&#39;
+        &#34;&#34;&#34;
         Evaluate binary terms as clingo would.
 
         Parameters
@@ -516,7 +523,7 @@ operators.</p></div>
         Returns
         -------
         The evaluated operator in form of a symbol.
-        &#39;&#39;&#39;
+        &#34;&#34;&#34;
         if op == &#34;+&#34;:
             return Number(require_number(lhs) + require_number(rhs))
         if op == &#34;-&#34;:
@@ -535,12 +542,12 @@ operators.</p></div>
             return Number(require_number(lhs) // require_number(rhs))
 
         if is_operator(op):
-            raise AttributeError(&#39;unexpected operator&#39;)
+            raise AttributeError(&#34;unexpected operator&#34;)
 
         return Function(op, [lhs, rhs])
 
     def evaluate_unary(self, op: str, arg: Symbol):
-        &#39;&#39;&#39;
+        &#34;&#34;&#34;
         Evaluate unary terms as clingo would.
 
         Parameters
@@ -553,18 +560,18 @@ operators.</p></div>
         Returns
         -------
         The evaluated operator in form of a symbol.
-        &#39;&#39;&#39;
+        &#34;&#34;&#34;
         if op == &#34;+&#34;:
             return Number(require_number(arg))
         if op == &#34;-&#34;:
             return invert_symbol(arg)
         if is_operator(op):
-            raise AttributeError(&#39;unexpected operator&#39;)
+            raise AttributeError(&#34;unexpected operator&#34;)
 
         return Function(op, [arg])
 
     def __call__(self, term: Any):
-        &#39;&#39;&#39;
+        &#34;&#34;&#34;
         Evaluate the given term.
 
         Parameters
@@ -575,7 +582,7 @@ operators.</p></div>
         Returns
         -------
         The evaluated term in form of a symbol.
-        &#39;&#39;&#39;
+        &#34;&#34;&#34;
         # tuples
         if term.type == TheoryTermType.Tuple:
             return Tuple_([self(x) for x in term.arguments])
@@ -626,7 +633,7 @@ operators.</p></div>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def __call__(self, term: Any):
-    &#39;&#39;&#39;
+    &#34;&#34;&#34;
     Evaluate the given term.
 
     Parameters
@@ -637,7 +644,7 @@ operators.</p></div>
     Returns
     -------
     The evaluated term in form of a symbol.
-    &#39;&#39;&#39;
+    &#34;&#34;&#34;
     # tuples
     if term.type == TheoryTermType.Tuple:
         return Tuple_([self(x) for x in term.arguments])
@@ -691,7 +698,7 @@ operators.</p></div>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def evaluate_binary(self, op: str, lhs: Symbol, rhs: Symbol) -&gt; Symbol:
-    &#39;&#39;&#39;
+    &#34;&#34;&#34;
     Evaluate binary terms as clingo would.
 
     Parameters
@@ -706,7 +713,7 @@ operators.</p></div>
     Returns
     -------
     The evaluated operator in form of a symbol.
-    &#39;&#39;&#39;
+    &#34;&#34;&#34;
     if op == &#34;+&#34;:
         return Number(require_number(lhs) + require_number(rhs))
     if op == &#34;-&#34;:
@@ -725,7 +732,7 @@ operators.</p></div>
         return Number(require_number(lhs) // require_number(rhs))
 
     if is_operator(op):
-        raise AttributeError(&#39;unexpected operator&#39;)
+        raise AttributeError(&#34;unexpected operator&#34;)
 
     return Function(op, [lhs, rhs])</code></pre>
 </details>
@@ -749,7 +756,7 @@ operators.</p></div>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def evaluate_unary(self, op: str, arg: Symbol):
-    &#39;&#39;&#39;
+    &#34;&#34;&#34;
     Evaluate unary terms as clingo would.
 
     Parameters
@@ -762,13 +769,13 @@ operators.</p></div>
     Returns
     -------
     The evaluated operator in form of a symbol.
-    &#39;&#39;&#39;
+    &#34;&#34;&#34;
     if op == &#34;+&#34;:
         return Number(require_number(arg))
     if op == &#34;-&#34;:
         return invert_symbol(arg)
     if is_operator(op):
-        raise AttributeError(&#39;unexpected operator&#39;)
+        raise AttributeError(&#34;unexpected operator&#34;)
 
     return Function(op, [arg])</code></pre>
 </details>

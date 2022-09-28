@@ -172,10 +172,10 @@ This example shows how to solve both iteratively and asynchronously:
 &#39;&#39;&#39;
 
 from typing import ContextManager, Iterator, List, Optional, Sequence, Tuple, Union
+from enum import Enum
 
 from ._internal import _c_call, _c_call2, _ffi, _handle_error, _lib
 from .util import Slice, SlicedSequence
-from .core import OrderedEnum
 from .symbol import Symbol
 from .symbolic_atoms import SymbolicAtoms
 
@@ -301,7 +301,7 @@ class SolveControl:
         atoms = _c_call(&#39;clingo_symbolic_atoms_t*&#39;, _lib.clingo_solve_control_symbolic_atoms, self._rep)
         return SymbolicAtoms(atoms)
 
-class ModelType(OrderedEnum):
+class ModelType(Enum):
     &#39;&#39;&#39;
     Enumeration of the different types of models.
     &#39;&#39;&#39;
@@ -421,7 +421,7 @@ class Model:
         &#39;&#39;&#39;
         return _c_call(&#39;bool&#39;, _lib.clingo_model_is_true, self._rep, literal)
 
-    def symbols(self, atoms: bool=False, terms: bool=False, shown: bool=False,
+    def symbols(self, atoms: bool=False, terms: bool=False, shown: bool=False, csp: bool=False,
                 theory: bool=False, complement: bool=False) -&gt; Sequence[Symbol]:
         &#39;&#39;&#39;
         Return the list of atoms, terms, or CSP assignments in the model.
@@ -434,11 +434,13 @@ class Model:
             Select all terms displayed with `#show` statements in the model.
         shown
             Select all atoms and terms as outputted by clingo.
+        csp
+            Select all csp assignments (independent of `#show` statements).
         theory
             Select atoms added with `Model.extend`.
         complement
             Return the complement of the answer set w.r.t. to the atoms known
-            to the grounder.
+            to the grounder. (Does not affect csp assignments.)
 
         Returns
         -------
@@ -458,6 +460,8 @@ class Model:
             show |= _lib.clingo_show_type_terms
         if shown:
             show |= _lib.clingo_show_type_shown
+        if csp:
+            show |= _lib.clingo_show_type_csp
         if theory:
             show |= _lib.clingo_show_type_theory
         if complement:
@@ -742,7 +746,7 @@ use.</p></div>
         &#39;&#39;&#39;
         return _c_call(&#39;bool&#39;, _lib.clingo_model_is_true, self._rep, literal)
 
-    def symbols(self, atoms: bool=False, terms: bool=False, shown: bool=False,
+    def symbols(self, atoms: bool=False, terms: bool=False, shown: bool=False, csp: bool=False,
                 theory: bool=False, complement: bool=False) -&gt; Sequence[Symbol]:
         &#39;&#39;&#39;
         Return the list of atoms, terms, or CSP assignments in the model.
@@ -755,11 +759,13 @@ use.</p></div>
             Select all terms displayed with `#show` statements in the model.
         shown
             Select all atoms and terms as outputted by clingo.
+        csp
+            Select all csp assignments (independent of `#show` statements).
         theory
             Select atoms added with `Model.extend`.
         complement
             Return the complement of the answer set w.r.t. to the atoms known
-            to the grounder.
+            to the grounder. (Does not affect csp assignments.)
 
         Returns
         -------
@@ -779,6 +785,8 @@ use.</p></div>
             show |= _lib.clingo_show_type_terms
         if shown:
             show |= _lib.clingo_show_type_shown
+        if csp:
+            show |= _lib.clingo_show_type_csp
         if theory:
             show |= _lib.clingo_show_type_theory
         if complement:
@@ -1061,7 +1069,7 @@ which will print the added symbols.</p></div>
 </details>
 </dd>
 <dt id="clingo.solving.Model.symbols"><code class="name flex">
-<span>def <span class="ident">symbols</span></span>(<span>self, atoms: bool = False, terms: bool = False, shown: bool = False, theory: bool = False, complement: bool = False) ‑> Sequence[<a title="clingo.symbol.Symbol" href="symbol.html#clingo.symbol.Symbol">Symbol</a>]</span>
+<span>def <span class="ident">symbols</span></span>(<span>self, atoms: bool = False, terms: bool = False, shown: bool = False, csp: bool = False, theory: bool = False, complement: bool = False) ‑> Sequence[<a title="clingo.symbol.Symbol" href="symbol.html#clingo.symbol.Symbol">Symbol</a>]</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Return the list of atoms, terms, or CSP assignments in the model.</p>
@@ -1073,11 +1081,13 @@ which will print the added symbols.</p></div>
 <dd>Select all terms displayed with <code>#show</code> statements in the model.</dd>
 <dt><strong><code>shown</code></strong></dt>
 <dd>Select all atoms and terms as outputted by clingo.</dd>
+<dt><strong><code>csp</code></strong></dt>
+<dd>Select all csp assignments (independent of <code>#show</code> statements).</dd>
 <dt><strong><code>theory</code></strong></dt>
 <dd>Select atoms added with <code><a title="clingo.solving.Model.extend" href="#clingo.solving.Model.extend">Model.extend()</a></code>.</dd>
 <dt><strong><code>complement</code></strong></dt>
 <dd>Return the complement of the answer set w.r.t. to the atoms known
-to the grounder.</dd>
+to the grounder. (Does not affect csp assignments.)</dd>
 </dl>
 <h2 id="returns">Returns</h2>
 <p>The selected symbols.</p>
@@ -1090,7 +1100,7 @@ value.</p></div>
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def symbols(self, atoms: bool=False, terms: bool=False, shown: bool=False,
+<pre><code class="python">def symbols(self, atoms: bool=False, terms: bool=False, shown: bool=False, csp: bool=False,
             theory: bool=False, complement: bool=False) -&gt; Sequence[Symbol]:
     &#39;&#39;&#39;
     Return the list of atoms, terms, or CSP assignments in the model.
@@ -1103,11 +1113,13 @@ value.</p></div>
         Select all terms displayed with `#show` statements in the model.
     shown
         Select all atoms and terms as outputted by clingo.
+    csp
+        Select all csp assignments (independent of `#show` statements).
     theory
         Select atoms added with `Model.extend`.
     complement
         Return the complement of the answer set w.r.t. to the atoms known
-        to the grounder.
+        to the grounder. (Does not affect csp assignments.)
 
     Returns
     -------
@@ -1127,6 +1139,8 @@ value.</p></div>
         show |= _lib.clingo_show_type_terms
     if shown:
         show |= _lib.clingo_show_type_shown
+    if csp:
+        show |= _lib.clingo_show_type_csp
     if theory:
         show |= _lib.clingo_show_type_theory
     if complement:
@@ -1152,7 +1166,7 @@ value.</p></div>
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">class ModelType(OrderedEnum):
+<pre><code class="python">class ModelType(Enum):
     &#39;&#39;&#39;
     Enumeration of the different types of models.
     &#39;&#39;&#39;
@@ -1171,7 +1185,6 @@ value.</p></div>
 </details>
 <h3>Ancestors</h3>
 <ul class="hlist">
-<li><a title="clingo.core.OrderedEnum" href="core.html#clingo.core.OrderedEnum">OrderedEnum</a></li>
 <li>enum.Enum</li>
 </ul>
 <h3>Class variables</h3>

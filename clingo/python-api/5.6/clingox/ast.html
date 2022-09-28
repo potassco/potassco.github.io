@@ -227,41 +227,91 @@ Another interesting feature is to convert ASTs to YAML:
 ]
 ```
 &#39;&#39;&#39;
-
-from typing import Any, Callable, List, Mapping, Optional, Sequence, Set, Tuple, Union, cast
-from functools import singledispatch
 from copy import copy
-from re import fullmatch
 from enum import Enum, auto
+from functools import lru_cache, partial, singledispatch
+from re import fullmatch
+from typing import (
+    Any,
+    Callable,
+    Container,
+    Iterable,
+    List,
+    Mapping,
+    Optional,
+    Sequence,
+    Set,
+    Tuple,
+    Union,
+    cast,
+)
 
 import clingo
 from clingo import ast
 from clingo.ast import (
-    AST, ASTSequence, ASTType, Function, Location, Position, StrSequence,
-    SymbolicTerm, SymbolicAtom, TheoryAtomType, TheoryFunction,
-    TheoryOperatorType, Transformer, UnaryOperation)
+    AST,
+    ASTSequence,
+    ASTType,
+    Function,
+    Location,
+    Position,
+    Sign,
+    StrSequence,
+    SymbolicAtom,
+    SymbolicTerm,
+    TheoryAtomType,
+    TheoryFunction,
+    TheoryOperatorType,
+    Transformer,
+    UnaryOperation,
+    parse_string,
+)
+
 from .theory import is_operator
 
-__all__ = [&#39;ast_to_dict&#39;, &#39;dict_to_ast&#39;, &#39;location_to_str&#39;,
-           &#39;prefix_symbolic_atoms&#39;, &#39;rename_symbolic_atoms&#39;, &#39;str_to_location&#39;,
-           &#39;theory_parser_from_definition&#39;, &#39;Arity&#39;, &#39;Associativity&#39;,
-           &#39;AtomTable&#39;, &#39;OperatorTable&#39;, &#39;TheoryParser&#39;, &#39;TheoryTermParser&#39;,
-           &#39;TheoryUnparsedTermParser&#39;, &#39;TheoryUnparsedTermParser&#39;]
+__all__ = [
+    &#34;Arity&#34;,
+    &#34;Associativity&#34;,
+    &#34;ASTPredicate&#34;,
+    &#34;AtomTable&#34;,
+    &#34;OperatorTable&#34;,
+    &#34;TheoryParser&#34;,
+    &#34;TheoryTermParser&#34;,
+    &#34;TheoryUnparsedTermParser&#34;,
+    &#34;ast_to_dict&#34;,
+    &#34;clingo_literal_parser&#34;,
+    &#34;clingo_term_parser&#34;,
+    &#34;dict_to_ast&#34;,
+    &#34;filter_body_literals&#34;,
+    &#34;location_to_str&#34;,
+    &#34;negate_sign&#34;,
+    &#34;parse_theory&#34;,
+    &#34;partition_body_literals&#34;,
+    &#34;prefix_symbolic_atoms&#34;,
+    &#34;reify_symbolic_atoms&#34;,
+    &#34;rename_symbolic_atoms&#34;,
+    &#34;str_to_location&#34;,
+    &#34;theory_parser_from_definition&#34;,
+    &#34;theory_term_to_literal&#34;,
+    &#34;theory_term_to_term&#34;,
+]
 
 
 class Arity(Enum):
-    &#39;&#39;&#39;
+    &#34;&#34;&#34;
     Enumeration of operator arities.
-    &#39;&#39;&#39;
+    &#34;&#34;&#34;
+
     # pylint:disable=invalid-name
     Unary = 1
     Binary = 2
 
 
 class Associativity(Enum):
-    &#39;&#39;&#39;
+    &#34;&#34;&#34;
     Enumeration of operator associativities.
-    &#39;&#39;&#39;
+    &#34;&#34;&#34;
+
     # pylint: disable=invalid-name
     Left = auto()
     Right = auto()
@@ -269,18 +319,18 @@ class Associativity(Enum):
 
 
 def _s(m, a: str, b: str):
-    &#39;&#39;&#39;
+    &#34;&#34;&#34;
     Select the match group b if not None and group a otherwise.
-    &#39;&#39;&#39;
+    &#34;&#34;&#34;
     return m[a] if m[b] is None else m[b]
 
 
 def _quote(s: str) -&gt; str:
-    return s.replace(&#39;\\&#39;, &#39;\\\\&#39;).replace(&#39;:&#39;, &#39;\\:&#39;)
+    return s.replace(&#34;\\&#34;, &#34;\\\\&#34;).replace(&#34;:&#34;, &#34;\\:&#34;)
 
 
 def _unquote(s: str) -&gt; str:
-    return s.replace(&#39;\\:&#39;, &#39;:&#39;).replace(&#39;\\\\&#39;, &#39;\\&#39;)
+    return s.replace(&#34;\\:&#34;, &#34;:&#34;).replace(&#34;\\\\&#34;, &#34;\\&#34;)
 
 
 def location_to_str(loc: Location) -&gt; str:
@@ -335,21 +385,23 @@ def str_to_location(loc: str) -&gt; Location:
     location_to_str
     &#34;&#34;&#34;
     m = fullmatch(
-        r&#39;(?P&lt;bf&gt;([^\\:]|\\\\|\\:)*):(?P&lt;bl&gt;[0-9]*):(?P&lt;bc&gt;[0-9]+)&#39;
-        r&#39;(-(((?P&lt;ef&gt;([^\\:]|\\\\|\\:)*):)?(?P&lt;el&gt;[0-9]*):)?(?P&lt;ec&gt;[0-9]+))?&#39;, loc)
+        r&#34;(?P&lt;bf&gt;([^\\:]|\\\\|\\:)*):(?P&lt;bl&gt;[0-9]*):(?P&lt;bc&gt;[0-9]+)&#34;
+        r&#34;(-(((?P&lt;ef&gt;([^\\:]|\\\\|\\:)*):)?(?P&lt;el&gt;[0-9]*):)?(?P&lt;ec&gt;[0-9]+))?&#34;,
+        loc,
+    )
     if not m:
-        raise RuntimeError(&#39;could not parse location&#39;)
-    begin = Position(_unquote(m[&#39;bf&#39;]), int(m[&#39;bl&#39;]), int(m[&#39;bc&#39;]))
-    end = Position(_unquote(_s(m, &#39;bf&#39;, &#39;ef&#39;)), int(_s(m, &#39;bl&#39;, &#39;el&#39;)), int(_s(m, &#39;bc&#39;, &#39;ec&#39;)))
+        raise RuntimeError(&#34;could not parse location&#34;)
+    begin = Position(_unquote(m[&#34;bf&#34;]), int(m[&#34;bl&#34;]), int(m[&#34;bc&#34;]))
+    end = Position(
+        _unquote(_s(m, &#34;bf&#34;, &#34;ef&#34;)), int(_s(m, &#34;bl&#34;, &#34;el&#34;)), int(_s(m, &#34;bc&#34;, &#34;ec&#34;))
+    )
     return Location(begin, end)
 
 
-OperatorTable = Mapping[Tuple[str, Arity],
-                        Tuple[int, Associativity]]
-AtomTable = Mapping[Tuple[str, int],
-                    Tuple[TheoryAtomType,
-                          str,
-                          Optional[Tuple[List[str], str]]]]
+OperatorTable = Mapping[Tuple[str, Arity], Tuple[int, Associativity]]
+AtomTable = Mapping[
+    Tuple[str, int], Tuple[TheoryAtomType, str, Optional[Tuple[List[str], str]]]
+]
 
 
 class TheoryUnparsedTermParser:
@@ -365,6 +417,7 @@ class TheoryUnparsedTermParser:
     table
         Mapping of operator/arity pairs to priority/associativity pairs.
     &#34;&#34;&#34;
+
     _stack: List[Tuple[str, Arity]]
     _terms: List[AST]
     _table: OperatorTable
@@ -396,8 +449,9 @@ class TheoryUnparsedTermParser:
             return False
         priority, associativity = self._priority_and_associativity(operator)
         previous_priority = self._priority(*self._stack[-1])
-        return (previous_priority &gt; priority or
-                (previous_priority == priority and associativity == Associativity.Left))
+        return previous_priority &gt; priority or (
+            previous_priority == priority and associativity == Associativity.Left
+        )
 
     def _reduce(self) -&gt; None:
         &#34;&#34;&#34;
@@ -427,7 +481,9 @@ class TheoryUnparsedTermParser:
             Location of the operator for error reporting.
         &#34;&#34;&#34;
         if (operator, arity) not in self._table:
-            raise RuntimeError(f&#34;cannot parse operator `{operator}`: {location_to_str(location)}&#34;)
+            raise RuntimeError(
+                f&#34;cannot parse operator `{operator}`: {location_to_str(location)}&#34;
+            )
 
     def parse(self, x: AST) -&gt; AST:
         &#34;&#34;&#34;
@@ -483,10 +539,15 @@ class TheoryTermParser(Transformer):
     --------
     TheoryUnparsedTermParser
     &#34;&#34;&#34;
+
     # pylint: disable=invalid-name
 
     def __init__(self, table: Union[OperatorTable, TheoryUnparsedTermParser]):
-        self._parser = table if isinstance(table, TheoryUnparsedTermParser) else TheoryUnparsedTermParser(table)
+        self._parser = (
+            table
+            if isinstance(table, TheoryUnparsedTermParser)
+            else TheoryUnparsedTermParser(table)
+        )
 
     def visit_TheoryFunction(self, x) -&gt; AST:
         &#34;&#34;&#34;
@@ -527,6 +588,52 @@ class TheoryTermParser(Transformer):
         return cast(AST, self(self._parser.parse(x)))
 
 
+_clingo_term_table = {
+    (&#34;-&#34;, Arity.Unary): (5, Associativity.NoAssociativity),
+    (&#34;~&#34;, Arity.Unary): (5, Associativity.NoAssociativity),
+    (&#34;**&#34;, Arity.Binary): (4, Associativity.Right),
+    (&#34;*&#34;, Arity.Binary): (3, Associativity.Left),
+    (&#34;/&#34;, Arity.Binary): (3, Associativity.Left),
+    (&#34;\\&#34;, Arity.Binary): (3, Associativity.Left),
+    (&#34;+&#34;, Arity.Binary): (2, Associativity.Left),
+    (&#34;-&#34;, Arity.Binary): (2, Associativity.Left),
+    (&#34;&amp;&#34;, Arity.Binary): (1, Associativity.Left),
+    (&#34;?&#34;, Arity.Binary): (1, Associativity.Left),
+    (&#34;^&#34;, Arity.Binary): (1, Associativity.Left),
+    (&#34;..&#34;, Arity.Binary): (0, Associativity.Left),
+}
+
+
+@lru_cache(maxsize=None)
+def clingo_term_parser() -&gt; TheoryTermParser:
+    &#34;&#34;&#34;
+    Return a theory term parser that parses theory terms like clingo terms.
+
+    Note that for technical reasons pools and the absolute function are not
+    supported.
+    &#34;&#34;&#34;
+    return TheoryTermParser(_clingo_term_table)
+
+
+@lru_cache(maxsize=None)
+def clingo_literal_parser() -&gt; TheoryTermParser:
+    &#34;&#34;&#34;
+    Return a theory term parser that parses theory literals similar to clingo&#39;s
+    parser for symbolic literals.
+
+    Note that for technical reasons pools and the absolute function are not
+    supported.
+    &#34;&#34;&#34;
+    clingo_literal_table = _clingo_term_table.copy()
+    clingo_literal_table.update(
+        {
+            (&#34;-&#34;, Arity.Unary): (0, Associativity.NoAssociativity),
+            (&#34;not&#34;, Arity.Unary): (0, Associativity.NoAssociativity),
+        }
+    )
+    return TheoryTermParser(clingo_literal_table)
+
+
 class TheoryParser(Transformer):
     &#34;&#34;&#34;
     This class parses theory atoms in the same way as clingo&#39;s internal parser.
@@ -541,16 +648,25 @@ class TheoryParser(Transformer):
         Mapping from atom name/arity pairs to tuples defining the acceptable
         structure of the theory atom.
     &#34;&#34;&#34;
+
     # pylint: disable=invalid-name
-    _table: Mapping[Tuple[str, int],
-                    Tuple[TheoryAtomType,
-                          TheoryTermParser,
-                          Optional[Tuple[Set[str], TheoryTermParser]]]]
+    _table: Mapping[
+        Tuple[str, int],
+        Tuple[
+            TheoryAtomType,
+            TheoryTermParser,
+            Optional[Tuple[Set[str], TheoryTermParser]],
+        ],
+    ]
     _in_body: bool
     _in_head: bool
     _is_directive: bool
 
-    def __init__(self, terms: Mapping[str, Union[OperatorTable, TheoryTermParser]], atoms: AtomTable):
+    def __init__(
+        self,
+        terms: Mapping[str, Union[OperatorTable, TheoryTermParser]],
+        atoms: AtomTable,
+    ):
         self._reset()
 
         term_parsers = {}
@@ -701,15 +817,25 @@ class TheoryParser(Transformer):
         name = x.term.name
         arity = len(x.term.arguments)
         if (name, arity) not in self._table:
-            raise RuntimeError(f&#34;theory atom definiton not found: {location_to_str(x.location)}&#34;)
+            raise RuntimeError(
+                f&#34;theory atom definiton not found: {location_to_str(x.location)}&#34;
+            )
 
         type_, element_parser, guard_table = self._table[(name, arity)]
         if type_ == TheoryAtomType.Head and not self._in_head:
-            raise RuntimeError(f&#34;theory atom only accepted in head: {location_to_str(x.location)}&#34;)
+            raise RuntimeError(
+                f&#34;theory atom only accepted in head: {location_to_str(x.location)}&#34;
+            )
         if type_ == TheoryAtomType.Body and not self._in_body:
-            raise RuntimeError(f&#34;theory atom only accepted in body: {location_to_str(x.location)}&#34;)
-        if type_ == TheoryAtomType.Directive and not (self._in_head and self._is_directive):
-            raise RuntimeError(f&#34;theory atom must be a directive: {location_to_str(x.location)}&#34;)
+            raise RuntimeError(
+                f&#34;theory atom only accepted in body: {location_to_str(x.location)}&#34;
+            )
+        if type_ == TheoryAtomType.Directive and not (
+            self._in_head and self._is_directive
+        ):
+            raise RuntimeError(
+                f&#34;theory atom must be a directive: {location_to_str(x.location)}&#34;
+            )
 
         x = copy(x)
         x.term = element_parser(x.term)
@@ -717,11 +843,15 @@ class TheoryParser(Transformer):
 
         if x.guard is not None:
             if guard_table is None:
-                raise RuntimeError(f&#34;unexpected guard in theory atom: {location_to_str(x.location)}&#34;)
+                raise RuntimeError(
+                    f&#34;unexpected guard in theory atom: {location_to_str(x.location)}&#34;
+                )
 
             guards, guard_parser = guard_table
             if x.guard.operator_name not in guards:
-                raise RuntimeError(f&#34;unexpected guard in theory atom: {location_to_str(x.location)}&#34;)
+                raise RuntimeError(
+                    f&#34;unexpected guard in theory atom: {location_to_str(x.location)}&#34;
+                )
 
             x.guard = copy(x.guard)
             x.guard.term = guard_parser(x.guard.term)
@@ -771,22 +901,52 @@ def theory_parser_from_definition(x: AST) -&gt; TheoryParser:
         if atom_def.guard is not None:
             guard = (atom_def.guard.operators, atom_def.guard.term)
 
-        atoms[(atom_def.name, atom_def.arity)] = (atom_def.atom_type, atom_def.term, guard)
+        atoms[(atom_def.name, atom_def.arity)] = (
+            atom_def.atom_type,
+            atom_def.term,
+            guard,
+        )
 
     return TheoryParser(terms, atoms)
 
 
+def parse_theory(s: str) -&gt; TheoryParser:
+    &#34;&#34;&#34;
+    Turn the given theory into a parser.
+    &#34;&#34;&#34;
+    parser = None
+
+    def extract(stm):
+        nonlocal parser
+        if stm.ast_type == ASTType.TheoryDefinition:
+            if parser is not None:
+                raise ValueError(&#34;multiple theory definitions&#34;)
+            parser = theory_parser_from_definition(stm)
+        else:
+            assert (
+                stm.ast_type == ASTType.Program
+                and stm.name == &#34;base&#34;
+                and not stm.parameters
+            )
+
+    parse_string(f&#34;{s}.&#34;, extract)
+    if parser is None:
+        raise ValueError(&#34;no theory definition found&#34;)
+    return cast(TheoryParser, parser)
+
+
 class _SymbolicAtomTransformer(Transformer):
-    &#39;&#39;&#39;
+    &#34;&#34;&#34;
     Transforms symbolic atoms with the given function.
-    &#39;&#39;&#39;
+    &#34;&#34;&#34;
+
     # pylint: disable=invalid-name
 
     def __init__(self, transformer_function: Callable[[AST], AST]):
         self._transformer_function = transformer_function
 
     def visit_SymbolicAtom(self, x: AST) -&gt; AST:
-        &#39;&#39;&#39;
+        &#34;&#34;&#34;
         Transform the given symbolic.
 
         Parameters
@@ -797,14 +957,14 @@ class _SymbolicAtomTransformer(Transformer):
         Returns
         -------
         The rewritten AST.
-        &#39;&#39;&#39;
+        &#34;&#34;&#34;
         term = x.symbol
         new_term = self._transformer_function(term)
         return x if new_term is term else SymbolicAtom(new_term)
 
 
 def rewrite_symbolic_atoms(x: AST, rewrite_function: Callable[[AST], AST]) -&gt; AST:
-    &#39;&#39;&#39;
+    &#34;&#34;&#34;
     Rewrite all symbolic atoms in the given AST node with the given function.
 
     Parameters
@@ -818,12 +978,12 @@ def rewrite_symbolic_atoms(x: AST, rewrite_function: Callable[[AST], AST]) -&gt;
     Returns
     -------
     The rewritten AST.
-    &#39;&#39;&#39;
+    &#34;&#34;&#34;
     return cast(AST, _SymbolicAtomTransformer(rewrite_function)(x))
 
 
 def rename_symbolic_atoms(x: AST, rename_function: Callable[[str], str]) -&gt; AST:
-    &#39;&#39;&#39;
+    &#34;&#34;&#34;
     Rename all symbolic atoms in the given AST node with the given function.
 
     Parameters
@@ -836,23 +996,30 @@ def rename_symbolic_atoms(x: AST, rename_function: Callable[[str], str]) -&gt; A
     Returns
     -------
     The rewritten AST.
-    &#39;&#39;&#39;
+    &#34;&#34;&#34;
+
     def renamer(term: AST):
         if term.ast_type == ASTType.UnaryOperation:
-            return UnaryOperation(term.location, term.operator_type, renamer(term.argument))
+            return UnaryOperation(
+                term.location, term.operator_type, renamer(term.argument)
+            )
         if term.ast_type == ASTType.SymbolicTerm:
             sym = term.symbol
             new_name = rename_function(sym.name)
-            return SymbolicTerm(term.location, clingo.Function(new_name, sym.arguments, sym.positive))
+            return SymbolicTerm(
+                term.location, clingo.Function(new_name, sym.arguments, sym.positive)
+            )
         if term.ast_type == ASTType.Function:
-            return Function(term.location, rename_function(term.name), term.arguments, term.external)
+            return Function(
+                term.location, rename_function(term.name), term.arguments, term.external
+            )
         return term
 
     return rewrite_symbolic_atoms(x, renamer)
 
 
 def prefix_symbolic_atoms(x: AST, prefix: str) -&gt; AST:
-    &#39;&#39;&#39;
+    &#34;&#34;&#34;
     Prefix all symbolic atoms in the given AST with the given string.
 
     Parameters
@@ -869,14 +1036,17 @@ def prefix_symbolic_atoms(x: AST, prefix: str) -&gt; AST:
     See Also
     --------
     rename_symbolic_atoms
-    &#39;&#39;&#39;
+    &#34;&#34;&#34;
     return rename_symbolic_atoms(x, lambda s: prefix + s)
 
 
-def reify_symbolic_atoms(x: AST, name: str,
-                         argument_extender: Callable[[AST], Sequence[AST]] = None,
-                         reify_strong_negation: bool = False) -&gt; AST:
-    &#39;&#39;&#39;
+def reify_symbolic_atoms(
+    x: AST,
+    name: str,
+    argument_extender: Callable[[AST], Sequence[AST]] = None,
+    reify_strong_negation: bool = False,
+) -&gt; AST:
+    &#34;&#34;&#34;
     Reify all symbolic atoms in the given AST node with the given name and
     function.
 
@@ -892,8 +1062,8 @@ def reify_symbolic_atoms(x: AST, name: str,
         the correct position.
     reify_strong_negation
         Boolean indicating how to encode strong negation. If false, `-p(X)` is
-        reified as `-name(p(X))`. If true, then -p(X) is reified as
-        name(-p(X)). In the latter case, this means that stable models
+        reified as `-name(p(X))`. If true, then `-p(X)` is reified as
+        `name(-p(X))`. In the latter case, this means that stable models
         containing both `name(p(a))` and `name(-p(a))` are possible. Clingo
         style consistency can be restored by adding the constraint
         `:- name(X), name(-X), X&lt;-X.`
@@ -901,11 +1071,13 @@ def reify_symbolic_atoms(x: AST, name: str,
     Returns
     -------
     The rewritten AST.
-    &#39;&#39;&#39;
+    &#34;&#34;&#34;
 
     def reifier(term: AST):
         if term.ast_type == ASTType.UnaryOperation and not reify_strong_negation:
-            return UnaryOperation(term.location, term.operator_type, reifier(term.argument))
+            return UnaryOperation(
+                term.location, term.operator_type, reifier(term.argument)
+            )
         arguments = argument_extender(term) if argument_extender else [term]
         return Function(term.location, name, arguments, False)
 
@@ -973,9 +1145,9 @@ def ast_to_dict(x: AST) -&gt; dict:
     --------
     dict_to_ast
     &#34;&#34;&#34;
-    ret = {&#34;ast_type&#34;: str(x.ast_type).replace(&#39;ASTType.&#39;, &#39;&#39;)}
+    ret = {&#34;ast_type&#34;: str(x.ast_type).replace(&#34;ASTType.&#34;, &#34;&#34;)}
     for key, val in x.items():
-        if key == &#39;location&#39;:
+        if key == &#34;location&#34;:
             assert isinstance(val, Location)
             enc = location_to_str(val)
         else:
@@ -1042,7 +1214,306 @@ def dict_to_ast(x: dict) -&gt; AST:
     --------
     ast_to_dict
     &#34;&#34;&#34;
-    return getattr(ast, x[&#39;ast_type&#39;])(**{key: _decode(value, key) for key, value in x.items() if key != &#34;ast_type&#34;})</code></pre>
+    return getattr(ast, x[&#34;ast_type&#34;])(
+        **{key: _decode(value, key) for key, value in x.items() if key != &#34;ast_type&#34;}
+    )
+
+
+ASTPredicate = Union[Callable[[AST], bool], bool]
+
+
+def _eval_predicate(predicate: ASTPredicate, arg: AST) -&gt; bool:
+    if callable(predicate):
+        return predicate(arg)
+    return predicate
+
+
+def _body_literal_predicate(
+    lit: AST,
+    symbolic_atom_predicate: ASTPredicate = True,
+    theory_atom_predicate: ASTPredicate = True,
+    aggregate_predicate: ASTPredicate = True,
+    conditional_literal_predicate: ASTPredicate = True,
+    signs: Container[Sign] = (Sign.NoSign, Sign.Negation, Sign.DoubleNegation),
+) -&gt; bool:
+    if lit.ast_type == ASTType.Literal:
+        atom = lit.atom
+        if lit.sign not in signs:
+            return False
+        if atom.ast_type == ASTType.SymbolicAtom:
+            return _eval_predicate(symbolic_atom_predicate, atom.symbol)
+        if atom.ast_type in (ASTType.Aggregate, ASTType.BodyAggregate):
+            return _eval_predicate(aggregate_predicate, atom)
+        if atom.ast_type == ASTType.TheoryAtom:
+            return _eval_predicate(theory_atom_predicate, atom)
+    elif lit.ast_type == ASTType.ConditionalLiteral:
+        return lit.literal.sign in signs and _eval_predicate(
+            conditional_literal_predicate, lit
+        )
+    return True
+
+
+def filter_body_literals(
+    body: Iterable[AST],
+    symbolic_atom_predicate: ASTPredicate = True,
+    theory_atom_predicate: ASTPredicate = True,
+    aggregate_predicate: ASTPredicate = True,
+    conditional_literal_predicate: ASTPredicate = True,
+    signs: Container[Sign] = (Sign.NoSign, Sign.Negation, Sign.DoubleNegation),
+) -&gt; Iterable[AST]:
+    &#34;&#34;&#34;
+    Filters the given body literals according to the given predicates.
+
+    Parameters
+    ----------
+    body
+        An iterable of `AST`s for body literals.
+    symbolic_atom_predicate
+        Predicate to filter symbolic atoms.
+    theory_atom_predicate
+        Predicate to filter theory atoms.
+    aggregate_predicate
+        Predicate to filter aggregates.
+    conditional_literal_predicate
+        Predicate to filter conditional literals.
+    signs
+        Only include literals with the given signs.
+
+    Returns
+    -------
+    An iterarable of body literals.
+
+    Notes
+    -----
+    An `ASTPredicate` is a callable that takes an `AST` and returns a Boolean.
+    Booleans `True` and `False` are also accepted, meaning that the predicate
+    is always `True` or `False`, respectively.
+    &#34;&#34;&#34;
+    pred = partial(
+        _body_literal_predicate,
+        symbolic_atom_predicate=symbolic_atom_predicate,
+        theory_atom_predicate=theory_atom_predicate,
+        aggregate_predicate=aggregate_predicate,
+        conditional_literal_predicate=conditional_literal_predicate,
+        signs=signs,
+    )
+    return filter(pred, body)
+
+
+def partition_body_literals(
+    body: Iterable[AST],
+    symbolic_atom_predicate: ASTPredicate = True,
+    theory_atom_predicate: ASTPredicate = True,
+    aggregate_predicate: ASTPredicate = True,
+    conditional_literal_predicate: ASTPredicate = True,
+    signs: Container[Sign] = (Sign.NoSign, Sign.Negation, Sign.DoubleNegation),
+) -&gt; Tuple[List[AST], List[AST]]:
+    &#34;&#34;&#34;
+    Partition the given body literals according to the given predicates.
+
+    Parameters
+    ----------
+    body
+        An iterable of `AST` that represents a body.
+    symbolic_atom_predicate
+        Predicate to partition symbolic atoms.
+    theory_atom_predicate
+        Predicate to partition theory atoms.
+    aggregate_predicate
+        Predicate to partition aggregates.
+    conditional_literal_predicate
+        Predicate to partition conditional literals.
+    signs
+        Only include literals with the given signs in the first list.
+
+    Returns
+    -------
+    A pair of lists of body literals. The first iterable yields the literals
+    that satisfy the predicate while the second one yields the ones that do
+    not.
+
+    Notes
+    -----
+    An `ASTPredicate` is a callable that takes an `AST` and returns a Boolean.
+    Booleans `True` and `False` are also accepted, meaning that the predicate
+    is always `True` or `False`, respectively.
+    &#34;&#34;&#34;
+    pred = partial(
+        _body_literal_predicate,
+        symbolic_atom_predicate=symbolic_atom_predicate,
+        theory_atom_predicate=theory_atom_predicate,
+        aggregate_predicate=aggregate_predicate,
+        conditional_literal_predicate=conditional_literal_predicate,
+        signs=signs,
+    )
+    part_a: List[AST] = []
+    part_b: List[AST] = []
+    for lit in body:
+        if pred(lit):
+            part_a.append(lit)
+        else:
+            part_b.append(lit)
+    return part_a, part_b
+
+
+_unary_operator_map = {
+    &#34;-&#34;: ast.UnaryOperator.Minus,
+    &#34;~&#34;: ast.UnaryOperator.Negation,
+    &#34;|&#34;: ast.UnaryOperator.Absolute,
+}
+
+_binary_operator_map = {
+    &#34;+&#34;: ast.BinaryOperator.Plus,
+    &#34;-&#34;: ast.BinaryOperator.Minus,
+    &#34;*&#34;: ast.BinaryOperator.Multiplication,
+    &#34;/&#34;: ast.BinaryOperator.Division,
+    &#34;\\&#34;: ast.BinaryOperator.Modulo,
+    &#34;**&#34;: ast.BinaryOperator.Power,
+    &#34;&amp;&#34;: ast.BinaryOperator.And,
+    &#34;?&#34;: ast.BinaryOperator.Or,
+    &#34;^&#34;: ast.BinaryOperator.XOr,
+}
+
+
+def _theory_term_to_term(x: AST) -&gt; AST:
+    &#34;&#34;&#34;
+    Convert a given theory term into a plain clingo term.
+    &#34;&#34;&#34;
+    if x.ast_type in (ASTType.SymbolicTerm, ASTType.Variable):
+        return x
+
+    if x.ast_type == ASTType.TheoryFunction:
+        if len(x.arguments) == 1 and x.name in _unary_operator_map:
+            arg = _theory_term_to_term(x.arguments[0])
+            uop = _unary_operator_map[x.name]
+
+            return ast.UnaryOperation(x.location, uop, arg)
+
+        if len(x.arguments) == 2:
+            lhs = _theory_term_to_term(x.arguments[0])
+            rhs = _theory_term_to_term(x.arguments[1])
+
+            if x.name in _binary_operator_map:
+                bop = _binary_operator_map[x.name]
+                return ast.BinaryOperation(x.location, bop, lhs, rhs)
+
+            if x.name == &#34;..&#34;:
+                return ast.Interval(x.location, lhs, rhs)
+
+        if not is_operator(x.name):
+            return ast.Function(
+                x.location,
+                x.name,
+                [_theory_term_to_term(a) for a in x.arguments],
+                False,
+            )
+
+    elif x.ast_type == ASTType.TheorySequence:
+        if x.sequence_type == ast.TheorySequenceType.Tuple:
+            return ast.Function(
+                x.location, &#34;&#34;, [_theory_term_to_term(a) for a in x.terms], False
+            )
+
+    raise RuntimeError(f&#34;{location_to_str(x.location)}: invalid term `{x}`&#34;)
+
+
+def theory_term_to_term(x: AST, parse: bool = True) -&gt; AST:
+    &#34;&#34;&#34;
+    Convert the given theory term into a plain clingo term.
+
+    If argument `parse` is set to true, occurences of unparsed theory terms are
+    parsed using `clingo_term_parser()`.
+    &#34;&#34;&#34;
+    if parse:
+        x = clingo_term_parser()(x)
+    return _theory_term_to_term(x)
+
+
+def _build_atom(
+    location: ast.Location, positive: bool, name: str, arguments: List
+) -&gt; ast.AST:
+    &#34;&#34;&#34;
+    Helper function to create an atom.
+
+    Arguments:
+    location  -- Location to use.
+    positive  -- Classical sign of the atom.
+    name      -- The name of the atom.
+    arguments -- The arguments of the atom.
+    &#34;&#34;&#34;
+    ret = ast.Function(location, name, arguments, False)
+    if not positive:
+        ret = ast.UnaryOperation(location, ast.UnaryOperator.Minus, ret)
+    return ast.SymbolicAtom(ret)
+
+
+def negate_sign(sign: ast.Sign) -&gt; ast.Sign:
+    &#34;&#34;&#34;
+    Negate the given sign.
+    &#34;&#34;&#34;
+    if sign == ast.Sign.Negation:
+        return ast.Sign.DoubleNegation
+    return ast.Sign.Negation
+
+
+def _theory_term_to_literal(
+    x: AST, positive: bool = True, sign: ast.Sign = ast.Sign.NoSign
+) -&gt; AST:
+    &#34;&#34;&#34;
+    Convert a given theory term into a symbolic clingo literal.
+    &#34;&#34;&#34;
+    if x.ast_type == ASTType.TheoryFunction:
+        if x.name == &#34;-&#34;:
+            return _theory_term_to_literal(x.arguments[0], not positive, sign)
+
+        if x.name == &#34;not&#34;:
+            sign = negate_sign(sign)
+            if not positive:
+                sign = negate_sign(sign)
+            return _theory_term_to_literal(x.arguments[0], True, sign)
+
+        if not is_operator(x.name):
+            atom = _build_atom(
+                x.location,
+                positive,
+                x.name,
+                [theory_term_to_term(a) for a in x.arguments],
+            )
+            return ast.Literal(x.location, sign, atom)
+
+    elif (
+        x.ast_type == ASTType.SymbolicTerm
+        and x.symbol.type == clingo.SymbolType.Function
+        and x.symbol.name
+    ):
+        atom = _build_atom(
+            x.location,
+            (positive == x.symbol.positive),
+            x.symbol.name,
+            [ast.SymbolicTerm(x.location, a) for a in x.symbol.arguments],
+        )
+        return ast.Literal(x.location, sign, atom)
+
+    raise RuntimeError(f&#34;{location_to_str(x.location)}: invalid literal `{x}`&#34;)
+
+
+def theory_term_to_literal(x: AST, parse: bool = True) -&gt; AST:
+    &#34;&#34;&#34;
+    Convert the given theory term into a symbolic clingo literal.
+
+    If argument `parse` is set to true, occurences of unparsed theory terms are
+    parsed using `clingo_literal_parser()`.
+
+    Literals can use an arbitrary number of classical and default negation
+    signs. They are normalized using the following equivalences:
+
+    - `- - lit = lit`
+    - `- not lit = not not lit`
+    - `not not not lit = not lit`
+    &#34;&#34;&#34;
+    if parse:
+        x = clingo_literal_parser()(x)
+    return _theory_term_to_literal(x, True, ast.Sign.NoSign)</code></pre>
 </details>
 </section>
 <section>
@@ -1094,15 +1565,68 @@ or <code>pickle</code> modules.</p>
     --------
     dict_to_ast
     &#34;&#34;&#34;
-    ret = {&#34;ast_type&#34;: str(x.ast_type).replace(&#39;ASTType.&#39;, &#39;&#39;)}
+    ret = {&#34;ast_type&#34;: str(x.ast_type).replace(&#34;ASTType.&#34;, &#34;&#34;)}
     for key, val in x.items():
-        if key == &#39;location&#39;:
+        if key == &#34;location&#34;:
             assert isinstance(val, Location)
             enc = location_to_str(val)
         else:
             enc = _encode(val)
         ret[key] = enc
     return ret</code></pre>
+</details>
+</dd>
+<dt id="clingox.ast.clingo_literal_parser"><code class="name flex">
+<span>def <span class="ident">clingo_literal_parser</span></span>(<span>) ‑> <a title="clingox.ast.TheoryTermParser" href="#clingox.ast.TheoryTermParser">TheoryTermParser</a></span>
+</code></dt>
+<dd>
+<div class="desc"><p>Return a theory term parser that parses theory literals similar to clingo's
+parser for symbolic literals.</p>
+<p>Note that for technical reasons pools and the absolute function are not
+supported.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@lru_cache(maxsize=None)
+def clingo_literal_parser() -&gt; TheoryTermParser:
+    &#34;&#34;&#34;
+    Return a theory term parser that parses theory literals similar to clingo&#39;s
+    parser for symbolic literals.
+
+    Note that for technical reasons pools and the absolute function are not
+    supported.
+    &#34;&#34;&#34;
+    clingo_literal_table = _clingo_term_table.copy()
+    clingo_literal_table.update(
+        {
+            (&#34;-&#34;, Arity.Unary): (0, Associativity.NoAssociativity),
+            (&#34;not&#34;, Arity.Unary): (0, Associativity.NoAssociativity),
+        }
+    )
+    return TheoryTermParser(clingo_literal_table)</code></pre>
+</details>
+</dd>
+<dt id="clingox.ast.clingo_term_parser"><code class="name flex">
+<span>def <span class="ident">clingo_term_parser</span></span>(<span>) ‑> <a title="clingox.ast.TheoryTermParser" href="#clingox.ast.TheoryTermParser">TheoryTermParser</a></span>
+</code></dt>
+<dd>
+<div class="desc"><p>Return a theory term parser that parses theory terms like clingo terms.</p>
+<p>Note that for technical reasons pools and the absolute function are not
+supported.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@lru_cache(maxsize=None)
+def clingo_term_parser() -&gt; TheoryTermParser:
+    &#34;&#34;&#34;
+    Return a theory term parser that parses theory terms like clingo terms.
+
+    Note that for technical reasons pools and the absolute function are not
+    supported.
+    &#34;&#34;&#34;
+    return TheoryTermParser(_clingo_term_table)</code></pre>
 </details>
 </dd>
 <dt id="clingox.ast.dict_to_ast"><code class="name flex">
@@ -1140,7 +1664,86 @@ or <code>pickle</code> modules.</p>
     --------
     ast_to_dict
     &#34;&#34;&#34;
-    return getattr(ast, x[&#39;ast_type&#39;])(**{key: _decode(value, key) for key, value in x.items() if key != &#34;ast_type&#34;})</code></pre>
+    return getattr(ast, x[&#34;ast_type&#34;])(
+        **{key: _decode(value, key) for key, value in x.items() if key != &#34;ast_type&#34;}
+    )</code></pre>
+</details>
+</dd>
+<dt id="clingox.ast.filter_body_literals"><code class="name flex">
+<span>def <span class="ident">filter_body_literals</span></span>(<span>body: Iterable[<a title="clingo.ast.AST" href="../clingo/ast.html#clingo.ast.AST">AST</a>], symbolic_atom_predicate: Union[Callable[[<a title="clingo.ast.AST" href="../clingo/ast.html#clingo.ast.AST">AST</a>], bool], bool] = True, theory_atom_predicate: Union[Callable[[<a title="clingo.ast.AST" href="../clingo/ast.html#clingo.ast.AST">AST</a>], bool], bool] = True, aggregate_predicate: Union[Callable[[<a title="clingo.ast.AST" href="../clingo/ast.html#clingo.ast.AST">AST</a>], bool], bool] = True, conditional_literal_predicate: Union[Callable[[<a title="clingo.ast.AST" href="../clingo/ast.html#clingo.ast.AST">AST</a>], bool], bool] = True, signs: Container[<a title="clingo.ast.Sign" href="../clingo/ast.html#clingo.ast.Sign">Sign</a>] = (&lt;Sign.NoSign: 0&gt;, &lt;Sign.Negation: 1&gt;, &lt;Sign.DoubleNegation: 2&gt;)) ‑> Iterable[<a title="clingo.ast.AST" href="../clingo/ast.html#clingo.ast.AST">AST</a>]</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Filters the given body literals according to the given predicates.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>body</code></strong></dt>
+<dd>An iterable of <code>AST</code>s for body literals.</dd>
+<dt><strong><code>symbolic_atom_predicate</code></strong></dt>
+<dd>Predicate to filter symbolic atoms.</dd>
+<dt><strong><code>theory_atom_predicate</code></strong></dt>
+<dd>Predicate to filter theory atoms.</dd>
+<dt><strong><code>aggregate_predicate</code></strong></dt>
+<dd>Predicate to filter aggregates.</dd>
+<dt><strong><code>conditional_literal_predicate</code></strong></dt>
+<dd>Predicate to filter conditional literals.</dd>
+<dt><strong><code>signs</code></strong></dt>
+<dd>Only include literals with the given signs.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<p>An iterarable of body literals.</p>
+<h2 id="notes">Notes</h2>
+<p>An <code>ASTPredicate</code> is a callable that takes an <code>AST</code> and returns a Boolean.
+Booleans <code>True</code> and <code>False</code> are also accepted, meaning that the predicate
+is always <code>True</code> or <code>False</code>, respectively.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def filter_body_literals(
+    body: Iterable[AST],
+    symbolic_atom_predicate: ASTPredicate = True,
+    theory_atom_predicate: ASTPredicate = True,
+    aggregate_predicate: ASTPredicate = True,
+    conditional_literal_predicate: ASTPredicate = True,
+    signs: Container[Sign] = (Sign.NoSign, Sign.Negation, Sign.DoubleNegation),
+) -&gt; Iterable[AST]:
+    &#34;&#34;&#34;
+    Filters the given body literals according to the given predicates.
+
+    Parameters
+    ----------
+    body
+        An iterable of `AST`s for body literals.
+    symbolic_atom_predicate
+        Predicate to filter symbolic atoms.
+    theory_atom_predicate
+        Predicate to filter theory atoms.
+    aggregate_predicate
+        Predicate to filter aggregates.
+    conditional_literal_predicate
+        Predicate to filter conditional literals.
+    signs
+        Only include literals with the given signs.
+
+    Returns
+    -------
+    An iterarable of body literals.
+
+    Notes
+    -----
+    An `ASTPredicate` is a callable that takes an `AST` and returns a Boolean.
+    Booleans `True` and `False` are also accepted, meaning that the predicate
+    is always `True` or `False`, respectively.
+    &#34;&#34;&#34;
+    pred = partial(
+        _body_literal_predicate,
+        symbolic_atom_predicate=symbolic_atom_predicate,
+        theory_atom_predicate=theory_atom_predicate,
+        aggregate_predicate=aggregate_predicate,
+        conditional_literal_predicate=conditional_literal_predicate,
+        signs=signs,
+    )
+    return filter(pred, body)</code></pre>
 </details>
 </dd>
 <dt id="clingox.ast.location_to_str"><code class="name flex">
@@ -1195,6 +1798,150 @@ parsable using <code><a title="clingox.ast.str_to_location" href="#clingox.ast.s
     return ret</code></pre>
 </details>
 </dd>
+<dt id="clingox.ast.negate_sign"><code class="name flex">
+<span>def <span class="ident">negate_sign</span></span>(<span>sign: <a title="clingo.ast.Sign" href="../clingo/ast.html#clingo.ast.Sign">Sign</a>) ‑> <a title="clingo.ast.Sign" href="../clingo/ast.html#clingo.ast.Sign">Sign</a></span>
+</code></dt>
+<dd>
+<div class="desc"><p>Negate the given sign.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def negate_sign(sign: ast.Sign) -&gt; ast.Sign:
+    &#34;&#34;&#34;
+    Negate the given sign.
+    &#34;&#34;&#34;
+    if sign == ast.Sign.Negation:
+        return ast.Sign.DoubleNegation
+    return ast.Sign.Negation</code></pre>
+</details>
+</dd>
+<dt id="clingox.ast.parse_theory"><code class="name flex">
+<span>def <span class="ident">parse_theory</span></span>(<span>s: str) ‑> <a title="clingox.ast.TheoryParser" href="#clingox.ast.TheoryParser">TheoryParser</a></span>
+</code></dt>
+<dd>
+<div class="desc"><p>Turn the given theory into a parser.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def parse_theory(s: str) -&gt; TheoryParser:
+    &#34;&#34;&#34;
+    Turn the given theory into a parser.
+    &#34;&#34;&#34;
+    parser = None
+
+    def extract(stm):
+        nonlocal parser
+        if stm.ast_type == ASTType.TheoryDefinition:
+            if parser is not None:
+                raise ValueError(&#34;multiple theory definitions&#34;)
+            parser = theory_parser_from_definition(stm)
+        else:
+            assert (
+                stm.ast_type == ASTType.Program
+                and stm.name == &#34;base&#34;
+                and not stm.parameters
+            )
+
+    parse_string(f&#34;{s}.&#34;, extract)
+    if parser is None:
+        raise ValueError(&#34;no theory definition found&#34;)
+    return cast(TheoryParser, parser)</code></pre>
+</details>
+</dd>
+<dt id="clingox.ast.partition_body_literals"><code class="name flex">
+<span>def <span class="ident">partition_body_literals</span></span>(<span>body: Iterable[<a title="clingo.ast.AST" href="../clingo/ast.html#clingo.ast.AST">AST</a>], symbolic_atom_predicate: Union[Callable[[<a title="clingo.ast.AST" href="../clingo/ast.html#clingo.ast.AST">AST</a>], bool], bool] = True, theory_atom_predicate: Union[Callable[[<a title="clingo.ast.AST" href="../clingo/ast.html#clingo.ast.AST">AST</a>], bool], bool] = True, aggregate_predicate: Union[Callable[[<a title="clingo.ast.AST" href="../clingo/ast.html#clingo.ast.AST">AST</a>], bool], bool] = True, conditional_literal_predicate: Union[Callable[[<a title="clingo.ast.AST" href="../clingo/ast.html#clingo.ast.AST">AST</a>], bool], bool] = True, signs: Container[<a title="clingo.ast.Sign" href="../clingo/ast.html#clingo.ast.Sign">Sign</a>] = (&lt;Sign.NoSign: 0&gt;, &lt;Sign.Negation: 1&gt;, &lt;Sign.DoubleNegation: 2&gt;)) ‑> Tuple[List[<a title="clingo.ast.AST" href="../clingo/ast.html#clingo.ast.AST">AST</a>], List[<a title="clingo.ast.AST" href="../clingo/ast.html#clingo.ast.AST">AST</a>]]</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Partition the given body literals according to the given predicates.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>body</code></strong></dt>
+<dd>An iterable of <code>AST</code> that represents a body.</dd>
+<dt><strong><code>symbolic_atom_predicate</code></strong></dt>
+<dd>Predicate to partition symbolic atoms.</dd>
+<dt><strong><code>theory_atom_predicate</code></strong></dt>
+<dd>Predicate to partition theory atoms.</dd>
+<dt><strong><code>aggregate_predicate</code></strong></dt>
+<dd>Predicate to partition aggregates.</dd>
+<dt><strong><code>conditional_literal_predicate</code></strong></dt>
+<dd>Predicate to partition conditional literals.</dd>
+<dt><strong><code>signs</code></strong></dt>
+<dd>Only include literals with the given signs in the first list.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>A pair</code> of <code>lists</code> of <code>body literals. The first iterable yields the literals</code></dt>
+<dd>&nbsp;</dd>
+<dt><code>that satisfy the predicate while the second one yields the ones that do</code></dt>
+<dd>&nbsp;</dd>
+</dl>
+<p>not.</p>
+<h2 id="notes">Notes</h2>
+<p>An <code>ASTPredicate</code> is a callable that takes an <code>AST</code> and returns a Boolean.
+Booleans <code>True</code> and <code>False</code> are also accepted, meaning that the predicate
+is always <code>True</code> or <code>False</code>, respectively.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def partition_body_literals(
+    body: Iterable[AST],
+    symbolic_atom_predicate: ASTPredicate = True,
+    theory_atom_predicate: ASTPredicate = True,
+    aggregate_predicate: ASTPredicate = True,
+    conditional_literal_predicate: ASTPredicate = True,
+    signs: Container[Sign] = (Sign.NoSign, Sign.Negation, Sign.DoubleNegation),
+) -&gt; Tuple[List[AST], List[AST]]:
+    &#34;&#34;&#34;
+    Partition the given body literals according to the given predicates.
+
+    Parameters
+    ----------
+    body
+        An iterable of `AST` that represents a body.
+    symbolic_atom_predicate
+        Predicate to partition symbolic atoms.
+    theory_atom_predicate
+        Predicate to partition theory atoms.
+    aggregate_predicate
+        Predicate to partition aggregates.
+    conditional_literal_predicate
+        Predicate to partition conditional literals.
+    signs
+        Only include literals with the given signs in the first list.
+
+    Returns
+    -------
+    A pair of lists of body literals. The first iterable yields the literals
+    that satisfy the predicate while the second one yields the ones that do
+    not.
+
+    Notes
+    -----
+    An `ASTPredicate` is a callable that takes an `AST` and returns a Boolean.
+    Booleans `True` and `False` are also accepted, meaning that the predicate
+    is always `True` or `False`, respectively.
+    &#34;&#34;&#34;
+    pred = partial(
+        _body_literal_predicate,
+        symbolic_atom_predicate=symbolic_atom_predicate,
+        theory_atom_predicate=theory_atom_predicate,
+        aggregate_predicate=aggregate_predicate,
+        conditional_literal_predicate=conditional_literal_predicate,
+        signs=signs,
+    )
+    part_a: List[AST] = []
+    part_b: List[AST] = []
+    for lit in body:
+        if pred(lit):
+            part_a.append(lit)
+        else:
+            part_b.append(lit)
+    return part_a, part_b</code></pre>
+</details>
+</dd>
 <dt id="clingox.ast.prefix_symbolic_atoms"><code class="name flex">
 <span>def <span class="ident">prefix_symbolic_atoms</span></span>(<span>x: <a title="clingo.ast.AST" href="../clingo/ast.html#clingo.ast.AST">AST</a>, prefix: str) ‑> <a title="clingo.ast.AST" href="../clingo/ast.html#clingo.ast.AST">AST</a></span>
 </code></dt>
@@ -1216,7 +1963,7 @@ parsable using <code><a title="clingox.ast.str_to_location" href="#clingox.ast.s
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def prefix_symbolic_atoms(x: AST, prefix: str) -&gt; AST:
-    &#39;&#39;&#39;
+    &#34;&#34;&#34;
     Prefix all symbolic atoms in the given AST with the given string.
 
     Parameters
@@ -1233,8 +1980,82 @@ parsable using <code><a title="clingox.ast.str_to_location" href="#clingox.ast.s
     See Also
     --------
     rename_symbolic_atoms
-    &#39;&#39;&#39;
+    &#34;&#34;&#34;
     return rename_symbolic_atoms(x, lambda s: prefix + s)</code></pre>
+</details>
+</dd>
+<dt id="clingox.ast.reify_symbolic_atoms"><code class="name flex">
+<span>def <span class="ident">reify_symbolic_atoms</span></span>(<span>x: <a title="clingo.ast.AST" href="../clingo/ast.html#clingo.ast.AST">AST</a>, name: str, argument_extender: Callable[[<a title="clingo.ast.AST" href="../clingo/ast.html#clingo.ast.AST">AST</a>], Sequence[<a title="clingo.ast.AST" href="../clingo/ast.html#clingo.ast.AST">AST</a>]] = None, reify_strong_negation: bool = False) ‑> <a title="clingo.ast.AST" href="../clingo/ast.html#clingo.ast.AST">AST</a></span>
+</code></dt>
+<dd>
+<div class="desc"><p>Reify all symbolic atoms in the given AST node with the given name and
+function.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>x</code></strong></dt>
+<dd>The ast in which to rename symbolic atoms.</dd>
+<dt><strong><code>name</code></strong></dt>
+<dd>A string to serve as name of the new symbolic atom.</dd>
+<dt><strong><code>argument_extender</code></strong></dt>
+<dd>A function to provide extra arguments. If not provided, no extra
+arguments are added. The term passed as argument should be placed in
+the correct position.</dd>
+<dt><strong><code>reify_strong_negation</code></strong></dt>
+<dd>Boolean indicating how to encode strong negation. If false, <code>-p(X)</code> is
+reified as <code>-name(p(X))</code>. If true, then <code>-p(X)</code> is reified as
+<code>name(-p(X))</code>. In the latter case, this means that stable models
+containing both <code>name(p(a))</code> and <code>name(-p(a))</code> are possible. Clingo
+style consistency can be restored by adding the constraint
+<code>:- name(X), name(-X), X&lt;-X.</code></dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<p>The rewritten AST.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def reify_symbolic_atoms(
+    x: AST,
+    name: str,
+    argument_extender: Callable[[AST], Sequence[AST]] = None,
+    reify_strong_negation: bool = False,
+) -&gt; AST:
+    &#34;&#34;&#34;
+    Reify all symbolic atoms in the given AST node with the given name and
+    function.
+
+    Parameters
+    ----------
+    x
+        The ast in which to rename symbolic atoms.
+    name
+        A string to serve as name of the new symbolic atom.
+    argument_extender
+        A function to provide extra arguments. If not provided, no extra
+        arguments are added. The term passed as argument should be placed in
+        the correct position.
+    reify_strong_negation
+        Boolean indicating how to encode strong negation. If false, `-p(X)` is
+        reified as `-name(p(X))`. If true, then `-p(X)` is reified as
+        `name(-p(X))`. In the latter case, this means that stable models
+        containing both `name(p(a))` and `name(-p(a))` are possible. Clingo
+        style consistency can be restored by adding the constraint
+        `:- name(X), name(-X), X&lt;-X.`
+
+    Returns
+    -------
+    The rewritten AST.
+    &#34;&#34;&#34;
+
+    def reifier(term: AST):
+        if term.ast_type == ASTType.UnaryOperation and not reify_strong_negation:
+            return UnaryOperation(
+                term.location, term.operator_type, reifier(term.argument)
+            )
+        arguments = argument_extender(term) if argument_extender else [term]
+        return Function(term.location, name, arguments, False)
+
+    return rewrite_symbolic_atoms(x, reifier)</code></pre>
 </details>
 </dd>
 <dt id="clingox.ast.rename_symbolic_atoms"><code class="name flex">
@@ -1256,7 +2077,7 @@ parsable using <code><a title="clingox.ast.str_to_location" href="#clingox.ast.s
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def rename_symbolic_atoms(x: AST, rename_function: Callable[[str], str]) -&gt; AST:
-    &#39;&#39;&#39;
+    &#34;&#34;&#34;
     Rename all symbolic atoms in the given AST node with the given function.
 
     Parameters
@@ -1269,16 +2090,23 @@ parsable using <code><a title="clingox.ast.str_to_location" href="#clingox.ast.s
     Returns
     -------
     The rewritten AST.
-    &#39;&#39;&#39;
+    &#34;&#34;&#34;
+
     def renamer(term: AST):
         if term.ast_type == ASTType.UnaryOperation:
-            return UnaryOperation(term.location, term.operator_type, renamer(term.argument))
+            return UnaryOperation(
+                term.location, term.operator_type, renamer(term.argument)
+            )
         if term.ast_type == ASTType.SymbolicTerm:
             sym = term.symbol
             new_name = rename_function(sym.name)
-            return SymbolicTerm(term.location, clingo.Function(new_name, sym.arguments, sym.positive))
+            return SymbolicTerm(
+                term.location, clingo.Function(new_name, sym.arguments, sym.positive)
+            )
         if term.ast_type == ASTType.Function:
-            return Function(term.location, rename_function(term.name), term.arguments, term.external)
+            return Function(
+                term.location, rename_function(term.name), term.arguments, term.external
+            )
         return term
 
     return rewrite_symbolic_atoms(x, renamer)</code></pre>
@@ -1320,12 +2148,16 @@ parsable using <code><a title="clingox.ast.str_to_location" href="#clingox.ast.s
     location_to_str
     &#34;&#34;&#34;
     m = fullmatch(
-        r&#39;(?P&lt;bf&gt;([^\\:]|\\\\|\\:)*):(?P&lt;bl&gt;[0-9]*):(?P&lt;bc&gt;[0-9]+)&#39;
-        r&#39;(-(((?P&lt;ef&gt;([^\\:]|\\\\|\\:)*):)?(?P&lt;el&gt;[0-9]*):)?(?P&lt;ec&gt;[0-9]+))?&#39;, loc)
+        r&#34;(?P&lt;bf&gt;([^\\:]|\\\\|\\:)*):(?P&lt;bl&gt;[0-9]*):(?P&lt;bc&gt;[0-9]+)&#34;
+        r&#34;(-(((?P&lt;ef&gt;([^\\:]|\\\\|\\:)*):)?(?P&lt;el&gt;[0-9]*):)?(?P&lt;ec&gt;[0-9]+))?&#34;,
+        loc,
+    )
     if not m:
-        raise RuntimeError(&#39;could not parse location&#39;)
-    begin = Position(_unquote(m[&#39;bf&#39;]), int(m[&#39;bl&#39;]), int(m[&#39;bc&#39;]))
-    end = Position(_unquote(_s(m, &#39;bf&#39;, &#39;ef&#39;)), int(_s(m, &#39;bl&#39;, &#39;el&#39;)), int(_s(m, &#39;bc&#39;, &#39;ec&#39;)))
+        raise RuntimeError(&#34;could not parse location&#34;)
+    begin = Position(_unquote(m[&#34;bf&#34;]), int(m[&#34;bl&#34;]), int(m[&#34;bc&#34;]))
+    end = Position(
+        _unquote(_s(m, &#34;bf&#34;, &#34;ef&#34;)), int(_s(m, &#34;bl&#34;, &#34;el&#34;)), int(_s(m, &#34;bc&#34;, &#34;ec&#34;))
+    )
     return Location(begin, end)</code></pre>
 </details>
 </dd>
@@ -1387,9 +2219,73 @@ parsable using <code><a title="clingox.ast.str_to_location" href="#clingox.ast.s
         if atom_def.guard is not None:
             guard = (atom_def.guard.operators, atom_def.guard.term)
 
-        atoms[(atom_def.name, atom_def.arity)] = (atom_def.atom_type, atom_def.term, guard)
+        atoms[(atom_def.name, atom_def.arity)] = (
+            atom_def.atom_type,
+            atom_def.term,
+            guard,
+        )
 
     return TheoryParser(terms, atoms)</code></pre>
+</details>
+</dd>
+<dt id="clingox.ast.theory_term_to_literal"><code class="name flex">
+<span>def <span class="ident">theory_term_to_literal</span></span>(<span>x: <a title="clingo.ast.AST" href="../clingo/ast.html#clingo.ast.AST">AST</a>, parse: bool = True) ‑> <a title="clingo.ast.AST" href="../clingo/ast.html#clingo.ast.AST">AST</a></span>
+</code></dt>
+<dd>
+<div class="desc"><p>Convert the given theory term into a symbolic clingo literal.</p>
+<p>If argument <code>parse</code> is set to true, occurences of unparsed theory terms are
+parsed using <code><a title="clingox.ast.clingo_literal_parser" href="#clingox.ast.clingo_literal_parser">clingo_literal_parser()</a></code>.</p>
+<p>Literals can use an arbitrary number of classical and default negation
+signs. They are normalized using the following equivalences:</p>
+<ul>
+<li><code>- - lit = lit</code></li>
+<li><code>- not lit = not not lit</code></li>
+<li><code>not not not lit = not lit</code></li>
+</ul></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def theory_term_to_literal(x: AST, parse: bool = True) -&gt; AST:
+    &#34;&#34;&#34;
+    Convert the given theory term into a symbolic clingo literal.
+
+    If argument `parse` is set to true, occurences of unparsed theory terms are
+    parsed using `clingo_literal_parser()`.
+
+    Literals can use an arbitrary number of classical and default negation
+    signs. They are normalized using the following equivalences:
+
+    - `- - lit = lit`
+    - `- not lit = not not lit`
+    - `not not not lit = not lit`
+    &#34;&#34;&#34;
+    if parse:
+        x = clingo_literal_parser()(x)
+    return _theory_term_to_literal(x, True, ast.Sign.NoSign)</code></pre>
+</details>
+</dd>
+<dt id="clingox.ast.theory_term_to_term"><code class="name flex">
+<span>def <span class="ident">theory_term_to_term</span></span>(<span>x: <a title="clingo.ast.AST" href="../clingo/ast.html#clingo.ast.AST">AST</a>, parse: bool = True) ‑> <a title="clingo.ast.AST" href="../clingo/ast.html#clingo.ast.AST">AST</a></span>
+</code></dt>
+<dd>
+<div class="desc"><p>Convert the given theory term into a plain clingo term.</p>
+<p>If argument <code>parse</code> is set to true, occurences of unparsed theory terms are
+parsed using <code><a title="clingox.ast.clingo_term_parser" href="#clingox.ast.clingo_term_parser">clingo_term_parser()</a></code>.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def theory_term_to_term(x: AST, parse: bool = True) -&gt; AST:
+    &#34;&#34;&#34;
+    Convert the given theory term into a plain clingo term.
+
+    If argument `parse` is set to true, occurences of unparsed theory terms are
+    parsed using `clingo_term_parser()`.
+    &#34;&#34;&#34;
+    if parse:
+        x = clingo_term_parser()(x)
+    return _theory_term_to_term(x)</code></pre>
 </details>
 </dd>
 </dl>
@@ -1408,9 +2304,10 @@ parsable using <code><a title="clingox.ast.str_to_location" href="#clingox.ast.s
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">class Arity(Enum):
-    &#39;&#39;&#39;
+    &#34;&#34;&#34;
     Enumeration of operator arities.
-    &#39;&#39;&#39;
+    &#34;&#34;&#34;
+
     # pylint:disable=invalid-name
     Unary = 1
     Binary = 2</code></pre>
@@ -1442,9 +2339,10 @@ parsable using <code><a title="clingox.ast.str_to_location" href="#clingox.ast.s
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">class Associativity(Enum):
-    &#39;&#39;&#39;
+    &#34;&#34;&#34;
     Enumeration of operator associativities.
-    &#39;&#39;&#39;
+    &#34;&#34;&#34;
+
     # pylint: disable=invalid-name
     Left = auto()
     Right = auto()
@@ -1503,16 +2401,25 @@ structure of the theory atom.</dd>
         Mapping from atom name/arity pairs to tuples defining the acceptable
         structure of the theory atom.
     &#34;&#34;&#34;
+
     # pylint: disable=invalid-name
-    _table: Mapping[Tuple[str, int],
-                    Tuple[TheoryAtomType,
-                          TheoryTermParser,
-                          Optional[Tuple[Set[str], TheoryTermParser]]]]
+    _table: Mapping[
+        Tuple[str, int],
+        Tuple[
+            TheoryAtomType,
+            TheoryTermParser,
+            Optional[Tuple[Set[str], TheoryTermParser]],
+        ],
+    ]
     _in_body: bool
     _in_head: bool
     _is_directive: bool
 
-    def __init__(self, terms: Mapping[str, Union[OperatorTable, TheoryTermParser]], atoms: AtomTable):
+    def __init__(
+        self,
+        terms: Mapping[str, Union[OperatorTable, TheoryTermParser]],
+        atoms: AtomTable,
+    ):
         self._reset()
 
         term_parsers = {}
@@ -1663,15 +2570,25 @@ structure of the theory atom.</dd>
         name = x.term.name
         arity = len(x.term.arguments)
         if (name, arity) not in self._table:
-            raise RuntimeError(f&#34;theory atom definiton not found: {location_to_str(x.location)}&#34;)
+            raise RuntimeError(
+                f&#34;theory atom definiton not found: {location_to_str(x.location)}&#34;
+            )
 
         type_, element_parser, guard_table = self._table[(name, arity)]
         if type_ == TheoryAtomType.Head and not self._in_head:
-            raise RuntimeError(f&#34;theory atom only accepted in head: {location_to_str(x.location)}&#34;)
+            raise RuntimeError(
+                f&#34;theory atom only accepted in head: {location_to_str(x.location)}&#34;
+            )
         if type_ == TheoryAtomType.Body and not self._in_body:
-            raise RuntimeError(f&#34;theory atom only accepted in body: {location_to_str(x.location)}&#34;)
-        if type_ == TheoryAtomType.Directive and not (self._in_head and self._is_directive):
-            raise RuntimeError(f&#34;theory atom must be a directive: {location_to_str(x.location)}&#34;)
+            raise RuntimeError(
+                f&#34;theory atom only accepted in body: {location_to_str(x.location)}&#34;
+            )
+        if type_ == TheoryAtomType.Directive and not (
+            self._in_head and self._is_directive
+        ):
+            raise RuntimeError(
+                f&#34;theory atom must be a directive: {location_to_str(x.location)}&#34;
+            )
 
         x = copy(x)
         x.term = element_parser(x.term)
@@ -1679,11 +2596,15 @@ structure of the theory atom.</dd>
 
         if x.guard is not None:
             if guard_table is None:
-                raise RuntimeError(f&#34;unexpected guard in theory atom: {location_to_str(x.location)}&#34;)
+                raise RuntimeError(
+                    f&#34;unexpected guard in theory atom: {location_to_str(x.location)}&#34;
+                )
 
             guards, guard_parser = guard_table
             if x.guard.operator_name not in guards:
-                raise RuntimeError(f&#34;unexpected guard in theory atom: {location_to_str(x.location)}&#34;)
+                raise RuntimeError(
+                    f&#34;unexpected guard in theory atom: {location_to_str(x.location)}&#34;
+                )
 
             x.guard = copy(x.guard)
             x.guard.term = guard_parser(x.guard.term)
@@ -1931,15 +2852,25 @@ structure of the theory atom.</dd>
     name = x.term.name
     arity = len(x.term.arguments)
     if (name, arity) not in self._table:
-        raise RuntimeError(f&#34;theory atom definiton not found: {location_to_str(x.location)}&#34;)
+        raise RuntimeError(
+            f&#34;theory atom definiton not found: {location_to_str(x.location)}&#34;
+        )
 
     type_, element_parser, guard_table = self._table[(name, arity)]
     if type_ == TheoryAtomType.Head and not self._in_head:
-        raise RuntimeError(f&#34;theory atom only accepted in head: {location_to_str(x.location)}&#34;)
+        raise RuntimeError(
+            f&#34;theory atom only accepted in head: {location_to_str(x.location)}&#34;
+        )
     if type_ == TheoryAtomType.Body and not self._in_body:
-        raise RuntimeError(f&#34;theory atom only accepted in body: {location_to_str(x.location)}&#34;)
-    if type_ == TheoryAtomType.Directive and not (self._in_head and self._is_directive):
-        raise RuntimeError(f&#34;theory atom must be a directive: {location_to_str(x.location)}&#34;)
+        raise RuntimeError(
+            f&#34;theory atom only accepted in body: {location_to_str(x.location)}&#34;
+        )
+    if type_ == TheoryAtomType.Directive and not (
+        self._in_head and self._is_directive
+    ):
+        raise RuntimeError(
+            f&#34;theory atom must be a directive: {location_to_str(x.location)}&#34;
+        )
 
     x = copy(x)
     x.term = element_parser(x.term)
@@ -1947,11 +2878,15 @@ structure of the theory atom.</dd>
 
     if x.guard is not None:
         if guard_table is None:
-            raise RuntimeError(f&#34;unexpected guard in theory atom: {location_to_str(x.location)}&#34;)
+            raise RuntimeError(
+                f&#34;unexpected guard in theory atom: {location_to_str(x.location)}&#34;
+            )
 
         guards, guard_parser = guard_table
         if x.guard.operator_name not in guards:
-            raise RuntimeError(f&#34;unexpected guard in theory atom: {location_to_str(x.location)}&#34;)
+            raise RuntimeError(
+                f&#34;unexpected guard in theory atom: {location_to_str(x.location)}&#34;
+            )
 
         x.guard = copy(x.guard)
         x.guard.term = guard_parser(x.guard.term)
@@ -2006,10 +2941,15 @@ terms found.</p>
     --------
     TheoryUnparsedTermParser
     &#34;&#34;&#34;
+
     # pylint: disable=invalid-name
 
     def __init__(self, table: Union[OperatorTable, TheoryUnparsedTermParser]):
-        self._parser = table if isinstance(table, TheoryUnparsedTermParser) else TheoryUnparsedTermParser(table)
+        self._parser = (
+            table
+            if isinstance(table, TheoryUnparsedTermParser)
+            else TheoryUnparsedTermParser(table)
+        )
 
     def visit_TheoryFunction(self, x) -&gt; AST:
         &#34;&#34;&#34;
@@ -2170,6 +3110,7 @@ operators must use either <code><a title="clingox.ast.Associativity.Left" href="
     table
         Mapping of operator/arity pairs to priority/associativity pairs.
     &#34;&#34;&#34;
+
     _stack: List[Tuple[str, Arity]]
     _terms: List[AST]
     _table: OperatorTable
@@ -2201,8 +3142,9 @@ operators must use either <code><a title="clingox.ast.Associativity.Left" href="
             return False
         priority, associativity = self._priority_and_associativity(operator)
         previous_priority = self._priority(*self._stack[-1])
-        return (previous_priority &gt; priority or
-                (previous_priority == priority and associativity == Associativity.Left))
+        return previous_priority &gt; priority or (
+            previous_priority == priority and associativity == Associativity.Left
+        )
 
     def _reduce(self) -&gt; None:
         &#34;&#34;&#34;
@@ -2232,7 +3174,9 @@ operators must use either <code><a title="clingox.ast.Associativity.Left" href="
             Location of the operator for error reporting.
         &#34;&#34;&#34;
         if (operator, arity) not in self._table:
-            raise RuntimeError(f&#34;cannot parse operator `{operator}`: {location_to_str(location)}&#34;)
+            raise RuntimeError(
+                f&#34;cannot parse operator `{operator}`: {location_to_str(location)}&#34;
+            )
 
     def parse(self, x: AST) -&gt; AST:
         &#34;&#34;&#34;
@@ -2307,7 +3251,9 @@ error if absent.</p>
         Location of the operator for error reporting.
     &#34;&#34;&#34;
     if (operator, arity) not in self._table:
-        raise RuntimeError(f&#34;cannot parse operator `{operator}`: {location_to_str(location)}&#34;)</code></pre>
+        raise RuntimeError(
+            f&#34;cannot parse operator `{operator}`: {location_to_str(location)}&#34;
+        )</code></pre>
 </details>
 </dd>
 <dt id="clingox.ast.TheoryUnparsedTermParser.parse"><code class="name flex">
@@ -2387,12 +3333,21 @@ functions.</p>
 <li><h3><a href="#header-functions">Functions</a></h3>
 <ul class="">
 <li><code><a title="clingox.ast.ast_to_dict" href="#clingox.ast.ast_to_dict">ast_to_dict</a></code></li>
+<li><code><a title="clingox.ast.clingo_literal_parser" href="#clingox.ast.clingo_literal_parser">clingo_literal_parser</a></code></li>
+<li><code><a title="clingox.ast.clingo_term_parser" href="#clingox.ast.clingo_term_parser">clingo_term_parser</a></code></li>
 <li><code><a title="clingox.ast.dict_to_ast" href="#clingox.ast.dict_to_ast">dict_to_ast</a></code></li>
+<li><code><a title="clingox.ast.filter_body_literals" href="#clingox.ast.filter_body_literals">filter_body_literals</a></code></li>
 <li><code><a title="clingox.ast.location_to_str" href="#clingox.ast.location_to_str">location_to_str</a></code></li>
+<li><code><a title="clingox.ast.negate_sign" href="#clingox.ast.negate_sign">negate_sign</a></code></li>
+<li><code><a title="clingox.ast.parse_theory" href="#clingox.ast.parse_theory">parse_theory</a></code></li>
+<li><code><a title="clingox.ast.partition_body_literals" href="#clingox.ast.partition_body_literals">partition_body_literals</a></code></li>
 <li><code><a title="clingox.ast.prefix_symbolic_atoms" href="#clingox.ast.prefix_symbolic_atoms">prefix_symbolic_atoms</a></code></li>
+<li><code><a title="clingox.ast.reify_symbolic_atoms" href="#clingox.ast.reify_symbolic_atoms">reify_symbolic_atoms</a></code></li>
 <li><code><a title="clingox.ast.rename_symbolic_atoms" href="#clingox.ast.rename_symbolic_atoms">rename_symbolic_atoms</a></code></li>
 <li><code><a title="clingox.ast.str_to_location" href="#clingox.ast.str_to_location">str_to_location</a></code></li>
 <li><code><a title="clingox.ast.theory_parser_from_definition" href="#clingox.ast.theory_parser_from_definition">theory_parser_from_definition</a></code></li>
+<li><code><a title="clingox.ast.theory_term_to_literal" href="#clingox.ast.theory_term_to_literal">theory_term_to_literal</a></code></li>
+<li><code><a title="clingox.ast.theory_term_to_term" href="#clingox.ast.theory_term_to_term">theory_term_to_term</a></code></li>
 </ul>
 </li>
 <li><h3><a href="#header-classes">Classes</a></h3>
