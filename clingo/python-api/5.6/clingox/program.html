@@ -64,7 +64,7 @@ b c a
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">&#39;&#39;&#39;
+<pre><code class="python">&#34;&#34;&#34;
 This module provides functions to work with ground programs.
 
 This includes constructing a ground representation using an observer, pretty
@@ -104,20 +104,45 @@ c :- b.
 a
 b c a
 ```
-&#39;&#39;&#39;
+&#34;&#34;&#34;
 
-from typing import (Callable, Iterable, List, Mapping, MutableMapping, MutableSequence, NamedTuple, Optional, Sequence,
-                    Tuple, TypeVar)
+from copy import copy
 from dataclasses import dataclass, field
 from functools import singledispatch
 from itertools import chain
-from copy import copy
+from typing import (
+    Callable,
+    Iterable,
+    List,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    NamedTuple,
+    Optional,
+    Sequence,
+    Tuple,
+    TypeVar,
+)
 
 from clingo import Backend, HeuristicType, Observer, Symbol, TruthValue
 
-__all__ = [&#39;add_to_backend&#39;, &#39;pretty_str&#39;, &#39;remap&#39;, &#39;Edge&#39;, &#39;External&#39;, &#39;Fact&#39;,
-           &#39;Heuristic&#39;, &#39;Minimize&#39;, &#39;Program&#39;, &#39;ProgramObserver&#39;, &#39;Project&#39;,
-           &#39;Remapping&#39;, &#39;Rule&#39;, &#39;Show&#39;, &#39;WeightRule&#39;]
+__all__ = [
+    &#34;add_to_backend&#34;,
+    &#34;pretty_str&#34;,
+    &#34;remap&#34;,
+    &#34;Edge&#34;,
+    &#34;External&#34;,
+    &#34;Fact&#34;,
+    &#34;Heuristic&#34;,
+    &#34;Minimize&#34;,
+    &#34;Program&#34;,
+    &#34;ProgramObserver&#34;,
+    &#34;Project&#34;,
+    &#34;Remapping&#34;,
+    &#34;Rule&#34;,
+    &#34;Show&#34;,
+    &#34;WeightRule&#34;,
+]
 __pdoc__ = {}
 
 Atom = int
@@ -125,13 +150,23 @@ Literal = int
 Weight = int
 OutputTable = Mapping[Atom, Symbol]
 AtomMap = Callable[[Atom], Atom]
-Statement = TypeVar(&#39;Statement&#39;, &#39;Fact&#39;, &#39;Show&#39;, &#39;Rule&#39;, &#39;WeightRule&#39;, &#39;Heuristic&#39;, &#39;Edge&#39;, &#39;Minimize&#39;, &#39;External&#39;,
-                    &#39;Project&#39;)
+Statement = TypeVar(
+    &#34;Statement&#34;,
+    &#34;Fact&#34;,
+    &#34;Show&#34;,
+    &#34;Rule&#34;,
+    &#34;WeightRule&#34;,
+    &#34;Heuristic&#34;,
+    &#34;Edge&#34;,
+    &#34;Minimize&#34;,
+    &#34;External&#34;,
+    &#34;Project&#34;,
+)
 
 
 @singledispatch
-def pretty_str(stm, output_atoms: OutputTable) -&gt; str:  # pylint: disable=unused-argument
-    &#39;&#39;&#39;
+def pretty_str(stm, output_atoms: OutputTable) -&gt; str:
+    &#34;&#34;&#34;
     Pretty print statements.
 
     Parameters
@@ -144,13 +179,14 @@ def pretty_str(stm, output_atoms: OutputTable) -&gt; str:  # pylint: disable=unu
     Returns
     -------
     The string representation of the statement.
-    &#39;&#39;&#39;
-    assert False, &#39;unexpected type&#39;
+    &#34;&#34;&#34;
+    # pylint: disable=unused-argument
+    assert False, &#34;unexpected type&#34;
 
 
 @singledispatch
-def remap(stm, mapping: AtomMap):  # pylint: disable=unused-argument
-    &#39;&#39;&#39;
+def remap(stm, mapping: AtomMap):
+    &#34;&#34;&#34;
     Remap literals in the given statement with the provided mapping.
 
     Parameters
@@ -167,13 +203,14 @@ def remap(stm, mapping: AtomMap):  # pylint: disable=unused-argument
     See Also
     --------
     Remapping
-    &#39;&#39;&#39;
-    assert False, &#39;unexpected type&#39;
+    &#34;&#34;&#34;
+    # pylint: disable=unused-argument
+    assert False, &#34;unexpected type&#34;
 
 
 @singledispatch
-def add_to_backend(stm, backend: Backend):  # pylint: disable=unused-argument
-    &#39;&#39;&#39;
+def add_to_backend(stm, backend: Backend):
+    &#34;&#34;&#34;
     Add statements to the backend using the provided mapping to map literals.
 
     Parameters
@@ -182,51 +219,54 @@ def add_to_backend(stm, backend: Backend):  # pylint: disable=unused-argument
         The statement to add to the backend.
     backend
         The backend.
-    &#39;&#39;&#39;
-    assert False, &#39;unexpected type&#39;
+    &#34;&#34;&#34;
+    # pylint: disable=unused-argument
+    assert False, &#34;unexpected type&#34;
 
 
 def _pretty_str_lit(stm: Literal, output_atoms: OutputTable) -&gt; str:
-    &#39;&#39;&#39;
+    &#34;&#34;&#34;
     Pretty print literals and atoms.
-    &#39;&#39;&#39;
+    &#34;&#34;&#34;
     atom = abs(stm)
     if atom in output_atoms:
         atom_str = str(output_atoms[atom])
     else:
-        atom_str = f&#39;__x{atom}&#39;
+        atom_str = f&#34;__x{atom}&#34;
 
-    return f&#39;not {atom_str}&#39; if stm &lt; 0 else atom_str
+    return f&#34;not {atom_str}&#34; if stm &lt; 0 else atom_str
 
 
-def _pretty_str_rule_head(choice: bool, has_body: bool, head: Sequence[Atom], output_atoms: OutputTable) -&gt; str:
-    &#39;&#39;&#39;
+def _pretty_str_rule_head(
+    choice: bool, has_body: bool, head: Sequence[Atom], output_atoms: OutputTable
+) -&gt; str:
+    &#34;&#34;&#34;
     Pretty print the head of a rule including the implication symbol if
     necessary.
-    &#39;&#39;&#39;
-    ret = &#39;&#39;
+    &#34;&#34;&#34;
+    ret = &#34;&#34;
 
     if choice:
-        ret += &#39;{&#39;
-    ret += &#39;; &#39;.join(_pretty_str_lit(lit, output_atoms) for lit in head)
+        ret += &#34;{&#34;
+    ret += &#34;; &#34;.join(_pretty_str_lit(lit, output_atoms) for lit in head)
     if choice:
-        ret += &#39;}&#39;
+        ret += &#34;}&#34;
 
     if has_body or (not head and not choice):
-        ret += &#39; :- &#39;
+        ret += &#34; :- &#34;
 
     return ret
 
 
 def _pretty_str_truth_value(stm: TruthValue):
-    &#39;&#39;&#39;
+    &#34;&#34;&#34;
     Pretty print a truth value.
-    &#39;&#39;&#39;
+    &#34;&#34;&#34;
     if stm == TruthValue.False_:
-        return &#39;False&#39;
+        return &#34;False&#34;
     if stm == TruthValue.True_:
-        return &#39;True&#39;
-    return &#39;Free&#39;
+        return &#34;True&#34;
+    return &#34;Free&#34;
 
 
 def _remap_lit(literal: Literal, mapping: AtomMap) -&gt; Atom:
@@ -234,31 +274,33 @@ def _remap_lit(literal: Literal, mapping: AtomMap) -&gt; Atom:
 
 
 def _remap_seq(literals: Sequence[Literal], mapping: AtomMap):
-    &#39;&#39;&#39;
+    &#34;&#34;&#34;
     Apply the mapping to a sequence of literals or atoms.
-    &#39;&#39;&#39;
+    &#34;&#34;&#34;
     return [_remap_lit(lit, mapping) for lit in literals]
 
 
 def _remap_wseq(literals: Sequence[Tuple[Literal, Weight]], mapping: AtomMap):
-    &#39;&#39;&#39;
+    &#34;&#34;&#34;
     Apply the mapping to a sequence of weighted literals or atoms.
-    &#39;&#39;&#39;
+    &#34;&#34;&#34;
     return [(_remap_lit(lit, mapping), weight) for lit, weight in literals]
 
 
 def _remap_stms(stms: MutableSequence[Statement], mapping: AtomMap):
-    &#39;&#39;&#39;
+    &#34;&#34;&#34;
     Remap the given statements.
-    &#39;&#39;&#39;
+    &#34;&#34;&#34;
     for i, stm in enumerate(stms):
         stms[i] = remap(stm, mapping)
 
 
-def _add_stms_to_backend(stms: Iterable[Statement], backend: Backend, mapping: Optional[AtomMap]):
-    &#39;&#39;&#39;
+def _add_stms_to_backend(
+    stms: Iterable[Statement], backend: Backend, mapping: Optional[AtomMap]
+):
+    &#34;&#34;&#34;
     Remap the given statements returning a list with the result.
-    &#39;&#39;&#39;
+    &#34;&#34;&#34;
     for stm in stms:
         if mapping:
             add_to_backend(remap(stm, mapping), backend)
@@ -267,77 +309,84 @@ def _add_stms_to_backend(stms: Iterable[Statement], backend: Backend, mapping: O
 
 
 class Fact(NamedTuple):
-    &#39;&#39;&#39;
+    &#34;&#34;&#34;
     Ground representation of a fact.
-    &#39;&#39;&#39;
+    &#34;&#34;&#34;
+
     symbol: Symbol
 
 
 @pretty_str.register(Fact)
-def _pretty_str_fact(stm: Fact, output_atoms: OutputTable) -&gt; str:  # pylint: disable=unused-argument
-    &#39;&#39;&#39;
+def _pretty_str_fact(stm: Fact, output_atoms: OutputTable) -&gt; str:
+    &#34;&#34;&#34;
     Pretty print a fact.
-    &#39;&#39;&#39;
-    return f&#39;{stm.symbol}.&#39;
+    &#34;&#34;&#34;
+    # pylint: disable=unused-argument
+    return f&#34;{stm.symbol}.&#34;
 
 
 @remap.register(Fact)
-def _remap_fact(stm: Fact, mapping: AtomMap) -&gt; Fact:  # pylint: disable=unused-argument
-    &#39;&#39;&#39;
+def _remap_fact(stm: Fact, mapping: AtomMap) -&gt; Fact:
+    &#34;&#34;&#34;
     Remap a fact statement.
-    &#39;&#39;&#39;
+    &#34;&#34;&#34;
+    # pylint: disable=unused-argument
     return stm
 
 
 @add_to_backend.register(Fact)
-def _add_to_backend_fact(stm: Fact, backend: Backend) -&gt; None:  # pylint: disable=unused-argument
-    &#39;&#39;&#39;
+def _add_to_backend_fact(stm: Fact, backend: Backend) -&gt; None:
+    &#34;&#34;&#34;
     Add a fact to the backend.
 
     This does nothing to not interfere with the mapping of literals. If facts
     are to be mapped, then this should be done manually beforehand.
-    &#39;&#39;&#39;
+    &#34;&#34;&#34;
+    # pylint: disable=unused-argument
 
 
 class Show(NamedTuple):
-    &#39;&#39;&#39;
+    &#34;&#34;&#34;
     Ground representation of a show statements.
-    &#39;&#39;&#39;
+    &#34;&#34;&#34;
+
     symbol: Symbol
     condition: Sequence[Literal]
 
 
 @pretty_str.register(Show)
 def _pretty_str_show(stm: Show, output_atoms: OutputTable) -&gt; str:
-    &#39;&#39;&#39;
+    &#34;&#34;&#34;
     Pretty print a fact.
-    &#39;&#39;&#39;
-    body = &#39;, &#39;.join(_pretty_str_lit(lit, output_atoms) for lit in stm.condition)
+    &#34;&#34;&#34;
+    body = &#34;, &#34;.join(_pretty_str_lit(lit, output_atoms) for lit in stm.condition)
     return f&#39;#show {stm.symbol}{&#34;: &#34; if body else &#34;&#34;}{body}.&#39;
 
 
 @remap.register(Show)
 def _remap_show(stm: Show, mapping: AtomMap) -&gt; Show:
-    &#39;&#39;&#39;
+    &#34;&#34;&#34;
     Remap a show statetment.
-    &#39;&#39;&#39;
+    &#34;&#34;&#34;
     return Show(stm.symbol, _remap_seq(stm.condition, mapping))
 
 
 @add_to_backend.register(Show)
-def _add_to_backend_show(stm: Show, backend: Backend) -&gt; None:  # pylint: disable=unused-argument
-    &#39;&#39;&#39;
+def _add_to_backend_show(stm: Show, backend: Backend) -&gt; None:
+    &#34;&#34;&#34;
     Add a show statement to the backend.
 
     Note that this currently does nothing because backend does not yet support
     adding to the symbol table.
-    &#39;&#39;&#39;
+    &#34;&#34;&#34;
+    # pylint: disable=unused-argument
 
 
 class Rule(NamedTuple):
-    &#39;&#39;&#39;
+    &#34;&#34;&#34;
     Ground representation of disjunctive and choice rules.
-    &#39;&#39;&#39;
+    &#34;&#34;&#34;
+
     choice: bool
     head: Sequence[Atom]
     body: Sequence[Literal]
@@ -345,35 +394,38 @@ class Rule(NamedTuple):
 
 @pretty_str.register(Rule)
 def _pretty_str_rule(stm: Rule, output_atoms: OutputTable) -&gt; str:
-    &#39;&#39;&#39;
+    &#34;&#34;&#34;
     Pretty print a rule.
-    &#39;&#39;&#39;
+    &#34;&#34;&#34;
     head = _pretty_str_rule_head(stm.choice, bool(stm.body), stm.head, output_atoms)
-    body = &#39;, &#39;.join(_pretty_str_lit(lit, output_atoms) for lit in stm.body)
+    body = &#34;, &#34;.join(_pretty_str_lit(lit, output_atoms) for lit in stm.body)
 
-    return f&#39;{head}{body}.&#39;
+    return f&#34;{head}{body}.&#34;
 
 
 @remap.register(Rule)
 def _remap_rule(stm: Rule, mapping: AtomMap) -&gt; Rule:
-    &#39;&#39;&#39;
+    &#34;&#34;&#34;
     Remap literals in a rule.
-    &#39;&#39;&#39;
-    return Rule(stm.choice, _remap_seq(stm.head, mapping), _remap_seq(stm.body, mapping))
+    &#34;&#34;&#34;
+    return Rule(
+        stm.choice, _remap_seq(stm.head, mapping), _remap_seq(stm.body, mapping)
+    )
 
 
 @add_to_backend.register(Rule)
 def _add_to_backend_rule(stm: Rule, backend: Backend) -&gt; None:
-    &#39;&#39;&#39;
+    &#34;&#34;&#34;
     Add a rule to the backend.
-    &#39;&#39;&#39;
+    &#34;&#34;&#34;
     backend.add_rule(stm.head, stm.body, stm.choice)
 
 
 class WeightRule(NamedTuple):
-    &#39;&#39;&#39;
+    &#34;&#34;&#34;
     Ground representation of rules with a weight constraint in the body.
-    &#39;&#39;&#39;
+    &#34;&#34;&#34;
+
     choice: bool
     head: Sequence[Atom]
     lower_bound: Weight
@@ -382,133 +434,146 @@ class WeightRule(NamedTuple):
 
 @pretty_str.register(WeightRule)
 def _pretty_str_weight_rule(stm: WeightRule, output_atoms: OutputTable) -&gt; str:
-    &#39;&#39;&#39;
+    &#34;&#34;&#34;
     Pretty print a rule or weight rule.
-    &#39;&#39;&#39;
+    &#34;&#34;&#34;
     head = _pretty_str_rule_head(stm.choice, bool(stm.body), stm.head, output_atoms)
-    body = &#39;, &#39;.join(f&#39;{weight},{i}: {_pretty_str_lit(literal, output_atoms)}&#39;
-                     for i, (literal, weight) in enumerate(stm.body))
+    body = &#34;, &#34;.join(
+        f&#34;{weight},{i}: {_pretty_str_lit(literal, output_atoms)}&#34;
+        for i, (literal, weight) in enumerate(stm.body)
+    )
 
-    return f&#39;{head}{stm.lower_bound}{{{body}}}.&#39;
+    return f&#34;{head}{stm.lower_bound}{{{body}}}.&#34;
 
 
 @remap.register(WeightRule)
 def _remap_weight_rule(stm: WeightRule, mapping: AtomMap) -&gt; WeightRule:
-    &#39;&#39;&#39;
+    &#34;&#34;&#34;
     Remap literals in a weight rule.
-    &#39;&#39;&#39;
-    return WeightRule(stm.choice, _remap_seq(stm.head, mapping), stm.lower_bound, _remap_wseq(stm.body, mapping))
+    &#34;&#34;&#34;
+    return WeightRule(
+        stm.choice,
+        _remap_seq(stm.head, mapping),
+        stm.lower_bound,
+        _remap_wseq(stm.body, mapping),
+    )
 
 
 @add_to_backend.register(WeightRule)
 def _add_to_backend_weight_rule(stm: WeightRule, backend: Backend) -&gt; None:
-    &#39;&#39;&#39;
+    &#34;&#34;&#34;
     Add a weight rule to the backend.
-    &#39;&#39;&#39;
+    &#34;&#34;&#34;
     backend.add_weight_rule(stm.head, stm.lower_bound, stm.body, stm.choice)
 
 
 class Project(NamedTuple):
-    &#39;&#39;&#39;
+    &#34;&#34;&#34;
     Ground representation of project statements.
-    &#39;&#39;&#39;
+    &#34;&#34;&#34;
+
     atom: Atom
 
 
 @pretty_str.register(Project)
 def _pretty_str_project(stm: Project, output_atoms: OutputTable) -&gt; str:
-    &#39;&#39;&#39;
+    &#34;&#34;&#34;
     Pretty print a project statement.
-    &#39;&#39;&#39;
-    return f&#39;#project {_pretty_str_lit(stm.atom, output_atoms)}.&#39;
+    &#34;&#34;&#34;
+    return f&#34;#project {_pretty_str_lit(stm.atom, output_atoms)}.&#34;
 
 
 @remap.register(Project)
 def _remap_project(stm: Project, mapping: AtomMap):
-    &#39;&#39;&#39;
+    &#34;&#34;&#34;
     Remap project statement.
-    &#39;&#39;&#39;
+    &#34;&#34;&#34;
     return Project(mapping(stm.atom))
 
 
 @add_to_backend.register(Project)
 def _add_to_backend_project(stm: Project, backend: Backend):
-    &#39;&#39;&#39;
+    &#34;&#34;&#34;
     Add a project statement to the backend.
-    &#39;&#39;&#39;
+    &#34;&#34;&#34;
     backend.add_project([stm.atom])
 
 
 class External(NamedTuple):
-    &#39;&#39;&#39;
+    &#34;&#34;&#34;
     Ground representation of external atoms.
-    &#39;&#39;&#39;
+    &#34;&#34;&#34;
+
     atom: Atom
     value: TruthValue
 
 
 @pretty_str.register(External)
 def _pretty_print_external(stm: External, output_atoms: OutputTable) -&gt; str:
-    &#39;&#39;&#39;
+    &#34;&#34;&#34;
     Pretty print an external.
-    &#39;&#39;&#39;
-    return f&#39;#external {_pretty_str_lit(stm.atom, output_atoms)}. [{_pretty_str_truth_value(stm.value)}]&#39;
+    &#34;&#34;&#34;
+    return f&#34;#external {_pretty_str_lit(stm.atom, output_atoms)}. [{_pretty_str_truth_value(stm.value)}]&#34;
 
 
 @remap.register(External)
 def _remap_external(stm: External, mapping: AtomMap) -&gt; External:
-    &#39;&#39;&#39;
+    &#34;&#34;&#34;
     Remap the external.
-    &#39;&#39;&#39;
+    &#34;&#34;&#34;
     return External(mapping(stm.atom), stm.value)
 
 
 @add_to_backend.register(External)
 def _add_to_backend_external(stm: External, backend: Backend):
-    &#39;&#39;&#39;
+    &#34;&#34;&#34;
     Add an external statement to the backend remapping its atom.
-    &#39;&#39;&#39;
+    &#34;&#34;&#34;
     backend.add_external(stm.atom, stm.value)
 
 
 class Minimize(NamedTuple):
-    &#39;&#39;&#39;
+    &#34;&#34;&#34;
     Ground representation of a minimize statement.
-    &#39;&#39;&#39;
+    &#34;&#34;&#34;
+
     priority: Weight
     literals: Sequence[Tuple[Literal, Weight]]
 
 
 @pretty_str.register(Minimize)
 def _pretty_print_minimize(stm, output_atoms) -&gt; str:
-    &#39;&#39;&#39;
+    &#34;&#34;&#34;
     Pretty print a minimize statement.
-    &#39;&#39;&#39;
-    body = &#39;; &#39;.join(f&#39;{weight}@{stm.priority},{i}: {_pretty_str_lit(literal, output_atoms)}&#39;
-                     for i, (literal, weight) in enumerate(stm.literals))
-    return f&#39;#minimize{{{body}}}.&#39;
+    &#34;&#34;&#34;
+    body = &#34;; &#34;.join(
+        f&#34;{weight}@{stm.priority},{i}: {_pretty_str_lit(literal, output_atoms)}&#34;
+        for i, (literal, weight) in enumerate(stm.literals)
+    )
+    return f&#34;#minimize{{{body}}}.&#34;
 
 
 @remap.register(Minimize)
 def _remap_minimize(stm: Minimize, mapping: AtomMap) -&gt; Minimize:
-    &#39;&#39;&#39;
+    &#34;&#34;&#34;
     Remap the literals in the minimize statement.
-    &#39;&#39;&#39;
+    &#34;&#34;&#34;
     return Minimize(stm.priority, _remap_wseq(stm.literals, mapping))
 
 
 @add_to_backend.register(Minimize)
 def _add_to_backend_minimize(stm: Minimize, backend: Backend):
-    &#39;&#39;&#39;
+    &#34;&#34;&#34;
     Add a minimize statement to the backend.
-    &#39;&#39;&#39;
+    &#34;&#34;&#34;
     backend.add_minimize(stm.priority, stm.literals)
 
 
 class Heuristic(NamedTuple):
-    &#39;&#39;&#39;
+    &#34;&#34;&#34;
     Ground representation of a heuristic statement.
-    &#39;&#39;&#39;
+    &#34;&#34;&#34;
+
     atom: Atom
     type_: HeuristicType
     bias: Weight
@@ -517,15 +582,15 @@ class Heuristic(NamedTuple):
 
 
 def _pretty_str_heuristic_type(type_):
-    return str(type_).replace(&#39;HeuristicType.&#39;, &#39;&#39;)
+    return str(type_).replace(&#34;HeuristicType.&#34;, &#34;&#34;)
 
 
 @pretty_str.register(Heuristic)
 def _pretty_str_heuristic(stm: Heuristic, output_atoms: OutputTable) -&gt; str:
-    &#39;&#39;&#39;
+    &#34;&#34;&#34;
     Pretty print a heuristic statement.
-    &#39;&#39;&#39;
-    body = &#39;, &#39;.join(_pretty_str_lit(lit, output_atoms) for lit in stm.condition)
+    &#34;&#34;&#34;
+    body = &#34;, &#34;.join(_pretty_str_lit(lit, output_atoms) for lit in stm.condition)
     head = _pretty_str_lit(stm.atom, output_atoms)
     type_ = _pretty_str_heuristic_type(stm.type_)
     return f&#39;#heuristic {head}{&#34;: &#34; if body else &#34;&#34;}{body}. [{stm.bias}@{stm.priority}, {type_}]&#39;
@@ -533,24 +598,31 @@ def _pretty_str_heuristic(stm: Heuristic, output_atoms: OutputTable) -&gt; str:
 
 @remap.register(Heuristic)
 def _remap_heuristic(stm: Heuristic, mapping: AtomMap) -&gt; Heuristic:
-    &#39;&#39;&#39;
+    &#34;&#34;&#34;
     Remap the heuristic statement.
-    &#39;&#39;&#39;
-    return Heuristic(mapping(stm.atom), stm.type_, stm.bias, stm.priority, _remap_seq(stm.condition, mapping))
+    &#34;&#34;&#34;
+    return Heuristic(
+        mapping(stm.atom),
+        stm.type_,
+        stm.bias,
+        stm.priority,
+        _remap_seq(stm.condition, mapping),
+    )
 
 
 @add_to_backend.register(Heuristic)
 def _add_to_backend_heuristic(stm: Heuristic, backend: Backend) -&gt; None:
-    &#39;&#39;&#39;
+    &#34;&#34;&#34;
     Add a heurisitic statement to the backend.
-    &#39;&#39;&#39;
+    &#34;&#34;&#34;
     backend.add_heuristic(stm.atom, stm.type_, stm.bias, stm.priority, stm.condition)
 
 
 class Edge(NamedTuple):
-    &#39;&#39;&#39;
+    &#34;&#34;&#34;
     Ground representation of a heuristic statement.
-    &#39;&#39;&#39;
+    &#34;&#34;&#34;
+
     u: int
     v: int
     condition: Sequence[Literal]
@@ -558,81 +630,82 @@ class Edge(NamedTuple):
 
 @pretty_str.register(Edge)
 def _pretty_str_edge(stm: Edge, output_atoms: OutputTable) -&gt; str:
-    &#39;&#39;&#39;
+    &#34;&#34;&#34;
     Pretty print a heuristic statement.
-    &#39;&#39;&#39;
-    body = &#39;, &#39;.join(_pretty_str_lit(lit, output_atoms) for lit in stm.condition)
+    &#34;&#34;&#34;
+    body = &#34;, &#34;.join(_pretty_str_lit(lit, output_atoms) for lit in stm.condition)
     return f&#39;#edge ({stm.u},{stm.v}){&#34;: &#34; if body else &#34;&#34;}{body}.&#39;
 
 
 @remap.register(Edge)
 def _remap_edge(stm: Edge, mapping: AtomMap) -&gt; Edge:
-    &#39;&#39;&#39;
+    &#34;&#34;&#34;
     Remap an edge statement.
-    &#39;&#39;&#39;
+    &#34;&#34;&#34;
     return Edge(stm.u, stm.v, _remap_seq(stm.condition, mapping))
 
 
 @add_to_backend.register(Edge)
 def _add_to_backend_edge(stm: Edge, backend: Backend) -&gt; None:
-    &#39;&#39;&#39;
+    &#34;&#34;&#34;
     Add an edge statement to the backend remapping its literals.
-    &#39;&#39;&#39;
+    &#34;&#34;&#34;
     backend.add_acyc_edge(stm.u, stm.v, stm.condition)
 
 
 @dataclass
 class Program:  # pylint: disable=too-many-instance-attributes
-    &#39;&#39;&#39;
+    &#34;&#34;&#34;
     Ground program representation.
 
     Although inefficient, the string representation of this program is parsable
     by clingo.
-    &#39;&#39;&#39;
+    &#34;&#34;&#34;
+
     output_atoms: MutableMapping[Atom, Symbol] = field(default_factory=dict)
-    &#39;&#39;&#39;
+    &#34;&#34;&#34;
     A mapping from program atoms to symbols.
-    &#39;&#39;&#39;
+    &#34;&#34;&#34;
     shows: List[Show] = field(default_factory=list)
-    &#39;&#39;&#39;
+    &#34;&#34;&#34;
     A list of show statements.
-    &#39;&#39;&#39;
+    &#34;&#34;&#34;
     facts: List[Fact] = field(default_factory=list)
-    &#39;&#39;&#39;
+    &#34;&#34;&#34;
     A list of facts.
-    &#39;&#39;&#39;
+    &#34;&#34;&#34;
     rules: List[Rule] = field(default_factory=list)
-    &#39;&#39;&#39;
+    &#34;&#34;&#34;
     A list of rules.
-    &#39;&#39;&#39;
+    &#34;&#34;&#34;
     weight_rules: List[WeightRule] = field(default_factory=list)
-    &#39;&#39;&#39;
+    &#34;&#34;&#34;
     A list of weight rules.
-    &#39;&#39;&#39;
+    &#34;&#34;&#34;
     heuristics: List[Heuristic] = field(default_factory=list)
-    &#39;&#39;&#39;
+    &#34;&#34;&#34;
     A list of heuristic statements.
-    &#39;&#39;&#39;
+    &#34;&#34;&#34;
     edges: List[Edge] = field(default_factory=list)
-    &#39;&#39;&#39;
+    &#34;&#34;&#34;
     A list of edge statements.
-    &#39;&#39;&#39;
+    &#34;&#34;&#34;
     minimizes: List[Minimize] = field(default_factory=list)
-    &#39;&#39;&#39;
+    &#34;&#34;&#34;
     A list of minimize statements.
-    &#39;&#39;&#39;
+    &#34;&#34;&#34;
     externals: List[External] = field(default_factory=list)
-    &#39;&#39;&#39;
+    &#34;&#34;&#34;
     A list of external statements.
-    &#39;&#39;&#39;
+    &#34;&#34;&#34;
     projects: Optional[List[Project]] = None
-    &#39;&#39;&#39;
+    &#34;&#34;&#34;
     A list of project statements.
-    &#39;&#39;&#39;
+    &#34;&#34;&#34;
     assumptions: List[Literal] = field(default_factory=list)
-    &#39;&#39;&#39;
+    &#34;&#34;&#34;
     A list of assumptions in form of program literals.
-    &#39;&#39;&#39;
+    &#34;&#34;&#34;
 
     def _pretty_stms(self, arg: Iterable[Statement], sort: bool) -&gt; Iterable[str]:
         if sort:
@@ -652,18 +725,18 @@ class Program:  # pylint: disable=too-many-instance-attributes
         # This is to inform that there is an empty projection statement.
         # It might be worth to allow writing just #project.
         if not self.projects:
-            return [&#39;#project x: #false.&#39;]
+            return [&#34;#project x: #false.&#34;]
         arg = sorted(self.projects) if sort else self.projects
         return (pretty_str(project, self.output_atoms) for project in arg)
 
-    def sort(self) -&gt; &#39;Program&#39;:
-        &#39;&#39;&#39;
+    def sort(self) -&gt; &#34;Program&#34;:
+        &#34;&#34;&#34;
         Sort the statements in the program inplace.
 
         Returns
         -------
         A reference to self.
-        &#39;&#39;&#39;
+        &#34;&#34;&#34;
         self.shows.sort()
         self.facts.sort()
         self.rules.sort()
@@ -678,8 +751,8 @@ class Program:  # pylint: disable=too-many-instance-attributes
 
         return self
 
-    def remap(self, mapping: AtomMap) -&gt; &#39;Program&#39;:
-        &#39;&#39;&#39;
+    def remap(self, mapping: AtomMap) -&gt; &#34;Program&#34;:
+        &#34;&#34;&#34;
         Remap the literals in the program inplace.
 
         Parameters
@@ -694,7 +767,7 @@ class Program:  # pylint: disable=too-many-instance-attributes
         See Also
         --------
         remap
-        &#39;&#39;&#39;
+        &#34;&#34;&#34;
         _remap_stms(self.shows, mapping)
         _remap_stms(self.facts, mapping)
         _remap_stms(self.rules, mapping)
@@ -707,12 +780,16 @@ class Program:  # pylint: disable=too-many-instance-attributes
             _remap_stms(self.projects, mapping)
         for i, lit in enumerate(self.assumptions):
             self.assumptions[i] = _remap_lit(lit, mapping)
-        self.output_atoms = {mapping(lit): sym for lit, sym in self.output_atoms.items()}
+        self.output_atoms = {
+            mapping(lit): sym for lit, sym in self.output_atoms.items()
+        }
 
         return self
 
-    def add_to_backend(self, backend: Backend, mapping: Optional[AtomMap] = None) -&gt; &#39;Program&#39;:
-        &#39;&#39;&#39;
+    def add_to_backend(
+        self, backend: Backend, mapping: Optional[AtomMap] = None
+    ) -&gt; &#34;Program&#34;:
+        &#34;&#34;&#34;
         Add the program to the given backend with an optional mapping.
 
         Note that the output table cannot be added to the backend for technical
@@ -733,7 +810,7 @@ class Program:  # pylint: disable=too-many-instance-attributes
         See Also
         --------
         add_to_backend
-        &#39;&#39;&#39;
+        &#34;&#34;&#34;
 
         _add_stms_to_backend(self.shows, backend, mapping)
         _add_stms_to_backend(self.facts, backend, mapping)
@@ -749,13 +826,14 @@ class Program:  # pylint: disable=too-many-instance-attributes
             else:
                 backend.add_project([])
 
-        backend.add_assume([_remap_lit(lit, mapping) if mapping else lit
-                            for lit in self.assumptions])
+        backend.add_assume(
+            [_remap_lit(lit, mapping) if mapping else lit for lit in self.assumptions]
+        )
 
         return self
 
     def pretty_str(self, sort: bool = True) -&gt; str:
-        &#39;&#39;&#39;
+        &#34;&#34;&#34;
         Return a readable string represenation of the program.
 
         Parameters
@@ -766,38 +844,41 @@ class Program:  # pylint: disable=too-many-instance-attributes
         Returns
         -------
         The string representation of the program.
-        &#39;&#39;&#39;
-        return &#39;\n&#39;.join(chain(
-            self._pretty_stms(self.shows, sort),
-            self._pretty_stms(self.facts, sort),
-            self._pretty_stms(self.rules, sort),
-            self._pretty_stms(self.weight_rules, sort),
-            self._pretty_stms(self.heuristics, sort),
-            self._pretty_stms(self.edges, sort),
-            self._pretty_stms(self.minimizes, sort),
-            self._pretty_stms(self.externals, sort),
-            self._pretty_projects(sort),
-            self._pretty_assumptions(sort)))
+        &#34;&#34;&#34;
+        return &#34;\n&#34;.join(
+            chain(
+                self._pretty_stms(self.shows, sort),
+                self._pretty_stms(self.facts, sort),
+                self._pretty_stms(self.rules, sort),
+                self._pretty_stms(self.weight_rules, sort),
+                self._pretty_stms(self.heuristics, sort),
+                self._pretty_stms(self.edges, sort),
+                self._pretty_stms(self.minimizes, sort),
+                self._pretty_stms(self.externals, sort),
+                self._pretty_projects(sort),
+                self._pretty_assumptions(sort),
+            )
+        )
 
-    def copy(self) -&gt; &#39;Program&#39;:
-        &#39;&#39;&#39;
+    def copy(self) -&gt; &#34;Program&#34;:
+        &#34;&#34;&#34;
         Return a shallow copy of the program copying all mutable state.
 
         Returns
         -------
         A shallow copy of the program.
-        &#39;&#39;&#39;
+        &#34;&#34;&#34;
         return copy(self)
 
     def __str__(self) -&gt; str:
-        &#39;&#39;&#39;
+        &#34;&#34;&#34;
         Return a readable string represenation of the program.
-        &#39;&#39;&#39;
+        &#34;&#34;&#34;
         return self.pretty_str()
 
 
 class Remapping:
-    &#39;&#39;&#39;
+    &#34;&#34;&#34;
     This class maps existing literals to fresh literals as created by the
     backend.
 
@@ -809,11 +890,14 @@ class Remapping:
         The output table to initialize the mapping with.
     facts
         A list of facts each of which will receive a fresh program atom.
-    &#39;&#39;&#39;
+    &#34;&#34;&#34;
+
     _backend: Backend
     _map: MutableMapping[Atom, Atom]
 
-    def __init__(self, backend: Backend, output_atoms: OutputTable, facts: Iterable[Fact] = None):
+    def __init__(
+        self, backend: Backend, output_atoms: OutputTable, facts: Iterable[Fact] = None
+    ):
         self._backend = backend
         self._map = {}
         for atom, sym in output_atoms.items():
@@ -824,7 +908,7 @@ class Remapping:
                 backend.add_rule([backend.add_atom(fact.symbol)])
 
     def __call__(self, atom: Atom) -&gt; Atom:
-        &#39;&#39;&#39;
+        &#34;&#34;&#34;
         Map the given program atom to the corresponding atom in the backend.
 
         If the literal was not mapped during initialization, a new literal is
@@ -838,18 +922,18 @@ class Remapping:
         Returns
         -------
         The remapped program atom.
-        &#39;&#39;&#39;
+        &#34;&#34;&#34;
         if atom not in self._map:
             self._map[atom] = self._backend.add_atom()
 
         return self._map[atom]
 
 
-__pdoc__[&#39;Remapping.__call__&#39;] = True
+__pdoc__[&#34;Remapping.__call__&#34;] = True
 
 
 class ProgramObserver(Observer):
-    &#39;&#39;&#39;
+    &#34;&#34;&#34;
     Program observer to build a ground program representation while grounding.
 
     This class explicitly ignores theory atoms because they already have a
@@ -859,35 +943,36 @@ class ProgramObserver(Observer):
     ----------
     program
         The program to add statements to.
-    &#39;&#39;&#39;
+    &#34;&#34;&#34;
+
     _program: Program
 
     def __init__(self, program: Program):
         self._program = program
 
     def begin_step(self) -&gt; None:
-        &#39;&#39;&#39;
+        &#34;&#34;&#34;
         Resets the assumptions.
-        &#39;&#39;&#39;
+        &#34;&#34;&#34;
         self._program.assumptions.clear()
 
     def output_atom(self, symbol: Symbol, atom: Atom) -&gt; None:
-        &#39;&#39;&#39;
+        &#34;&#34;&#34;
         Add the given atom to the list of facts or output table.
-        &#39;&#39;&#39;
+        &#34;&#34;&#34;
         if atom != 0:
             self._program.output_atoms[atom] = symbol
         else:
             self._program.facts.append(Fact(symbol))
 
     def output_term(self, symbol: Symbol, condition: Sequence[Literal]) -&gt; None:
-        &#39;&#39;&#39;
+        &#34;&#34;&#34;
         Add a term to the output table.
-        &#39;&#39;&#39;
+        &#34;&#34;&#34;
         self._program.shows.append(Show(symbol, condition))
 
     def rule(self, choice: bool, head: Sequence[Atom], body: Sequence[Literal]) -&gt; None:
-        &#39;&#39;&#39;
+        &#34;&#34;&#34;
         Add a rule to the ground representation.
 
         Parameters
@@ -898,12 +983,17 @@ class ProgramObserver(Observer):
             List of program atoms forming the rule head.
         body
             List of program literals forming the rule body.
-        &#39;&#39;&#39;
+        &#34;&#34;&#34;
         self._program.rules.append(Rule(choice, head, body))
 
-    def weight_rule(self, choice: bool, head: Sequence[Atom], lower_bound: Weight,
-                    body: Sequence[Tuple[Literal, Weight]]) -&gt; None:
-        &#39;&#39;&#39;
+    def weight_rule(
+        self,
+        choice: bool,
+        head: Sequence[Atom],
+        lower_bound: Weight,
+        body: Sequence[Tuple[Literal, Weight]],
+    ) -&gt; None:
+        &#34;&#34;&#34;
         Add a weight rule to the ground representation.
 
         Parameters
@@ -917,24 +1007,24 @@ class ProgramObserver(Observer):
         body
             List of weighted literals (pairs of literal and weight) forming the
             elements of the weight constraint.
-        &#39;&#39;&#39;
+        &#34;&#34;&#34;
         self._program.weight_rules.append(WeightRule(choice, head, lower_bound, body))
 
     def project(self, atoms: Sequence[Atom]) -&gt; None:
-        &#39;&#39;&#39;
+        &#34;&#34;&#34;
         Add a project statement to the ground representation.
 
         Parameters
         ----------
         atoms
             The program atoms to project on.
-        &#39;&#39;&#39;
+        &#34;&#34;&#34;
         if self._program.projects is None:
             self._program.projects = []
         self._program.projects.extend(Project(atom) for atom in atoms)
 
     def external(self, atom: Atom, value: TruthValue) -&gt; None:
-        &#39;&#39;&#39;
+        &#34;&#34;&#34;
         Add an external statement to the ground representation.
 
         Parameters
@@ -943,11 +1033,11 @@ class ProgramObserver(Observer):
             The external atom in form of a program literal.
         value
             The truth value of the external statement.
-        &#39;&#39;&#39;
+        &#34;&#34;&#34;
         self._program.externals.append(External(atom, value))
 
     def assume(self, literals: Sequence[Literal]) -&gt; None:
-        &#39;&#39;&#39;
+        &#34;&#34;&#34;
         Extend the program with the given assumptions.
 
         Parameters
@@ -955,11 +1045,13 @@ class ProgramObserver(Observer):
         literals
             The program literals to assume (positive literals are true and
             negative literals false for the next solve call).
-        &#39;&#39;&#39;
+        &#34;&#34;&#34;
         self._program.assumptions.extend(literals)
 
-    def minimize(self, priority: Weight, literals: Sequence[Tuple[Literal, Weight]]) -&gt; None:
-        &#39;&#39;&#39;
+    def minimize(
+        self, priority: Weight, literals: Sequence[Tuple[Literal, Weight]]
+    ) -&gt; None:
+        &#34;&#34;&#34;
         Add a minimize statement to the ground representation.
 
         Parameters
@@ -969,11 +1061,11 @@ class ProgramObserver(Observer):
         literals
             List of weighted literals whose sum to minimize (pairs of literal
             and weight).
-        &#39;&#39;&#39;
+        &#34;&#34;&#34;
         self._program.minimizes.append(Minimize(priority, literals))
 
     def acyc_edge(self, node_u: int, node_v: int, condition: Sequence[Literal]) -&gt; None:
-        &#39;&#39;&#39;
+        &#34;&#34;&#34;
         Add an edge statement to the gronud representation.
 
         Parameters
@@ -985,12 +1077,18 @@ class ProgramObserver(Observer):
         condition
             The list of program literals forming th condition under which to
             add the edge.
-        &#39;&#39;&#39;
+        &#34;&#34;&#34;
         self._program.edges.append(Edge(node_u, node_v, condition))
 
-    def heuristic(self, atom: Atom, type_: HeuristicType, bias: Weight, priority: Weight,
-                  condition: Sequence[Literal]) -&gt; None:
-        &#39;&#39;&#39;
+    def heuristic(
+        self,
+        atom: Atom,
+        type_: HeuristicType,
+        bias: Weight,
+        priority: Weight,
+        condition: Sequence[Literal],
+    ) -&gt; None:
+        &#34;&#34;&#34;
         Add heurisitic statement to the gronud representation.
 
         Parameters
@@ -1005,8 +1103,10 @@ class ProgramObserver(Observer):
             An unsigned integer.
         condition
             List of program literals.
-        &#39;&#39;&#39;
-        self._program.heuristics.append(Heuristic(atom, type_, bias, priority, condition))</code></pre>
+        &#34;&#34;&#34;
+        self._program.heuristics.append(
+            Heuristic(atom, type_, bias, priority, condition)
+        )</code></pre>
 </details>
 </section>
 <section>
@@ -1033,8 +1133,8 @@ class ProgramObserver(Observer):
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@singledispatch
-def add_to_backend(stm, backend: Backend):  # pylint: disable=unused-argument
-    &#39;&#39;&#39;
+def add_to_backend(stm, backend: Backend):
+    &#34;&#34;&#34;
     Add statements to the backend using the provided mapping to map literals.
 
     Parameters
@@ -1043,8 +1143,9 @@ def add_to_backend(stm, backend: Backend):  # pylint: disable=unused-argument
         The statement to add to the backend.
     backend
         The backend.
-    &#39;&#39;&#39;
-    assert False, &#39;unexpected type&#39;</code></pre>
+    &#34;&#34;&#34;
+    # pylint: disable=unused-argument
+    assert False, &#34;unexpected type&#34;</code></pre>
 </details>
 </dd>
 <dt id="clingox.program.pretty_str"><code class="name flex">
@@ -1066,8 +1167,8 @@ def add_to_backend(stm, backend: Backend):  # pylint: disable=unused-argument
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@singledispatch
-def pretty_str(stm, output_atoms: OutputTable) -&gt; str:  # pylint: disable=unused-argument
-    &#39;&#39;&#39;
+def pretty_str(stm, output_atoms: OutputTable) -&gt; str:
+    &#34;&#34;&#34;
     Pretty print statements.
 
     Parameters
@@ -1080,8 +1181,9 @@ def pretty_str(stm, output_atoms: OutputTable) -&gt; str:  # pylint: disable=unu
     Returns
     -------
     The string representation of the statement.
-    &#39;&#39;&#39;
-    assert False, &#39;unexpected type&#39;</code></pre>
+    &#34;&#34;&#34;
+    # pylint: disable=unused-argument
+    assert False, &#34;unexpected type&#34;</code></pre>
 </details>
 </dd>
 <dt id="clingox.program.remap"><code class="name flex">
@@ -1105,8 +1207,8 @@ def pretty_str(stm, output_atoms: OutputTable) -&gt; str:  # pylint: disable=unu
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@singledispatch
-def remap(stm, mapping: AtomMap):  # pylint: disable=unused-argument
-    &#39;&#39;&#39;
+def remap(stm, mapping: AtomMap):
+    &#34;&#34;&#34;
     Remap literals in the given statement with the provided mapping.
 
     Parameters
@@ -1123,8 +1225,9 @@ def remap(stm, mapping: AtomMap):  # pylint: disable=unused-argument
     See Also
     --------
     Remapping
-    &#39;&#39;&#39;
-    assert False, &#39;unexpected type&#39;</code></pre>
+    &#34;&#34;&#34;
+    # pylint: disable=unused-argument
+    assert False, &#34;unexpected type&#34;</code></pre>
 </details>
 </dd>
 </dl>
@@ -1143,9 +1246,10 @@ def remap(stm, mapping: AtomMap):  # pylint: disable=unused-argument
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">class Edge(NamedTuple):
-    &#39;&#39;&#39;
+    &#34;&#34;&#34;
     Ground representation of a heuristic statement.
-    &#39;&#39;&#39;
+    &#34;&#34;&#34;
+
     u: int
     v: int
     condition: Sequence[Literal]</code></pre>
@@ -1181,9 +1285,10 @@ def remap(stm, mapping: AtomMap):  # pylint: disable=unused-argument
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">class External(NamedTuple):
-    &#39;&#39;&#39;
+    &#34;&#34;&#34;
     Ground representation of external atoms.
-    &#39;&#39;&#39;
+    &#34;&#34;&#34;
+
     atom: Atom
     value: TruthValue</code></pre>
 </details>
@@ -1214,9 +1319,10 @@ def remap(stm, mapping: AtomMap):  # pylint: disable=unused-argument
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">class Fact(NamedTuple):
-    &#39;&#39;&#39;
+    &#34;&#34;&#34;
     Ground representation of a fact.
-    &#39;&#39;&#39;
+    &#34;&#34;&#34;
+
     symbol: Symbol</code></pre>
 </details>
 <h3>Ancestors</h3>
@@ -1242,9 +1348,10 @@ def remap(stm, mapping: AtomMap):  # pylint: disable=unused-argument
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">class Heuristic(NamedTuple):
-    &#39;&#39;&#39;
+    &#34;&#34;&#34;
     Ground representation of a heuristic statement.
-    &#39;&#39;&#39;
+    &#34;&#34;&#34;
+
     atom: Atom
     type_: HeuristicType
     bias: Weight
@@ -1290,9 +1397,10 @@ def remap(stm, mapping: AtomMap):  # pylint: disable=unused-argument
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">class Minimize(NamedTuple):
-    &#39;&#39;&#39;
+    &#34;&#34;&#34;
     Ground representation of a minimize statement.
-    &#39;&#39;&#39;
+    &#34;&#34;&#34;
+
     priority: Weight
     literals: Sequence[Tuple[Literal, Weight]]</code></pre>
 </details>
@@ -1325,56 +1433,57 @@ by clingo.</p></div>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">class Program:  # pylint: disable=too-many-instance-attributes
-    &#39;&#39;&#39;
+    &#34;&#34;&#34;
     Ground program representation.
 
     Although inefficient, the string representation of this program is parsable
     by clingo.
-    &#39;&#39;&#39;
+    &#34;&#34;&#34;
+
     output_atoms: MutableMapping[Atom, Symbol] = field(default_factory=dict)
-    &#39;&#39;&#39;
+    &#34;&#34;&#34;
     A mapping from program atoms to symbols.
-    &#39;&#39;&#39;
+    &#34;&#34;&#34;
     shows: List[Show] = field(default_factory=list)
-    &#39;&#39;&#39;
+    &#34;&#34;&#34;
     A list of show statements.
-    &#39;&#39;&#39;
+    &#34;&#34;&#34;
     facts: List[Fact] = field(default_factory=list)
-    &#39;&#39;&#39;
+    &#34;&#34;&#34;
     A list of facts.
-    &#39;&#39;&#39;
+    &#34;&#34;&#34;
     rules: List[Rule] = field(default_factory=list)
-    &#39;&#39;&#39;
+    &#34;&#34;&#34;
     A list of rules.
-    &#39;&#39;&#39;
+    &#34;&#34;&#34;
     weight_rules: List[WeightRule] = field(default_factory=list)
-    &#39;&#39;&#39;
+    &#34;&#34;&#34;
     A list of weight rules.
-    &#39;&#39;&#39;
+    &#34;&#34;&#34;
     heuristics: List[Heuristic] = field(default_factory=list)
-    &#39;&#39;&#39;
+    &#34;&#34;&#34;
     A list of heuristic statements.
-    &#39;&#39;&#39;
+    &#34;&#34;&#34;
     edges: List[Edge] = field(default_factory=list)
-    &#39;&#39;&#39;
+    &#34;&#34;&#34;
     A list of edge statements.
-    &#39;&#39;&#39;
+    &#34;&#34;&#34;
     minimizes: List[Minimize] = field(default_factory=list)
-    &#39;&#39;&#39;
+    &#34;&#34;&#34;
     A list of minimize statements.
-    &#39;&#39;&#39;
+    &#34;&#34;&#34;
     externals: List[External] = field(default_factory=list)
-    &#39;&#39;&#39;
+    &#34;&#34;&#34;
     A list of external statements.
-    &#39;&#39;&#39;
+    &#34;&#34;&#34;
     projects: Optional[List[Project]] = None
-    &#39;&#39;&#39;
+    &#34;&#34;&#34;
     A list of project statements.
-    &#39;&#39;&#39;
+    &#34;&#34;&#34;
     assumptions: List[Literal] = field(default_factory=list)
-    &#39;&#39;&#39;
+    &#34;&#34;&#34;
     A list of assumptions in form of program literals.
-    &#39;&#39;&#39;
+    &#34;&#34;&#34;
 
     def _pretty_stms(self, arg: Iterable[Statement], sort: bool) -&gt; Iterable[str]:
         if sort:
@@ -1394,18 +1503,18 @@ by clingo.</p></div>
         # This is to inform that there is an empty projection statement.
         # It might be worth to allow writing just #project.
         if not self.projects:
-            return [&#39;#project x: #false.&#39;]
+            return [&#34;#project x: #false.&#34;]
         arg = sorted(self.projects) if sort else self.projects
         return (pretty_str(project, self.output_atoms) for project in arg)
 
-    def sort(self) -&gt; &#39;Program&#39;:
-        &#39;&#39;&#39;
+    def sort(self) -&gt; &#34;Program&#34;:
+        &#34;&#34;&#34;
         Sort the statements in the program inplace.
 
         Returns
         -------
         A reference to self.
-        &#39;&#39;&#39;
+        &#34;&#34;&#34;
         self.shows.sort()
         self.facts.sort()
         self.rules.sort()
@@ -1420,8 +1529,8 @@ by clingo.</p></div>
 
         return self
 
-    def remap(self, mapping: AtomMap) -&gt; &#39;Program&#39;:
-        &#39;&#39;&#39;
+    def remap(self, mapping: AtomMap) -&gt; &#34;Program&#34;:
+        &#34;&#34;&#34;
         Remap the literals in the program inplace.
 
         Parameters
@@ -1436,7 +1545,7 @@ by clingo.</p></div>
         See Also
         --------
         remap
-        &#39;&#39;&#39;
+        &#34;&#34;&#34;
         _remap_stms(self.shows, mapping)
         _remap_stms(self.facts, mapping)
         _remap_stms(self.rules, mapping)
@@ -1449,12 +1558,16 @@ by clingo.</p></div>
             _remap_stms(self.projects, mapping)
         for i, lit in enumerate(self.assumptions):
             self.assumptions[i] = _remap_lit(lit, mapping)
-        self.output_atoms = {mapping(lit): sym for lit, sym in self.output_atoms.items()}
+        self.output_atoms = {
+            mapping(lit): sym for lit, sym in self.output_atoms.items()
+        }
 
         return self
 
-    def add_to_backend(self, backend: Backend, mapping: Optional[AtomMap] = None) -&gt; &#39;Program&#39;:
-        &#39;&#39;&#39;
+    def add_to_backend(
+        self, backend: Backend, mapping: Optional[AtomMap] = None
+    ) -&gt; &#34;Program&#34;:
+        &#34;&#34;&#34;
         Add the program to the given backend with an optional mapping.
 
         Note that the output table cannot be added to the backend for technical
@@ -1475,7 +1588,7 @@ by clingo.</p></div>
         See Also
         --------
         add_to_backend
-        &#39;&#39;&#39;
+        &#34;&#34;&#34;
 
         _add_stms_to_backend(self.shows, backend, mapping)
         _add_stms_to_backend(self.facts, backend, mapping)
@@ -1491,13 +1604,14 @@ by clingo.</p></div>
             else:
                 backend.add_project([])
 
-        backend.add_assume([_remap_lit(lit, mapping) if mapping else lit
-                            for lit in self.assumptions])
+        backend.add_assume(
+            [_remap_lit(lit, mapping) if mapping else lit for lit in self.assumptions]
+        )
 
         return self
 
     def pretty_str(self, sort: bool = True) -&gt; str:
-        &#39;&#39;&#39;
+        &#34;&#34;&#34;
         Return a readable string represenation of the program.
 
         Parameters
@@ -1508,33 +1622,36 @@ by clingo.</p></div>
         Returns
         -------
         The string representation of the program.
-        &#39;&#39;&#39;
-        return &#39;\n&#39;.join(chain(
-            self._pretty_stms(self.shows, sort),
-            self._pretty_stms(self.facts, sort),
-            self._pretty_stms(self.rules, sort),
-            self._pretty_stms(self.weight_rules, sort),
-            self._pretty_stms(self.heuristics, sort),
-            self._pretty_stms(self.edges, sort),
-            self._pretty_stms(self.minimizes, sort),
-            self._pretty_stms(self.externals, sort),
-            self._pretty_projects(sort),
-            self._pretty_assumptions(sort)))
+        &#34;&#34;&#34;
+        return &#34;\n&#34;.join(
+            chain(
+                self._pretty_stms(self.shows, sort),
+                self._pretty_stms(self.facts, sort),
+                self._pretty_stms(self.rules, sort),
+                self._pretty_stms(self.weight_rules, sort),
+                self._pretty_stms(self.heuristics, sort),
+                self._pretty_stms(self.edges, sort),
+                self._pretty_stms(self.minimizes, sort),
+                self._pretty_stms(self.externals, sort),
+                self._pretty_projects(sort),
+                self._pretty_assumptions(sort),
+            )
+        )
 
-    def copy(self) -&gt; &#39;Program&#39;:
-        &#39;&#39;&#39;
+    def copy(self) -&gt; &#34;Program&#34;:
+        &#34;&#34;&#34;
         Return a shallow copy of the program copying all mutable state.
 
         Returns
         -------
         A shallow copy of the program.
-        &#39;&#39;&#39;
+        &#34;&#34;&#34;
         return copy(self)
 
     def __str__(self) -&gt; str:
-        &#39;&#39;&#39;
+        &#34;&#34;&#34;
         Return a readable string represenation of the program.
-        &#39;&#39;&#39;
+        &#34;&#34;&#34;
         return self.pretty_str()</code></pre>
 </details>
 <h3>Class variables</h3>
@@ -1609,8 +1726,10 @@ reasons. This has to be taken care of by the user. See for example the
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def add_to_backend(self, backend: Backend, mapping: Optional[AtomMap] = None) -&gt; &#39;Program&#39;:
-    &#39;&#39;&#39;
+<pre><code class="python">def add_to_backend(
+    self, backend: Backend, mapping: Optional[AtomMap] = None
+) -&gt; &#34;Program&#34;:
+    &#34;&#34;&#34;
     Add the program to the given backend with an optional mapping.
 
     Note that the output table cannot be added to the backend for technical
@@ -1631,7 +1750,7 @@ reasons. This has to be taken care of by the user. See for example the
     See Also
     --------
     add_to_backend
-    &#39;&#39;&#39;
+    &#34;&#34;&#34;
 
     _add_stms_to_backend(self.shows, backend, mapping)
     _add_stms_to_backend(self.facts, backend, mapping)
@@ -1647,8 +1766,9 @@ reasons. This has to be taken care of by the user. See for example the
         else:
             backend.add_project([])
 
-    backend.add_assume([_remap_lit(lit, mapping) if mapping else lit
-                        for lit in self.assumptions])
+    backend.add_assume(
+        [_remap_lit(lit, mapping) if mapping else lit for lit in self.assumptions]
+    )
 
     return self</code></pre>
 </details>
@@ -1664,14 +1784,14 @@ reasons. This has to be taken care of by the user. See for example the
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def copy(self) -&gt; &#39;Program&#39;:
-    &#39;&#39;&#39;
+<pre><code class="python">def copy(self) -&gt; &#34;Program&#34;:
+    &#34;&#34;&#34;
     Return a shallow copy of the program copying all mutable state.
 
     Returns
     -------
     A shallow copy of the program.
-    &#39;&#39;&#39;
+    &#34;&#34;&#34;
     return copy(self)</code></pre>
 </details>
 </dd>
@@ -1692,7 +1812,7 @@ reasons. This has to be taken care of by the user. See for example the
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def pretty_str(self, sort: bool = True) -&gt; str:
-    &#39;&#39;&#39;
+    &#34;&#34;&#34;
     Return a readable string represenation of the program.
 
     Parameters
@@ -1703,18 +1823,21 @@ reasons. This has to be taken care of by the user. See for example the
     Returns
     -------
     The string representation of the program.
-    &#39;&#39;&#39;
-    return &#39;\n&#39;.join(chain(
-        self._pretty_stms(self.shows, sort),
-        self._pretty_stms(self.facts, sort),
-        self._pretty_stms(self.rules, sort),
-        self._pretty_stms(self.weight_rules, sort),
-        self._pretty_stms(self.heuristics, sort),
-        self._pretty_stms(self.edges, sort),
-        self._pretty_stms(self.minimizes, sort),
-        self._pretty_stms(self.externals, sort),
-        self._pretty_projects(sort),
-        self._pretty_assumptions(sort)))</code></pre>
+    &#34;&#34;&#34;
+    return &#34;\n&#34;.join(
+        chain(
+            self._pretty_stms(self.shows, sort),
+            self._pretty_stms(self.facts, sort),
+            self._pretty_stms(self.rules, sort),
+            self._pretty_stms(self.weight_rules, sort),
+            self._pretty_stms(self.heuristics, sort),
+            self._pretty_stms(self.edges, sort),
+            self._pretty_stms(self.minimizes, sort),
+            self._pretty_stms(self.externals, sort),
+            self._pretty_projects(sort),
+            self._pretty_assumptions(sort),
+        )
+    )</code></pre>
 </details>
 </dd>
 <dt id="clingox.program.Program.remap"><code class="name flex">
@@ -1735,8 +1858,8 @@ reasons. This has to be taken care of by the user. See for example the
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def remap(self, mapping: AtomMap) -&gt; &#39;Program&#39;:
-    &#39;&#39;&#39;
+<pre><code class="python">def remap(self, mapping: AtomMap) -&gt; &#34;Program&#34;:
+    &#34;&#34;&#34;
     Remap the literals in the program inplace.
 
     Parameters
@@ -1751,7 +1874,7 @@ reasons. This has to be taken care of by the user. See for example the
     See Also
     --------
     remap
-    &#39;&#39;&#39;
+    &#34;&#34;&#34;
     _remap_stms(self.shows, mapping)
     _remap_stms(self.facts, mapping)
     _remap_stms(self.rules, mapping)
@@ -1764,7 +1887,9 @@ reasons. This has to be taken care of by the user. See for example the
         _remap_stms(self.projects, mapping)
     for i, lit in enumerate(self.assumptions):
         self.assumptions[i] = _remap_lit(lit, mapping)
-    self.output_atoms = {mapping(lit): sym for lit, sym in self.output_atoms.items()}
+    self.output_atoms = {
+        mapping(lit): sym for lit, sym in self.output_atoms.items()
+    }
 
     return self</code></pre>
 </details>
@@ -1780,14 +1905,14 @@ reasons. This has to be taken care of by the user. See for example the
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def sort(self) -&gt; &#39;Program&#39;:
-    &#39;&#39;&#39;
+<pre><code class="python">def sort(self) -&gt; &#34;Program&#34;:
+    &#34;&#34;&#34;
     Sort the statements in the program inplace.
 
     Returns
     -------
     A reference to self.
-    &#39;&#39;&#39;
+    &#34;&#34;&#34;
     self.shows.sort()
     self.facts.sort()
     self.rules.sort()
@@ -1823,7 +1948,7 @@ ground representation.</p>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">class ProgramObserver(Observer):
-    &#39;&#39;&#39;
+    &#34;&#34;&#34;
     Program observer to build a ground program representation while grounding.
 
     This class explicitly ignores theory atoms because they already have a
@@ -1833,35 +1958,36 @@ ground representation.</p>
     ----------
     program
         The program to add statements to.
-    &#39;&#39;&#39;
+    &#34;&#34;&#34;
+
     _program: Program
 
     def __init__(self, program: Program):
         self._program = program
 
     def begin_step(self) -&gt; None:
-        &#39;&#39;&#39;
+        &#34;&#34;&#34;
         Resets the assumptions.
-        &#39;&#39;&#39;
+        &#34;&#34;&#34;
         self._program.assumptions.clear()
 
     def output_atom(self, symbol: Symbol, atom: Atom) -&gt; None:
-        &#39;&#39;&#39;
+        &#34;&#34;&#34;
         Add the given atom to the list of facts or output table.
-        &#39;&#39;&#39;
+        &#34;&#34;&#34;
         if atom != 0:
             self._program.output_atoms[atom] = symbol
         else:
             self._program.facts.append(Fact(symbol))
 
     def output_term(self, symbol: Symbol, condition: Sequence[Literal]) -&gt; None:
-        &#39;&#39;&#39;
+        &#34;&#34;&#34;
         Add a term to the output table.
-        &#39;&#39;&#39;
+        &#34;&#34;&#34;
         self._program.shows.append(Show(symbol, condition))
 
     def rule(self, choice: bool, head: Sequence[Atom], body: Sequence[Literal]) -&gt; None:
-        &#39;&#39;&#39;
+        &#34;&#34;&#34;
         Add a rule to the ground representation.
 
         Parameters
@@ -1872,12 +1998,17 @@ ground representation.</p>
             List of program atoms forming the rule head.
         body
             List of program literals forming the rule body.
-        &#39;&#39;&#39;
+        &#34;&#34;&#34;
         self._program.rules.append(Rule(choice, head, body))
 
-    def weight_rule(self, choice: bool, head: Sequence[Atom], lower_bound: Weight,
-                    body: Sequence[Tuple[Literal, Weight]]) -&gt; None:
-        &#39;&#39;&#39;
+    def weight_rule(
+        self,
+        choice: bool,
+        head: Sequence[Atom],
+        lower_bound: Weight,
+        body: Sequence[Tuple[Literal, Weight]],
+    ) -&gt; None:
+        &#34;&#34;&#34;
         Add a weight rule to the ground representation.
 
         Parameters
@@ -1891,24 +2022,24 @@ ground representation.</p>
         body
             List of weighted literals (pairs of literal and weight) forming the
             elements of the weight constraint.
-        &#39;&#39;&#39;
+        &#34;&#34;&#34;
         self._program.weight_rules.append(WeightRule(choice, head, lower_bound, body))
 
     def project(self, atoms: Sequence[Atom]) -&gt; None:
-        &#39;&#39;&#39;
+        &#34;&#34;&#34;
         Add a project statement to the ground representation.
 
         Parameters
         ----------
         atoms
             The program atoms to project on.
-        &#39;&#39;&#39;
+        &#34;&#34;&#34;
         if self._program.projects is None:
             self._program.projects = []
         self._program.projects.extend(Project(atom) for atom in atoms)
 
     def external(self, atom: Atom, value: TruthValue) -&gt; None:
-        &#39;&#39;&#39;
+        &#34;&#34;&#34;
         Add an external statement to the ground representation.
 
         Parameters
@@ -1917,11 +2048,11 @@ ground representation.</p>
             The external atom in form of a program literal.
         value
             The truth value of the external statement.
-        &#39;&#39;&#39;
+        &#34;&#34;&#34;
         self._program.externals.append(External(atom, value))
 
     def assume(self, literals: Sequence[Literal]) -&gt; None:
-        &#39;&#39;&#39;
+        &#34;&#34;&#34;
         Extend the program with the given assumptions.
 
         Parameters
@@ -1929,11 +2060,13 @@ ground representation.</p>
         literals
             The program literals to assume (positive literals are true and
             negative literals false for the next solve call).
-        &#39;&#39;&#39;
+        &#34;&#34;&#34;
         self._program.assumptions.extend(literals)
 
-    def minimize(self, priority: Weight, literals: Sequence[Tuple[Literal, Weight]]) -&gt; None:
-        &#39;&#39;&#39;
+    def minimize(
+        self, priority: Weight, literals: Sequence[Tuple[Literal, Weight]]
+    ) -&gt; None:
+        &#34;&#34;&#34;
         Add a minimize statement to the ground representation.
 
         Parameters
@@ -1943,11 +2076,11 @@ ground representation.</p>
         literals
             List of weighted literals whose sum to minimize (pairs of literal
             and weight).
-        &#39;&#39;&#39;
+        &#34;&#34;&#34;
         self._program.minimizes.append(Minimize(priority, literals))
 
     def acyc_edge(self, node_u: int, node_v: int, condition: Sequence[Literal]) -&gt; None:
-        &#39;&#39;&#39;
+        &#34;&#34;&#34;
         Add an edge statement to the gronud representation.
 
         Parameters
@@ -1959,12 +2092,18 @@ ground representation.</p>
         condition
             The list of program literals forming th condition under which to
             add the edge.
-        &#39;&#39;&#39;
+        &#34;&#34;&#34;
         self._program.edges.append(Edge(node_u, node_v, condition))
 
-    def heuristic(self, atom: Atom, type_: HeuristicType, bias: Weight, priority: Weight,
-                  condition: Sequence[Literal]) -&gt; None:
-        &#39;&#39;&#39;
+    def heuristic(
+        self,
+        atom: Atom,
+        type_: HeuristicType,
+        bias: Weight,
+        priority: Weight,
+        condition: Sequence[Literal],
+    ) -&gt; None:
+        &#34;&#34;&#34;
         Add heurisitic statement to the gronud representation.
 
         Parameters
@@ -1979,8 +2118,10 @@ ground representation.</p>
             An unsigned integer.
         condition
             List of program literals.
-        &#39;&#39;&#39;
-        self._program.heuristics.append(Heuristic(atom, type_, bias, priority, condition))</code></pre>
+        &#34;&#34;&#34;
+        self._program.heuristics.append(
+            Heuristic(atom, type_, bias, priority, condition)
+        )</code></pre>
 </details>
 <h3>Ancestors</h3>
 <ul class="hlist">
@@ -2008,7 +2149,7 @@ add the edge.</dd>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def acyc_edge(self, node_u: int, node_v: int, condition: Sequence[Literal]) -&gt; None:
-    &#39;&#39;&#39;
+    &#34;&#34;&#34;
     Add an edge statement to the gronud representation.
 
     Parameters
@@ -2020,7 +2161,7 @@ add the edge.</dd>
     condition
         The list of program literals forming th condition under which to
         add the edge.
-    &#39;&#39;&#39;
+    &#34;&#34;&#34;
     self._program.edges.append(Edge(node_u, node_v, condition))</code></pre>
 </details>
 </dd>
@@ -2040,7 +2181,7 @@ negative literals false for the next solve call).</dd>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def assume(self, literals: Sequence[Literal]) -&gt; None:
-    &#39;&#39;&#39;
+    &#34;&#34;&#34;
     Extend the program with the given assumptions.
 
     Parameters
@@ -2048,7 +2189,7 @@ negative literals false for the next solve call).</dd>
     literals
         The program literals to assume (positive literals are true and
         negative literals false for the next solve call).
-    &#39;&#39;&#39;
+    &#34;&#34;&#34;
     self._program.assumptions.extend(literals)</code></pre>
 </details>
 </dd>
@@ -2062,9 +2203,9 @@ negative literals false for the next solve call).</dd>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def begin_step(self) -&gt; None:
-    &#39;&#39;&#39;
+    &#34;&#34;&#34;
     Resets the assumptions.
-    &#39;&#39;&#39;
+    &#34;&#34;&#34;
     self._program.assumptions.clear()</code></pre>
 </details>
 </dd>
@@ -2085,7 +2226,7 @@ negative literals false for the next solve call).</dd>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def external(self, atom: Atom, value: TruthValue) -&gt; None:
-    &#39;&#39;&#39;
+    &#34;&#34;&#34;
     Add an external statement to the ground representation.
 
     Parameters
@@ -2094,7 +2235,7 @@ negative literals false for the next solve call).</dd>
         The external atom in form of a program literal.
     value
         The truth value of the external statement.
-    &#39;&#39;&#39;
+    &#34;&#34;&#34;
     self._program.externals.append(External(atom, value))</code></pre>
 </details>
 </dd>
@@ -2120,9 +2261,15 @@ negative literals false for the next solve call).</dd>
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def heuristic(self, atom: Atom, type_: HeuristicType, bias: Weight, priority: Weight,
-              condition: Sequence[Literal]) -&gt; None:
-    &#39;&#39;&#39;
+<pre><code class="python">def heuristic(
+    self,
+    atom: Atom,
+    type_: HeuristicType,
+    bias: Weight,
+    priority: Weight,
+    condition: Sequence[Literal],
+) -&gt; None:
+    &#34;&#34;&#34;
     Add heurisitic statement to the gronud representation.
 
     Parameters
@@ -2137,8 +2284,10 @@ negative literals false for the next solve call).</dd>
         An unsigned integer.
     condition
         List of program literals.
-    &#39;&#39;&#39;
-    self._program.heuristics.append(Heuristic(atom, type_, bias, priority, condition))</code></pre>
+    &#34;&#34;&#34;
+    self._program.heuristics.append(
+        Heuristic(atom, type_, bias, priority, condition)
+    )</code></pre>
 </details>
 </dd>
 <dt id="clingox.program.ProgramObserver.minimize"><code class="name flex">
@@ -2158,8 +2307,10 @@ and weight).</dd>
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def minimize(self, priority: Weight, literals: Sequence[Tuple[Literal, Weight]]) -&gt; None:
-    &#39;&#39;&#39;
+<pre><code class="python">def minimize(
+    self, priority: Weight, literals: Sequence[Tuple[Literal, Weight]]
+) -&gt; None:
+    &#34;&#34;&#34;
     Add a minimize statement to the ground representation.
 
     Parameters
@@ -2169,7 +2320,7 @@ and weight).</dd>
     literals
         List of weighted literals whose sum to minimize (pairs of literal
         and weight).
-    &#39;&#39;&#39;
+    &#34;&#34;&#34;
     self._program.minimizes.append(Minimize(priority, literals))</code></pre>
 </details>
 </dd>
@@ -2183,9 +2334,9 @@ and weight).</dd>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def output_atom(self, symbol: Symbol, atom: Atom) -&gt; None:
-    &#39;&#39;&#39;
+    &#34;&#34;&#34;
     Add the given atom to the list of facts or output table.
-    &#39;&#39;&#39;
+    &#34;&#34;&#34;
     if atom != 0:
         self._program.output_atoms[atom] = symbol
     else:
@@ -2202,9 +2353,9 @@ and weight).</dd>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def output_term(self, symbol: Symbol, condition: Sequence[Literal]) -&gt; None:
-    &#39;&#39;&#39;
+    &#34;&#34;&#34;
     Add a term to the output table.
-    &#39;&#39;&#39;
+    &#34;&#34;&#34;
     self._program.shows.append(Show(symbol, condition))</code></pre>
 </details>
 </dd>
@@ -2223,14 +2374,14 @@ and weight).</dd>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def project(self, atoms: Sequence[Atom]) -&gt; None:
-    &#39;&#39;&#39;
+    &#34;&#34;&#34;
     Add a project statement to the ground representation.
 
     Parameters
     ----------
     atoms
         The program atoms to project on.
-    &#39;&#39;&#39;
+    &#34;&#34;&#34;
     if self._program.projects is None:
         self._program.projects = []
     self._program.projects.extend(Project(atom) for atom in atoms)</code></pre>
@@ -2255,7 +2406,7 @@ and weight).</dd>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def rule(self, choice: bool, head: Sequence[Atom], body: Sequence[Literal]) -&gt; None:
-    &#39;&#39;&#39;
+    &#34;&#34;&#34;
     Add a rule to the ground representation.
 
     Parameters
@@ -2266,7 +2417,7 @@ and weight).</dd>
         List of program atoms forming the rule head.
     body
         List of program literals forming the rule body.
-    &#39;&#39;&#39;
+    &#34;&#34;&#34;
     self._program.rules.append(Rule(choice, head, body))</code></pre>
 </details>
 </dd>
@@ -2291,9 +2442,14 @@ elements of the weight constraint.</dd>
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def weight_rule(self, choice: bool, head: Sequence[Atom], lower_bound: Weight,
-                body: Sequence[Tuple[Literal, Weight]]) -&gt; None:
-    &#39;&#39;&#39;
+<pre><code class="python">def weight_rule(
+    self,
+    choice: bool,
+    head: Sequence[Atom],
+    lower_bound: Weight,
+    body: Sequence[Tuple[Literal, Weight]],
+) -&gt; None:
+    &#34;&#34;&#34;
     Add a weight rule to the ground representation.
 
     Parameters
@@ -2307,7 +2463,7 @@ elements of the weight constraint.</dd>
     body
         List of weighted literals (pairs of literal and weight) forming the
         elements of the weight constraint.
-    &#39;&#39;&#39;
+    &#34;&#34;&#34;
     self._program.weight_rules.append(WeightRule(choice, head, lower_bound, body))</code></pre>
 </details>
 </dd>
@@ -2339,9 +2495,10 @@ elements of the weight constraint.</dd>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">class Project(NamedTuple):
-    &#39;&#39;&#39;
+    &#34;&#34;&#34;
     Ground representation of project statements.
-    &#39;&#39;&#39;
+    &#34;&#34;&#34;
+
     atom: Atom</code></pre>
 </details>
 <h3>Ancestors</h3>
@@ -2377,7 +2534,7 @@ backend.</p>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">class Remapping:
-    &#39;&#39;&#39;
+    &#34;&#34;&#34;
     This class maps existing literals to fresh literals as created by the
     backend.
 
@@ -2389,11 +2546,14 @@ backend.</p>
         The output table to initialize the mapping with.
     facts
         A list of facts each of which will receive a fresh program atom.
-    &#39;&#39;&#39;
+    &#34;&#34;&#34;
+
     _backend: Backend
     _map: MutableMapping[Atom, Atom]
 
-    def __init__(self, backend: Backend, output_atoms: OutputTable, facts: Iterable[Fact] = None):
+    def __init__(
+        self, backend: Backend, output_atoms: OutputTable, facts: Iterable[Fact] = None
+    ):
         self._backend = backend
         self._map = {}
         for atom, sym in output_atoms.items():
@@ -2404,7 +2564,7 @@ backend.</p>
                 backend.add_rule([backend.add_atom(fact.symbol)])
 
     def __call__(self, atom: Atom) -&gt; Atom:
-        &#39;&#39;&#39;
+        &#34;&#34;&#34;
         Map the given program atom to the corresponding atom in the backend.
 
         If the literal was not mapped during initialization, a new literal is
@@ -2418,7 +2578,7 @@ backend.</p>
         Returns
         -------
         The remapped program atom.
-        &#39;&#39;&#39;
+        &#34;&#34;&#34;
         if atom not in self._map:
             self._map[atom] = self._backend.add_atom()
 
@@ -2445,7 +2605,7 @@ associated with it.</p>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def __call__(self, atom: Atom) -&gt; Atom:
-    &#39;&#39;&#39;
+    &#34;&#34;&#34;
     Map the given program atom to the corresponding atom in the backend.
 
     If the literal was not mapped during initialization, a new literal is
@@ -2459,7 +2619,7 @@ associated with it.</p>
     Returns
     -------
     The remapped program atom.
-    &#39;&#39;&#39;
+    &#34;&#34;&#34;
     if atom not in self._map:
         self._map[atom] = self._backend.add_atom()
 
@@ -2479,9 +2639,10 @@ associated with it.</p>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">class Rule(NamedTuple):
-    &#39;&#39;&#39;
+    &#34;&#34;&#34;
     Ground representation of disjunctive and choice rules.
-    &#39;&#39;&#39;
+    &#34;&#34;&#34;
+
     choice: bool
     head: Sequence[Atom]
     body: Sequence[Literal]</code></pre>
@@ -2517,9 +2678,10 @@ associated with it.</p>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">class Show(NamedTuple):
-    &#39;&#39;&#39;
+    &#34;&#34;&#34;
     Ground representation of a show statements.
-    &#39;&#39;&#39;
+    &#34;&#34;&#34;
+
     symbol: Symbol
     condition: Sequence[Literal]</code></pre>
 </details>
@@ -2550,9 +2712,10 @@ associated with it.</p>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">class WeightRule(NamedTuple):
-    &#39;&#39;&#39;
+    &#34;&#34;&#34;
     Ground representation of rules with a weight constraint in the body.
-    &#39;&#39;&#39;
+    &#34;&#34;&#34;
+
     choice: bool
     head: Sequence[Atom]
     lower_bound: Weight
