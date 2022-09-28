@@ -77,14 +77,14 @@ Examples
 &#39;&#39;&#39;
 
 from typing import List, Optional, Tuple
+from enum import Enum
 from functools import total_ordering
 
 from ._internal import _c_call, _c_call2, _lib, _str, _to_str
-from .core import OrderedEnum
 
 __all__ = [ &#39;TheoryAtom&#39;, &#39;TheoryElement&#39;, &#39;TheoryTerm&#39;, &#39;TheoryTermType&#39; ]
 
-class TheoryTermType(OrderedEnum):
+class TheoryTermType(Enum):
     &#39;&#39;&#39;
     Enumeration of theory term types.
     &#39;&#39;&#39;
@@ -715,7 +715,7 @@ def type(self) -&gt; TheoryTermType:
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">class TheoryTermType(OrderedEnum):
+<pre><code class="python">class TheoryTermType(Enum):
     &#39;&#39;&#39;
     Enumeration of theory term types.
     &#39;&#39;&#39;
@@ -746,7 +746,6 @@ def type(self) -&gt; TheoryTermType:
 </details>
 <h3>Ancestors</h3>
 <ul class="hlist">
-<li><a title="clingo.core.OrderedEnum" href="core.html#clingo.core.OrderedEnum">OrderedEnum</a></li>
 <li>enum.Enum</li>
 </ul>
 <h3>Class variables</h3>

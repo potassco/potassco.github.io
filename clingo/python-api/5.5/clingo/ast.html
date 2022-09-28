@@ -70,6 +70,15 @@ term = SymbolicTerm
         , arguments : term*
         )
 
+csp_term = CSPSum
+            ( location : Location
+            , terms    : CSPProduct
+                          ( location    : Location
+                          , coefficient : term
+                          , variable    : term?
+                          )*
+            )
+
 theory_term = SymbolicTerm
                ( location : Location
                , symbol   : clingo.Symbol
@@ -102,17 +111,13 @@ symbolic_atom = SymbolicAtom
                  ( symbol : term
                  )
 
-guard = Guard
-         ( comparison : ComparisonOperator
-         , term       : term
-         )
-
 literal = Literal
            ( location : Location
            , sign     : Sign
            , atom     : Comparison
-                         ( term   : term
-                         , guards : guard+
+                         ( comparison : ComparisonOperator
+                         , left       : term
+                         , right      : term
                          )
                       | BooleanConstant
                          ( value : bool
@@ -120,7 +125,21 @@ literal = Literal
                       | symbolic_atom
            )
 
+        | CSPLiteral
+           ( location : Location
+           , term     : csp_term
+           , guards   : CSPGuard
+                         ( comparison : ComparisonOperator
+                         , term       : csp_term
+                         )+
+           )
+
 # Head and Body Literals
+
+aggregate_guard = AggregateGuard
+                   ( comparison : ComparisonOperator
+                   , term       : term
+                   )
 
 conditional_literal = ConditionalLiteral
                        ( location  : Location
@@ -130,9 +149,9 @@ conditional_literal = ConditionalLiteral
 
 aggregate = Aggregate
              ( location    : Location
-             , left_guard  : guard?
+             , left_guard  : aggregate_guard?
              , elements    : conditional_literal*
-             , right_guard : guard?
+             , right_guard : aggregate_guard?
              )
 
 theory_atom = TheoryAtom
@@ -151,13 +170,22 @@ theory_atom = TheoryAtom
 body_atom = aggregate
           | BodyAggregate
              ( location    : Location
-             , left_guard  : guard?
+             , left_guard  : aggregate_guard?
              , function    : AggregateFunction
              , elements    : BodyAggregateElement
                               ( terms     : term*
                               , condition : literal*
                               )*
-             , right_guard : guard?
+             , right_guard : aggregate_guard?
+             )
+          | Disjoint
+             ( location : Location
+             , elements : DisjointElement
+                           ( location  : Location
+                           , terms     : term*
+                           , term      : csp_term
+                           , condition : literal*
+                           )*
              )
           | theory_atom
 
@@ -173,13 +201,13 @@ head = literal
      | aggregate
      | HeadAggregate
         ( location    : Location
-        , left_guard  : guard?
+        , left_guard  : aggregate_guard?
         , function    : AggregateFunction
         , elements    : HeadAggregateElement
                          ( terms     : term*
                          , condition : conditional_literal
                          )*
-        , right_guard : guard?
+        , right_guard : aggregate_guard?
         )
      | Disjunction
         ( location : Location
@@ -205,6 +233,7 @@ statement = Rule
              , name       : str
              , arity      : int
              , sign       : bool
+             , csp        : bool
              )
           | Defined
              ( location   : Location
@@ -216,6 +245,7 @@ statement = Rule
              ( location : Location
              , term     : term
              , body     : body_literal*
+             , csp      : bool
              )
           | Minimize
              ( location : Location
@@ -383,6 +413,15 @@ term = SymbolicTerm
         , arguments : term*
         )
 
+csp_term = CSPSum
+            ( location : Location
+            , terms    : CSPProduct
+                          ( location    : Location
+                          , coefficient : term
+                          , variable    : term?
+                          )*
+            )
+
 theory_term = SymbolicTerm
                ( location : Location
                , symbol   : clingo.Symbol
@@ -415,17 +454,13 @@ symbolic_atom = SymbolicAtom
                  ( symbol : term
                  )
 
-guard = Guard
-         ( comparison : ComparisonOperator
-         , term       : term
-         )
-
 literal = Literal
            ( location : Location
            , sign     : Sign
            , atom     : Comparison
-                         ( term   : term
-                         , guards : guard+
+                         ( comparison : ComparisonOperator
+                         , left       : term
+                         , right      : term
                          )
                       | BooleanConstant
                          ( value : bool
@@ -433,7 +468,21 @@ literal = Literal
                       | symbolic_atom
            )
 
+        | CSPLiteral
+           ( location : Location
+           , term     : csp_term
+           , guards   : CSPGuard
+                         ( comparison : ComparisonOperator
+                         , term       : csp_term
+                         )+
+           )
+
 # Head and Body Literals
+
+aggregate_guard = AggregateGuard
+                   ( comparison : ComparisonOperator
+                   , term       : term
+                   )
 
 conditional_literal = ConditionalLiteral
                        ( location  : Location
@@ -443,9 +492,9 @@ conditional_literal = ConditionalLiteral
 
 aggregate = Aggregate
              ( location    : Location
-             , left_guard  : guard?
+             , left_guard  : aggregate_guard?
              , elements    : conditional_literal*
-             , right_guard : guard?
+             , right_guard : aggregate_guard?
              )
 
 theory_atom = TheoryAtom
@@ -464,13 +513,22 @@ theory_atom = TheoryAtom
 body_atom = aggregate
           | BodyAggregate
              ( location    : Location
-             , left_guard  : guard?
+             , left_guard  : aggregate_guard?
              , function    : AggregateFunction
              , elements    : BodyAggregateElement
                               ( terms     : term*
                               , condition : literal*
                               )*
-             , right_guard : guard?
+             , right_guard : aggregate_guard?
+             )
+          | Disjoint
+             ( location : Location
+             , elements : DisjointElement
+                           ( location  : Location
+                           , terms     : term*
+                           , term      : csp_term
+                           , condition : literal*
+                           )*
              )
           | theory_atom
 
@@ -486,13 +544,13 @@ head = literal
      | aggregate
      | HeadAggregate
         ( location    : Location
-        , left_guard  : guard?
+        , left_guard  : aggregate_guard?
         , function    : AggregateFunction
         , elements    : HeadAggregateElement
                          ( terms     : term*
                          , condition : conditional_literal
                          )*
-        , right_guard : guard?
+        , right_guard : aggregate_guard?
         )
      | Disjunction
         ( location : Location
@@ -518,6 +576,7 @@ statement = Rule
              , name       : str
              , arity      : int
              , sign       : bool
+             , csp        : bool
              )
           | Defined
              ( location   : Location
@@ -529,6 +588,7 @@ statement = Rule
              ( location : Location
              , term     : term
              , body     : body_literal*
+             , csp      : bool
              )
           | Minimize
              ( location : Location
@@ -648,7 +708,7 @@ The next example shows how to transform ASTs using the `Transformer` class:
     p(_X) :- q(_X).
 &#39;&#39;&#39;
 
-from enum import IntEnum
+from enum import Enum, IntEnum
 from typing import Any, Callable, ContextManager, Dict, List, MutableSequence, NamedTuple, Optional, Sequence, Tuple, Union
 from collections import abc
 from functools import total_ordering
@@ -656,31 +716,32 @@ from functools import total_ordering
 from ._internal import (_CBData, _Error,
                         _cb_error_handler, _c_call, _ffi, _handle_error, _lib, _str, _to_str)
 from .util import Slice, SlicedMutableSequence
-from .core import Logger, OrderedEnum
+from .core import Logger
 from .control import Control
 from .symbol import Symbol
 
 __all__ = [ &#39;AST&#39;, &#39;ASTSequence&#39;, &#39;ASTType&#39;, &#39;ASTValue&#39;, &#39;Aggregate&#39;,
-            &#39;AggregateFunction&#39;, &#39;Guard&#39;, &#39;BinaryOperation&#39;, &#39;BinaryOperator&#39;,
-            &#39;BodyAggregate&#39;, &#39;BodyAggregateElement&#39;, &#39;BooleanConstant&#39;,
-            &#39;Comparison&#39;, &#39;ComparisonOperator&#39;, &#39;ConditionalLiteral&#39;,
-            &#39;Defined&#39;, &#39;Definition&#39;, &#39;Disjunction&#39;, &#39;Edge&#39;, &#39;External&#39;,
-            &#39;Function&#39;, &#39;HeadAggregate&#39;, &#39;HeadAggregateElement&#39;, &#39;Heuristic&#39;,
-            &#39;Id&#39;, &#39;Interval&#39;, &#39;Literal&#39;, &#39;Location&#39;, &#39;Minimize&#39;, &#39;Pool&#39;,
-            &#39;Position&#39;, &#39;Program&#39;, &#39;ProgramBuilder&#39;, &#39;ProjectAtom&#39;,
-            &#39;ProjectSignature&#39;, &#39;Rule&#39;, &#39;Script&#39;, &#39;ShowSignature&#39;, &#39;ShowTerm&#39;,
-            &#39;Sign&#39;, &#39;StrSequence&#39;, &#39;SymbolicTerm&#39;, &#39;TheoryAtom&#39;,
-            &#39;TheoryAtomDefinition&#39;, &#39;TheoryAtomElement&#39;, &#39;TheoryAtomType&#39;,
-            &#39;TheoryDefinition&#39;, &#39;TheoryFunction&#39;, &#39;TheoryGuard&#39;,
-            &#39;TheoryGuardDefinition&#39;, &#39;TheoryOperatorDefinition&#39;,
-            &#39;TheoryOperatorType&#39;, &#39;TheorySequence&#39;, &#39;TheorySequenceType&#39;,
-            &#39;TheoryTermDefinition&#39;, &#39;TheoryUnparsedTerm&#39;,
+            &#39;AggregateFunction&#39;, &#39;AggregateGuard&#39;, &#39;BinaryOperation&#39;,
+            &#39;BinaryOperator&#39;, &#39;BodyAggregate&#39;, &#39;BodyAggregateElement&#39;,
+            &#39;BooleanConstant&#39;, &#39;Comparison&#39;, &#39;ComparisonOperator&#39;,
+            &#39;ConditionalLiteral&#39;, &#39;CspGuard&#39;, &#39;CspLiteral&#39;, &#39;CspProduct&#39;,
+            &#39;CspSum&#39;, &#39;Defined&#39;, &#39;Definition&#39;, &#39;Disjoint&#39;, &#39;DisjointElement&#39;,
+            &#39;Disjunction&#39;, &#39;Edge&#39;, &#39;External&#39;, &#39;Function&#39;, &#39;HeadAggregate&#39;,
+            &#39;HeadAggregateElement&#39;, &#39;Heuristic&#39;, &#39;Id&#39;, &#39;Interval&#39;, &#39;Literal&#39;,
+            &#39;Location&#39;, &#39;Minimize&#39;, &#39;Pool&#39;, &#39;Position&#39;, &#39;Program&#39;,
+            &#39;ProgramBuilder&#39;, &#39;ProjectAtom&#39;, &#39;ProjectSignature&#39;, &#39;Rule&#39;,
+            &#39;Script&#39;, &#39;ShowSignature&#39;, &#39;ShowTerm&#39;, &#39;Sign&#39;, &#39;StrSequence&#39;,
+            &#39;SymbolicTerm&#39;, &#39;TheoryAtom&#39;, &#39;TheoryAtomDefinition&#39;,
+            &#39;TheoryAtomElement&#39;, &#39;TheoryAtomType&#39;, &#39;TheoryDefinition&#39;,
+            &#39;TheoryFunction&#39;, &#39;TheoryGuard&#39;, &#39;TheoryGuardDefinition&#39;,
+            &#39;TheoryOperatorDefinition&#39;, &#39;TheoryOperatorType&#39;, &#39;TheorySequence&#39;,
+            &#39;TheorySequenceType&#39;, &#39;TheoryTermDefinition&#39;, &#39;TheoryUnparsedTerm&#39;,
             &#39;TheoryUnparsedTermElement&#39;, &#39;Transformer&#39;, &#39;UnaryOperation&#39;,
             &#39;UnaryOperator&#39;, &#39;Variable&#39;, &#39;parse_files&#39;, &#39;parse_string&#39; ]
 
 # pylint: disable=protected-access,invalid-name,too-many-lines,too-many-ancestors
 
-class ASTType(OrderedEnum):
+class ASTType(Enum):
     &#39;&#39;&#39;
     Enumeration of ast node types.
     &#39;&#39;&#39;
@@ -692,10 +753,14 @@ class ASTType(OrderedEnum):
     Interval = _lib.clingo_ast_type_interval
     Function = _lib.clingo_ast_type_function
     Pool = _lib.clingo_ast_type_pool
+    CspProduct = _lib.clingo_ast_type_csp_product
+    CspSum = _lib.clingo_ast_type_csp_sum
+    CspGuard = _lib.clingo_ast_type_csp_guard
     BooleanConstant = _lib.clingo_ast_type_boolean_constant
     SymbolicAtom = _lib.clingo_ast_type_symbolic_atom
     Comparison = _lib.clingo_ast_type_comparison
-    Guard = _lib.clingo_ast_type_guard
+    CspLiteral = _lib.clingo_ast_type_csp_literal
+    AggregateGuard = _lib.clingo_ast_type_aggregate_guard
     ConditionalLiteral = _lib.clingo_ast_type_conditional_literal
     Aggregate = _lib.clingo_ast_type_aggregate
     BodyAggregateElement = _lib.clingo_ast_type_body_aggregate_element
@@ -703,6 +768,8 @@ class ASTType(OrderedEnum):
     HeadAggregateElement = _lib.clingo_ast_type_head_aggregate_element
     HeadAggregate = _lib.clingo_ast_type_head_aggregate
     Disjunction = _lib.clingo_ast_type_disjunction
+    DisjointElement = _lib.clingo_ast_type_disjoint_element
+    Disjoint = _lib.clingo_ast_type_disjoint
     TheorySequence = _lib.clingo_ast_type_theory_sequence
     TheoryFunction = _lib.clingo_ast_type_theory_function
     TheoryUnparsedTermElement = _lib.clingo_ast_type_theory_unparsed_term_element
@@ -1300,7 +1367,7 @@ def _pyclingo_ast_callback(ast, data):
 
     return True
 
-def parse_files(files: Sequence[str], callback: Callable[[AST], None], control: Control=None,
+def parse_files(files: Sequence[str], callback: Callable[[AST], None],
                 logger: Optional[Logger]=None, message_limit: int=20) -&gt; None:
     &#39;&#39;&#39;
     Parse the programs in the given files and return an abstract syntax tree for
@@ -1310,17 +1377,12 @@ def parse_files(files: Sequence[str], callback: Callable[[AST], None], control: 
     `&#34;-&#34;` is treated as stdin and if an empty list is given, then the parser will
     read from stdin.
 
-    The optional control object can be added to enable parsing of files in
-    ASPIF format. The ground statements will be added to the control object.
-
     Parameters
     ----------
     files
         List of file names.
     callback
         Callable taking an ast as argument.
-    control
-        Control object to add ground rules to.
     logger
         Function to intercept messages normally printed to standard error.
     message_limit
@@ -1330,8 +1392,6 @@ def parse_files(files: Sequence[str], callback: Callable[[AST], None], control: 
     --------
     ProgramBuilder
     &#39;&#39;&#39;
-    c_control = control._rep if control is not None else _ffi.NULL
-
     if logger is not None:
         c_logger_data = _ffi.new_handle(logger)
         c_logger = _lib.pyclingo_logger_callback
@@ -1345,17 +1405,14 @@ def parse_files(files: Sequence[str], callback: Callable[[AST], None], control: 
 
     _handle_error(_lib.clingo_ast_parse_files([ _ffi.new(&#39;char[]&#39;, f.encode()) for f in files ], len(files),
                                               _lib.pyclingo_ast_callback, c_cb_data,
-                                              c_control, c_logger, c_logger_data,
+                                              c_logger, c_logger_data,
                                               message_limit), cb_data)
 
-def parse_string(program: str, callback: Callable[[AST], None], control: Control=None,
+def parse_string(program: str, callback: Callable[[AST], None],
                  logger: Optional[Logger]=None, message_limit: int=20) -&gt; None:
     &#39;&#39;&#39;
     Parse the given program and return an abstract syntax tree for each
     statement via a callback.
-
-    The optional control object can be added to enable parsing of files in
-    ASPIF format. The ground statements will be added to the control object.
 
     Parameters
     ----------
@@ -1363,8 +1420,6 @@ def parse_string(program: str, callback: Callable[[AST], None], control: Control
         String representation of the program.
     callback
         Callable taking an ast as argument.
-    control
-        Control object to add ground rules to.
     logger
         Function to intercept messages normally printed to standard error.
     message_limit
@@ -1374,8 +1429,6 @@ def parse_string(program: str, callback: Callable[[AST], None], control: Control
     --------
     ProgramBuilder
     &#39;&#39;&#39;
-    c_control = control._rep if control is not None else _ffi.NULL
-
     if logger is not None:
         c_logger_data = _ffi.new_handle(logger)
         c_logger = _lib.pyclingo_logger_callback
@@ -1389,7 +1442,7 @@ def parse_string(program: str, callback: Callable[[AST], None], control: Control
 
     _handle_error(_lib.clingo_ast_parse_string(program.encode(),
                                                _lib.pyclingo_ast_callback, c_cb_data,
-                                               c_control, c_logger, c_logger_data,
+                                               c_logger, c_logger_data,
                                                message_limit), cb_data)
 
 class ProgramBuilder(ContextManager[&#39;ProgramBuilder&#39;]):
@@ -1411,7 +1464,7 @@ class ProgramBuilder(ContextManager[&#39;ProgramBuilder&#39;]):
     statement.
     &#39;&#39;&#39;
     def __init__(self, control: Control):
-        self._rep = _c_call(&#39;clingo_program_builder_t*&#39;, _lib.clingo_program_builder_init, control._rep)
+        self._rep = _c_call(&#39;clingo_program_builder_t*&#39;, _lib.clingo_control_program_builder, control._rep)
 
     def __enter__(self):
         _handle_error(_lib.clingo_program_builder_begin(self._rep))
@@ -1610,6 +1663,43 @@ def Pool(location: Location, arguments: Sequence[AST]) -&gt; AST:
         _ffi.cast(&#39;size_t&#39;, len(arguments))))
     return AST(p_ast[0])
 
+def CspProduct(location: Location, coefficient: AST, variable: Optional[AST]) -&gt; AST:
+    &#39;&#39;&#39;
+    Construct an AST node of type `ASTType.CspProduct`.
+    &#39;&#39;&#39;
+    p_ast = _ffi.new(&#39;clingo_ast_t**&#39;)
+    c_location = _c_location(location)
+    _handle_error(_lib.clingo_ast_build(
+        _lib.clingo_ast_type_csp_product, p_ast,
+        c_location[0],
+        coefficient._rep,
+        _ffi.NULL if variable is None else variable._rep))
+    return AST(p_ast[0])
+
+def CspSum(location: Location, terms: Sequence[AST]) -&gt; AST:
+    &#39;&#39;&#39;
+    Construct an AST node of type `ASTType.CspSum`.
+    &#39;&#39;&#39;
+    p_ast = _ffi.new(&#39;clingo_ast_t**&#39;)
+    c_location = _c_location(location)
+    _handle_error(_lib.clingo_ast_build(
+        _lib.clingo_ast_type_csp_sum, p_ast,
+        c_location[0],
+        _ffi.new(&#39;clingo_ast_t*[]&#39;, [ x._rep for x in terms ]),
+        _ffi.cast(&#39;size_t&#39;, len(terms))))
+    return AST(p_ast[0])
+
+def CspGuard(comparison: int, term: AST) -&gt; AST:
+    &#39;&#39;&#39;
+    Construct an AST node of type `ASTType.CspGuard`.
+    &#39;&#39;&#39;
+    p_ast = _ffi.new(&#39;clingo_ast_t**&#39;)
+    _handle_error(_lib.clingo_ast_build(
+        _lib.clingo_ast_type_csp_guard, p_ast,
+        _ffi.cast(&#39;int&#39;, comparison),
+        term._rep))
+    return AST(p_ast[0])
+
 def BooleanConstant(value: int) -&gt; AST:
     &#39;&#39;&#39;
     Construct an AST node of type `ASTType.BooleanConstant`.
@@ -1630,25 +1720,39 @@ def SymbolicAtom(symbol: AST) -&gt; AST:
         symbol._rep))
     return AST(p_ast[0])
 
-def Comparison(term: AST, guards: Sequence[AST]) -&gt; AST:
+def Comparison(comparison: int, left: AST, right: AST) -&gt; AST:
     &#39;&#39;&#39;
     Construct an AST node of type `ASTType.Comparison`.
     &#39;&#39;&#39;
     p_ast = _ffi.new(&#39;clingo_ast_t**&#39;)
     _handle_error(_lib.clingo_ast_build(
         _lib.clingo_ast_type_comparison, p_ast,
+        _ffi.cast(&#39;int&#39;, comparison),
+        left._rep,
+        right._rep))
+    return AST(p_ast[0])
+
+def CspLiteral(location: Location, term: AST, guards: Sequence[AST]) -&gt; AST:
+    &#39;&#39;&#39;
+    Construct an AST node of type `ASTType.CspLiteral`.
+    &#39;&#39;&#39;
+    p_ast = _ffi.new(&#39;clingo_ast_t**&#39;)
+    c_location = _c_location(location)
+    _handle_error(_lib.clingo_ast_build(
+        _lib.clingo_ast_type_csp_literal, p_ast,
+        c_location[0],
         term._rep,
         _ffi.new(&#39;clingo_ast_t*[]&#39;, [ x._rep for x in guards ]),
         _ffi.cast(&#39;size_t&#39;, len(guards))))
     return AST(p_ast[0])
 
-def Guard(comparison: int, term: AST) -&gt; AST:
+def AggregateGuard(comparison: int, term: AST) -&gt; AST:
     &#39;&#39;&#39;
-    Construct an AST node of type `ASTType.Guard`.
+    Construct an AST node of type `ASTType.AggregateGuard`.
     &#39;&#39;&#39;
     p_ast = _ffi.new(&#39;clingo_ast_t**&#39;)
     _handle_error(_lib.clingo_ast_build(
-        _lib.clingo_ast_type_guard, p_ast,
+        _lib.clingo_ast_type_aggregate_guard, p_ast,
         _ffi.cast(&#39;int&#39;, comparison),
         term._rep))
     return AST(p_ast[0])
@@ -1750,6 +1854,35 @@ def Disjunction(location: Location, elements: Sequence[AST]) -&gt; AST:
     c_location = _c_location(location)
     _handle_error(_lib.clingo_ast_build(
         _lib.clingo_ast_type_disjunction, p_ast,
+        c_location[0],
+        _ffi.new(&#39;clingo_ast_t*[]&#39;, [ x._rep for x in elements ]),
+        _ffi.cast(&#39;size_t&#39;, len(elements))))
+    return AST(p_ast[0])
+
+def DisjointElement(location: Location, terms: Sequence[AST], term: AST, condition: Sequence[AST]) -&gt; AST:
+    &#39;&#39;&#39;
+    Construct an AST node of type `ASTType.DisjointElement`.
+    &#39;&#39;&#39;
+    p_ast = _ffi.new(&#39;clingo_ast_t**&#39;)
+    c_location = _c_location(location)
+    _handle_error(_lib.clingo_ast_build(
+        _lib.clingo_ast_type_disjoint_element, p_ast,
+        c_location[0],
+        _ffi.new(&#39;clingo_ast_t*[]&#39;, [ x._rep for x in terms ]),
+        _ffi.cast(&#39;size_t&#39;, len(terms)),
+        term._rep,
+        _ffi.new(&#39;clingo_ast_t*[]&#39;, [ x._rep for x in condition ]),
+        _ffi.cast(&#39;size_t&#39;, len(condition))))
+    return AST(p_ast[0])
+
+def Disjoint(location: Location, elements: Sequence[AST]) -&gt; AST:
+    &#39;&#39;&#39;
+    Construct an AST node of type `ASTType.Disjoint`.
+    &#39;&#39;&#39;
+    p_ast = _ffi.new(&#39;clingo_ast_t**&#39;)
+    c_location = _c_location(location)
+    _handle_error(_lib.clingo_ast_build(
+        _lib.clingo_ast_type_disjoint, p_ast,
         c_location[0],
         _ffi.new(&#39;clingo_ast_t*[]&#39;, [ x._rep for x in elements ]),
         _ffi.cast(&#39;size_t&#39;, len(elements))))
@@ -1947,7 +2080,7 @@ def Definition(location: Location, name: str, value: AST, is_default: int) -&gt;
         _ffi.cast(&#39;int&#39;, is_default)))
     return AST(p_ast[0])
 
-def ShowSignature(location: Location, name: str, arity: int, positive: int) -&gt; AST:
+def ShowSignature(location: Location, name: str, arity: int, positive: int, csp: int) -&gt; AST:
     &#39;&#39;&#39;
     Construct an AST node of type `ASTType.ShowSignature`.
     &#39;&#39;&#39;
@@ -1958,10 +2091,11 @@ def ShowSignature(location: Location, name: str, arity: int, positive: int) -&gt
         c_location[0],
         _ffi.new(&#39;char const[]&#39;, name.encode()),
         _ffi.cast(&#39;int&#39;, arity),
-        _ffi.cast(&#39;int&#39;, positive)))
+        _ffi.cast(&#39;int&#39;, positive),
+        _ffi.cast(&#39;int&#39;, csp)))
     return AST(p_ast[0])
 
-def ShowTerm(location: Location, term: AST, body: Sequence[AST]) -&gt; AST:
+def ShowTerm(location: Location, term: AST, body: Sequence[AST], csp: int) -&gt; AST:
     &#39;&#39;&#39;
     Construct an AST node of type `ASTType.ShowTerm`.
     &#39;&#39;&#39;
@@ -1972,7 +2106,8 @@ def ShowTerm(location: Location, term: AST, body: Sequence[AST]) -&gt; AST:
         c_location[0],
         term._rep,
         _ffi.new(&#39;clingo_ast_t*[]&#39;, [ x._rep for x in body ]),
-        _ffi.cast(&#39;size_t&#39;, len(body))))
+        _ffi.cast(&#39;size_t&#39;, len(body)),
+        _ffi.cast(&#39;int&#39;, csp)))
     return AST(p_ast[0])
 
 def Minimize(location: Location, weight: AST, priority: AST, terms: Sequence[AST], body: Sequence[AST]) -&gt; AST:
@@ -2158,6 +2293,27 @@ def TheoryDefinition(location: Location, name: str, terms: Sequence[AST], atoms:
     return AST(p_ast[0])</code></pre>
 </details>
 </dd>
+<dt id="clingo.ast.AggregateGuard"><code class="name flex">
+<span>def <span class="ident">AggregateGuard</span></span>(<span>comparison: int, term: <a title="clingo.ast.AST" href="#clingo.ast.AST">AST</a>) ‑> <a title="clingo.ast.AST" href="#clingo.ast.AST">AST</a></span>
+</code></dt>
+<dd>
+<div class="desc"><p>Construct an AST node of type <code><a title="clingo.ast.ASTType.AggregateGuard" href="#clingo.ast.ASTType.AggregateGuard">ASTType.AggregateGuard</a></code>.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def AggregateGuard(comparison: int, term: AST) -&gt; AST:
+    &#39;&#39;&#39;
+    Construct an AST node of type `ASTType.AggregateGuard`.
+    &#39;&#39;&#39;
+    p_ast = _ffi.new(&#39;clingo_ast_t**&#39;)
+    _handle_error(_lib.clingo_ast_build(
+        _lib.clingo_ast_type_aggregate_guard, p_ast,
+        _ffi.cast(&#39;int&#39;, comparison),
+        term._rep))
+    return AST(p_ast[0])</code></pre>
+</details>
+</dd>
 <dt id="clingo.ast.BinaryOperation"><code class="name flex">
 <span>def <span class="ident">BinaryOperation</span></span>(<span>location: <a title="clingo.ast.Location" href="#clingo.ast.Location">Location</a>, operator_type: int, left: <a title="clingo.ast.AST" href="#clingo.ast.AST">AST</a>, right: <a title="clingo.ast.AST" href="#clingo.ast.AST">AST</a>) ‑> <a title="clingo.ast.AST" href="#clingo.ast.AST">AST</a></span>
 </code></dt>
@@ -2253,7 +2409,7 @@ def TheoryDefinition(location: Location, name: str, terms: Sequence[AST], atoms:
 </details>
 </dd>
 <dt id="clingo.ast.Comparison"><code class="name flex">
-<span>def <span class="ident">Comparison</span></span>(<span>term: <a title="clingo.ast.AST" href="#clingo.ast.AST">AST</a>, guards: Sequence[<a title="clingo.ast.AST" href="#clingo.ast.AST">AST</a>]) ‑> <a title="clingo.ast.AST" href="#clingo.ast.AST">AST</a></span>
+<span>def <span class="ident">Comparison</span></span>(<span>comparison: int, left: <a title="clingo.ast.AST" href="#clingo.ast.AST">AST</a>, right: <a title="clingo.ast.AST" href="#clingo.ast.AST">AST</a>) ‑> <a title="clingo.ast.AST" href="#clingo.ast.AST">AST</a></span>
 </code></dt>
 <dd>
 <div class="desc"><p>Construct an AST node of type <code><a title="clingo.ast.ASTType.Comparison" href="#clingo.ast.ASTType.Comparison">ASTType.Comparison</a></code>.</p></div>
@@ -2261,16 +2417,16 @@ def TheoryDefinition(location: Location, name: str, terms: Sequence[AST], atoms:
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def Comparison(term: AST, guards: Sequence[AST]) -&gt; AST:
+<pre><code class="python">def Comparison(comparison: int, left: AST, right: AST) -&gt; AST:
     &#39;&#39;&#39;
     Construct an AST node of type `ASTType.Comparison`.
     &#39;&#39;&#39;
     p_ast = _ffi.new(&#39;clingo_ast_t**&#39;)
     _handle_error(_lib.clingo_ast_build(
         _lib.clingo_ast_type_comparison, p_ast,
-        term._rep,
-        _ffi.new(&#39;clingo_ast_t*[]&#39;, [ x._rep for x in guards ]),
-        _ffi.cast(&#39;size_t&#39;, len(guards))))
+        _ffi.cast(&#39;int&#39;, comparison),
+        left._rep,
+        right._rep))
     return AST(p_ast[0])</code></pre>
 </details>
 </dd>
@@ -2295,6 +2451,97 @@ def TheoryDefinition(location: Location, name: str, terms: Sequence[AST], atoms:
         literal._rep,
         _ffi.new(&#39;clingo_ast_t*[]&#39;, [ x._rep for x in condition ]),
         _ffi.cast(&#39;size_t&#39;, len(condition))))
+    return AST(p_ast[0])</code></pre>
+</details>
+</dd>
+<dt id="clingo.ast.CspGuard"><code class="name flex">
+<span>def <span class="ident">CspGuard</span></span>(<span>comparison: int, term: <a title="clingo.ast.AST" href="#clingo.ast.AST">AST</a>) ‑> <a title="clingo.ast.AST" href="#clingo.ast.AST">AST</a></span>
+</code></dt>
+<dd>
+<div class="desc"><p>Construct an AST node of type <code><a title="clingo.ast.ASTType.CspGuard" href="#clingo.ast.ASTType.CspGuard">ASTType.CspGuard</a></code>.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def CspGuard(comparison: int, term: AST) -&gt; AST:
+    &#39;&#39;&#39;
+    Construct an AST node of type `ASTType.CspGuard`.
+    &#39;&#39;&#39;
+    p_ast = _ffi.new(&#39;clingo_ast_t**&#39;)
+    _handle_error(_lib.clingo_ast_build(
+        _lib.clingo_ast_type_csp_guard, p_ast,
+        _ffi.cast(&#39;int&#39;, comparison),
+        term._rep))
+    return AST(p_ast[0])</code></pre>
+</details>
+</dd>
+<dt id="clingo.ast.CspLiteral"><code class="name flex">
+<span>def <span class="ident">CspLiteral</span></span>(<span>location: <a title="clingo.ast.Location" href="#clingo.ast.Location">Location</a>, term: <a title="clingo.ast.AST" href="#clingo.ast.AST">AST</a>, guards: Sequence[<a title="clingo.ast.AST" href="#clingo.ast.AST">AST</a>]) ‑> <a title="clingo.ast.AST" href="#clingo.ast.AST">AST</a></span>
+</code></dt>
+<dd>
+<div class="desc"><p>Construct an AST node of type <code><a title="clingo.ast.ASTType.CspLiteral" href="#clingo.ast.ASTType.CspLiteral">ASTType.CspLiteral</a></code>.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def CspLiteral(location: Location, term: AST, guards: Sequence[AST]) -&gt; AST:
+    &#39;&#39;&#39;
+    Construct an AST node of type `ASTType.CspLiteral`.
+    &#39;&#39;&#39;
+    p_ast = _ffi.new(&#39;clingo_ast_t**&#39;)
+    c_location = _c_location(location)
+    _handle_error(_lib.clingo_ast_build(
+        _lib.clingo_ast_type_csp_literal, p_ast,
+        c_location[0],
+        term._rep,
+        _ffi.new(&#39;clingo_ast_t*[]&#39;, [ x._rep for x in guards ]),
+        _ffi.cast(&#39;size_t&#39;, len(guards))))
+    return AST(p_ast[0])</code></pre>
+</details>
+</dd>
+<dt id="clingo.ast.CspProduct"><code class="name flex">
+<span>def <span class="ident">CspProduct</span></span>(<span>location: <a title="clingo.ast.Location" href="#clingo.ast.Location">Location</a>, coefficient: <a title="clingo.ast.AST" href="#clingo.ast.AST">AST</a>, variable: Optional[<a title="clingo.ast.AST" href="#clingo.ast.AST">AST</a>]) ‑> <a title="clingo.ast.AST" href="#clingo.ast.AST">AST</a></span>
+</code></dt>
+<dd>
+<div class="desc"><p>Construct an AST node of type <code><a title="clingo.ast.ASTType.CspProduct" href="#clingo.ast.ASTType.CspProduct">ASTType.CspProduct</a></code>.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def CspProduct(location: Location, coefficient: AST, variable: Optional[AST]) -&gt; AST:
+    &#39;&#39;&#39;
+    Construct an AST node of type `ASTType.CspProduct`.
+    &#39;&#39;&#39;
+    p_ast = _ffi.new(&#39;clingo_ast_t**&#39;)
+    c_location = _c_location(location)
+    _handle_error(_lib.clingo_ast_build(
+        _lib.clingo_ast_type_csp_product, p_ast,
+        c_location[0],
+        coefficient._rep,
+        _ffi.NULL if variable is None else variable._rep))
+    return AST(p_ast[0])</code></pre>
+</details>
+</dd>
+<dt id="clingo.ast.CspSum"><code class="name flex">
+<span>def <span class="ident">CspSum</span></span>(<span>location: <a title="clingo.ast.Location" href="#clingo.ast.Location">Location</a>, terms: Sequence[<a title="clingo.ast.AST" href="#clingo.ast.AST">AST</a>]) ‑> <a title="clingo.ast.AST" href="#clingo.ast.AST">AST</a></span>
+</code></dt>
+<dd>
+<div class="desc"><p>Construct an AST node of type <code><a title="clingo.ast.ASTType.CspSum" href="#clingo.ast.ASTType.CspSum">ASTType.CspSum</a></code>.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def CspSum(location: Location, terms: Sequence[AST]) -&gt; AST:
+    &#39;&#39;&#39;
+    Construct an AST node of type `ASTType.CspSum`.
+    &#39;&#39;&#39;
+    p_ast = _ffi.new(&#39;clingo_ast_t**&#39;)
+    c_location = _c_location(location)
+    _handle_error(_lib.clingo_ast_build(
+        _lib.clingo_ast_type_csp_sum, p_ast,
+        c_location[0],
+        _ffi.new(&#39;clingo_ast_t*[]&#39;, [ x._rep for x in terms ]),
+        _ffi.cast(&#39;size_t&#39;, len(terms))))
     return AST(p_ast[0])</code></pre>
 </details>
 </dd>
@@ -2343,6 +2590,55 @@ def TheoryDefinition(location: Location, name: str, terms: Sequence[AST], atoms:
         _ffi.new(&#39;char const[]&#39;, name.encode()),
         value._rep,
         _ffi.cast(&#39;int&#39;, is_default)))
+    return AST(p_ast[0])</code></pre>
+</details>
+</dd>
+<dt id="clingo.ast.Disjoint"><code class="name flex">
+<span>def <span class="ident">Disjoint</span></span>(<span>location: <a title="clingo.ast.Location" href="#clingo.ast.Location">Location</a>, elements: Sequence[<a title="clingo.ast.AST" href="#clingo.ast.AST">AST</a>]) ‑> <a title="clingo.ast.AST" href="#clingo.ast.AST">AST</a></span>
+</code></dt>
+<dd>
+<div class="desc"><p>Construct an AST node of type <code><a title="clingo.ast.ASTType.Disjoint" href="#clingo.ast.ASTType.Disjoint">ASTType.Disjoint</a></code>.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def Disjoint(location: Location, elements: Sequence[AST]) -&gt; AST:
+    &#39;&#39;&#39;
+    Construct an AST node of type `ASTType.Disjoint`.
+    &#39;&#39;&#39;
+    p_ast = _ffi.new(&#39;clingo_ast_t**&#39;)
+    c_location = _c_location(location)
+    _handle_error(_lib.clingo_ast_build(
+        _lib.clingo_ast_type_disjoint, p_ast,
+        c_location[0],
+        _ffi.new(&#39;clingo_ast_t*[]&#39;, [ x._rep for x in elements ]),
+        _ffi.cast(&#39;size_t&#39;, len(elements))))
+    return AST(p_ast[0])</code></pre>
+</details>
+</dd>
+<dt id="clingo.ast.DisjointElement"><code class="name flex">
+<span>def <span class="ident">DisjointElement</span></span>(<span>location: <a title="clingo.ast.Location" href="#clingo.ast.Location">Location</a>, terms: Sequence[<a title="clingo.ast.AST" href="#clingo.ast.AST">AST</a>], term: <a title="clingo.ast.AST" href="#clingo.ast.AST">AST</a>, condition: Sequence[<a title="clingo.ast.AST" href="#clingo.ast.AST">AST</a>]) ‑> <a title="clingo.ast.AST" href="#clingo.ast.AST">AST</a></span>
+</code></dt>
+<dd>
+<div class="desc"><p>Construct an AST node of type <code><a title="clingo.ast.ASTType.DisjointElement" href="#clingo.ast.ASTType.DisjointElement">ASTType.DisjointElement</a></code>.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def DisjointElement(location: Location, terms: Sequence[AST], term: AST, condition: Sequence[AST]) -&gt; AST:
+    &#39;&#39;&#39;
+    Construct an AST node of type `ASTType.DisjointElement`.
+    &#39;&#39;&#39;
+    p_ast = _ffi.new(&#39;clingo_ast_t**&#39;)
+    c_location = _c_location(location)
+    _handle_error(_lib.clingo_ast_build(
+        _lib.clingo_ast_type_disjoint_element, p_ast,
+        c_location[0],
+        _ffi.new(&#39;clingo_ast_t*[]&#39;, [ x._rep for x in terms ]),
+        _ffi.cast(&#39;size_t&#39;, len(terms)),
+        term._rep,
+        _ffi.new(&#39;clingo_ast_t*[]&#39;, [ x._rep for x in condition ]),
+        _ffi.cast(&#39;size_t&#39;, len(condition))))
     return AST(p_ast[0])</code></pre>
 </details>
 </dd>
@@ -2441,27 +2737,6 @@ def TheoryDefinition(location: Location, name: str, terms: Sequence[AST], atoms:
         _ffi.new(&#39;clingo_ast_t*[]&#39;, [ x._rep for x in arguments ]),
         _ffi.cast(&#39;size_t&#39;, len(arguments)),
         _ffi.cast(&#39;int&#39;, external)))
-    return AST(p_ast[0])</code></pre>
-</details>
-</dd>
-<dt id="clingo.ast.Guard"><code class="name flex">
-<span>def <span class="ident">Guard</span></span>(<span>comparison: int, term: <a title="clingo.ast.AST" href="#clingo.ast.AST">AST</a>) ‑> <a title="clingo.ast.AST" href="#clingo.ast.AST">AST</a></span>
-</code></dt>
-<dd>
-<div class="desc"><p>Construct an AST node of type <code><a title="clingo.ast.ASTType.Guard" href="#clingo.ast.ASTType.Guard">ASTType.Guard</a></code>.</p></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def Guard(comparison: int, term: AST) -&gt; AST:
-    &#39;&#39;&#39;
-    Construct an AST node of type `ASTType.Guard`.
-    &#39;&#39;&#39;
-    p_ast = _ffi.new(&#39;clingo_ast_t**&#39;)
-    _handle_error(_lib.clingo_ast_build(
-        _lib.clingo_ast_type_guard, p_ast,
-        _ffi.cast(&#39;int&#39;, comparison),
-        term._rep))
     return AST(p_ast[0])</code></pre>
 </details>
 </dd>
@@ -2779,7 +3054,7 @@ def TheoryDefinition(location: Location, name: str, terms: Sequence[AST], atoms:
 </details>
 </dd>
 <dt id="clingo.ast.ShowSignature"><code class="name flex">
-<span>def <span class="ident">ShowSignature</span></span>(<span>location: <a title="clingo.ast.Location" href="#clingo.ast.Location">Location</a>, name: str, arity: int, positive: int) ‑> <a title="clingo.ast.AST" href="#clingo.ast.AST">AST</a></span>
+<span>def <span class="ident">ShowSignature</span></span>(<span>location: <a title="clingo.ast.Location" href="#clingo.ast.Location">Location</a>, name: str, arity: int, positive: int, csp: int) ‑> <a title="clingo.ast.AST" href="#clingo.ast.AST">AST</a></span>
 </code></dt>
 <dd>
 <div class="desc"><p>Construct an AST node of type <code><a title="clingo.ast.ASTType.ShowSignature" href="#clingo.ast.ASTType.ShowSignature">ASTType.ShowSignature</a></code>.</p></div>
@@ -2787,7 +3062,7 @@ def TheoryDefinition(location: Location, name: str, terms: Sequence[AST], atoms:
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def ShowSignature(location: Location, name: str, arity: int, positive: int) -&gt; AST:
+<pre><code class="python">def ShowSignature(location: Location, name: str, arity: int, positive: int, csp: int) -&gt; AST:
     &#39;&#39;&#39;
     Construct an AST node of type `ASTType.ShowSignature`.
     &#39;&#39;&#39;
@@ -2798,12 +3073,13 @@ def TheoryDefinition(location: Location, name: str, terms: Sequence[AST], atoms:
         c_location[0],
         _ffi.new(&#39;char const[]&#39;, name.encode()),
         _ffi.cast(&#39;int&#39;, arity),
-        _ffi.cast(&#39;int&#39;, positive)))
+        _ffi.cast(&#39;int&#39;, positive),
+        _ffi.cast(&#39;int&#39;, csp)))
     return AST(p_ast[0])</code></pre>
 </details>
 </dd>
 <dt id="clingo.ast.ShowTerm"><code class="name flex">
-<span>def <span class="ident">ShowTerm</span></span>(<span>location: <a title="clingo.ast.Location" href="#clingo.ast.Location">Location</a>, term: <a title="clingo.ast.AST" href="#clingo.ast.AST">AST</a>, body: Sequence[<a title="clingo.ast.AST" href="#clingo.ast.AST">AST</a>]) ‑> <a title="clingo.ast.AST" href="#clingo.ast.AST">AST</a></span>
+<span>def <span class="ident">ShowTerm</span></span>(<span>location: <a title="clingo.ast.Location" href="#clingo.ast.Location">Location</a>, term: <a title="clingo.ast.AST" href="#clingo.ast.AST">AST</a>, body: Sequence[<a title="clingo.ast.AST" href="#clingo.ast.AST">AST</a>], csp: int) ‑> <a title="clingo.ast.AST" href="#clingo.ast.AST">AST</a></span>
 </code></dt>
 <dd>
 <div class="desc"><p>Construct an AST node of type <code><a title="clingo.ast.ASTType.ShowTerm" href="#clingo.ast.ASTType.ShowTerm">ASTType.ShowTerm</a></code>.</p></div>
@@ -2811,7 +3087,7 @@ def TheoryDefinition(location: Location, name: str, terms: Sequence[AST], atoms:
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def ShowTerm(location: Location, term: AST, body: Sequence[AST]) -&gt; AST:
+<pre><code class="python">def ShowTerm(location: Location, term: AST, body: Sequence[AST], csp: int) -&gt; AST:
     &#39;&#39;&#39;
     Construct an AST node of type `ASTType.ShowTerm`.
     &#39;&#39;&#39;
@@ -2822,7 +3098,8 @@ def TheoryDefinition(location: Location, name: str, terms: Sequence[AST], atoms:
         c_location[0],
         term._rep,
         _ffi.new(&#39;clingo_ast_t*[]&#39;, [ x._rep for x in body ]),
-        _ffi.cast(&#39;size_t&#39;, len(body))))
+        _ffi.cast(&#39;size_t&#39;, len(body)),
+        _ffi.cast(&#39;int&#39;, csp)))
     return AST(p_ast[0])</code></pre>
 </details>
 </dd>
@@ -3181,7 +3458,7 @@ def TheoryDefinition(location: Location, name: str, terms: Sequence[AST], atoms:
 </details>
 </dd>
 <dt id="clingo.ast.parse_files"><code class="name flex">
-<span>def <span class="ident">parse_files</span></span>(<span>files: Sequence[str], callback: Callable[[<a title="clingo.ast.AST" href="#clingo.ast.AST">AST</a>], None], control: <a title="clingo.control.Control" href="control.html#clingo.control.Control">Control</a> = None, logger: Optional[Callable[[<a title="clingo.core.MessageCode" href="core.html#clingo.core.MessageCode">MessageCode</a>, str], None]] = None, message_limit: int = 20) ‑> None</span>
+<span>def <span class="ident">parse_files</span></span>(<span>files: Sequence[str], callback: Callable[[<a title="clingo.ast.AST" href="#clingo.ast.AST">AST</a>], None], logger: Optional[Callable[[<a title="clingo.core.MessageCode" href="core.html#clingo.core.MessageCode">MessageCode</a>, str], None]] = None, message_limit: int = 20) ‑> None</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Parse the programs in the given files and return an abstract syntax tree for
@@ -3189,16 +3466,12 @@ each statement via a callback.</p>
 <p>The function follows clingo's handling of files on the command line. Filename
 <code>"-"</code> is treated as stdin and if an empty list is given, then the parser will
 read from stdin.</p>
-<p>The optional control object can be added to enable parsing of files in
-ASPIF format. The ground statements will be added to the control object.</p>
 <h2 id="parameters">Parameters</h2>
 <dl>
 <dt><strong><code>files</code></strong></dt>
 <dd>List of file names.</dd>
 <dt><strong><code>callback</code></strong></dt>
 <dd>Callable taking an ast as argument.</dd>
-<dt><strong><code>control</code></strong></dt>
-<dd>Control object to add ground rules to.</dd>
 <dt><strong><code>logger</code></strong></dt>
 <dd>Function to intercept messages normally printed to standard error.</dd>
 <dt><strong><code>message_limit</code></strong></dt>
@@ -3210,7 +3483,7 @@ ASPIF format. The ground statements will be added to the control object.</p>
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def parse_files(files: Sequence[str], callback: Callable[[AST], None], control: Control=None,
+<pre><code class="python">def parse_files(files: Sequence[str], callback: Callable[[AST], None],
                 logger: Optional[Logger]=None, message_limit: int=20) -&gt; None:
     &#39;&#39;&#39;
     Parse the programs in the given files and return an abstract syntax tree for
@@ -3220,17 +3493,12 @@ ASPIF format. The ground statements will be added to the control object.</p>
     `&#34;-&#34;` is treated as stdin and if an empty list is given, then the parser will
     read from stdin.
 
-    The optional control object can be added to enable parsing of files in
-    ASPIF format. The ground statements will be added to the control object.
-
     Parameters
     ----------
     files
         List of file names.
     callback
         Callable taking an ast as argument.
-    control
-        Control object to add ground rules to.
     logger
         Function to intercept messages normally printed to standard error.
     message_limit
@@ -3240,8 +3508,6 @@ ASPIF format. The ground statements will be added to the control object.</p>
     --------
     ProgramBuilder
     &#39;&#39;&#39;
-    c_control = control._rep if control is not None else _ffi.NULL
-
     if logger is not None:
         c_logger_data = _ffi.new_handle(logger)
         c_logger = _lib.pyclingo_logger_callback
@@ -3255,26 +3521,22 @@ ASPIF format. The ground statements will be added to the control object.</p>
 
     _handle_error(_lib.clingo_ast_parse_files([ _ffi.new(&#39;char[]&#39;, f.encode()) for f in files ], len(files),
                                               _lib.pyclingo_ast_callback, c_cb_data,
-                                              c_control, c_logger, c_logger_data,
+                                              c_logger, c_logger_data,
                                               message_limit), cb_data)</code></pre>
 </details>
 </dd>
 <dt id="clingo.ast.parse_string"><code class="name flex">
-<span>def <span class="ident">parse_string</span></span>(<span>program: str, callback: Callable[[<a title="clingo.ast.AST" href="#clingo.ast.AST">AST</a>], None], control: <a title="clingo.control.Control" href="control.html#clingo.control.Control">Control</a> = None, logger: Optional[Callable[[<a title="clingo.core.MessageCode" href="core.html#clingo.core.MessageCode">MessageCode</a>, str], None]] = None, message_limit: int = 20) ‑> None</span>
+<span>def <span class="ident">parse_string</span></span>(<span>program: str, callback: Callable[[<a title="clingo.ast.AST" href="#clingo.ast.AST">AST</a>], None], logger: Optional[Callable[[<a title="clingo.core.MessageCode" href="core.html#clingo.core.MessageCode">MessageCode</a>, str], None]] = None, message_limit: int = 20) ‑> None</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Parse the given program and return an abstract syntax tree for each
 statement via a callback.</p>
-<p>The optional control object can be added to enable parsing of files in
-ASPIF format. The ground statements will be added to the control object.</p>
 <h2 id="parameters">Parameters</h2>
 <dl>
 <dt><strong><code>program</code></strong></dt>
 <dd>String representation of the program.</dd>
 <dt><strong><code>callback</code></strong></dt>
 <dd>Callable taking an ast as argument.</dd>
-<dt><strong><code>control</code></strong></dt>
-<dd>Control object to add ground rules to.</dd>
 <dt><strong><code>logger</code></strong></dt>
 <dd>Function to intercept messages normally printed to standard error.</dd>
 <dt><strong><code>message_limit</code></strong></dt>
@@ -3286,14 +3548,11 @@ ASPIF format. The ground statements will be added to the control object.</p>
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def parse_string(program: str, callback: Callable[[AST], None], control: Control=None,
+<pre><code class="python">def parse_string(program: str, callback: Callable[[AST], None],
                  logger: Optional[Logger]=None, message_limit: int=20) -&gt; None:
     &#39;&#39;&#39;
     Parse the given program and return an abstract syntax tree for each
     statement via a callback.
-
-    The optional control object can be added to enable parsing of files in
-    ASPIF format. The ground statements will be added to the control object.
 
     Parameters
     ----------
@@ -3301,8 +3560,6 @@ ASPIF format. The ground statements will be added to the control object.</p>
         String representation of the program.
     callback
         Callable taking an ast as argument.
-    control
-        Control object to add ground rules to.
     logger
         Function to intercept messages normally printed to standard error.
     message_limit
@@ -3312,8 +3569,6 @@ ASPIF format. The ground statements will be added to the control object.</p>
     --------
     ProgramBuilder
     &#39;&#39;&#39;
-    c_control = control._rep if control is not None else _ffi.NULL
-
     if logger is not None:
         c_logger_data = _ffi.new_handle(logger)
         c_logger = _lib.pyclingo_logger_callback
@@ -3327,7 +3582,7 @@ ASPIF format. The ground statements will be added to the control object.</p>
 
     _handle_error(_lib.clingo_ast_parse_string(program.encode(),
                                                _lib.pyclingo_ast_callback, c_cb_data,
-                                               c_control, c_logger, c_logger_data,
+                                               c_logger, c_logger_data,
                                                message_limit), cb_data)</code></pre>
 </details>
 </dd>
@@ -3850,7 +4105,7 @@ given.</p></div>
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">class ASTType(OrderedEnum):
+<pre><code class="python">class ASTType(Enum):
     &#39;&#39;&#39;
     Enumeration of ast node types.
     &#39;&#39;&#39;
@@ -3862,10 +4117,14 @@ given.</p></div>
     Interval = _lib.clingo_ast_type_interval
     Function = _lib.clingo_ast_type_function
     Pool = _lib.clingo_ast_type_pool
+    CspProduct = _lib.clingo_ast_type_csp_product
+    CspSum = _lib.clingo_ast_type_csp_sum
+    CspGuard = _lib.clingo_ast_type_csp_guard
     BooleanConstant = _lib.clingo_ast_type_boolean_constant
     SymbolicAtom = _lib.clingo_ast_type_symbolic_atom
     Comparison = _lib.clingo_ast_type_comparison
-    Guard = _lib.clingo_ast_type_guard
+    CspLiteral = _lib.clingo_ast_type_csp_literal
+    AggregateGuard = _lib.clingo_ast_type_aggregate_guard
     ConditionalLiteral = _lib.clingo_ast_type_conditional_literal
     Aggregate = _lib.clingo_ast_type_aggregate
     BodyAggregateElement = _lib.clingo_ast_type_body_aggregate_element
@@ -3873,6 +4132,8 @@ given.</p></div>
     HeadAggregateElement = _lib.clingo_ast_type_head_aggregate_element
     HeadAggregate = _lib.clingo_ast_type_head_aggregate
     Disjunction = _lib.clingo_ast_type_disjunction
+    DisjointElement = _lib.clingo_ast_type_disjoint_element
+    Disjoint = _lib.clingo_ast_type_disjoint
     TheorySequence = _lib.clingo_ast_type_theory_sequence
     TheoryFunction = _lib.clingo_ast_type_theory_function
     TheoryUnparsedTermElement = _lib.clingo_ast_type_theory_unparsed_term_element
@@ -3902,12 +4163,15 @@ given.</p></div>
 </details>
 <h3>Ancestors</h3>
 <ul class="hlist">
-<li><a title="clingo.core.OrderedEnum" href="core.html#clingo.core.OrderedEnum">OrderedEnum</a></li>
 <li>enum.Enum</li>
 </ul>
 <h3>Class variables</h3>
 <dl>
 <dt id="clingo.ast.ASTType.Aggregate"><code class="name">var <span class="ident">Aggregate</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="clingo.ast.ASTType.AggregateGuard"><code class="name">var <span class="ident">AggregateGuard</span></code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
@@ -3935,11 +4199,35 @@ given.</p></div>
 <dd>
 <div class="desc"></div>
 </dd>
+<dt id="clingo.ast.ASTType.CspGuard"><code class="name">var <span class="ident">CspGuard</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="clingo.ast.ASTType.CspLiteral"><code class="name">var <span class="ident">CspLiteral</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="clingo.ast.ASTType.CspProduct"><code class="name">var <span class="ident">CspProduct</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="clingo.ast.ASTType.CspSum"><code class="name">var <span class="ident">CspSum</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
 <dt id="clingo.ast.ASTType.Defined"><code class="name">var <span class="ident">Defined</span></code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
 <dt id="clingo.ast.ASTType.Definition"><code class="name">var <span class="ident">Definition</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="clingo.ast.ASTType.Disjoint"><code class="name">var <span class="ident">Disjoint</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="clingo.ast.ASTType.DisjointElement"><code class="name">var <span class="ident">DisjointElement</span></code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
@@ -3956,10 +4244,6 @@ given.</p></div>
 <div class="desc"></div>
 </dd>
 <dt id="clingo.ast.ASTType.Function"><code class="name">var <span class="ident">Function</span></code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
-<dt id="clingo.ast.ASTType.Guard"><code class="name">var <span class="ident">Guard</span></code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
@@ -4449,7 +4733,7 @@ statement.</p></div>
     statement.
     &#39;&#39;&#39;
     def __init__(self, control: Control):
-        self._rep = _c_call(&#39;clingo_program_builder_t*&#39;, _lib.clingo_program_builder_init, control._rep)
+        self._rep = _c_call(&#39;clingo_program_builder_t*&#39;, _lib.clingo_control_program_builder, control._rep)
 
     def __enter__(self):
         _handle_error(_lib.clingo_program_builder_begin(self._rep))
@@ -4916,7 +5200,6 @@ only self references are returned from such functions.</p>
 </details>
 <h3>Subclasses</h3>
 <ul class="hlist">
-<li><a title="clingo.tests.test_ast.VariableRenamer" href="tests/test_ast.html#clingo.tests.test_ast.VariableRenamer">VariableRenamer</a></li>
 <li><a title="clingox.ast.TheoryParser" href="../clingox/ast.html#clingox.ast.TheoryParser">TheoryParser</a></li>
 <li><a title="clingox.ast.TheoryTermParser" href="../clingox/ast.html#clingox.ast.TheoryTermParser">TheoryTermParser</a></li>
 <li>clingox.ast._SymbolicAtomTransformer</li>
@@ -5069,19 +5352,25 @@ changes or a list of ASTs otherwise.</p></div>
 <li><h3><a href="#header-functions">Functions</a></h3>
 <ul class="">
 <li><code><a title="clingo.ast.Aggregate" href="#clingo.ast.Aggregate">Aggregate</a></code></li>
+<li><code><a title="clingo.ast.AggregateGuard" href="#clingo.ast.AggregateGuard">AggregateGuard</a></code></li>
 <li><code><a title="clingo.ast.BinaryOperation" href="#clingo.ast.BinaryOperation">BinaryOperation</a></code></li>
 <li><code><a title="clingo.ast.BodyAggregate" href="#clingo.ast.BodyAggregate">BodyAggregate</a></code></li>
 <li><code><a title="clingo.ast.BodyAggregateElement" href="#clingo.ast.BodyAggregateElement">BodyAggregateElement</a></code></li>
 <li><code><a title="clingo.ast.BooleanConstant" href="#clingo.ast.BooleanConstant">BooleanConstant</a></code></li>
 <li><code><a title="clingo.ast.Comparison" href="#clingo.ast.Comparison">Comparison</a></code></li>
 <li><code><a title="clingo.ast.ConditionalLiteral" href="#clingo.ast.ConditionalLiteral">ConditionalLiteral</a></code></li>
+<li><code><a title="clingo.ast.CspGuard" href="#clingo.ast.CspGuard">CspGuard</a></code></li>
+<li><code><a title="clingo.ast.CspLiteral" href="#clingo.ast.CspLiteral">CspLiteral</a></code></li>
+<li><code><a title="clingo.ast.CspProduct" href="#clingo.ast.CspProduct">CspProduct</a></code></li>
+<li><code><a title="clingo.ast.CspSum" href="#clingo.ast.CspSum">CspSum</a></code></li>
 <li><code><a title="clingo.ast.Defined" href="#clingo.ast.Defined">Defined</a></code></li>
 <li><code><a title="clingo.ast.Definition" href="#clingo.ast.Definition">Definition</a></code></li>
+<li><code><a title="clingo.ast.Disjoint" href="#clingo.ast.Disjoint">Disjoint</a></code></li>
+<li><code><a title="clingo.ast.DisjointElement" href="#clingo.ast.DisjointElement">DisjointElement</a></code></li>
 <li><code><a title="clingo.ast.Disjunction" href="#clingo.ast.Disjunction">Disjunction</a></code></li>
 <li><code><a title="clingo.ast.Edge" href="#clingo.ast.Edge">Edge</a></code></li>
 <li><code><a title="clingo.ast.External" href="#clingo.ast.External">External</a></code></li>
 <li><code><a title="clingo.ast.Function" href="#clingo.ast.Function">Function</a></code></li>
-<li><code><a title="clingo.ast.Guard" href="#clingo.ast.Guard">Guard</a></code></li>
 <li><code><a title="clingo.ast.HeadAggregate" href="#clingo.ast.HeadAggregate">HeadAggregate</a></code></li>
 <li><code><a title="clingo.ast.HeadAggregateElement" href="#clingo.ast.HeadAggregateElement">HeadAggregateElement</a></code></li>
 <li><code><a title="clingo.ast.Heuristic" href="#clingo.ast.Heuristic">Heuristic</a></code></li>
@@ -5141,19 +5430,25 @@ changes or a list of ASTs otherwise.</p></div>
 <h4><code><a title="clingo.ast.ASTType" href="#clingo.ast.ASTType">ASTType</a></code></h4>
 <ul class="">
 <li><code><a title="clingo.ast.ASTType.Aggregate" href="#clingo.ast.ASTType.Aggregate">Aggregate</a></code></li>
+<li><code><a title="clingo.ast.ASTType.AggregateGuard" href="#clingo.ast.ASTType.AggregateGuard">AggregateGuard</a></code></li>
 <li><code><a title="clingo.ast.ASTType.BinaryOperation" href="#clingo.ast.ASTType.BinaryOperation">BinaryOperation</a></code></li>
 <li><code><a title="clingo.ast.ASTType.BodyAggregate" href="#clingo.ast.ASTType.BodyAggregate">BodyAggregate</a></code></li>
 <li><code><a title="clingo.ast.ASTType.BodyAggregateElement" href="#clingo.ast.ASTType.BodyAggregateElement">BodyAggregateElement</a></code></li>
 <li><code><a title="clingo.ast.ASTType.BooleanConstant" href="#clingo.ast.ASTType.BooleanConstant">BooleanConstant</a></code></li>
 <li><code><a title="clingo.ast.ASTType.Comparison" href="#clingo.ast.ASTType.Comparison">Comparison</a></code></li>
 <li><code><a title="clingo.ast.ASTType.ConditionalLiteral" href="#clingo.ast.ASTType.ConditionalLiteral">ConditionalLiteral</a></code></li>
+<li><code><a title="clingo.ast.ASTType.CspGuard" href="#clingo.ast.ASTType.CspGuard">CspGuard</a></code></li>
+<li><code><a title="clingo.ast.ASTType.CspLiteral" href="#clingo.ast.ASTType.CspLiteral">CspLiteral</a></code></li>
+<li><code><a title="clingo.ast.ASTType.CspProduct" href="#clingo.ast.ASTType.CspProduct">CspProduct</a></code></li>
+<li><code><a title="clingo.ast.ASTType.CspSum" href="#clingo.ast.ASTType.CspSum">CspSum</a></code></li>
 <li><code><a title="clingo.ast.ASTType.Defined" href="#clingo.ast.ASTType.Defined">Defined</a></code></li>
 <li><code><a title="clingo.ast.ASTType.Definition" href="#clingo.ast.ASTType.Definition">Definition</a></code></li>
+<li><code><a title="clingo.ast.ASTType.Disjoint" href="#clingo.ast.ASTType.Disjoint">Disjoint</a></code></li>
+<li><code><a title="clingo.ast.ASTType.DisjointElement" href="#clingo.ast.ASTType.DisjointElement">DisjointElement</a></code></li>
 <li><code><a title="clingo.ast.ASTType.Disjunction" href="#clingo.ast.ASTType.Disjunction">Disjunction</a></code></li>
 <li><code><a title="clingo.ast.ASTType.Edge" href="#clingo.ast.ASTType.Edge">Edge</a></code></li>
 <li><code><a title="clingo.ast.ASTType.External" href="#clingo.ast.ASTType.External">External</a></code></li>
 <li><code><a title="clingo.ast.ASTType.Function" href="#clingo.ast.ASTType.Function">Function</a></code></li>
-<li><code><a title="clingo.ast.ASTType.Guard" href="#clingo.ast.ASTType.Guard">Guard</a></code></li>
 <li><code><a title="clingo.ast.ASTType.HeadAggregate" href="#clingo.ast.ASTType.HeadAggregate">HeadAggregate</a></code></li>
 <li><code><a title="clingo.ast.ASTType.HeadAggregateElement" href="#clingo.ast.ASTType.HeadAggregateElement">HeadAggregateElement</a></code></li>
 <li><code><a title="clingo.ast.ASTType.Heuristic" href="#clingo.ast.ASTType.Heuristic">Heuristic</a></code></li>

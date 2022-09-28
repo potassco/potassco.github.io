@@ -104,10 +104,10 @@ SAT
 &#39;&#39;&#39;
 
 from typing import Iterable, Iterator, Optional, Sequence, Tuple
+from enum import Enum
 from abc import ABCMeta
 
 from ._internal import _cb_error_handler, _c_call, _ffi, _handle_error, _lib
-from .core import OrderedEnum
 from .util import Slice, SlicedSequence
 from .symbolic_atoms import SymbolicAtoms
 from .theory_atoms import TheoryAtom
@@ -333,7 +333,7 @@ class Assignment(Sequence[int]):
         &#39;&#39;&#39;
         return Trail(self._rep)
 
-class PropagatorCheckMode(OrderedEnum):
+class PropagatorCheckMode(Enum):
     &#39;&#39;&#39;
     Enumeration of supported check modes for propagators.
 
@@ -2615,13 +2615,6 @@ can be omitted if not needed.</p></div>
         # pylint: disable=unused-argument
         return fallback</code></pre>
 </details>
-<h3>Subclasses</h3>
-<ul class="hlist">
-<li><a title="clingo.tests.test_propagator.TestHeuristic" href="tests/test_propagator.html#clingo.tests.test_propagator.TestHeuristic">TestHeuristic</a></li>
-<li><a title="clingo.tests.test_propagator.TestPropagator" href="tests/test_propagator.html#clingo.tests.test_propagator.TestPropagator">TestPropagator</a></li>
-<li><a title="clingo.tests.test_propagator.TestPropagatorControl" href="tests/test_propagator.html#clingo.tests.test_propagator.TestPropagatorControl">TestPropagatorControl</a></li>
-<li><a title="clingo.tests.test_propagator.TestPropagatorInit" href="tests/test_propagator.html#clingo.tests.test_propagator.TestPropagatorInit">TestPropagatorInit</a></li>
-</ul>
 <h3>Methods</h3>
 <dl>
 <dt id="clingo.propagator.Propagator.check"><code class="name flex">
@@ -2890,7 +2883,7 @@ assignments in check calls.</p></div>
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">class PropagatorCheckMode(OrderedEnum):
+<pre><code class="python">class PropagatorCheckMode(Enum):
     &#39;&#39;&#39;
     Enumeration of supported check modes for propagators.
 
@@ -2917,7 +2910,6 @@ assignments in check calls.</p></div>
 </details>
 <h3>Ancestors</h3>
 <ul class="hlist">
-<li><a title="clingo.core.OrderedEnum" href="core.html#clingo.core.OrderedEnum">OrderedEnum</a></li>
 <li>enum.Enum</li>
 </ul>
 <h3>Class variables</h3>

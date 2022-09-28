@@ -30,35 +30,23 @@ controling grounding and solving …" />
 <p>This module contains the <code><a title="clingo.control.Control" href="#clingo.control.Control">Control</a></code> class responsible for
 controling grounding and solving.</p>
 <h2 id="examples">Examples</h2>
-<p>The following example shows the basic ground solve process:</p>
+<p>The following example shows basic (multishot) grounding and solving.</p>
 <pre><code>&gt;&gt;&gt; from clingo.symbol import Number
 &gt;&gt;&gt; from clingo.control import Control
 &gt;&gt;&gt;
 &gt;&gt;&gt; ctl = Control()
-&gt;&gt;&gt; ctl.add("q.")
+&gt;&gt;&gt; ctl.add("base", [], "q.")
+&gt;&gt;&gt; ctl.add("p", ["t"], "q(t).")
 &gt;&gt;&gt;
-&gt;&gt;&gt; ctl.ground()
+&gt;&gt;&gt; ctl.ground([("base", [])])
 &gt;&gt;&gt; print(ctl.solve(on_model=print))
 q
 SAT
-</code></pre>
-<p>The following example shows basic (multishot) grounding and solving:</p>
-<pre><code>&gt;&gt;&gt; from clingo.symbol import Number
-&gt;&gt;&gt; from clingo.control import Control
-&gt;&gt;&gt;
-&gt;&gt;&gt; ctl = Control()
-&gt;&gt;&gt; ctl.add("a", [], "q.")
-&gt;&gt;&gt; ctl.add("b", ["t"], "q(t).")
-&gt;&gt;&gt;
-&gt;&gt;&gt; ctl.ground([("a", [])])
-&gt;&gt;&gt; print(ctl.solve(on_model=print))
-q
-SAT
-&gt;&gt;&gt; ctl.ground([("b", [Number(1)]), ("p", [Number(2)])])
+&gt;&gt;&gt; ctl.ground([("p", [Number(1)]), ("p", [Number(2)])])
 &gt;&gt;&gt; print(ctl.solve(on_model=print))
 q q(1) q(2)
 SAT
-&gt;&gt;&gt; ctl.ground([("b", [Number(3)])])
+&gt;&gt;&gt; ctl.ground([("p", [Number(3)])])
 &gt;&gt;&gt; print(ctl.solve(on_model=print))
 q q(1) q(2) q(3)
 SAT
@@ -73,43 +61,30 @@ controling grounding and solving.
 
 Examples
 --------
-The following example shows the basic ground solve process:
+The following example shows basic (multishot) grounding and solving.
 
     &gt;&gt;&gt; from clingo.symbol import Number
     &gt;&gt;&gt; from clingo.control import Control
     &gt;&gt;&gt;
     &gt;&gt;&gt; ctl = Control()
-    &gt;&gt;&gt; ctl.add(&#34;q.&#34;)
+    &gt;&gt;&gt; ctl.add(&#34;base&#34;, [], &#34;q.&#34;)
+    &gt;&gt;&gt; ctl.add(&#34;p&#34;, [&#34;t&#34;], &#34;q(t).&#34;)
     &gt;&gt;&gt;
-    &gt;&gt;&gt; ctl.ground()
+    &gt;&gt;&gt; ctl.ground([(&#34;base&#34;, [])])
     &gt;&gt;&gt; print(ctl.solve(on_model=print))
     q
     SAT
-
-The following example shows basic (multishot) grounding and solving:
-
-    &gt;&gt;&gt; from clingo.symbol import Number
-    &gt;&gt;&gt; from clingo.control import Control
-    &gt;&gt;&gt;
-    &gt;&gt;&gt; ctl = Control()
-    &gt;&gt;&gt; ctl.add(&#34;a&#34;, [], &#34;q.&#34;)
-    &gt;&gt;&gt; ctl.add(&#34;b&#34;, [&#34;t&#34;], &#34;q(t).&#34;)
-    &gt;&gt;&gt;
-    &gt;&gt;&gt; ctl.ground([(&#34;a&#34;, [])])
-    &gt;&gt;&gt; print(ctl.solve(on_model=print))
-    q
-    SAT
-    &gt;&gt;&gt; ctl.ground([(&#34;b&#34;, [Number(1)]), (&#34;p&#34;, [Number(2)])])
+    &gt;&gt;&gt; ctl.ground([(&#34;p&#34;, [Number(1)]), (&#34;p&#34;, [Number(2)])])
     &gt;&gt;&gt; print(ctl.solve(on_model=print))
     q q(1) q(2)
     SAT
-    &gt;&gt;&gt; ctl.ground([(&#34;b&#34;, [Number(3)])])
+    &gt;&gt;&gt; ctl.ground([(&#34;p&#34;, [Number(3)])])
     &gt;&gt;&gt; print(ctl.solve(on_model=print))
     q q(1) q(2) q(3)
     SAT
 &#39;&#39;&#39;
 
-from typing import Any, Callable, Iterator, Optional, Sequence, Tuple, Union, cast, overload
+from typing import Any, Callable, Iterator, Optional, Sequence, Tuple, Union, cast
 from collections import abc
 import sys
 
@@ -253,7 +228,6 @@ class Control:
         if self._free:
             _lib.clingo_control_free(self._rep)
 
-    @overload
     def add(self, name: str, parameters: Sequence[str], program: str) -&gt; None:
         &#39;&#39;&#39;
         Extend the logic program with the given non-ground logic program in string form.
@@ -271,65 +245,6 @@ class Control:
         --------
         Control.ground
         &#39;&#39;&#39;
-        c_mem = []
-        c_params = _ffi.new(&#39;char*[]&#39;, len(parameters))
-        for i, param in enumerate(parameters):
-            c_mem.append(_ffi.new(&#34;char[]&#34;, param.encode()))
-            c_params[i] = c_mem[-1]
-        _handle_error(_lib.clingo_control_add(self._rep, name.encode(), c_params, len(parameters), program.encode()))
-
-    @overload
-    def add(self, program: str) -&gt; None:
-        &#39;&#39;&#39;
-        Extend the logic program with the given non-ground logic program in string form.
-
-        Parameters
-        ----------
-        name
-            The name of program block to add.
-
-        Notes
-        -----
-        This function is equivalent to calling `add(&#34;base&#34;, [], program)`.
-        &#39;&#39;&#39;
-
-    def add(self, *args, **kwargs) -&gt; None:
-        &#39;&#39;&#39;
-        Extend the logic program with the given non-ground logic program in string form.
-
-        This function provides two overloads:
-
-        ```python
-        def add(self, name: str, parameters: Sequence[str], program: str) -&gt; None:
-            ...
-
-        def add(self, program: str) -&gt; None:
-            return self.add(&#34;base&#34;, [], program)
-        ```
-
-        Parameters
-        ----------
-        name
-            The name of program block to add.
-        parameters
-            The parameters of the program block to add.
-        program
-            The non-ground program in string form.
-
-        See Also
-        --------
-        Control.ground
-        &#39;&#39;&#39;
-        n = len(args) + len(kwargs)
-        if n == 1:
-            self._add1(*args, **kwargs)
-        else:
-            self._add2(*args, **kwargs)
-
-    def _add1(self, program: str) -&gt; None:
-        return self._add2(&#34;base&#34;, [], program)
-
-    def _add2(self, name: str, parameters: Sequence[str], program: str) -&gt; None:
         c_mem = []
         c_params = _ffi.new(&#39;char*[]&#39;, len(parameters))
         for i, param in enumerate(parameters):
@@ -441,7 +356,7 @@ class Control:
 
         return Symbol(_c_call(&#39;clingo_symbol_t&#39;, _lib.clingo_control_get_const, self._rep, name.encode()))
 
-    def ground(self, parts: Sequence[Tuple[str,Sequence[Symbol]]]=((&#34;base&#34;, ()),), context: Any=None) -&gt; None:
+    def ground(self, parts: Sequence[Tuple[str,Sequence[Symbol]]], context: Any=None) -&gt; None:
         &#39;&#39;&#39;
         Ground the given list of program parts specified by tuples of names and
         arguments.
@@ -532,6 +447,7 @@ class Control:
             _lib.pyclingo_observer_project if _overwritten(Observer, observer, &#34;project&#34;) else _ffi.NULL,
             _lib.pyclingo_observer_output_atom if _overwritten(Observer, observer, &#34;output_atom&#34;) else _ffi.NULL,
             _lib.pyclingo_observer_output_term if _overwritten(Observer, observer, &#34;output_term&#34;) else _ffi.NULL,
+            _lib.pyclingo_observer_output_csp if _overwritten(Observer, observer, &#34;output_csp&#34;) else _ffi.NULL,
             _lib.pyclingo_observer_external if _overwritten(Observer, observer, &#34;external&#34;) else _ffi.NULL,
             _lib.pyclingo_observer_assume if _overwritten(Observer, observer, &#34;assume&#34;) else _ffi.NULL,
             _lib.pyclingo_observer_heuristic if _overwritten(Observer, observer, &#34;heuristic&#34;) else _ffi.NULL,
@@ -935,7 +851,6 @@ object while a solve call is active.</p></div>
         if self._free:
             _lib.clingo_control_free(self._rep)
 
-    @overload
     def add(self, name: str, parameters: Sequence[str], program: str) -&gt; None:
         &#39;&#39;&#39;
         Extend the logic program with the given non-ground logic program in string form.
@@ -953,65 +868,6 @@ object while a solve call is active.</p></div>
         --------
         Control.ground
         &#39;&#39;&#39;
-        c_mem = []
-        c_params = _ffi.new(&#39;char*[]&#39;, len(parameters))
-        for i, param in enumerate(parameters):
-            c_mem.append(_ffi.new(&#34;char[]&#34;, param.encode()))
-            c_params[i] = c_mem[-1]
-        _handle_error(_lib.clingo_control_add(self._rep, name.encode(), c_params, len(parameters), program.encode()))
-
-    @overload
-    def add(self, program: str) -&gt; None:
-        &#39;&#39;&#39;
-        Extend the logic program with the given non-ground logic program in string form.
-
-        Parameters
-        ----------
-        name
-            The name of program block to add.
-
-        Notes
-        -----
-        This function is equivalent to calling `add(&#34;base&#34;, [], program)`.
-        &#39;&#39;&#39;
-
-    def add(self, *args, **kwargs) -&gt; None:
-        &#39;&#39;&#39;
-        Extend the logic program with the given non-ground logic program in string form.
-
-        This function provides two overloads:
-
-        ```python
-        def add(self, name: str, parameters: Sequence[str], program: str) -&gt; None:
-            ...
-
-        def add(self, program: str) -&gt; None:
-            return self.add(&#34;base&#34;, [], program)
-        ```
-
-        Parameters
-        ----------
-        name
-            The name of program block to add.
-        parameters
-            The parameters of the program block to add.
-        program
-            The non-ground program in string form.
-
-        See Also
-        --------
-        Control.ground
-        &#39;&#39;&#39;
-        n = len(args) + len(kwargs)
-        if n == 1:
-            self._add1(*args, **kwargs)
-        else:
-            self._add2(*args, **kwargs)
-
-    def _add1(self, program: str) -&gt; None:
-        return self._add2(&#34;base&#34;, [], program)
-
-    def _add2(self, name: str, parameters: Sequence[str], program: str) -&gt; None:
         c_mem = []
         c_params = _ffi.new(&#39;char*[]&#39;, len(parameters))
         for i, param in enumerate(parameters):
@@ -1123,7 +979,7 @@ object while a solve call is active.</p></div>
 
         return Symbol(_c_call(&#39;clingo_symbol_t&#39;, _lib.clingo_control_get_const, self._rep, name.encode()))
 
-    def ground(self, parts: Sequence[Tuple[str,Sequence[Symbol]]]=((&#34;base&#34;, ()),), context: Any=None) -&gt; None:
+    def ground(self, parts: Sequence[Tuple[str,Sequence[Symbol]]], context: Any=None) -&gt; None:
         &#39;&#39;&#39;
         Ground the given list of program parts specified by tuples of names and
         arguments.
@@ -1214,6 +1070,7 @@ object while a solve call is active.</p></div>
             _lib.pyclingo_observer_project if _overwritten(Observer, observer, &#34;project&#34;) else _ffi.NULL,
             _lib.pyclingo_observer_output_atom if _overwritten(Observer, observer, &#34;output_atom&#34;) else _ffi.NULL,
             _lib.pyclingo_observer_output_term if _overwritten(Observer, observer, &#34;output_term&#34;) else _ffi.NULL,
+            _lib.pyclingo_observer_output_csp if _overwritten(Observer, observer, &#34;output_csp&#34;) else _ffi.NULL,
             _lib.pyclingo_observer_external if _overwritten(Observer, observer, &#34;external&#34;) else _ffi.NULL,
             _lib.pyclingo_observer_assume if _overwritten(Observer, observer, &#34;assume&#34;) else _ffi.NULL,
             _lib.pyclingo_observer_heuristic if _overwritten(Observer, observer, &#34;heuristic&#34;) else _ffi.NULL,
@@ -1742,17 +1599,10 @@ def theory_atoms(self) -&gt; Iterator[TheoryAtom]:
 <h3>Methods</h3>
 <dl>
 <dt id="clingo.control.Control.add"><code class="name flex">
-<span>def <span class="ident">add</span></span>(<span>self, *args, **kwargs) ‑> None</span>
+<span>def <span class="ident">add</span></span>(<span>self, name: str, parameters: Sequence[str], program: str) ‑> None</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Extend the logic program with the given non-ground logic program in string form.</p>
-<p>This function provides two overloads:</p>
-<pre><code class="language-python">def add(self, name: str, parameters: Sequence[str], program: str) -&gt; None:
-    ...
-
-def add(self, program: str) -&gt; None:
-    return self.add(&quot;base&quot;, [], program)
-</code></pre>
 <h2 id="parameters">Parameters</h2>
 <dl>
 <dt><strong><code>name</code></strong></dt>
@@ -1768,19 +1618,9 @@ def add(self, program: str) -&gt; None:
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def add(self, *args, **kwargs) -&gt; None:
+<pre><code class="python">def add(self, name: str, parameters: Sequence[str], program: str) -&gt; None:
     &#39;&#39;&#39;
     Extend the logic program with the given non-ground logic program in string form.
-
-    This function provides two overloads:
-
-    ```python
-    def add(self, name: str, parameters: Sequence[str], program: str) -&gt; None:
-        ...
-
-    def add(self, program: str) -&gt; None:
-        return self.add(&#34;base&#34;, [], program)
-    ```
 
     Parameters
     ----------
@@ -1795,11 +1635,12 @@ def add(self, program: str) -&gt; None:
     --------
     Control.ground
     &#39;&#39;&#39;
-    n = len(args) + len(kwargs)
-    if n == 1:
-        self._add1(*args, **kwargs)
-    else:
-        self._add2(*args, **kwargs)</code></pre>
+    c_mem = []
+    c_params = _ffi.new(&#39;char*[]&#39;, len(parameters))
+    for i, param in enumerate(parameters):
+        c_mem.append(_ffi.new(&#34;char[]&#34;, param.encode()))
+        c_params[i] = c_mem[-1]
+    _handle_error(_lib.clingo_control_add(self._rep, name.encode(), c_params, len(parameters), program.encode()))</code></pre>
 </details>
 </dd>
 <dt id="clingo.control.Control.assign_external"><code class="name flex">
@@ -1991,7 +1832,7 @@ automatic cleanups are enabled by default.</p></div>
 </details>
 </dd>
 <dt id="clingo.control.Control.ground"><code class="name flex">
-<span>def <span class="ident">ground</span></span>(<span>self, parts: Sequence[Tuple[str, Sequence[<a title="clingo.symbol.Symbol" href="symbol.html#clingo.symbol.Symbol">Symbol</a>]]] = (('base', ()),), context: Any = None) ‑> None</span>
+<span>def <span class="ident">ground</span></span>(<span>self, parts: Sequence[Tuple[str, Sequence[<a title="clingo.symbol.Symbol" href="symbol.html#clingo.symbol.Symbol">Symbol</a>]]], context: Any = None) ‑> None</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Ground the given list of program parts specified by tuples of names and
@@ -2012,7 +1853,7 @@ arguments.</p></div>
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def ground(self, parts: Sequence[Tuple[str,Sequence[Symbol]]]=((&#34;base&#34;, ()),), context: Any=None) -&gt; None:
+<pre><code class="python">def ground(self, parts: Sequence[Tuple[str,Sequence[Symbol]]], context: Any=None) -&gt; None:
     &#39;&#39;&#39;
     Ground the given list of program parts specified by tuples of names and
     arguments.
@@ -2154,6 +1995,7 @@ the underlying solver (or any previously registered observers).</dd>
         _lib.pyclingo_observer_project if _overwritten(Observer, observer, &#34;project&#34;) else _ffi.NULL,
         _lib.pyclingo_observer_output_atom if _overwritten(Observer, observer, &#34;output_atom&#34;) else _ffi.NULL,
         _lib.pyclingo_observer_output_term if _overwritten(Observer, observer, &#34;output_term&#34;) else _ffi.NULL,
+        _lib.pyclingo_observer_output_csp if _overwritten(Observer, observer, &#34;output_csp&#34;) else _ffi.NULL,
         _lib.pyclingo_observer_external if _overwritten(Observer, observer, &#34;external&#34;) else _ffi.NULL,
         _lib.pyclingo_observer_assume if _overwritten(Observer, observer, &#34;assume&#34;) else _ffi.NULL,
         _lib.pyclingo_observer_heuristic if _overwritten(Observer, observer, &#34;heuristic&#34;) else _ffi.NULL,
