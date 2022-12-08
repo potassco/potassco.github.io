@@ -121,3 +121,8 @@ if (QueryString.example !== undefined) {
   load_example("/clingo/run/examples/" + QueryString.example);
 }
 
+document.querySelector("#input").addEventListener("keydown", (ev) => {
+  if(ev.key === "Enter" && ev.ctrlKey) {
+    solve();
+  }
+})
