@@ -74,6 +74,9 @@ Packages for clingo are available for some Linux distributions:
 - [Ubuntu PPA][package-ubuntu], and
 - [Arch Linux][package-arch].
 
+Packages for clingo are available for some BSD-based distributions:
+- [FreshPorts][package-freebsd]
+
 For Mac OS X, clingo packages are available in
 - [homebrew][package-brew], and
 - [macports][package-macports].
@@ -119,6 +122,7 @@ For Mac OS X, clingo packages are available in
 [package-debian]: https://packages.debian.org/gringo
 [package-macports]: https://www.macports.org/ports.php?by=name&substr=gringo
 [package-ubuntu]: https://launchpad.net/~potassco
+[package-freebsd]: https://www.freshports.org/math/clingo/
 [potassco-channel]: https://anaconda.org/potassco
 [pypi-packages]: https://pypi.org/user/kaminski
 [spack-clingo]: https://spack.readthedocs.io/en/latest/package_list.html#clingo
