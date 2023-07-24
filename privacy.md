@@ -6,7 +6,7 @@ permalink: /privacy/
 
 The website of the potassco project does not use any trackers, it does not show
 advertisements, and since it is a static website it also does not use cookies.
-For hosting our page we use [netlify.com][netlify] and the domain is provided
+For hosting our page we use [github pages][pages] and the domain is provided
 by [variomedia.de][vario]. The following privacy policy was automatically
 generated using a [generator][generator].
 
@@ -468,7 +468,7 @@ Lawyers][law] from WILDE BEUGER SOLMECKE, Cologne.
 
 [ppg]: https://dg-datenschutz.de/services/external-data-protection-officer/?lang=en
 [law]: https://www.wbs-law.de/eng/
-[netlify]: https://www.netlify.com/
+[pages]: https://pages.github.com/
 [vario]: https://www.variomedia.de/
 [potassco]: https://potassco.org/
 [generator]: https://dsgvo-muster-datenschutzerklaerung.dg-datenschutz.de/?lang=en
