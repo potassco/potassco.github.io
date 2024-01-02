@@ -30,3 +30,8 @@ theme: minima
 
 include:
 - _headers
+
+webrick:
+  headers:
+    Access-Control-Allow-Origin: "*"
+
