@@ -5,7 +5,6 @@ var input = ace.edit("input");
 var ex = document.getElementById("examples");
 var output = "";
 
-input.setTheme("ace/theme/textmate");
 input.$blockScrolling = Infinity;
 input.setOptions({
   useSoftTabs: true,
