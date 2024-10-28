@@ -1,0 +1,19 @@
+@media (max-width: 799px) {
+    .trigger {
+        display: none;
+    }
+
+    .menu-icon {
+        display: block;
+    }
+}
+
+@media (min-width: 800px) {
+    .trigger {
+        display: block;
+    }
+
+    .menu-icon {
+        display: none;
+    }
+}

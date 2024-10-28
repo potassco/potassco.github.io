@@ -1,6 +1,5 @@
 ---
 layout: page
-title: Potassco
 navtitle: Home
 menu: main
 weight: 0
