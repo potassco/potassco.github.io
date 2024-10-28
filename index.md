@@ -30,6 +30,8 @@ To find out more about a specific system and a download link, follow one of the 
 * [clingcon](/clingcon/) extends clingo with constraint solving capabilities.
 * [aspcud](/aspcud/) is a solver for package dependencies.
 * [asprin](/asprin/) is a general framework for qualitative and quantitative optimization in ASP.
+* [clingraph](/clingraph/) is a tool for visualizing ASP encodings using ASP.
+* [clinguin](/clinguin/) is a tool for creating User Interfaces in ASP.
 
 # Development
 
