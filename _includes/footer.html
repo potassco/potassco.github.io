@@ -2,37 +2,90 @@
 
   <div class="wrapper">
 
-    <h2 class="footer-heading">{{ site.title | escape }}</h2>
+    <!-- <h2 class="footer-heading">{{ site.title | escape }}</h2> -->
 
     <div class="footer-col-wrapper">
-      <div class="footer-col footer-col-1">
-        <ul class="contact-list">
-          <li>
-            {% if site.author %}
-              {{ site.author | escape }}
-            {% else %}
-              {{ site.title | escape }}
-            {% endif %}
-            </li>
-          <li><a href="mailto:{{ site.email }}">{{ site.email }}</a></li>
-        </ul>
+      <div class="footer-col footer-col-2">
+        <img style="vertical-align:baseline; margin-right: 6px; width: 120px;" src="{{ "/images/potassco-logo.png" |
+          prepend: full_base_url }}">
       </div>
 
-      <div class="footer-col footer-col-2">
-        <ul class="contact-list">
-          <li>
-            <a href="{{ full_base_url }}/privacy/">Privacy</a>
-          </li>
-        </ul>
-      </div>
 
       <div class="footer-col footer-col-3">
-        <p>{{ site.description | escape }}</p>
+        <p>{{ site.description | escape }}
+          <a href="{{ full_base_url }}/privacy/">Privacy Policy</a>
+        </p>
+      </div>
+      <div class="footer-col footer-col-1" style="display: flex; justify-content: end; margin-top: 5px;">
+        <div>
+          <a href="https://x.com/potassco" class="transition ease-curve-a duration-250 text-small" target="_blank"
+            rel="noreferrer" aria-label="X"><svg xmlns="http://www.w3.org/2000/svg" width="17" viewBox="0 0 17 17"
+              fill="none">
+              <g clip-path="url(#a)">
+                <path fill="#001F41"
+                  d="M13.158 2.058h2.248l-4.913 5.435 5.78 7.395h-4.525l-3.545-4.485-4.056 4.485h-2.25l5.255-5.813-5.545-7.017h4.64l3.205 4.1 3.706-4.1Zm-.79 11.527h1.246L5.57 3.293H4.233l8.135 10.292Z">
+                </path>
+              </g>
+            </svg></a>
+          <a href="https://www.youtube.com/@Potassco-live" class="transition ease-curve-a duration-250 text-small"
+            target="_blank" rel="noreferrer" aria-label="YouTube" style="margin-left: 10px;"><svg
+              xmlns="http://www.w3.org/2000/svg" width="17" viewBox="0 0 17 17" fill="none">
+              <g clip-path="url(#a)">
+                <path fill="#001F41"
+                  d="M16.79 5.475s-.156-1.067-.637-1.536c-.61-.617-1.29-.62-1.603-.656-2.238-.158-5.597-.158-5.597-.158h-.006s-3.36 0-5.597.158c-.313.036-.994.039-1.603.656-.481.469-.635 1.536-.635 1.536S.95 6.73.95 7.982v1.174c0 1.252.16 2.507.16 2.507s.156 1.067.634 1.536c.61.617 1.41.596 1.765.662 1.282.118 5.441.154 5.441.154s3.363-.006 5.6-.16c.313-.036.994-.04 1.603-.656.481-.469.638-1.536.638-1.536s.159-1.252.159-2.507V7.982c0-1.252-.16-2.507-.16-2.507ZM7.298 10.58V6.228l4.322 2.184-4.322 2.168Z">
+                </path>
+                </path>
+              </g>
+            </svg></a>
+          <a href="https://github.com/potassco" class="transition ease-curve-a duration-250 text-small" target="_blank"
+            rel="noreferrer" aria-label="GitHub" style="margin-left: 10px;"><svg xmlns="http://www.w3.org/2000/svg"
+              width="17" viewBox="0 0 17 17" fill="none">
+              <g clip-path="url(#a)">
+                <path fill="#001F41" fill-rule="evenodd"
+                  d="M8.977.83C4.549.83.97 4.32.97 8.636c0 3.45 2.293 6.371 5.475 7.405.397.078.543-.168.543-.375 0-.18-.013-.8-.013-1.447-2.227.465-2.691-.93-2.691-.93-.358-.905-.888-1.138-.888-1.138-.73-.478.053-.478.053-.478.808.052 1.233.801 1.233.801.715 1.19 1.869.853 2.333.646.066-.504.278-.853.504-1.046-1.777-.181-3.646-.853-3.646-3.852 0-.853.318-1.55.822-2.093-.08-.194-.358-.995.08-2.068 0 0 .676-.207 2.2.801a7.94 7.94 0 0 1 2.002-.258c.676 0 1.365.09 2.001.258 1.525-1.008 2.2-.801 2.2-.801.438 1.073.16 1.874.08 2.068.517.542.822 1.24.822 2.093 0 2.999-1.869 3.658-3.659 3.852.292.245.544.71.544 1.447 0 1.047-.013 1.887-.013 2.145 0 .207.146.453.543.375 3.182-1.034 5.475-3.955 5.475-7.405C16.983 4.319 13.39.83 8.977.83Z"
+                  clip-rule="evenodd"></path>
+              </g>
+            </svg></a>
+        </div>
+
       </div>
     </div>
+    <!-- <div class="footer-col-wrapper" style="display: flex; justify-content: center;">
+
+      <a href="https://x.com/potassco" class="transition ease-curve-a duration-250 text-small" target="_blank"
+        rel="noreferrer" aria-label="X"><svg xmlns="http://www.w3.org/2000/svg" width="17" viewBox="0 0 17 17"
+          fill="none">
+          <g clip-path="url(#a)">
+            <path fill="#001F41"
+              d="M13.158 2.058h2.248l-4.913 5.435 5.78 7.395h-4.525l-3.545-4.485-4.056 4.485h-2.25l5.255-5.813-5.545-7.017h4.64l3.205 4.1 3.706-4.1Zm-.79 11.527h1.246L5.57 3.293H4.233l8.135 10.292Z">
+            </path>
+          </g>
+        </svg></a>
+      <a href="https://www.youtube.com/@Potassco-live" class="transition ease-curve-a duration-250 text-small"
+        target="_blank" rel="noreferrer" aria-label="YouTube" style="margin-left: 10px;"><svg
+          xmlns="http://www.w3.org/2000/svg" width="17" viewBox="0 0 17 17" fill="none">
+          <g clip-path="url(#a)">
+            <path fill="#001F41"
+              d="M16.79 5.475s-.156-1.067-.637-1.536c-.61-.617-1.29-.62-1.603-.656-2.238-.158-5.597-.158-5.597-.158h-.006s-3.36 0-5.597.158c-.313.036-.994.039-1.603.656-.481.469-.635 1.536-.635 1.536S.95 6.73.95 7.982v1.174c0 1.252.16 2.507.16 2.507s.156 1.067.634 1.536c.61.617 1.41.596 1.765.662 1.282.118 5.441.154 5.441.154s3.363-.006 5.6-.16c.313-.036.994-.04 1.603-.656.481-.469.638-1.536.638-1.536s.159-1.252.159-2.507V7.982c0-1.252-.16-2.507-.16-2.507ZM7.298 10.58V6.228l4.322 2.184-4.322 2.168Z">
+            </path>
+            </path>
+          </g>
+        </svg></a>
+      <a href="https://github.com/potassco" class="transition ease-curve-a duration-250 text-small" target="_blank"
+        rel="noreferrer" aria-label="GitHub" style="margin-left: 10px;"><svg xmlns="http://www.w3.org/2000/svg"
+          width="17" viewBox="0 0 17 17" fill="none">
+          <g clip-path="url(#a)">
+            <path fill="#001F41" fill-rule="evenodd"
+              d="M8.977.83C4.549.83.97 4.32.97 8.636c0 3.45 2.293 6.371 5.475 7.405.397.078.543-.168.543-.375 0-.18-.013-.8-.013-1.447-2.227.465-2.691-.93-2.691-.93-.358-.905-.888-1.138-.888-1.138-.73-.478.053-.478.053-.478.808.052 1.233.801 1.233.801.715 1.19 1.869.853 2.333.646.066-.504.278-.853.504-1.046-1.777-.181-3.646-.853-3.646-3.852 0-.853.318-1.55.822-2.093-.08-.194-.358-.995.08-2.068 0 0 .676-.207 2.2.801a7.94 7.94 0 0 1 2.002-.258c.676 0 1.365.09 2.001.258 1.525-1.008 2.2-.801 2.2-.801.438 1.073.16 1.874.08 2.068.517.542.822 1.24.822 2.093 0 2.999-1.869 3.658-3.659 3.852.292.245.544.71.544 1.447 0 1.047-.013 1.887-.013 2.145 0 .207.146.453.543.375 3.182-1.034 5.475-3.955 5.475-7.405C16.983 4.319 13.39.83 8.977.83Z"
+              clip-rule="evenodd"></path>
+          </g>
+        </svg></a>
+    </div> -->
+
+
+
 
   </div>
-
 
 </footer>
 
