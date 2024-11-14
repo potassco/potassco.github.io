@@ -11,6 +11,7 @@
   {% assign full_base_url = custom_url | default: site.github.url %}
   <link rel="stylesheet" href="{{ "/css/main.css" | prepend: full_base_url }}">
   <link rel="stylesheet" href="{{ "/css/posts.css" | prepend: full_base_url }}">
+  <link rel="stylesheet" href="{{ "/css/menu.css" | prepend: full_base_url }}">
   {% for css in page.css %}
     <link rel="stylesheet" href="{{ css | prepend: full_base_url }}">
   {% endfor %}
