@@ -35,21 +35,11 @@ from clingo.script import enable_python
 
 import __main__
 
+Application.main = lambda self, ctl, files: None
+
 class ClingoApp(Application):
     def __init__(self, name):
         self.program_name = name
-
-    def main(self, ctl, files):
-        for f in files:
-            ctl.load(f)
-        if not files:
-            ctl.load("-")
-
-        if "main" in __main__.__dict__ and callable(__main__.__dict__["main"]):
-            __main__.__dict__["main"](ctl)
-        else:
-            ctl.ground([("base", [])])
-            ctl.solve()
 
 def run_clingo_main(args):
     enable_python()
