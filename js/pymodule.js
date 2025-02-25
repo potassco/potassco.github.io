@@ -74,7 +74,7 @@ const Clingo = (() => {
                 args.push(...["--opt-mode=optN", "--enum-mode=cautious"])
                 break;
             case "enumerate":
-                args.push(...[" --opt-mode=optN", "0"]);
+                args.push(...["--opt-mode=optN", "0"]);
                 break;
             default:
                 break;
