@@ -1,0 +1,61 @@
+---
+layout: page
+title: Running clingo
+css:
+  - /css/clingo.css
+permalink: /clingo/pyrun/
+---
+
+<div class="center">
+
+ <ul class="hlist">
+  <li><b>Examples:</b></li>
+  <li>
+    <select id="examples" onchange="Clingo.load()">
+        <optgroup label="Simple Examples">
+          <option value="harry-and-sally.lp">Harry and Sally</option>
+          <option value="flying-birds.lp">Flying Birds</option>
+          <option value="graph-coloring.lp">Graph Coloring</option>
+          <option value="n-queens.lp">n-Queens</option>
+        </optgroup>
+        <optgroup label="Advanced Examples">
+          <option value="traveling-salesperson.lp">Traveling Salesperson</option>
+          <option value="blocksworld-planning.lp">Blocksworld Planning</option>
+          <option value="pigeonator-propagator.lp">Pigeonator Propagator</option>
+        </optgroup>
+    </select>
+  </li>
+ </ul>
+
+ <pre id="input">
+% instance
+motive(harry).
+motive(sally).
+guilty(harry).
+
+% encoding
+innocent(Suspect) :- motive(Suspect), not guilty(Suspect).</pre>
+
+ <ul class="hlist">
+  <li><b>Configuration:</b></li>
+  <li>reasoning mode
+   <select id="mode">
+    <option value="default" selected>default</option>
+    <option value="brave">brave</option>
+    <option value="cautious">cautious</option>
+    <option value="enumerate">enumerate all</option>
+   </select>
+  </li>
+  <li><input type="checkbox" id="project"/>&nbsp;project</li>
+  <li><input type="checkbox" id="stats"/>&nbsp;statistics</li>
+ </ul>
+
+ <input type="button" id="run" value="&#x25ba; Run!" onclick="Clingo.run()"/>
+
+ <pre id="output" class="code"></pre>
+
+</div>
+
+<script type="text/javascript" src="https://cdn.jsdelivr.net/pyodide/v0.27.2/full/pyodide.js"></script>
+<script type="text/javascript" src="/js/ace.js" charset="utf-8"></script>
+<script type="text/javascript" src="/js/pymodule.js" charset="utf-8"></script>
