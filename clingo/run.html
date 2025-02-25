@@ -3,10 +3,6 @@ layout: page
 title: Running clingo
 css:
   - /css/clingo.css
-javascript:
-  - /js/ace.js
-  - /js/clingo-module.js
-  - /js/clingo.js
 permalink: /clingo/run/
 ---
 
@@ -15,7 +11,7 @@ permalink: /clingo/run/
  <ul class="hlist">
   <li><b>Examples:</b></li>
   <li>
-    <select id="examples" onchange="example()">
+    <select id="examples" onchange="Clingo.load()">
         <optgroup label="Simple Examples">
           <option value="/clingo/run/examples/harry-and-sally.lp">Harry and Sally</option>
           <option value="/clingo/run/examples/flying-birds.lp">Flying Birds</option>
@@ -44,22 +40,22 @@ innocent(Suspect) :- motive(Suspect), not guilty(Suspect).</pre>
   <li><b>Configuration:</b></li>
   <li>reasoning mode
    <select id="mode">
-    <option selected>default</option>
-    <option>brave</option>
-    <option>cautious</option>
-    <option>enumerate all</option>
+    <option value="default" selected>default</option>
+    <option value="brave">brave</option>
+    <option value="cautious">cautious</option>
+    <option value="enumerate">enumerate all</option>
    </select>
   </li>
   <li><input type="checkbox" id="project"/>&nbsp;project</li>
   <li><input type="checkbox" id="stats"/>&nbsp;statistics</li>
  </ul>
 
- <input type="button" id="run" value="&#x25ba; Run!" onclick="solve()" disabled/>
+ <input type="button" id="run" value="&#x25ba; Run!" onclick="Clingo.run()"/>
 
  <pre id="output" class="code"></pre>
 
 </div>
 
-<script type="text/javascript">
-var Module; // global
-</script>
+<script type="text/javascript" src="/js/ace.js" charset="utf-8"></script>
+<script type="text/javascript" src="/js/clingo.js" charset="utf-8"></script>
+<script type="text/javascript" src="/js/module.js" charset="utf-8"></script>
