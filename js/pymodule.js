@@ -24,6 +24,10 @@ const Clingo = (() => {
         autoScrollEditorIntoView: true
     });
 
+    const updateButton = () => {
+        indicator.style.opacity = state === "ready" ? '100%' : '60%';
+    }
+
     const load = (path) => {
         var request = new XMLHttpRequest();
         request.onreadystatechange = function () {
@@ -97,11 +101,12 @@ const Clingo = (() => {
         if (state == "ready") {
             if (work) {
                 clearOutput()
-                state = "runnnig"
+                state = "running"
                 work = false
                 worker.postMessage({ type: 'run', input: stdin, args: args });
             }
         }
+        updateButton()
     }
 
     const startWorker = () => {
@@ -109,6 +114,7 @@ const Clingo = (() => {
             return;
         }
         state = "init"
+        updateButton()
         if (worker != null) {
             worker.terminate();
         }
@@ -117,16 +123,13 @@ const Clingo = (() => {
             const msg = e.data
             switch (msg.type) {
                 case "init":
-                    indicator.className = 'ready clingoRun'
                     state = "ready"
                     runClingo()
                     break;
                 case "ready":
-                    indicator.className = 'init clingoRun'
                     worker.postMessage({ type: 'init' });
                     break;
                 case "exit":
-                    indicator.className = 'off clingoRun'
                     setTimeout(startWorker, 0)
                     break;
                 case "stdout":
