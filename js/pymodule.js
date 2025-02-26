@@ -47,7 +47,7 @@ const Clingo = (() => {
 
     document.querySelector("#input").addEventListener("keydown", (ev) => {
         if (ev.key === "Enter" && ev.ctrlKey) {
-            startWorker();
+            run();
         }
     })
 
