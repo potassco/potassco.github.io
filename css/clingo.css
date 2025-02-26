@@ -19,3 +19,10 @@
 .center {
   text-align:center;
 }
+.clingoRun {
+  transition: background-color 0.5s ease;
+  background-color: #e74c3c;
+}
+.clingoRun.ready { background-color: #2ecc71; }
+.clingoRun.init { background-color: #f39c12; }
+.clingoRun.off { background-color: #e74c3c; }

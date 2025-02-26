@@ -1,13 +1,18 @@
 const Clingo = (() => {
-    const outputElement = document.getElementById('output');
-    const inputElement = ace.edit("input");
+    const outputElement = document.getElementById('output')
+    const inputElement = ace.edit("input")
     const stats = document.getElementById("stats")
     const project = document.getElementById("project")
-    const mode = document.getElementById("mode");
-    const examples = document.getElementById("examples");
+    const mode = document.getElementById("mode")
+    const examples = document.getElementById("examples")
+    const indicator = document.getElementById('clingoRun')
 
     let worker = null;
     let output = "";
+    let state = "running";
+    let stdin = ""
+    let args = []
+    let work = false
 
     inputElement.setTheme("ace/theme/textmate");
     inputElement.$blockScrolling = Infinity;
@@ -88,20 +93,41 @@ const Clingo = (() => {
         return args;
     }
 
-    const startWorker = () => {
-        if (worker) {
-            worker.terminate();
-            worker = null;
+    const runClingo = () => {
+        if (state == "ready") {
+            if (work) {
+                clearOutput()
+                state = "runnnig"
+                work = false
+                worker.postMessage({ type: 'run', input: stdin, args: args });
+            }
         }
-        clearOutput()
-        const args = buildArgs();
-        const stdin = inputElement.getValue()
+    }
+
+    const startWorker = () => {
+        if (state == "ready" || state == "init") {
+            return;
+        }
+        state = "init"
+        if (worker != null) {
+            worker.terminate();
+        }
         worker = new Worker('/js/pyworker.js');
         worker.onmessage = function (e) {
             const msg = e.data
             switch (msg.type) {
+                case "init":
+                    indicator.className = 'ready clingoRun'
+                    state = "ready"
+                    runClingo()
+                    break;
                 case "ready":
-                    worker.postMessage({ type: 'run', input: stdin, args: args });
+                    indicator.className = 'init clingoRun'
+                    worker.postMessage({ type: 'init' });
+                    break;
+                case "exit":
+                    indicator.className = 'off clingoRun'
+                    setTimeout(startWorker, 0)
                     break;
                 case "stdout":
                     updateOutput(msg.value);
@@ -113,5 +139,15 @@ const Clingo = (() => {
         };
     }
 
-    return { 'run': startWorker, 'load': load_example };
+    const run = () => {
+        work = true
+        stdin = inputElement.getValue()
+        args = buildArgs()
+        startWorker()
+        runClingo()
+    }
+
+    startWorker()
+
+    return { 'run': run, 'load': load_example };
 })();

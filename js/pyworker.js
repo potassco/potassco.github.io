@@ -5,6 +5,7 @@ const messageSchemas = {
         args: "array",
         input: "string",
     },
+    init: {}
 };
 
 function validateMessage(msg, schemas) {
@@ -51,7 +52,6 @@ class StdinHandler {
         this.lines = input.split('\n');
         this.current = 0
     }
-
     stdin() {
         if (this.current < this.lines.length) {
             return this.lines[this.current++] + '\n';
@@ -60,20 +60,29 @@ class StdinHandler {
     }
 };
 
-async function run(input, args) {
-    postMessage({ type: "stderr", value: "Loading pyodide..." });
-    const pyodide = await loadPyodide();
-    postMessage({ type: "stderr", value: "Loading micropip..." });
+let pyodide = null
+
+async function init() {
+    postMessage({ type: "progress", value: "pyodide" });
+    pyodide = await loadPyodide();
+    postMessage({ type: "progress", value: "micropip" });
     await pyodide.loadPackage("micropip")
-    postMessage({ type: "stderr", value: "Installing clingo..." });
+    postMessage({ type: "progress", value: "clingo" });
     const micropip = pyodide.pyimport("micropip")
     await micropip.install("clingo")
-    postMessage({ type: "stderr", value: "Ready!" });
-    pyodide.setStdin(new StdinHandler(input));
+    postMessage({ type: "progress", value: "ready" });
     pyodide.setStdout({ batched: (msg) => postMessage({ type: "stdout", value: msg }) });
     pyodide.setStderr({ batched: (msg) => postMessage({ type: "stderr", value: msg }) });
-    pyodide.runPython(code);
-    pyodide.globals.get('run_clingo_main')(pyodide.toPy(args));
+    await pyodide.runPythonAsync(code);
+}
+
+async function run(input, args) {
+    try {
+        pyodide.setStdin(new StdinHandler(input))
+        pyodide.globals.get('run_clingo_main')(pyodide.toPy(args))
+    } catch (error) {
+        postMessage({ type: "stderr", value: error.toString() });
+    }
 }
 
 self.addEventListener('message', (e) => {
@@ -82,12 +91,11 @@ self.addEventListener('message', (e) => {
     if (error) {
         postMessage({ type: "stderr", value: error });
     }
+    else if (msg.type === 'init') {
+        init().then(() => postMessage({ type: "init" }))
+    }
     else if (msg.type === 'run') {
-        try {
-            run(msg.input, msg.args)
-        } catch (error) {
-            postMessage({ type: "stderr", value: error.toString() });
-        }
+        run(msg.input, msg.args).then(() => postMessage({ type: "exit" }))
     }
 })
 
