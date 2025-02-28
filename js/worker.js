@@ -1,10 +1,13 @@
 importScripts('clingo.js');
 
+let Clingo = null
+
 const messageSchemas = {
     run: {
         args: "array",
         input: "string",
     },
+    init: {}
 };
 
 function validateMessage(msg, schemas) {
@@ -27,29 +30,29 @@ function validateMessage(msg, schemas) {
     return null;
 }
 
-Module({
-    preRun: [],
-    postRun: [],
-    print: (text) => {
-        postMessage({ type: "stdout", value: text });
-    },
-    printErr: (text) => {
-        postMessage({ type: "stderr", value: text });
-    },
-    monitorRunDependencies: (left) => {
-        postMessage({ type: "dependencies", value: left });
-    },
-}).then(function (Clingo) {
-    self.addEventListener('message', (e) => {
-        const msg = e.data
-        const error = validateMessage(msg, messageSchemas);
-        if (error) {
-            postMessage({ type: "stderr", value: error });
-        }
-        else if (msg.type === 'run') {
-            Clingo.ccall('run', 'number', ['string', 'string'], [msg.input, msg.args.join(" ")])
-        }
-    })
-    postMessage({ type: "ready" });
-});
+self.addEventListener('message', (e) => {
+    const msg = e.data
+    const error = validateMessage(msg, messageSchemas);
+    if (error) {
+        postMessage({ type: "stderr", value: error });
+    }
+    else if (msg.type === 'init') {
+        Module({
+            print: (text) => {
+                postMessage({ type: "stdout", value: text });
+            },
+            printErr: (text) => {
+                postMessage({ type: "stderr", value: text });
+            },
+            monitorRunDependencies: (left) => {
+                postMessage({ type: "progress", value: left });
+            },
+        }).then((m) => { Clingo = m; postMessage({ type: "init" }) });
+    }
+    else if (msg.type === 'run') {
+        Clingo.ccall('run', 'number', ['string', 'string'], [msg.input, msg.args.join(' ')])
+        postMessage({ type: "exit" })
+    }
+})
 
+postMessage({ type: "ready" });

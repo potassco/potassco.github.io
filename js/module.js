@@ -1,23 +1,32 @@
 const Clingo = (() => {
-    const outputElement = document.getElementById('output');
-    const inputElement = ace.edit("input");
+    const outputElement = document.getElementById('output')
+    const inputElement = ace.edit("input")
     const stats = document.getElementById("stats")
     const project = document.getElementById("project")
-    const mode = document.getElementById("mode");
-    const examples = document.getElementById("examples");
+    const mode = document.getElementById("mode")
+    const examples = document.getElementById("examples")
+    const indicator = document.getElementById('clingoRun')
 
     let worker = null;
     let output = "";
+    let state = "running";
+    let stdin = ""
+    let args = []
+    let work = false
 
     inputElement.setTheme("ace/theme/textmate");
     inputElement.$blockScrolling = Infinity;
     inputElement.setOptions({
         useSoftTabs: true,
-        tabSize: 2,
+        tabSize: 4,
         maxLines: Infinity,
         mode: "ace/mode/clingo",
         autoScrollEditorIntoView: true
     });
+
+    const updateButton = () => {
+        indicator.style.opacity = state === "ready" ? '100%' : '60%';
+    }
 
     const load = (path) => {
         var request = new XMLHttpRequest();
@@ -26,7 +35,7 @@ const Clingo = (() => {
                 inputElement.setValue(request.responseText.trim(), -1);
             }
         }
-        request.open("GET", path, true);
+        request.open("GET", `/clingo/run/examples/${path}`, true);
         request.send();
     };
     const load_example = () => load(examples.value);
@@ -36,14 +45,13 @@ const Clingo = (() => {
             .map(([key, value]) => [key, decodeURIComponent(value)])
     );
     if (query_params.example !== undefined) {
-        const example_path = `/clingo/run/examples/${query_params.example}`;
-        examples.value = example_path;
-        load(example_path);
+        examples.value = query_params.example;
+        load(query_params.example);
     }
 
     document.querySelector("#input").addEventListener("keydown", (ev) => {
         if (ev.key === "Enter" && ev.ctrlKey) {
-            startWorker();
+            run();
         }
     })
 
@@ -89,33 +97,41 @@ const Clingo = (() => {
         return args;
     }
 
-    const startWorker = () => {
-        if (worker) {
-            worker.terminate();
-            worker = null;
+    const runClingo = () => {
+        if (state == "ready") {
+            if (work) {
+                clearOutput()
+                state = "running"
+                work = false
+                console.log(stdin)
+                worker.postMessage({ type: 'run', input: stdin, args: args });
+            }
         }
-        const args = buildArgs();
-        worker = new Worker('/js/worker.js');
+        updateButton()
+    }
 
-        clearOutput()
-        updateOutput("Downloading...")
-        let n = 0;
-        const stdin = inputElement.getValue()
+    const startWorker = () => {
+        if (state == "ready" || state == "init") {
+            return;
+        }
+        state = "init"
+        updateButton()
+        if (worker != null) {
+            worker.terminate();
+        }
+        worker = new Worker('/js/worker.js');
         worker.onmessage = function (e) {
             const msg = e.data
             switch (msg.type) {
-                case "dependencies":
-                    const i = msg.value
-                    n = Math.max(n, i);
-                    if (i) {
-                        updateOutput(`Preparing... (${n - i}/${n})`)
-                    }
-                    else {
-                        updateOutput('Running...')
-                    }
+                case "init":
+                    state = "ready"
+                    runClingo()
                     break;
                 case "ready":
-                    worker.postMessage({ type: 'run', input: stdin, args: args });
+                    worker.postMessage({ type: 'init' });
+                    break;
+                case "exit":
+                    setTimeout(startWorker, 0)
                     break;
                 case "stdout":
                     updateOutput(msg.value);
@@ -127,5 +143,15 @@ const Clingo = (() => {
         };
     }
 
-    return { 'run': startWorker, 'load': load_example };
+    const run = () => {
+        work = true
+        stdin = inputElement.getValue()
+        args = buildArgs()
+        startWorker()
+        runClingo()
+    }
+
+    startWorker()
+
+    return { 'run': run, 'load': load_example };
 })();
