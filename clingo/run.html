@@ -47,7 +47,10 @@ innocent(Suspect) :- motive(Suspect), not guilty(Suspect).</pre>
   </li>
   <li><input type="checkbox" id="project"/>&nbsp;project</li>
   <li><input type="checkbox" id="stats"/>&nbsp;statistics</li>
-  <li><input type="checkbox" id="python"/>&nbsp;python</li>
+  <li class="switch-item"><div class="language-switch">
+   <label class="switch"><input type="checkbox"><span class="slider round"></span></label>
+   <span class="label">lua</span>
+  </div></li>
  </ul>
 
  <input type="button" id="clingoRun" value="&#9658;&nbsp;Run!" onclick="Clingo.run()">
