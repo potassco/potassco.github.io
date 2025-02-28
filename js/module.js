@@ -6,6 +6,7 @@ const Clingo = (() => {
     const mode = document.getElementById("mode")
     const examples = document.getElementById("examples")
     const indicator = document.getElementById('clingoRun')
+    const python = document.getElementById('python')
 
     let worker = null;
     let output = "";
@@ -13,6 +14,8 @@ const Clingo = (() => {
     let stdin = ""
     let args = []
     let work = false
+    let py = false
+    let ispy = false
 
     inputElement.setTheme("ace/theme/textmate");
     inputElement.$blockScrolling = Infinity;
@@ -35,7 +38,12 @@ const Clingo = (() => {
                 inputElement.setValue(request.responseText.trim(), -1);
             }
         }
-        request.open("GET", `/clingo/run/examples/${path}`, true);
+        if (py) {
+            request.open("GET", `/clingo/pyrun/examples/${path}`, true);
+        }
+        else {
+            request.open("GET", `/clingo/run/examples/${path}`, true);
+        }
         request.send();
     };
     const load_example = () => load(examples.value);
@@ -110,6 +118,14 @@ const Clingo = (() => {
         updateButton()
     }
 
+    python.addEventListener('change', function () {
+        py = this.checked
+        if (py != ispy) {
+            state = "running"
+            startWorker()
+        }
+    });
+
     const startWorker = () => {
         if (state == "ready" || state == "init") {
             return;
@@ -119,7 +135,15 @@ const Clingo = (() => {
         if (worker != null) {
             worker.terminate();
         }
-        worker = new Worker('/js/worker.js');
+
+        if (py) {
+            ispy = true
+            worker = new Worker('/js/pyworker.js');
+        } else {
+            ispy = false
+            worker = new Worker('/js/worker.js');
+        }
+
         worker.onmessage = function (e) {
             const msg = e.data
             switch (msg.type) {
