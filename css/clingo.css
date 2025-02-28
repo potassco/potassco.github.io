@@ -19,6 +19,8 @@
 .center {
   text-align:center;
 }
+.option-lua { }
+.option-python { }
 .language-switch {
   display: inline-block;
 }

@@ -6,6 +6,8 @@ const Clingo = (() => {
     const mode = document.getElementById("mode")
     const examples = document.getElementById("examples")
     const indicator = document.getElementById('clingoRun')
+    const pyOpts = document.getElementsByClassName("option-py");
+    const luaOpts = document.getElementsByClassName("option-lua");
 
     let worker = null;
     let output = "";
@@ -37,7 +39,7 @@ const Clingo = (() => {
                 inputElement.setValue(request.responseText.trim(), -1);
             }
         }
-        request.open("GET", `/clingo/${py ? 'pyrun' : 'run'}/examples/${path}`, true);
+        request.open("GET", `/clingo/run/examples/${path}`, true);
         request.send();
     };
     const load_example = () => load(examples.value);
@@ -116,11 +118,17 @@ const Clingo = (() => {
         const checkbox = document.querySelector('.language-switch input[type="checkbox"]');
         const label = document.querySelector('.language-switch .label');
         checkbox.addEventListener('change', function () {
-            label.textContent = this.checked ? 'python' : 'lua';
             py = this.checked
+            label.textContent = py ? 'python' : 'lua';
             if (py != ispy) {
                 state = "running"
                 startWorker()
+            }
+            for (let i = 0; i < pyOpts.length; i++) {
+                pyOpts[i].hidden = !py
+            }
+            for (let i = 0; i < luaOpts.length; i++) {
+                luaOpts[i].hidden = py
             }
         });
     });
