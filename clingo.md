@@ -31,6 +31,7 @@ The language did not change in version 5 but there were many API changes.
 - [Potassco guide on Sourceforge][guide-sf] for series 4 and earlier
 - [Formal language specification][ag]
 - [Python API Reference](/clingo/python-api/current/) (versions
+  [5.8](/clingo/python-api/5.8/),
   [5.7](/clingo/python-api/5.7/),
   [5.6](/clingo/python-api/5.6/),
   [5.5](/clingo/python-api/5.5/),
@@ -68,17 +69,21 @@ Development packages can be installed from [test.pypi.org][test.pypi-packages].
 
 Furthermore, clingo can be installed using [spack][spack], a package manager targeting HPC environments.
 Interestingly, spack uses clingo internally to compute which packages to install:
+
 - [Clingo spack package][spack-clingo].
 
 Packages for clingo are available for some Linux distributions:
+
 - [Debian][package-debian],
 - [Ubuntu PPA][package-ubuntu], and
 - [Arch Linux][package-arch].
 
 Packages for clingo are available for some BSD-based distributions:
+
 - [FreshPorts][package-freebsd]
 
 For Mac OS X, clingo packages are available in
+
 - [homebrew][package-brew], and
 - [macports][package-macports].
 
