@@ -18,6 +18,10 @@ Both clingo and gringo are released together in one package.
 For processing legacy encodings, we recommend downloading the latest version of clingo 3 in addition to clingo 4.
 The language did not change in version 5 but there were many API changes.
 
+# Running
+
+To get a quick first impression, you may want to experiment with [running clingo](/clingo/run/) in your browser.
+
 # Download
 
 - Recent clingo releases are on GitHub: [github.com/potassco/clingo/releases][clingo-releases].
