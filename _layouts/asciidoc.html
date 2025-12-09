@@ -1,0 +1,48 @@
+---
+layout: default
+---
+
+<div class="docs-container">
+    <main class="docs-content">
+        <article
+                class="post h-entry"
+                itemscope
+                itemtype="http://schema.org/BlogPosting"
+                >
+                <header class="post-header">
+                    <h1 class="post-title p-name">{{ page.title | escape }}</h1>
+                    <p class="post-meta">
+                    {% if page.date %}
+                    <time datetime="{{ page.date | date_to_xmlschema }}"
+                          >{{ page.date | date_to_string }}</time
+                      >
+                      {% endif %}
+                    </p>
+                </header>
+
+                <div class="post-content e-content asciidoc-content">{{ content }}</div>
+
+                {% if page.bibliography %}
+                <div class="bibliography">{{ page.bibliography }}</div>
+                {% endif %}
+        </article>
+    </main>
+    <aside class="docs-sidebar">
+        <nav>
+            <h4>Content</h4>
+            <ul>
+                {% assign sorted_pages = site.pages | where: "layout", "asciidoc" | where_exp: "item", "item.url contains '/guide/'" | sort: "nav_order" %}
+                {% for x in sorted_pages %}
+                {% if x.layout == 'asciidoc' and x.url contains '/guide/' and x.title %}
+                <li>
+                    <a href="{{ x.url | relative_url }}"
+                       class="{% if x.url == page.url %}active{% endif %}">
+                        {{ x.nav_title | default: x.title }}
+                    </a>
+                </li>
+                {% endif %}
+                {% endfor %}
+            </ul>
+        </nav>
+    </aside>
+</div>

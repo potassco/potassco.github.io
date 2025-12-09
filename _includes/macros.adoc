@@ -1,0 +1,3 @@
+:clingo: pass:quotes[_clingo_]
+:gringo: pass:quotes[_gringo_]
+:clasp: pass:quotes[_clasp_]

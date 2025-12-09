@@ -1,0 +1,266 @@
+---
+---
+
+@use "sass:color";
+
+// Our variables
+$base-font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+$base-font-size: 16px;
+$base-font-weight: 400;
+$small-font-size: $base-font-size * 0.875;
+$base-line-height: 1.5;
+
+$spacing-unit: 30px;
+
+$text-color: #111;
+$background-color: #fdfdfd;
+$brand-color: #2a7ae2;
+
+$grey-color: #828282;
+$grey-color-light: color.adjust($grey-color, $lightness: 40%);
+$grey-color-dark: color.adjust($grey-color, $lightness: 25%);
+
+// Width of the content area
+$content-width: 800px;
+
+$on-palm: 800px;
+$on-laptop: 800px;
+
+@import "minima";
+
+// styles for trophy page
+table.trophy {
+  margin-bottom: 2em;
+  width: 100%;
+}
+
+table.trophy td {
+  padding-right: 2ex;
+  padding-bottom: 1ex;
+  vertical-align: top;
+}
+
+#search_area {
+  width: 200px;
+  position: relative;
+  margin: 0 auto;
+  margin-bottom: 20px;
+}
+
+// styles for posts
+#search {
+  font-size: 17px;
+  font-family: inherit;
+  border: 1px solid #ccc;
+  color: #666;
+  padding: 3px 27px 3px 27px;
+  background: url(/images/magnifier.png) 7px 6px no-repeat;
+  width: 100%;
+  margin: 0;
+}
+
+#search:focus {
+  outline: none;
+}
+
+#search_area img {
+  position: absolute;
+  right: -48px;
+  top: 7px;
+  display: block;
+}
+
+#search_area label {
+  font-size: 17px;
+  position: absolute;
+  top: 4px;
+  left: 29px;
+  color: #ccc;
+  cursor: text;
+  padding: 0;
+}
+
+// styles for menu
+@media (max-width: 799px) {
+  .trigger {
+    display: none;
+  }
+
+  .menu-icon {
+    display: block;
+  }
+}
+
+@media (min-width: 800px) {
+  .trigger {
+    display: block;
+  }
+
+  .menu-icon {
+    display: none;
+  }
+}
+
+// AsciiDoc
+.asciidoc-content {
+  /* Tables with subtle brand accent */
+  table {
+    width: 100%;
+    margin-bottom: 1rem;
+    border-collapse: collapse;
+    border-left: 4px solid $brand-color; /* Brand accent */
+
+    th,
+    td {
+      padding: 0.75rem;
+      border: 1px solid $grey-color-light;
+      vertical-align: top;
+    }
+
+    th {
+      font-weight: bold;
+      background: $grey-color-light;
+    }
+  }
+
+  /* Admonitions - consistent brand pattern */
+  .admonitionblock {
+    margin: 2rem 0;
+    padding: 1rem;
+    border-left: 4px solid $brand-color;
+
+    &.note {
+      border-color: $brand-color;
+    }
+    &.warning {
+      border-color: #dc3545;
+    }
+    &.tip {
+      border-color: #28a745;
+    }
+  }
+
+  /* Code blocks - matching brand accent */
+  .listingblock > .content > pre,
+  .highlight {
+    margin: 2rem 0;
+    border-left: 4px solid $brand-color; /* Brand accent */
+    background: #f4f4f4;
+    border-radius: 0 4px 4px 0; /* Rounded right corners */
+    padding: 1rem;
+  }
+
+  .listingblock pre code,
+  .highlight code {
+    background: transparent;
+  }
+
+  /* Text alignment roles */
+  .text-center {
+    text-align: center !important;
+  }
+
+  .text-left {
+    text-align: left !important;
+  }
+
+  .text-right {
+    text-align: right !important;
+  }
+
+  /* Increase spacing around ALL major blocks */
+  table,
+  .admonitionblock,
+  .listingblock,
+  .imageblock,
+  .quoteblock,
+  .sidebarblock {
+    margin: 2rem 0; /* Top/bottom spacing */
+  }
+
+  /* Image caption spacing */
+  .imageblock > .title {
+    margin-top: 1rem; /* Space above caption */
+    margin-bottom: 0.5rem; /* Space below caption */
+  }
+}
+
+.docs-container {
+  position: relative;
+  max-width: $content-width; /* Keep Minima content width */
+  margin: 0 auto;
+}
+
+.docs-content {
+  min-height: 80vh; /* Sidebar height */
+}
+
+.docs-sidebar {
+  position: absolute;
+  right: -320px; /* Right margin */
+  top: 0;
+  width: 240px;
+  background: transparent; /* Minima transparency */
+  padding: 1.5rem 0 2rem 0; /* Minima spacing */
+  border-radius: 0;
+  box-shadow: none; /* No shadows - pure Minima */
+
+  /* Minima header - simple & elegant */
+  h4 {
+    color: inherit; /* Matches body text */
+    margin: 0 0 0.5rem 0;
+    font-size: 1rem; /* Minima scale */
+    font-weight: 500; /* Minima weight */
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid $grey-color-light;
+    text-transform: none; /* No uppercase */
+    letter-spacing: normal;
+  }
+
+  /* Minima list - clean lines */
+  ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  li {
+    margin: 0;
+    border-radius: 0; /* Sharp Minima edges */
+  }
+
+  /* Minima links - subtle & refined */
+  a {
+    display: block;
+    padding: 0.4rem 1rem; /* Minima padding */
+    color: $text-color; /* Exact Minima text */
+    text-decoration: none;
+    font-size: 0.95rem; /* Minima body */
+    font-weight: normal;
+    border: none;
+    transition: color 0.15s ease; /* Minima timing */
+
+    &:hover {
+      color: $brand-color;
+      background: transparent; /* No bg - Minima style */
+    }
+  }
+
+  /* Minima active - minimal highlight */
+  a.active {
+    color: $brand-color;
+    font-weight: 600;
+    border-left: 2px solid $brand-color; /* Right accent */
+  }
+}
+
+/* Mobile - matches Minima post spacing */
+@media (max-width: 900px) {
+  .docs-sidebar {
+    position: static;
+    right: 0;
+    margin: 2rem 0;
+    padding: 1.5rem 0;
+    border-top: 1px solid $grey-color-light;
+  }
+}

@@ -29,9 +29,19 @@ markdown: kramdown
 theme: minima
 
 include:
-- _headers
+  - _headers
+
+asciidoc: {}
+asciidoctor:
+  safe: unsafe
+  attributes:
+    source-highlighter: rouge
+    rouge-css: style
+    content-class: asciidoc-content
+
+plugins:
+  - jekyll-asciidoc
 
 webrick:
   headers:
     Access-Control-Allow-Origin: "*"
-

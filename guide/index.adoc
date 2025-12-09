@@ -1,0 +1,90 @@
+---
+layout: asciidoc
+title: The Potassco Guide
+nav_title: Introduction
+nav_order: 1
+permalink: /guide/
+---
+
+include::_includes/macros.adoc[]
+
+The Potsdam Answer Set Solving Collection ({gringo}, {clasp}, and the
+integrated ASP system {clingo}) empowers users to efficiently tackle
+computationally challenging problems using Answer Set Programming (ASP)—a
+declarative paradigm based on logic programs and their answer sets.
+
+This guide is designed both for newcomers seeking to get started with these
+tools and for experienced users looking for a comprehensive reference. For
+topics that extend beyond the scope of this guide, we provide external
+references: a formal introduction to the {clingo} input language and its
+semantics can be found in <<AG>>; the foundational algorithms and technologies
+behind {gringo} and {clasp} are detailed in <<Foundations>>; and further
+aspects of ASP are discussed in <<Background>>.
+
+Our focus here is on ASP and the computation of answer sets using {clingo}.
+Note, however, that {clasp} also serves as a full-featured SAT, MaxSAT, or PB
+solver (see <<SATHandbook>>), supporting propositional CNF formulas in
+(extended) DIMACS format as well as PB formulas in OPB and WBO formats.
+
+== Download and Installation
+
+{clingo} is written in C++ and released under the MIT License. Source packages
+are available on our https://github.com/potassco/clingo/[GitHub repository],
+and installation instructions for various platforms can be found on our
+https://potassco.org/clingo/[website]. If you encounter any issues, please
+consult our https://potassco.org/support/[support pages].
+
+Once installed, verify your setup by running:
+```bash
+clingo --version
+clingo --help
+```
+
+{clingo} is a command-line tool (usable from Linux shell, Windows command
+prompt, etc.). Typically, you provide input file names as arguments:
+```bash
+clingo [ options | files | number ]
+```
+A numerical argument specifies the maximum number of answer sets to compute
+(`0` means _compute all answer sets_). By default, only one answer set is
+computed (if it exists).
+
+== Outline
+
+This guide introduces the essentials of using {clingo}, aiming to help you
+minimize _time to solution_ for complex problems. The
+link:quickstart/[Quickstart] section presents an introductory example, serving
+as both a prototype for problem modeling and a taste of {clingo}'s language.
+
+The main link:language/[Language] section covers the input languages of our
+tools, detailing {clingo}'s modeling language and briefly describing the
+intermediate language used between grounder and solver (not intended for direct
+user editing). Section link:control/[Multi-shot] explores {clingo}'s control
+features for multi-shot solving.
+
+For practical illustration, link:examples/[Examples] demonstrates solutions to
+three classic problems. Sections link:options[Options] and
+link:warnings[Warnings] offer guidance on command-line options and handling
+input-related errors and warnings.
+
+Advanced topics include meta-programming (link:meta/[Meta]), domain-specific
+heuristics (link:heuristics/[Heuristics]), preference handling and optimization
+(link:preferences[Preferences]), and constraint solving for multi-valued
+variables (link:csp[Contstraint Solving]). Section link:config[Configuration]
+discusses strategies for tuning solver efficiency.
+
+With these foundations in place, you are ready to begin your guided tour. We
+hope you find it both enjoyable and helpful!
+
+== References
+
+[bibliography]
+- [[[AG]]] M. Gebser & A. Harrison & R. Kaminski & V. Lifschitz & T. Schaub.
+  'Abstract Gringo'. Theory and Practice of Logic Programming. 2015.
+  link:http://arxiv.org/abs/1507.06576[arxiv.org].
+- [[[Foundations]]] M. Gebser & R. Kaminski & B. Kaufmann and T. Schaub.
+  'Answer Set Solving in Practice'. Morgan and Claypool Publishers. 2012.
+- [[[Background]]] C. Baral. Knowledge Representation, Reasoning and
+  Declarative Problem Solving. Cambridge University Press. 2003.
+- [[[SATHandbook]]] A. Biere & M. Heule & H. van Maaren & T. Walsh. 'Handbook
+  of Satisfiability'. IOS Press. 2009.
