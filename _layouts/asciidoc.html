@@ -46,3 +46,427 @@ layout: default
         </nav>
     </aside>
 </div>
+
+
+<script type="text/javascript" src="/guide/js/ace.js" charset="utf-8"></script>
+<script type="text/javascript">
+const Clingo = (editor, runButton, inputElement, outputElement, pyCheckbox) => {
+    const Utils = (() => {
+        /**
+         * Sanitizes a filename and ensures uniqueness within a set.
+         *
+         * @param {string} name - The filename to sanitize.
+         * @param {Object} existing - Object tracking existing filenames.
+         * @returns {string} Unique, sanitized filename.
+         */
+        const sanitize = (name, existing) => {
+            let base = name.replace(/[^a-zA-Z0-9_\-.]/g, "_").slice(0, 100);
+            let [namePart, extPart] = split(base);
+            let unique = base;
+            let counter = 1;
+            while (existing[unique]) {
+                unique = `${namePart}_${counter}${extPart}`;
+                counter++;
+            }
+            existing[unique] = true;
+            return unique;
+        };
+
+        const stripAnsiCodes = (input) => input.replace(/\x1b\[[0-9;]*m/g, "");
+
+        return { sanitize, stripAnsiCodes };
+    })();
+
+    /**
+     * ClingoView manages the UI for Clingo controls and output.
+     *
+     * Responsibilities:
+     * - Handles argument selection for Clingo execution.
+     * - Displays Clingo output and manages output clearing/appending.
+     * - Manages the Run button state and loading indicator.
+     * - Handles Python mode toggle and example selection.
+     * - Emits custom events for user actions (run-request, python-toggle, example-selected).
+     * - Provides methods to build Clingo arguments from UI state.
+     * - Allows getting/setting the selected example.
+     */
+    class ClingoView extends EventTarget {
+        /**
+         * Initializes a new ClingoView instance.
+         *
+         * Sets up references to UI controls for Clingo arguments, output, Python mode,
+         * and example selection. Attaches event listeners to handle user actions:
+         * - Run button click triggers 'run-request' event.
+         * - Example selection triggers 'example-selected' event.
+         * - Python mode toggle triggers 'python-toggle' event.
+         * - Ctrl+Enter in the input editor triggers 'run-request' event.
+         */
+        constructor(editor, runButton, inputElement, outputElement, pyCheckbox) {
+            super();
+
+            // References to argument controls
+            // this.Args = {
+            //     stats: document.getElementById("stats"),
+            //     profile: document.getElementById("profile"),
+            //     project: document.getElementById("project"),
+            //     reasoningMode: document.getElementById("reasoning-mode"),
+            //     logLevel: document.getElementById("log-level"),
+            //     mode: document.getElementById("mode"),
+            // };
+            this.editor = editor;
+            this.runButton = runButton;
+            this.outputElement = outputElement;
+            this.inputElement = inputElement;
+            this.pyCheckbox = pyCheckbox;
+
+            // Event listeners for UI actions
+            this.runButton.onclick = () => this.dispatchEvent(new CustomEvent("run-request"));
+            this.pyCheckbox.onchange = (e) => this.dispatchEvent(new CustomEvent("python-toggle", { detail: e.target.checked }));
+            this.inputElement.addEventListener("keydown", (ev) => {
+                if (ev.key === "Enter" && ev.ctrlKey) {
+                    this.dispatchEvent(new CustomEvent("run-request"));
+                }
+            });
+        }
+
+
+        /**
+         * Returns an array of file objects for all session entries.
+         *
+         * Each file object contains a unique, sanitized name and its content.
+         * Python entries are wrapped with script markers.
+         *
+         * @returns {Object[]} Array of file objects: { name, type, content }
+         */
+        getFiles() {
+            const entries = []
+            entries.push({ name: "input.lp", type: "clingo", content: this.editor.session.getValue() });
+            return entries;
+        }
+
+        /**
+         * Clears the Clingo output display.
+         */
+        clearOutput() {
+            outputElement.style.display = "none";
+            this.outputElement.textContent = "";
+        }
+
+        /**
+         * Appends text to the Clingo output display.
+         *
+         * @param {string} text - Text to append.
+         */
+        updateOutput(text) {
+            outputElement.style.display = "block";
+            this.outputElement.textContent += `${text}\n`;
+        }
+
+        /**
+         * Updates the Run button's state and loading indicator.
+         *
+         * @param {string} state - "ready" or other states.
+         */
+        updateButton(state) {
+            this.runButton.style.opacity = state === "ready" ? "100%" : "60%";
+            if (state === "ready") {
+                this.runButton.classList.remove("button--loading");
+            } else {
+                this.runButton.classList.add("button--loading");
+            }
+        }
+
+        /**
+         * Ensures Python mode is enabled if the selected example requires it.
+         *
+         * @returns {boolean} True if Python mode was enabled, false otherwise.
+         */
+        ensurePython() {
+            if (!this.pyCheckbox.checked) {
+                this.pyCheckbox.checked = true;
+                return true;
+            }
+            return false;
+        }
+
+        /**
+         * Set the value of the Python checkbox without triggering an event.
+         *
+         * @param {boolean} enable - True to enable Python mode, false to disable.
+         */
+        setPython(enable) {
+            this.pyCheckbox.checked = enable;
+        }
+
+        /**
+         * Builds the argument list for Clingo execution from UI controls.
+         *
+         * @returns {string[]} Array of arguments.
+         */
+        buildArgs() {
+            let args = [];
+            // switch (this.Args.reasoningMode.value) {
+            //     case "brave":
+            //         args.push(...["--opt-mode=optN", "--enum-mode=brave"]);
+            //         break;
+            //     case "cautious":
+            //         args.push(...["--opt-mode=optN", "--enum-mode=cautious"]);
+            //         break;
+            //     case "enumerate":
+            //         args.push(...["--opt-mode=optN", "0"]);
+            //         break;
+            //     default:
+            //         break;
+            // }
+            // args.push(...["--mode", this.Args.mode.value]);
+            // args.push(...["--log-level", this.Args.logLevel.value]);
+            // switch (this.Args.profile.value) {
+            //     case "compact":
+            //         args.push("--profile=compact");
+            //         break;
+            //     case "detailed":
+            //         args.push("--profile");
+            //         break;
+            //     default:
+            //         break;
+            // }
+            // if (this.Args.stats.checked) {
+            //     args.push("--stats");
+            // }
+            // if (this.Args.project.checked) {
+            //     args.push("--project");
+            // }
+            return args;
+        }
+    }
+
+    /**
+     * ClingoModel manages the execution state and worker for running Clingo or Clingo+Python.
+     *
+     * Responsibilities:
+     * - Tracks execution state, arguments, input, and Python mode.
+     * - Manages the Web Worker for Clingo or Python-enabled Clingo.
+     * - Handles starting, restarting, and running the worker.
+     * - Emits events for output, button state, and worker lifecycle.
+     *
+     * Properties:
+     * - worker: The current Web Worker instance.
+     * - state: Current state ("init", "ready", "running").
+     * - files: The input files for Clingo.
+     * - args: Arguments array for Clingo.
+     * - work: Boolean flag indicating if a run is requested.
+     * - py: Boolean flag for Python mode.
+     * - ispy: Boolean flag indicating if the worker is Python-enabled.
+     */
+    class ClingoModel extends EventTarget {
+        /**
+         * Initializes a new ClingoModel instance.
+         *
+         * Sets up initial state, arguments, input, and Python mode flags.
+         */
+        constructor() {
+            super();
+
+            this.worker = null;
+            this.state = "running";
+            this.files = [];
+            this.args = [];
+            this.work = false;
+            this.py = false;
+            this.ispy = false;
+        }
+
+        /**
+         * Enables or disables Python mode and restarts the worker if the mode changes.
+         *
+         * @param {boolean} enable - True to enable Python mode, false to disable.
+         */
+        enablePython(enable) {
+            this.py = enable;
+            if (this.py != this.ispy) {
+                // NOTE: we set the state to running here to pretend the worker
+                // is running. This will terminate the worker on the following
+                // startWorker call.
+                this.state = "running";
+                this.startWorker();
+            }
+        }
+
+        /**
+         * Starts or restarts the Clingo worker based on the current Python mode.
+         *
+         * If a worker is already running, it is terminated. Sets up message handling
+         * for worker events and output.
+         */
+        startWorker() {
+            if (this.state == "ready" || this.state == "init") {
+                return;
+            }
+            this.state = "init";
+            this.dispatchEvent(new CustomEvent("update-button", { detail: this.state }));
+            if (this.worker != null) {
+                this.worker.terminate();
+            }
+
+            if (this.py) {
+                this.ispy = true;
+                this.worker = new Worker("/guide/js/pyworker.js");
+            } else {
+                this.ispy = false;
+                this.worker = new Worker("/guide/js/worker.js");
+            }
+
+            this.worker.onmessage = (e) => {
+                const msg = e.data;
+                switch (msg.type) {
+                    case "init":
+                        this.state = "ready";
+                        this.runIfReady();
+                        break;
+                    case "ready":
+                        this.worker.postMessage({ type: "init" });
+                        break;
+                    case "exit":
+                        setTimeout(() => this.startWorker(), 0);
+                        break;
+                    case "stdout":
+                        this.dispatchEvent(new CustomEvent("output-append", { detail: msg.value }));
+                        break;
+                    case "stderr":
+                        this.dispatchEvent(new CustomEvent("output-append", { detail: Utils.stripAnsiCodes(msg.value) }));
+                        break;
+                }
+            };
+        }
+
+        /**
+         * Runs Clingo if the worker is ready and a run is requested.
+         *
+         * Clears output, updates state, and sends run command to the worker.
+         * Emits update-button event to update UI state.
+         */
+        runIfReady() {
+            if (this.state == "ready" && this.work) {
+                this.dispatchEvent(new CustomEvent("output-clear"));
+                this.state = "running";
+                this.work = false;
+                this.worker.postMessage({ type: "run", files: this.files, args: this.args });
+            }
+            this.dispatchEvent(new CustomEvent("update-button", { detail: this.state }));
+        }
+
+        /**
+         * Requests a Clingo run with the given arguments and input content.
+         *
+         * Sets up state and input, restarts the worker, and triggers
+         * runIfReady.
+         *
+         * @param {string[]} args - Arguments for Clingo.
+         * @param {string} content - Input string for Clingo.
+         */
+        run(args, files) {
+            this.work = true;
+            this.args = args;
+            this.files = files;
+            if (files.find((file) => file.type === "python")) {
+                this.enablePython(true);
+            }
+            // NOTE: this stops currently running worker and starts a new one.
+            this.startWorker();
+            this.runIfReady();
+        }
+    }
+
+    /**
+     * ClingoController coordinates ClingoModel, ClingoView, and
+     * WorkspaceController.
+     *
+     * Responsibilities:
+     * - Handles UI events for running Clingo, toggling Python mode, and selecting examples.
+     * - Connects model output and state events to the view.
+     * - Loads example files and restores workspace tabs.
+     *
+     * Properties:
+     * - model: Instance of ClingoModel.
+     * - view: Instance of ClingoView.
+     * - workspaceController: Instance of WorkspaceController.
+     */
+    class ClingoController {
+        /**
+         * Initializes a new ClingoController instance.
+         *
+         * Sets up event listeners for UI actions and model events. Loads
+         * example from query parameters if present. Starts the Clingo worker.
+         */
+        constructor(editor, runButton, inputElement, outputElement, pyCheckbox) {
+            this.model = new ClingoModel();
+            this.view = new ClingoView(editor, runButton, inputElement, outputElement, pyCheckbox);
+
+            this.view.addEventListener("run-request", () => {
+                this.model.run(this.view.buildArgs(), this.view.getFiles());
+                // NOTE: Triggering a run might implicitely enable Python.
+                this.view.setPython(this.model.py);
+            });
+            this.view.addEventListener("python-toggle", (e) => this.model.enablePython(e.detail));
+
+            this.model.addEventListener("output-append", (e) => this.view.updateOutput(e.detail));
+            this.model.addEventListener("output-clear", () => this.view.clearOutput());
+            this.model.addEventListener("update-button", (e) => this.view.updateButton(e.detail));
+
+            this.model.startWorker();
+        }
+    }
+
+    return new ClingoController(editor, runButton, inputElement, outputElement, pyCheckbox);
+};
+
+    for (const el of document.getElementsByClassName("clingo-code")) {
+        el.style.width = "100%";
+        el.style.height = "300px";
+        const editor = ace.edit(el);
+        editor.setTheme("ace/theme/textmate");
+        editor.$blockScrolling = Infinity;
+        editor.setOptions({
+            useSoftTabs: true,
+            tabSize: 4,
+            minLines: 1,
+            maxLines: Infinity,
+            autoScrollEditorIntoView: true,
+            mode: `ace/mode/clingo`,
+        });
+        const session = editor.getSession();
+        session.setValue(session.getValue().trim());
+
+        // Create the button
+        var btn = document.createElement('button');
+        btn.textContent = '▶'; // Play icon
+        btn.style.position = 'absolute';
+        btn.style.top = '8px';
+        btn.style.right = '8px';
+        btn.style.zIndex = '10';
+
+        el.style.position = 'relative';
+        el.appendChild(btn);
+
+        // Create the display div
+        var displayDiv = document.createElement('div');
+        displayDiv.style.marginTop = '12px';
+        displayDiv.style.padding = '8px';
+        displayDiv.style.border = '1px solid #ccc';
+        displayDiv.style.background = '#f9f9f9';
+        displayDiv.style.whiteSpace = 'pre-wrap';
+        displayDiv.style.fontFamily = 'monospace';
+        displayDiv.style.display = 'none';
+        displayDiv.style.marginBottom = '2rem'; // Adjust value as needed
+
+        // Insert the display div after the editor
+        el.parentNode.insertBefore(displayDiv, el.nextSibling);
+
+        Clingo(
+            editor,
+            btn,
+            el,
+            displayDiv,
+            document.createElement('input') // Dummy checkbox
+        );
+    }
+</script>

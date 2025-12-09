@@ -160,6 +160,44 @@ Below the solution, {clingo} reports the satisfiability status (`SATISFIABLE`
 means a solution exists), the number of answer sets found, calls, and timing
 statistics.
 
+== Trying It Yourself
+
+Throughout this guide, we encourage you to try out the examples yourself. You
+can experiment with the encoding and solver directly in your browser using the
+interactive editor below. Click the play button in the top right to run the
+solver on the Towers of Hanoi problem, or modify the encoding to see how your
+changes affect the solution—all without any installation.
+
+[.clingo-code]
+[source]
+----
+% Instance
+peg(a;b;c).
+disk(1..4).
+init_on(1..4,a).
+goal_on(1..4,c).
+moves(15).
+
+% Generate
+{ move(D,P,T) : disk(D), peg(P) } = 1 :- moves(M), T = 1..M.
+
+% Define
+on(D,P,0)   :- init_on(D,P).
+on(D,P,T)   :- move(D,P,T).
+on(D,P,T+1) :- on(D,P,T), not move(D,*,T+1), not moves(T).
+blocked(D-1,P,T+1) :- on(D,P,T), not moves(T).
+blocked(D-1,P,T)   :- blocked(D,P,T), disk(D).
+
+% Test
+:- move(D,P,T), blocked(D-1,P,T).
+:- move(D,*,T), on(D,P,T-1), blocked(D,P,T).
+:- goal_on(D,P), not on(D,P,M), moves(M).
+:- { on(D,P,T) } != 1, disk(D), moves(M), T = 1..M.
+
+% Display
+#show move/3.
+----
+
 == Summary
 
 Solving the Towers of Hanoi puzzle involved:
