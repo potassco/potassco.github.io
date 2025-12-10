@@ -107,13 +107,14 @@ table.trophy td {
   table {
     width: 100%;
     margin-bottom: 1rem;
-    border-collapse: collapse;
     border-left: 4px solid $brand-color; /* Brand accent */
-
+    border-radius: 0 4px 4px 0; /* Rounded right corners */
+    border-collapse: separate;
+    border-spacing: 0;
     th,
     td {
       padding: 0.75rem;
-      border: 1px solid $grey-color-light;
+      border: 1px solid $grey-color-light !important;
       vertical-align: top;
     }
 
@@ -124,22 +125,83 @@ table.trophy td {
   }
 
   /* Admonitions - consistent brand pattern */
-  .admonitionblock {
-    margin: 2rem 0;
-    padding: 1rem;
-    border-left: 4px solid $brand-color;
-
-    &.note {
-      border-color: $brand-color;
-    }
-    &.warning {
-      border-color: #dc3545;
-    }
-    &.tip {
-      border-color: #28a745;
-    }
+  .admonitionblock table {
+    width: 100%;
+    border: none !important; /* Kill table border */
+    border-collapse: collapse;
+    background: none; /* Kill table bg */
+    margin: 0;
   }
 
+  .admonitionblock {
+    margin: 1.5em 0;
+    padding: 0;
+    border-left: 4px solid $brand-color; /* Brand accent */
+    border-radius: 0 4px 4px 0; /* Rounded right corners */
+    overflow: hidden;
+    background: #f8f9fa;
+  }
+
+  .admonitionblock > table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  .admonitionblock td.content {
+    padding: 1rem 0.5em;
+    border: none !important; /* Kill table border */
+  }
+
+  .admonitionblock td.icon {
+    text-align: center;
+    padding: 1rem 0 1rem 1rem;
+    font-size: 1.8em;
+    line-height: 1;
+    border: none !important; /* Kill table border */
+  }
+
+  .admonitionblock.note {
+    border-color: #007bff;
+  }
+  .admonitionblock.note td.icon:before {
+    content: "ℹ️";
+    color: #007bff;
+  }
+  .admonitionblock.tip {
+    border-color: #28a745;
+  }
+  .admonitionblock.tip td.icon:before {
+    content: "💡";
+    color: #28a745;
+  }
+  .admonitionblock.important {
+    border-color: #ffc107;
+  }
+  .admonitionblock.important td.icon:before {
+    content: "⚠️";
+    color: #ffc107;
+  }
+  .admonitionblock.warning {
+    border-color: #fd7e14;
+  }
+  .admonitionblock.warning td.icon:before {
+    content: "⚠️";
+    color: #fd7e14;
+  }
+  .admonitionblock.caution {
+    border-color: #dc3545;
+  }
+  .admonitionblock.caution td.icon:before {
+    content: "🚨";
+    color: #dc3545;
+  }
+
+  .admonitionblock .title {
+    font-weight: bold;
+    font-size: 0.9em;
+    text-transform: uppercase;
+    margin-bottom: 0.5em;
+  }
   /* Code blocks - matching brand accent */
   .listingblock > .content > pre,
   .highlight {
@@ -182,6 +244,21 @@ table.trophy td {
   .imageblock > .title {
     margin-top: 1rem; /* Space above caption */
     margin-bottom: 0.5rem; /* Space below caption */
+  }
+
+  .ace_editor {
+    border-left: 4px solid $brand-color; /* Brand accent */
+    border-radius: 0 4px 4px 0; /* Rounded right corners */
+    margin: 1em 0;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1); /* Subtle Minima shadow */
+    font-size: 16px !important;
+  }
+
+  .ace_editor .ace_gutter {
+    background: #f7f7f7; /* Minima sidebar gray */
+    border-right: 1px solid #e8e8e8;
+    color: #666;
+    font-size: 16px !important;
   }
 }
 

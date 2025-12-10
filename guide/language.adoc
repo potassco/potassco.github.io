@@ -1,6 +1,243 @@
 ---
-title: Language
+title: The clingo Input Language
+nav_title: Language
 layout: asciidoc
 permalink: /guide/language/
 nav_order: 3
 ---
+include::_includes/macros.adoc[]
+
+:toc:
+
+This section provides an overview of the input language of {clingo},
+illustrating its constructs with concise examples.
+
+== Introduction
+
+Logic programs in {clingo} are typically specified in one or more text files,
+whose names are provided as arguments when invoking {clingo}. This guide
+describes the main constructs of the input language, accompanied by small,
+illustrative examples.
+
+[NOTE]
+====
+- Examples can be executed in the browser.
+- Since {clingo} does not accept plain terms, we wrap them into simple
+  rules of the form `p(t).`, where `p` is a unary predicate and `t` is the term
+  to be illustrated.
+- Some terms evaluate to sets of terms, resulting in multiple atoms wrapping
+  the individual terms in the output of {clingo}.
+====
+
+== Terms
+
+Every logic program includes _terms_, which are mainly used to specify the
+arguments of atoms.
+
+=== Basic Building Blocks
+
+Basic terms are the fundamental elements used to construct logic programs in
+{clingo}. They include _integers_, _constants_, _strings_, _variables_, and
+_special_ tokens. Understanding these building blocks is essential for defining
+terms and expressing relationships within your program.
+
+[cols="1,2",options="header"]
+|===
+| Type | Description
+| Integers | Whole numbers, can be written in decimal, binary, octal, or hexadecimal.
+| Constants | Identifiers starting with a lowercase letter, may have underscores/ticks.
+| Strings | Text enclosed in double quotes, supports escape sequences.
+| Variables | Identifiers starting with uppercase letter, represent placeholders.
+| Special tokens | `_` (anonymous variable), `#sup`, `#inf` (special values).
+|===
+
+==== Integers
+
+Integers can be written in various formats:
+
+- Optional minus sign followed by digits
+- Binary (`0b`), octal (`0o`), and hexadecimal (`0x`) notations
+- Arbitrary length
+
+[.clingo-code]
+[source]
+----
+p(42).        % the integer 42
+p(-42).       % the integer -42
+p(0b101011).  % the integer 43
+p(0o54).      % the integer 44
+% the integer 424242424242424242424242424242
+p(0x55acd1bbd3529d94c1b26c9b2).
+----
+
+==== Constants
+
+Constants follow these rules:
+
+- Arbitrary prefix of underscores and ticks
+- Start with a lowercase letter
+- Arbitrary suffix of letters, digits, underscores, and ticks
+
+[.clingo-code]
+[source]
+----
+p(a).              % the constant a
+p(_foo).           % the constant _foo
+p('_bar_Baz123').  % the constant '_bar_Baz123'
+----
+
+==== Strings
+
+Strings are sequences of characters enclosed in double quotes. Escape sequences
+are supported:
+
+- `\\` for backslash
+- `\n` for newline
+- `\"` for double quote
+
+[.clingo-code]
+[source]
+----
+p("hello, world!").
+p("line1\nline2").
+p("She said: \"Hello!\"").
+----
+
+==== Variables
+
+Variables are similar to constants but start with an uppercase letter after the
+prefix. The special variable `_` is anonymous; each occurrence is treated as a
+different variable. Variables must be assigned a value in a rule.
+
+[.clingo-code]
+[source]
+----
+p(X) :- X=1.                          % assigns 1 to variable X
+p(_Foo) :- _Foo=2.                    % assigns 2 to variable _Foo
+p('_Bar_Baz123') :- '_Bar_Baz123'=3.  % assigns 3 to variable '_Bar_Baz123'
+----
+
+==== Infimum and Supremum
+
+The tokens `#sup` and `#inf` (and their aliases `#infimum` and `#supremum`) represent special values:
+
+- `#sup`: Larger than any other term
+- `#inf`: Smaller than any other term
+
+[.clingo-code]
+[source]
+----
+p(#inf).
+p(#sup).
+----
+
+[NOTE]
+====
+- Prime suffixes are commonly used to distinguish between related constants or
+  variables.
+- Underscore prefixes are often employed to namespace variables or constants,
+  especially in complex programs.
+====
+
+=== Compound Terms
+
+Compound terms allow you to build more complex terms in {clingo} by combining
+basic terms using _functions_, _tuples_, _format strings_, and _arithmetic_
+expressions. These constructs enable richer modeling capabilities and
+facilitate the representation of structured information within logic programs.
+
+==== Functions
+
+A function term consists of:
+
+- A function symbol (like a constant)
+- Followed by a pool of arguments in parentheses
+- Pools are sequences of argument lists separated by semicolons
+- Argument lists are comma-separated sequences of terms
+- Empty argument lists are allowed, but pools must not be empty
+
+A function symbol with an empty argument list is equivalent to a constant
+(parentheses are usually omitted).
+
+[.clingo-code]
+[source]
+----
+p(f()).        % the constant f (empty argument lists)
+p(g(a,b)).     % the function term g with argument list (a,b)
+p(h(;1;2,3)).  % the set of terms {h, h(1), h(2,3)} (pool notation)
+----
+
+==== Tuples
+
+Tuples are similar to functions but without a function symbol.
+
+- Argument lists with one element are interpreted as terms in parentheses.
+- To indicate a one-element tuple, suffix with a comma.
+
+[.clingo-code]
+[source]
+----
+p(()).          % the empty tuple
+p((1)).         % the term 1
+p((2,)).        % the one-element tuple containing term 2
+p((3,4)).       % the two-element tuple containing terms 3 and 4
+p((5;6,;7,8)).  % the set of terms {5, (6,), (7,8)} (pool notation)
+----
+
+==== Format Strings
+
+[TODO]
+Format strings will be described in a future revision.
+
+=== Arithmetic Terms
+
+Arithmetic terms allow you to perform mathematical operations within {clingo}
+programs. By combining basic terms with arithmetic operators, you can express
+calculations, constraints, and relationships that involve numeric values. They
+are formed using the following connectives: `+`, `-`, `*`, `/`, `\`, `**`,
+`~`, `?`, `^`, `&`.
+
+- All connectives except exponentiation (`**`) are left-associative.
+- Precedence (from highest to lowest):
+  1. Unary `-`, `~` (negation, bitwise negation)
+  2. `*`, `/`, `\` (multiplication, integer division, modulo)
+  3. `+`, `-` (addition, subtraction)
+  4. `?`, `^`, `&` (bitwise or, xor, and)
+  5. `**` (exponentiation)
+- Negated functions and constants evaluate to their corresponding negated
+  symbol.
+- Invalid arithmetic terms evaluate to empty sets of terms.
+
+[.clingo-code]
+[source]
+----
+p(1-2+3).    % the term (1-2)+3=2
+p(2**3**4).  % the term 2**(3**4)=2417851639229258349412352
+p(-1+2*3).   % the term (-1)+(2*3)=5
+p(-f).       % the term -f
+p(0-f).      % the empty set of terms (invalid arithmetic term)
+----
+
+=== Absolute Terms
+
+Absolute terms are non-empty sequences of terms separated by `;` and
+enclosed in `|` symbols.
+
+- An absolute term with more than one term represents the set of absolute
+  values formed by evaluating the terms in the sequence.
+- Terms that do not evaluate to valid absolute values are ignored.
+
+[.clingo-code]
+[source]
+----
+p(|-1|).       % the term 1
+p(|-2;3;-4|).  % the set of terms {2, 3, 4}
+p(|a|).        % the empty set of terms (invalid term)
+----
+
+[NOTE]
+====
+Pools of terms are mainly used to compactly represent problem instances. They
+are rarely used in other contexts.
+====
+

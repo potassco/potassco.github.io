@@ -38,6 +38,7 @@ asciidoctor:
     source-highlighter: rouge
     rouge-css: style
     content-class: asciidoc-content
+    icons: font
 
 plugins:
   - jekyll-asciidoc
