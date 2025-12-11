@@ -218,7 +218,7 @@ p(-f).       % the term -f
 p(0-f).      % the empty set of terms (invalid arithmetic term)
 ----
 
-=== Absolute Terms
+==== Absolute Terms
 
 Absolute terms are non-empty sequences of terms separated by `;` and
 enclosed in `|` symbols.
@@ -235,9 +235,46 @@ p(|-2;3;-4|).  % the set of terms {2, 3, 4}
 p(|a|).        % the empty set of terms (invalid term)
 ----
 
+=== Interval Terms
+
+Interval terms provide a concise way to specify ranges of integers.
+
+- An interval is written as `a..b`, where `a` and `b` are terms.
+- The interval represents all integers from `a` to `b`, inclusive.
+- If `a > b` or one of the terms does not evaluate to an integer, the interval
+  evaluates to the empty set.
+- Intervals are left-associative and have the lowest precedence among term operators.
+
+
+[.clingo-code]
+[source]
+----
+p(1..3).  % the set of terms {1, 2, 3}
+p(4..4).  % the term 4
+p(5..4).  % the empty set of terms
+----
+
+=== Nested Pools
+
+Pools can be nested, allowing surrounding terms to be constructed from all
+possible combinations of their elements.
+
+[.clingo-code]
+[source]
+----
+% the set of terms {f(1), f(2), f(a)}
+p(f(1..2;a)).
+% the set of terms {1+3, 2+3, 1+6, 2+6} = {4, 5, 7, 8}
+p((1..2)+(3;6)).
+% the empty set {1,2} + {}
+p((9..10)+(1+a)).
+----
+
 [NOTE]
 ====
-Pools of terms are mainly used to compactly represent problem instances. They
-are rarely used in other contexts.
+- Pools (or sets) of terms are mainly used to compactly represent problem
+  instances. They are rarely used in other contexts.
+- Note how invalid arithmetic terms lead to empty sets of terms, which also
+  results in empty sets when evaluated surrounding pools.
 ====
 
