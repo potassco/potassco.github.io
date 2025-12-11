@@ -260,6 +260,47 @@ table.trophy td {
     color: #666;
     font-size: 16px !important;
   }
+
+  .clingo-editor-container {
+    position: relative;
+  }
+
+  .clingo-run-button {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    z-index: 10;
+  }
+
+  .button--loading::after {
+    content: "";
+    position: absolute;
+    width: 12px;
+    height: 12px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border: 4px solid transparent;
+    border-top-color: #999;
+    border-radius: 50%;
+    animation: button-loading-spinner 1s ease infinite;
+  }
+  @keyframes button-loading-spinner {
+    to {
+      transform: translate(-50%, -50%) rotate(360deg);
+    }
+  }
+
+  .clingo-output {
+    margin-top: 12px;
+    margin-bottom: 2rem;
+    padding: 8px;
+    border: 1px solid #ccc;
+    background: #f9f9f9;
+    white-space: pre-wrap;
+    font-family: monospace;
+    display: none;
+  }
 }
 
 .docs-container {
