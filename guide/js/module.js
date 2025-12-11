@@ -1,4 +1,4 @@
-const Clingo = (() => {
+(() => {
   const Utils = (() => {
     const stripAnsiCodes = (input) => input.replace(/\x1b\[[0-9;]*m/g, "");
 
@@ -162,10 +162,10 @@ const Clingo = (() => {
       this.model = new ClingoModel();
       this.target = null;
       this.model.addEventListener("output-append", (e) =>
-        this.target.updateOutput(e.detail),
+        this.target?.updateOutput(e.detail),
       );
       this.model.addEventListener("output-clear", () =>
-        this.target.clearOutput(),
+        this.target?.clearOutput(),
       );
       this.views = [];
     }
