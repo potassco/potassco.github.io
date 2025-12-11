@@ -1229,15 +1229,15 @@ ace.define(
             regex: '"',
             push: [
               {
-                token: "constant.character",
+                token: "constant.language.escape",
                 regex: "\\\\\\\\",
               },
               {
-                token: "constant.character",
+                token: "constant.language.escape",
                 regex: '\\\\"',
               },
               {
-                token: "constant.character",
+                token: "constant.language.escape",
                 regex: "\\\\n",
               },
               {
@@ -1249,17 +1249,89 @@ ace.define(
             ],
           },
         ],
+        "#fstring": [
+          {
+            token: "string",
+            regex: 'f"',
+            push: [
+              {
+                token: "constant.language.escape",
+                regex: "\\\\\\\\",
+              },
+              {
+                token: "constant.language.escape",
+                regex: '\\\\"',
+              },
+              {
+                token: "constant.language.escape",
+                regex: "\\\\n",
+              },
+              {
+                token: "constant.language.escape",
+                regex: "\\{\\{",
+              },
+              {
+                token: "constant.language.escape",
+                regex: "\\}\\}",
+              },
+              {
+                token: "paren.lparen",
+                regex: "\\{",
+                push: "#fstring_expr",
+              },
+              {
+                token: "string.quoted",
+                regex: '"',
+                next: "pop",
+              },
+              { defaultToken: "string" },
+            ],
+          },
+        ],
+        "#fstring_expr": [
+          {
+            token: "paren.rparen",
+            regex: "\\}",
+            next: "pop",
+          },
+          {
+            token: "function.support",
+            regex: "![rs]",
+          },
+          {
+            token: "punctuation",
+            regex: "[.\\[\\]]",
+          },
+          {
+            token: "function.support",
+            regex: ":[^}]*",
+          },
+          { include: "#fstring" },
+          { include: "#punctuation" },
+          { include: "#operator" },
+          { include: "#identifier" },
+          { include: "#number" },
+          { include: "#variable" },
+          { include: "#string" },
+          { include: "#comment" },
+          {
+            token: "invalid.illegal",
+            regex: "[^\\s]",
+          },
+        ],
         "#weak": [
           {
             token: "punctuation.separator",
             regex: "\\[",
             push: [
+              { include: "#fstring" },
               { include: "#punctuation" },
               { include: "#operator" },
               { include: "#identifier" },
               { include: "#number" },
               { include: "#variable" },
               { include: "#string" },
+              { include: "#comment" },
               {
                 token: "punctuation.separator",
                 regex: "\\]",
@@ -1277,6 +1349,7 @@ ace.define(
             token: "meta.statement.clingo",
             regex: "(?=[^\\s])",
             push: [
+              { include: "#fstring" },
               { include: "#punctuation" },
               { include: "#operator" },
               { include: "#identifier" },
@@ -1284,6 +1357,7 @@ ace.define(
               { include: "#variable" },
               { include: "#keyword" },
               { include: "#string" },
+              { include: "#comment" },
               {
                 token: "punctuation",
                 regex: "\\.",
