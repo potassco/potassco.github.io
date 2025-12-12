@@ -55,19 +55,21 @@ terms and expressing relationships within your program.
 
 Integers can be written in various formats:
 
-- Optional minus sign followed by digits
+- Optional minus sign followed by digits and optional thousands separators
+  (apostrophes)
 - Binary (`0b`), octal (`0o`), and hexadecimal (`0x`) notations
 - Arbitrary length
 
 [.clingo-code]
 [source]
 ----
-p(42).        % the integer 42
-p(-42).       % the integer -42
-p(0b101011).  % the integer 43
-p(0o54).      % the integer 44
+p(42).         % the integer 42
+p(-42).        % the integer -42
+p(0b101011).   % the integer 43
+p(0o54).       % the integer 44
 % the integer 424242424242424242424242424242
 p(0x55acd1bbd3529d94c1b26c9b2).
+p(1'234'567).  % the integer 1234567
 ----
 
 ==== Constants
@@ -107,7 +109,7 @@ p("She said: \"Hello!\"").
 
 Variables are similar to constants but start with an uppercase letter after the
 prefix. The special variable `_` is anonymous; each occurrence is treated as a
-different variable. Variables must be assigned a value in a rule.
+different variable. Variables must receive a value in a rule.
 
 [.clingo-code]
 [source]
@@ -119,10 +121,11 @@ p('_Bar_Baz123') :- '_Bar_Baz123'=3.  % assigns 3 to variable '_Bar_Baz123'
 
 ==== Infimum and Supremum
 
-The tokens `#sup` and `#inf` (and their aliases `#infimum` and `#supremum`) represent special values:
+The tokens `#sup` and `#inf` (and their aliases `#infimum` and `#supremum`)
+represent special values:
 
-- `#sup`: Larger than any other term
 - `#inf`: Smaller than any other term
+- `#sup`: Larger than any other term
 
 [.clingo-code]
 [source]
@@ -192,8 +195,8 @@ enabling dynamic string construction. Expressions are enclosed in curly braces
 https://peps.python.org/pep-3101/[f-strings].
 
 - Basic usage: `f"string: {expr}"` evaluates `expr` and inserts its value.
-- Conversion flags: Use `!r` for the representation (`repr`) and `!s` for the
-  string (`str`) conversion.
+- Conversion flags: Use `!r` for the representation (includes quotes) and `!s`
+  for the string conversion (removes quotes).
 - Numeric formatting: Format numbers with type specifiers such as `d`
   (decimal), `b` (binary), `o` (octal), `x`/`X` (hexadecimal), and `#x`
   (hexadecimal with prefix).
@@ -216,12 +219,12 @@ p(f"accessor: {f(g(h(1)))[0][0].name}").
 p(f"nested: >{f"{7:0=3}"}<").
 ----
 
-=== Arithmetic Terms
+==== Arithmetic Terms
 
 Arithmetic terms allow you to perform mathematical operations within {clingo}
 programs. By combining basic terms with arithmetic operators, you can express
-calculations, constraints, and relationships that involve numeric values. They
-are formed using the following connectives: `+`, `-`, `*`, `/`, `\`, `**`,
+calculations that involve numeric values. They are formed using the following
+connectives: `+`, `-`, `*`, `/`, `\`, `**`,
 `~`, `?`, `^`, `&`.
 
 - All connectives except exponentiation (`**`) are left-associative.
@@ -262,7 +265,7 @@ p(|-2;3;-4|).  % the set of terms {2, 3, 4}
 p(|a|).        % the empty set of terms (invalid term)
 ----
 
-=== Interval Terms
+==== Interval Terms
 
 Interval terms provide a concise way to specify ranges of integers.
 
@@ -271,7 +274,6 @@ Interval terms provide a concise way to specify ranges of integers.
 - If `a > b` or one of the terms does not evaluate to an integer, the interval
   evaluates to the empty set.
 - Intervals are left-associative and have the lowest precedence among term operators.
-
 
 [.clingo-code]
 [source]
@@ -304,4 +306,3 @@ p((9..10)+(1+a)).
 - Note how invalid arithmetic terms lead to empty sets of terms, which also
   results in empty sets when evaluated surrounding pools.
 ====
-
