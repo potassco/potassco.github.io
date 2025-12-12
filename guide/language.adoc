@@ -271,9 +271,10 @@ Interval terms provide a concise way to specify ranges of integers.
 
 - An interval is written as `a..b`, where `a` and `b` are terms.
 - The interval represents all integers from `a` to `b`, inclusive.
-- If `a > b` or one of the terms does not evaluate to an integer, the interval
-  evaluates to the empty set.
-- Intervals are left-associative and have the lowest precedence among term operators.
+- If `a` evaluates to a smaller integer than `b` or one of the terms does not
+  evaluate to an integer, the interval evaluates to the empty set.
+- Intervals are left-associative and have the lowest precedence among term
+  operators.
 
 [.clingo-code]
 [source]
