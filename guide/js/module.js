@@ -6,13 +6,14 @@
   })();
 
   class ClingoView extends EventTarget {
-    constructor(editor, runButton, inputElement, outputElement) {
+    constructor(editor, runButton, inputElement, outputElement, options) {
       super();
 
       this.editor = editor;
       this.runButton = runButton;
       this.outputElement = outputElement;
       this.inputElement = inputElement;
+      this.options = options;
 
       this.runButton.onclick = () =>
         this.dispatchEvent(new CustomEvent("run-request"));
@@ -31,6 +32,20 @@
         content: this.editor.session.getValue(),
       });
       return entries;
+    }
+
+    getOptions() {
+      const content = this.editor.session.getValue();
+      const prefix = "%% OPTIONS:";
+      const start = content.indexOf(prefix);
+      if (start !== -1) {
+        const end = content.indexOf("\n", start);
+        return content
+          .substring(start + prefix.length, end === -1 ? content.length : end)
+          .trim()
+          .split(" ");
+      }
+      return this.options;
     }
 
     clearOutput() {
@@ -170,15 +185,20 @@
       this.views = [];
     }
 
-    addView(editor, runButton, inputElement, outputElement) {
+    addView(editor, runButton, inputElement, outputElement, options) {
       const view = new ClingoView(
         editor,
         runButton,
         inputElement,
         outputElement,
+        options,
       );
       view.addEventListener("run-request", () =>
-        this.model.run([], view.getFiles(), () => (this.target = view)),
+        this.model.run(
+          view.getOptions(),
+          view.getFiles(),
+          () => (this.target = view),
+        ),
       );
       view.addEventListener("python-toggle", (e) =>
         this.model.enablePython(e.detail),
@@ -208,7 +228,16 @@
         mode: `ace/mode/clingo`,
       });
       const session = editor.getSession();
-      session.setValue(session.getValue().trim());
+      var content = session.getValue().trim();
+      // The first line of content might start with "%% OPTIONS: <space separated options>" I want to extract these options and store them in a data attribute of the block.
+      var options = [];
+      const prefix = "%%% OPTIONS:";
+      if (content.startsWith(prefix)) {
+        const index = content.indexOf("\n");
+        options = content.substring(prefix.length, index).trim().split(" ");
+        content = content.substring(index + 1);
+      }
+      session.setValue(content);
 
       // create the button
       var button = document.createElement("button");
@@ -224,7 +253,7 @@
       block.appendChild(button);
       block.parentNode.insertBefore(output, block.nextSibling);
 
-      controller.addView(editor, button, block, output);
+      controller.addView(editor, button, block, output, options);
     }
   });
 })();
