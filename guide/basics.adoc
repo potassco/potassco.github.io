@@ -44,8 +44,8 @@ The first _choice rule_ expresses that it is generally possible that a bird
 flies while the constraint that penguins cannot fly is specified by the
 following _integrity constraint_.
 
-The latter three _facts_ state that both `tux` and `tweety` are birds, while only
-`tux` is a penguin.
+The latter three _facts_ state that both tux and tweety are birds, while only
+tux is a penguin.
 
 When we instantiate the _variable_ `X` in the three schematic rules with the
 _terms_ `tweety` and `tux`, we obtain the following ground rules:
@@ -70,9 +70,9 @@ _Grounding_ is the process of replacing variables with all possible constants
 to produce variable-free rules. This is done automatically by {clingo}.
 ====
 
-Further taking into account that `tweety` and `tux` are known to be birds, that
-`tux` is a penguin, while `tweety` is not, and that penguins can definitely not
-fly, we can simplify the previous ground rules to obtain the following ones:
+Further taking into account that tweety and tux are known to be birds, that tux
+is a penguin, while tweety is not, and that penguins can definitely not fly, we
+can simplify the previous ground rules to obtain the following ones:
 
 [.clingo-code]
 [source]
@@ -87,16 +87,15 @@ bird(tweety).
 penguin(tux).
 ----
 
-Now it becomes apparent that `tweety` may fly or not, while `tux` surely does
-not fly because the introduced integrity constraint eliminates any answer set
-that contains `fly(tux)`. Thus, there are two answer sets for the three
-schematic rules above, instantiated with `tweety` and `tux`. We can verify that
-all three programs have the same solutions by pressing the play button in the
-top right corner.
+Now it becomes apparent that tweety may fly or not, while tux surely does not
+fly because the introduced integrity constraint eliminates any answer set that
+contains `fly(tux)`. Thus, there are two answer sets for the three schematic
+rules above, instantiated with terms `tweety` and `tux`. We can verify that all
+three programs have the same solutions by pressing the play button in the top
+right corner.
 
-The following example is setup to just ground the logic program. Hit the play
-button to see how {clingo} grounds the program (while ignoring the `#show`
-statements in the output for now):
+The following example is set up to just ground the logic program. Hit the play
+button to see how {clingo} grounds the program:
 [.clingo-code]
 [source]
 ----
@@ -114,20 +113,23 @@ penguin(tux).
 - _Grounding_ is the process of replacing variables with all possible constants
   to produce variable-free rules. This is done automatically by {clingo}.
 - Observe how {clingo} removes facts from rules.
+- The `#show` statements at the end of the output control which atoms are
+  displayed in the final answer sets; they do not affect the semantics of the
+  logic program. By default, a show statement for each atom name is emitted. We
+  discuss such statements later in this guide.
 ====
 
-The above example illustrated how variables are used to represent all instances
-of rules with respect to the language of a logic program. In fact, {clingo}
-takes care of instantiating variables such that an equivalent logic program
-without variables is obtained.
+The above example logic program illustrated how variables are used to represent
+all rule instances with respect to the terms appearing in the program. In fact,
+{clingo} takes care of instantiating variables such that an equivalent logic
+program without variables is obtained.
 
-Up to now, we have introduced variables, terms, facts, choice rules, and
-integrity constraints. Before we proceed to describe handy extensions to this
-simple core language, keep in mind that the role of a rule (or fact) is that an
-atom in the head can be derived to be true if the body is satisfied. Unlike
-this, an integrity constraint implements a test, but it cannot be used to
-derive any atom. This universal meaning still applies when more sophisticated
-language constructs, as described in the latter of this guide, are used.
+So far, we have seen how to use variables, terms, facts, choice rules, and
+integrity constraints. Before moving on to more advanced features, remember
+that rules and facts let us state what can be true in our problem, while
+integrity constraints are used to rule out unwanted situations. This basic idea
+remains the same, even as we explore more powerful language constructs later in
+this guide.
 
 === Syntax of Core Rules
 
@@ -192,14 +194,14 @@ academic examples involving cyclic derivation and negation.
 [NOTE]
 ====
 - The following examples are academic - they are required to deeply understand
-  ASP but they are not very motivating and they are not needed to use ASP.
+  ASP but they are not needed to use ASP.
 - We introduce them here to explain cyclic derivation, cyclic negation, and the
   translation of choice and integrity constraints to normal programs.
 ====
 
 .Example: Positive Cycle
-This example shows a positive cycle, where atoms depend on each. Such cycles
-can prevent atoms from being derived unless there is external support.
+This example shows a positive cycle, where atoms depend on each other. Such
+cycles can prevent atoms from being derived unless there is external support.
 
 [.clingo-code]
 [source]
@@ -225,7 +227,7 @@ answer set. Hence, the empty set is the only answer set of the logic program.
 We say that there is a _positive cycle_ through `a` and `b` subject to
 minimization.
 
-On of the main application of postivie cycles in ASP is to express
+One of the main applications of positive cycles in ASP is to express
 reachability. The following example computes reachable nodes in a directed
 graph:
 
@@ -243,6 +245,14 @@ start(a).
 reach(X) :- start(X).
 reach(Y) :- reach(X), edge(X,Y).
 ----
+
+[NOTE]
+====
+- This specification is very close to a mathematical definition of reachability
+  in a graph: the reachable nodes are the _smallest set_ of nodes such that (i)
+  all start nodes are reachable, and (ii) if there is an edge from a reachable
+  node _u_ to some other node _v_, then _v_ is reachable as well.
+====
 
 .Example: Cyclic Negation
 This example demonstrates a cycle through negation to express a choice between
@@ -298,8 +308,7 @@ b :- a, not b.
 
 Here, `b` must be true when ever `a` is true and `b` is false.
 Clearly, `a` is true because it is derived by a fact.
-Let us analyze the two posible remaining cases for `b`.
-
+Let us analyze the two possible remaining cases for `b`.
 If `b` is true, then the body of the rule `b :- a, not b.` is false, so that we
 cannot use this rule to derive `b`. Hence, the set containing `a` and `b` is
 not an answer set.
@@ -307,11 +316,10 @@ not an answer set.
 If `b` is false, then the body of the rule `b :- a, not b.` is true, so that we can derive `b`.
 This is a contradiction, so that the set containing only `a` is not an answer set.
 
-Observe that we can use this to filter answer sets by introducing such cycles.
-In fact, we can encode integrity constraints by introducing a fresh atom
-indicating a conflict. This allows us to equivalently write our motivating
-example just using normal rules (considering facts as normal rules with a true
-body):
+Observe that we can use this to filter answer sets by selectively introducing
+such cycles. In fact, we can encode integrity constraints by introducing a
+fresh atom indicating a conflict. This allows us to equivalently write our
+motivating example just using normal rules:
 
 [.clingo-code]
 [source]
@@ -319,9 +327,17 @@ body):
 %%% OPTIONS: 0
     fly(X) :- not neg_fly(X), bird(X).
 neg_fly(X) :- not     fly(X), bird(X).
-conflict :- fly(X), penguin(X), not conflict.
+fail :- fly(X), penguin(X), not fail.
 
 bird(tux).
 bird(tweety).
 penguin(tux).
 ----
+
+[NOTE]
+====
+- Facts can be seen as normal rules with an empty (always true) body. We
+  explicitly introduce facts because they are ubiquitous when defining problem
+  instances.
+- In general, the `:-` symbol can be omitted if the body of a rule is empty.
+====
