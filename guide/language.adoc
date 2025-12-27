@@ -309,3 +309,69 @@ p((9..10)+(1+a)).
 - Note how invalid arithmetic terms lead to empty sets of terms, which also
   results in empty sets when evaluated surrounding pools.
 ====
+
+== Basic Atoms and Literals
+
+Atoms are the basic building blocks of logic programs. An atom typically has
+the form of a function term (or constant), and may optionally be preceded by a
+classical negation symbol `-`. For example, `p(1)` and `-p(3)` are both atoms.
+
+Literals extend atoms by allowing default negation. A literal is either:
+- an atom,
+- a default-negated atom, written as `not atom`, or
+- a double default-negated atom, written as `not not atom`.
+
+The following example demonstrates the use of atoms, classical negation, and
+default negation:
+
+[.clingo-code]
+[source]
+----
+p(1;2).
+{ -p(3); p(3) }.
+not_p(3) :- not p(3).
+not_not_p(3) :- not not p(3).
+----
+
+[NOTE]
+====
+- An answer set cannot contain both an atom and its classical negation (e.g.,
+  both `p(3)` and `-p(3)`).
+- Otherwise, classical negation behaves like any other atom. Conceptually, the
+  solver adds an implicit integrity constraint `:- atom, -atom.` to prevent
+  both from being true simultaneously.
+====
+
+== Boolean Atoms and Literals
+
+- boolean atoms
+- probably merge into previous section
+
+== Comparison Atoms and Literals
+
+- probably merge into previous section
+- some notes on safety
+
+== Advanced Body Atoms and Literals
+
+- aggregates
+- conditional literals
+
+== Advanced Head Atoms and Literals
+
+- aggregates
+- disjunctions
+
+== Theory Atoms and Literals
+
+- todo
+
+== Statements
+
+- comments
+- rules
+- show statements
+- projections
+- script statements
+  - external functions
+- and so on
