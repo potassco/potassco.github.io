@@ -358,6 +358,11 @@ by the rule’s body. Safety is ensured in the following cases:
   illustrate when variables are safe.
 ====
 
+=== Pools in Atoms
+
+TODO: explain disjunctive/conjunctive expansion of pools in atoms occuring in
+heads and bodies of rules.
+
 .Symbolic Literals
 ====
 The following example demonstrates symbolic literals including classical and
