@@ -12,7 +12,7 @@ include::_includes/macros.adoc[]
 == Introduction
 
 This section provides an overview of the input language of {clingo},
-illustrating its constructs with concise examples. 
+illustrating its constructs with concise examples.
 
 [NOTE]
 ====
@@ -312,45 +312,101 @@ p((9..10)+(1+a)).
 
 == Basic Atoms and Literals
 
-Atoms are the basic building blocks of logic programs. An atom typically has
-the form of a function term (or constant), and may optionally be preceded by a
-classical negation symbol `-`. For example, `p(1)` and `-p(3)` are both atoms.
+_Atoms_ are the fundamental building blocks of logic programs. There are three
+main kinds of atoms:
 
-Literals extend atoms by allowing default negation. A literal is either:
-- an atom,
-- a default-negated atom, written as `not atom`, or
-- a double default-negated atom, written as `not not atom`.
+* _Symbolic atoms_, such as `p(1)`, which may also be classically negated as
+  `-p(3)`.
+* _Boolean atoms_, which directly represent truth values: `#true` and `#false`.
+* _Comparison atoms_, which compare terms using relations like `=`, `!=`, `<`,
+  `pass:[<=]`, `>`, and `>=`.
 
-The following example demonstrates the use of atoms, classical negation, and
+A _literal_ is any atom or its default-negated form. Default negation is
+written as `not atom` and expresses the absence of evidence for the atom.
+Double default negation, `not not atom`, is also allowed.
+
+Default negation can be applied to:
+
+* symbolic atoms (including classically negated ones), e.g., `not p(1)`,
+  `not -p(3)`
+* boolean atoms, e.g., `not #true`
+* comparison atoms, e.g., `not X=1`, `pass:[not 0<=X<=10]`
+
+=== Safety of Variables
+
+Variables in rules must be _safe_, meaning their possible values are restricted
+by the rule’s body. Safety is ensured in the following cases:
+
+* Variables in positive symbolic literals provide safe occurrences, except if
+  nested in complex arithmetic expressions:
+** Safe Examples: `q(X) :- p(X).`,  `q(X) :- p(f(X-1)).`,  `q(X) :- p(f(2*X-1)).`
+** Unsafe Examples:  `q(X) :- p(X*X).`,  `q(X) :- p(|X|).`
+* Variables in acyclic assignments or varibales with lower and upper integer
+  bounds:
+** Safe Examples: `p(X) :- X=a.`, `p(X) :- f(X)=f(1).`, `p(X,Y) :- 1<X<Y<4.`
+** Unsafe Examples: `p(X) :- X>1.`, `p(X) :- X*X=2.`, `p(X) :- X=Y, Y=X.`
+
+.Symbolic Literals
+====
+The following example demonstrates symbolic literals including classical and
 default negation:
 
 [.clingo-code]
 [source]
 ----
+%%% OPTIONS: 0
 p(1;2).
 { -p(3); p(3) }.
 not_p(3) :- not p(3).
 not_not_p(3) :- not not p(3).
 ----
+====
 
 [NOTE]
 ====
-- An answer set cannot contain both an atom and its classical negation (e.g.,
+* An answer set cannot contain both an atom and its classical negation (e.g.,
   both `p(3)` and `-p(3)`).
-- Otherwise, classical negation behaves like any other atom. Conceptually, the
-  solver adds an implicit integrity constraint `:- atom, -atom.` to prevent
-  both from being true simultaneously.
+* Classical negation behaves like any other atom, except that the solver adds
+  an implicit integrity constraint `:- atom, -atom.` to prevent both from being
+  true simultaneously.
 ====
 
-== Boolean Atoms and Literals
+.Boolean Literals
+====
+The following example demonstrates boolean literals:
 
-- boolean atoms
-- probably merge into previous section
+[.clingo-code]
+[source]
+----
+a :- #true.
+b :- not #false.
+----
+====
 
-== Comparison Atoms and Literals
+[NOTE]
+====
+* Boolean literals have limited utility in logic programs; we show a more
+  useful example later on.
+====
 
-- probably merge into previous section
-- some notes on safety
+.Example: Comparison Literals
+====
+The following example demonstrates comparison literals:
+
+[.clingo-code]
+[source]
+----
+p(X) :- X=1.
+p(X) :- f(X-1)=Y, Y=f(1).
+p(X) :- 3<=X<=4.
+p(X,Y) :- 5<=X<Y+1<8.
+----
+====
+
+[NOTE]
+====
+* The comparision `pass:[3<=X<=4]` can also be written as `X=3..4`.
+====
 
 == Advanced Body Atoms and Literals
 
