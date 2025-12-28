@@ -19,7 +19,7 @@ illustrating its constructs with concise examples.
 - Examples can be executed in the browser - just hit the play button in the top
   right corner.
 - We assume some familiarity with ASP. The link:../quickstart/[Quickstart] and
-  link:../basics/[Bascis] sections should help to get started.
+  link:../basics/[Basics] sections should help to get started.
 ====
 
 == Terms
@@ -38,7 +38,7 @@ arguments of atoms.
 
 === Basic Building Blocks
 
-Basic terms are the fundamental elements used to construct logic programs in
+Basic terms are the fundamental elements used to construct expressions in
 {clingo}. They include _integers_, _constants_, _strings_, _variables_, and
 _special_ tokens. Understanding these building blocks is essential for defining
 terms and expressing relationships within your program.
@@ -202,7 +202,7 @@ https://peps.python.org/pep-3101/[f-strings].
 - Numeric formatting: Format numbers with type specifiers such as `d`
   (decimal), `b` (binary), `o` (octal), `x`/`X` (hexadecimal), and `#x`
   (hexadecimal with prefix).
-- Padding, alginment, and sign: Specify width, padding, align, sign, and
+- Padding, alignment, and sign: Specify width, padding, align, sign, and
   separators, e.g., `{12345:0=+6,}` pads with zeros, sets numeric alignment,
   shows sign, sets width to 6, and uses comma as a thousands separator.
 - Alignment: Use `<`, `>`, or `^` for left, right, or center alignment, and
@@ -312,8 +312,11 @@ p((9..10)+(1+a)).
 
 == Basic Atoms and Literals
 
-_Atoms_ are the fundamental building blocks of logic programs. There are three
-main kinds of atoms:
+Having introduced the basic building blocks for constructing expressions, we
+now turn to atoms—the entities that form the core statements in logic programs.
+
+Basic atoms or just _atoms_ are the fundamental building blocks of logic
+programs. There are three main kinds of atoms:
 
 * _Symbolic atoms_, such as `p(1)`, which may also be classically negated as
   `-p(3)`.
@@ -321,9 +324,9 @@ main kinds of atoms:
 * _Comparison atoms_, which compare terms using relations like `=`, `!=`, `<`,
   `pass:[<=]`, `>`, and `>=`.
 
-A _literal_ is any atom or its default-negated form. Default negation is
-written as `not atom` and expresses the absence of evidence for the atom.
-Double default negation, `not not atom`, is also allowed.
+A _basic literal_ or just _literal_ is any atom or its default-negated form.
+Default negation is written as `not atom` and expresses the absence of evidence
+for the atom. Double default negation, `not not atom`, is also allowed.
 
 Default negation can be applied to:
 
@@ -334,6 +337,9 @@ Default negation can be applied to:
 
 === Safety of Variables
 
+Understanding how atoms and literals function is essential, but it is equally
+important to ensure that variables within rules are used safely.
+
 Variables in rules must be _safe_, meaning their possible values are restricted
 by the rule’s body. Safety is ensured in the following cases:
 
@@ -341,10 +347,16 @@ by the rule’s body. Safety is ensured in the following cases:
   nested in complex arithmetic expressions:
 ** Safe Examples: `q(X) :- p(X).`,  `q(X) :- p(f(X-1)).`,  `q(X) :- p(f(2*X-1)).`
 ** Unsafe Examples:  `q(X) :- p(X*X).`,  `q(X) :- p(|X|).`
-* Variables in acyclic assignments or varibales with lower and upper integer
+* Variables in acyclic assignments or variables with lower and upper integer
   bounds:
 ** Safe Examples: `p(X) :- X=a.`, `p(X) :- f(X)=f(1).`, `p(X,Y) :- 1<X<Y<4.`
 ** Unsafe Examples: `p(X) :- X>1.`, `p(X) :- X*X=2.`, `p(X) :- X=Y, Y=X.`
+
+[NOTE]
+====
+- Whenever we introduce language constructs, we provide small examples to
+  illustrate when variables are safe.
+====
 
 .Symbolic Literals
 ====
@@ -405,24 +417,39 @@ p(X,Y) :- 5<=X<Y+1<8.
 
 [NOTE]
 ====
-* The comparision `pass:[3<=X<=4]` can also be written as `X=3..4`.
+* The comparison `pass:[3<=X<=4]` can also be written as `X=3..4`.
 ====
 
-== Advanced Body Atoms and Literals
+== Advanced Atoms and Literals
 
-- aggregates
-- conditional literals
+With the fundamentals of atoms and variable safety established, we can explore
+more advanced constructs that enhance the expressive power of logic programs,
+such as aggregates and conditional literals.
 
-== Advanced Head Atoms and Literals
+=== Body Aggregates
 
-- aggregates
-- disjunctions
+- todo
 
-== Theory Atoms and Literals
+=== Head Aggregates
+
+- todo
+
+=== Conditional Literals
+
+- todo
+
+=== Disjunctions
+
+- todo
+
+== Theory Atoms
 
 - todo
 
 == Statements
+
+Finally, we discuss the various statements that can be used in {clingo}
+programs, which provide additional control and flexibility.
 
 - comments
 - rules
