@@ -360,8 +360,42 @@ by the rule’s body. Safety is ensured in the following cases:
 
 === Pools in Atoms
 
-TODO: explain disjunctive/conjunctive expansion of pools in atoms occuring in
-heads and bodies of rules.
+Pools can also be used within atoms to succinctly represent multiple related
+atoms in a single expression. When a pool appears in an atom, it is expanded
+into several atoms according to the terms in the pool. The interpretation of
+these atoms depends on whether the pool occurs in the head or body of a rule:
+
+* In heads, all resulting atoms are included together (conjunctively),
+* In bodies, at least one must hold (disjunctively).
+
+This mechanism enables more compact and expressive logic programs:
+
+[.clingo-code]
+[source]
+----
+%%% OPTIONS: 0
+p(1;2;3).
+q(X) :- X=1..3.
+----
+
+Observe how undefined operations leading to empty pools in heads/bodies
+essentially discard rule instances:
+
+[.clingo-code]
+[source]
+----
+%%% OPTIONS: 0
+p(a-1).
+:- q(a-1).
+----
+
+[NOTES]
+====
+* Pools specify the behavior of undefined operations in a predicatable way.
+* The above example illustrates the most frequent use cases of pools in atoms.
+** Pools are often used to specify problem instances compactly.
+** Pools are sometimes used in intervals to specify ranges of values.
+====
 
 .Symbolic Literals
 ====
