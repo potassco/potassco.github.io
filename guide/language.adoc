@@ -467,7 +467,106 @@ such as aggregates and conditional literals.
 
 === Body Aggregates
 
-- todo
+Body aggregates provide a concise way to express conditions over collections of
+literals in rule bodies. They allow you to count, sum, or otherwise combine
+values from multiple sources and compare the result to a bound.
+
+A _body aggregate_ consists of an _aggregate function_ applied to a set of
+_elements_, optionally bounded by _guards_ on the left and/or right. The
+general form is:
+
+----
+term relation function { element; ... } relation term
+----
+
+* `function` is one of: `#sum`, `#count`, `#min`, `#max`
+* `relation` is a comparison operator: `=`, `!=`, `<`, `pass:[<=]`, `>`, `>=`
+* The `relation` can be omitted in which case it defaults to `>=`.
+* The left/right guards composed of term and relation are optional.
+
+Each body aggregate `element` has the form:
+
+----
+term, ..., term : literal, ..., literal
+----
+
+* The terms form a tuple (the value(s) contributed by the element)
+* The literals are the condition for including the element
+
+The semantics of aggregates is as follows:
+
+* Collect the set of all tuples whose conditions are satisfied
+* Apply the aggregate function to these tuples
+* Compare the result to both the left/right guard(s) if present
+
+Aggregate functions:
+
+* `#count`: the number of tuples whose conditions are true
+* `#min`/`#max`: the smallest/largest value among the first terms of the tuples
+* `#sum`: the sum of the first term of each tuple (if integer)
+
+A special case is the set body aggregate, which uses a literal instead of a
+tuple and counts the number of true literals:
+
+----
+term relation { element; ... } relation term
+----
+
+Each set body aggregate `element` has the form:
+
+----
+literal : literal, ..., literal
+----
+
+This form counts the number of literals on the left of the colon whose
+conditions on the right are true, and compares the count to the guard(s).
+
+Both forms of aggregates can be default-negated with `not` or `not not`.
+
+.Body Aggregates in Action
+====
+The following example generates a set of candidates `p(1)` to `p(5)` and uses
+body aggergates to impose constraints on the number of selected candidates and
+their sum:
+
+[.clingo-code]
+[source]
+----
+%%% OPTIONS: 0
+{ p(1..5) }.
+
+:- not #count { X : p(X) } >= 2.
+:- { p(X) } > 2.
+:- not 8 <= #sum { X : p(X) } <= 10.
+----
+
+The aggregates ensure that at least two candidates are selected, no more than
+two are selected, and the sum of selected candidates is between 8 and 10.
+====
+
+.Set Semantics of Aggregates
+====
+The following example illustrates the set semantics of aggregates:
+
+[.clingo-code]
+[source]
+----
+%%% OPTIONS: 0
+p(1..3).
+q(2..5).
+
+c(S) :- S = #count { X,a: p(X); X,b: q(X); X: p(X); X: q(X) }.
+s(S) :- S = #sum   { X,a: p(X); X,b: q(X); X: p(X); X: q(X) }.
+----
+
+Observe how the aggregates count/sum the tuples `1,a`, `2,a`, `3,a` from `p(X)`
+and `2,b`, `3,b`, `4,b`, `5,b` from `q(X)`, as well as the single terms `1`,
+`2`, `3`, `4`, `5` provided by both predicates.
+====
+
+TODO:
+- a note on local variables and safety
+- a note on pools
 
 === Head Aggregates
 
