@@ -389,7 +389,7 @@ p(a-1).
 :- q(a-1).
 ----
 
-[NOTES]
+[NOTE]
 ====
 * Pools specify the behavior of undefined operations in a predicatable way.
 * The above example illustrates the most frequent use cases of pools in atoms.
@@ -467,9 +467,9 @@ such as aggregates and conditional literals.
 
 === Body Aggregates
 
-Body aggregates provide a concise way to express conditions over collections of
-literals in rule bodies. They allow you to count, sum, or otherwise combine
-values from multiple sources and compare the result to a bound.
+Body aggregates allow us to express conditions over collections of literals in
+rule bodies, such as counting, summing, or combining values and comparing the
+result to a bound.
 
 A _body aggregate_ consists of an _aggregate function_ applied to a set of
 _elements_, optionally bounded by _guards_ on the left and/or right. The
@@ -479,10 +479,10 @@ general form is:
 term relation function { element; ... } relation term
 ----
 
-* `function` is one of: `#sum`, `#count`, `#min`, `#max`
+* `function` is one of: `#count`, `#min`, `#max`, `#sum`, `#sum+`
 * `relation` is a comparison operator: `=`, `!=`, `<`, `pass:[<=]`, `>`, `>=`
-* The `relation` can be omitted in which case it defaults to `>=`.
-* The left/right guards composed of term and relation are optional.
+* `relation` can be omitted in which case it defaults to `>=`
+* Left/right guards composed of term and relation are optional
 
 Each body aggregate `element` has the form:
 
@@ -497,15 +497,17 @@ The semantics of aggregates is as follows:
 
 * Collect the set of all tuples whose conditions are satisfied
 * Apply the aggregate function to these tuples
-* Compare the result to both the left/right guard(s) if present
+* An aggregate is satisfied if the obtained value applied to all guards holds
+  true
 
 Aggregate functions:
 
 * `#count`: the number of tuples whose conditions are true
 * `#min`/`#max`: the smallest/largest value among the first terms of the tuples
 * `#sum`: the sum of the first term of each tuple (if integer)
+* `#sum+`: like sum but ignores negative integers
 
-A special case is the set body aggregate, which uses a literal instead of a
+A special case is the _set body aggregate_, which uses a literal instead of a
 tuple and counts the number of true literals:
 
 ----
@@ -523,7 +525,44 @@ conditions on the right are true, and compares the count to the guard(s).
 
 Both forms of aggregates can be default-negated with `not` or `not not`.
 
-.Body Aggregates in Action
+==== Safety of Variables in Aggregates
+
+Variables that appear only within aggregate elements are considered _local_ to
+the aggregate. These local variables do not create additional rule instances
+but instead generate instances of the aggregate element itself. To ensure
+correctness, every local variable must be _safe_ within its aggregate element.
+The mechanism is similar to literals in rule bodies. Aggregates do not provide
+safe occurrences for variables that are not local.
+
+[NOTE]
+====
+* Always ensure that each local variable in an aggregate element is safely
+  restricted by the element's conditions.
+* Non-local variables must be made safe outside the aggregate.
+* Assignment aggregates provide safe occurrences for the variables within the
+  assignment (see the example below).
+====
+
+==== Pools in Aggregates
+
+Pools can be used in several places within aggregates, and their expansion
+follows the same principles as in rule bodies and heads:
+
+* Pools in the conditions (right of the colon) of aggregate elements are
+  expanded _disjunctively_, just like literals in rule bodies.
+* Pools on the left side of the colon (the tuple or literal part) contribute
+  multiple tuples or literals to the aggregate, one for each element of the
+  pool.
+* Pools in guards (the terms compared to the aggregate result) are also
+  expanded disjunctively, like other literals in rule bodies.
+
+[NOTE]
+====
+- While pools can increase conciseness of programs, using them in guards and
+  term tuples is untypical. Prefer simple terms where possible.
+====
+
+.Typical Use Cases
 ====
 The following example generates a set of candidates `p(1)` to `p(5)` and uses
 body aggergates to impose constraints on the number of selected candidates and
@@ -544,7 +583,13 @@ The aggregates ensure that at least two candidates are selected, no more than
 two are selected, and the sum of selected candidates is between 8 and 10.
 ====
 
-.Set Semantics of Aggregates
+[NOTE]
+====
+- Observe the similarity between the count and set aggregate forms. In
+  practice, set aggregates often provide the more concise representation.
+====
+
+.Set Semantics and Assignment Aggregates
 ====
 The following example illustrates the set semantics of aggregates:
 
@@ -564,9 +609,15 @@ and `2,b`, `3,b`, `4,b`, `5,b` from `q(X)`, as well as the single terms `1`,
 `2`, `3`, `4`, `5` provided by both predicates.
 ====
 
-TODO:
-- a note on local variables and safety
-- a note on pools
+[NOTE]
+====
+* Recursive aggregates are also subject to minimization of cyclic derivations;
+  we do not detail this here because this is a rather advanced topic.
+* Assignments aggregates are best applied predicates defined by facts or
+  definite rules to avoid computational overhead (as in the above example).
+* Care has to be taken to correctly use tuples and not just weights in term
+  tuples as the set of them is formed that eliminates duplicates.
+====
 
 === Head Aggregates
 
