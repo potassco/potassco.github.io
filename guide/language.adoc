@@ -487,11 +487,12 @@ term relation function { element; ... } relation term
 Each body aggregate `element` has the form:
 
 ----
-term, ..., term : literal, ..., literal
+term, ..., term: literal, ..., literal
 ----
 
 * The terms form a tuple (the value(s) contributed by the element)
 * The literals are the condition for including the element
+* The colon can be omitted if the condition is empty.
 
 The semantics of aggregates is as follows:
 
@@ -517,7 +518,7 @@ term relation { element; ... } relation term
 Each set body aggregate `element` has the form:
 
 ----
-literal : literal, ..., literal
+literal: literal, ..., literal
 ----
 
 This form counts the number of literals on the left of the colon whose
@@ -574,9 +575,9 @@ their sum:
 %%% OPTIONS: 0
 { p(1..5) }.
 
-:- not #count { X : p(X) } >= 2.
+:- not #count { X: p(X) } >= 2.
 :- { p(X) } > 2.
-:- not 8 <= #sum { X : p(X) } <= 10.
+:- not 8 <= #sum { X: p(X) } <= 10.
 ----
 
 The aggregates ensure that at least two candidates are selected, no more than
@@ -621,7 +622,84 @@ and `2,b`, `3,b`, `4,b`, `5,b` from `q(X)`, as well as the single terms `1`,
 
 === Head Aggregates
 
-- todo
+Head aggregates allow us to express conditions over collections of literals in
+rule bodies, such as counting, summing, or combining values and comparing the
+result to a bound.
+
+* Derive atoms based on collections of literals
+
+A _head aggregate_ consists of an _aggregate function_ applied to a set of
+_elements_, optionally bounded by _guards_ on the left and/or right. The
+general form is:
+
+----
+term relation function { element; ... } relation term
+----
+
+Except for the elements, a head aggregate has the same structure as a body
+aggregate:
+
+----
+term, ..., term: literal: literal, ..., literal
+----
+
+* The element has an additional literal between the tuple and condition
+
+The semantics of aggregates is as follows:
+
+* Collect the set of all tuples whose literals and conditions are satisfied
+* Apply the aggregate function to these tuples
+* An aggregate is satisfied if the obtained value applied to all guards holds
+  true
+* The aggregate derives all atoms appearing after the tuples of the satisfied
+  elements
+
+A special case is the _set head aggregate_, which uses a literal instead of a
+tuple and counts the number of true literals, which have the same form as body
+set aggregates.
+
+Unlike set body aggregates, head set aggregates derive all atoms of satisfied
+elements.
+
+==== Safety of Variables in Aggregates
+
+Safety of variables in head aggregates is similar to body aggregates. However,
+atoms appreaing before the condition do not provide safe occurrences for
+variables.
+
+[NOTE]
+====
+* Observe that set head aggregates include choice rules.
+====
+
+==== Pools in Aggregates
+
+Pools can be used as in body aggregates, and their expansion follows a similar
+scheme except that pools in guards are expanded conjunctively, like other
+literals in rule heads.
+
+.Typical Use Cases
+====
+The following example generates latin squares via atoms `p(X,Y)` using head
+aggregates:
+
+[.clingo-code]
+[source]
+----
+%%% OPTIONS: 0
+1 { p(X,1..3) } 1 :- X=1..3.
+#count { X: p(X,Y): X=1..3 } = 1 :- Y=1..3.
+----
+
+The aggregates ensure that exactly one atom `p(X,Y)` per row `X` and column
+`Y` is chosen.
+====
+
+[NOTE]
+====
+- Note that the second count aggregate could have used the more compact set
+  form as well.
+====
 
 === Conditional Literals
 
