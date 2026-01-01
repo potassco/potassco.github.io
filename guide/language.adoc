@@ -494,7 +494,7 @@ term, ..., term: literal, ..., literal
 * The literals are the condition for including the element
 * The colon can be omitted if the condition is empty.
 
-The semantics of aggregates is as follows:
+The semantics of aggregates are as follows:
 
 * Collect the set of all tuples whose conditions are satisfied
 * Apply the aggregate function to these tuples
@@ -645,7 +645,7 @@ term, ..., term: literal: literal, ..., literal
 
 * The element has an additional literal between the tuple and condition
 
-The semantics of aggregates is as follows:
+The semantics of aggregates are as follows:
 
 * Collect the set of all tuples whose literals and conditions are satisfied
 * Apply the aggregate function to these tuples
@@ -703,7 +703,78 @@ The aggregates ensure that exactly one atom `p(X,Y)` per row `X` and column
 
 === Conditional Literals
 
-- todo
+Conditional literals can be used in rule bodies to concisely express that a set
+of literals should be selected based on certain conditions, all of which must
+be satisfied simultaneously.
+
+A _conditional literal_ has the form:
+
+----
+literal : literal, ..., literal
+----
+
+- The literal before the colon is the _conclusion_ of the conditional literal
+- The literals after the colon form the _condition_
+
+The semantics are as follows:
+
+- Variables that appear only in a conditional literal are _local_ to it; they
+  do not create additional rule instances but only instances of the conditional
+  literal itself.
+- An instance is satisfied, whenever the literal before the colon is satisfied,
+  or one of the literals after the colon is not satisfied. (An instance is an
+  implication: if the condition holds, then the conclusion must hold as well.)
+
+==== Safety of Variables in Conditional Literals
+
+Safety of variables in conditional literals follows similar principles as for
+body aggregates:
+
+- Literals after the colon provide safe occurrences for local variables
+- The literal before the colon does not provide safe occurrences for local variables
+- Local variables must be safely restricted by the condition (literals after the colon)
+- Non-local variables must be made safe outside the conditional literal
+
+==== Pools in Conditional Literals
+
+Pools can be used both before and after the colon in conditional literals, and
+their expansion follows these principles:
+
+- Pools before the colon are expanded _conjunctively_: all resulting literals
+  must hold.
+- Pools after the colon are expanded _disjunctively_: at least one must hold.
+
+[NOTE]
+====
+- Pools in conditional literals are uncommon. Sometimes, intervals are used in
+  conditional literals to specify conjunctions over predicates.
+====
+
+.Typical Use Cases
+====
+The following example demonstrates conditional literals:
+
+[.clingo-code]
+[source]
+----
+%%% OPTIONS: 0
+{ p(1..3) }.
+none :- #false: p(1..3).
+all :- p(1..3): #true.
+:- not all, not none.
+----
+
+The conditional literals ensure that either all or none of the atoms `p(1)`,
+`p(2)`, and `p(3)` are selected.
+====
+
+[NOTE]
+====
+- The conditional literal to select all atoms could also be written as `p(X) :
+  X=1..3`. The above form illustrates how pools are expanded in conclusions.
+- The semantics of recursive conditional literals are subject to minimization of
+  cyclic derivations, which is an advanced topic not covered here.
+====
 
 === Disjunctions
 
