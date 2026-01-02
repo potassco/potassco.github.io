@@ -893,27 +893,430 @@ c | d :-     a,     b.
 
 [NOTE]
 ====
-- For simple generators, choice rules are recommended for their conciseness and
+* For simple generators, choice rules are recommended for their conciseness and
   straightforward semantics.
-- Disjunctions are more expressive and can represent problems beyond NP, making
+* Disjunctions are more expressive and can represent problems beyond NP, making
   them essential for advanced encodings.
-- Conditions in disjunctions should ideally be derived by facts or definite
+* Conditions in disjunctions should ideally be derived by facts or definite
   rules.
 ====
 
-== Theory Atoms
+=== Theory Atoms
 
-* todo
+Theory atoms provide a way to embed custom theories into {clingo} programs.
+While {clingo} offers syntactic support for theory atoms, their semantics are
+defined by external theory solvers.
+
+A _theory operator_ is a non-empty sequence of symbols from `!<=>+-*/\?&|.:;~^`
+without spaces or `not`. The symbols `:` and `;` must be combined with other
+symbols.
+
+A _theory term_ can be one of the following:
+
+* a variable, e.g., `X`
+* a number, e.g., `124`
+* a stringo or format string, e.g., `"abc"` or `f"abc{X}"`
+* the special tokens `#inf` or `#sup`
+* an identifier applied to theory terms, e.g., `f(t1,t2)`
+* a tuple: `(t1, ..., tn)` (with the same rules as for term tuples regarding
+  trailing commas and single-element tuples)
+* a list: `[t1, ..., tn]`
+* a set: `{t1, ..., tn}`
+* an expression using theory operators: `expr ... expr`
+** each expressions has form `op ... op term`  where each op is a theory
+   operator and each term is a theory term
+** all but the first expression must be preceded by at least one theory operator
+** example: `-1+2*3`
+
+A _theory atom_ has the form:
+
+`&name { element; ...; element } op term`
+
+* `name` is a term that serves as the _name_ of the theory atom.
+* `op term` is an optional _guard_ consisting of a theory operator and a theory
+  term.
+* The braced part can be omitted if the theory atom has no elements.
+
+Each _element_ inside the braces has the form:
+
+`term, ..., term : literal, ..., literal`
+
+* Each `term` is a theory term together forming a `tuple`.
+* The literals form the _condition_ of the element.
+* The condition (after the colon) can be empty, in which case the colon can be
+  omitted.
+
+Variables that occur only in theory atoms are _local_ and must be made safe by
+literals in the condition part of elements. Local variables define a set of
+instances of theory elements. Pools in conditions are expanded _disjunctively_.
+Pools in names expand _conjunctively_ in the head and _disjunctively_ in the
+body of rules. The semantics of theory atoms are defined by external theory
+solvers.
+
+.Typical Use Cases
+====
+The following example demonstrates theory atoms:
+
+[.clingo-code]
+[source]
+----
+%%% OPTIONS: --mode=parse
+p(a,b) :- &here.
+p(b,c) :- &there.
+&diff { X-Y: p(X,Y) } <= 2.
+h :- &sum { X: X=1..3  } >= 3.
+&minimize{ X::Y: p(X,Y) }.
+----
+
+The example is set up to just parse and print the program without actual
+grounding. To actually ground programs with theory atoms, a theory
+specification is needed, which is introduced later in the guide. To solve them,
+a theory solver must be implemented using {clingo}'s API.
+====
 
 == Statements
 
 Finally, we discuss the various statements that can be used in {clingo}
 programs, which provide additional control and flexibility.
 
-* comments
-* rules
-* show statements
-* projections
-* script statements
-** external functions
-* and so on
+=== Comments
+
+Comments allow us to include explanatory notes within our {clingo} programs
+without changing their behavior. {clingo} two types of comments: line comments
+and block comments.
+
+Line comments start with `%` and continue to the end of the line:
+
+[.clingo-code]
+[source]
+----
+% abc
+% def
+----
+
+Block comments start with `%\*` and end with `*%`, and can span multiple lines
+with limited nesting support:
+
+[.clingo-code]
+[source]
+----
+%*
+abc
+%*
+def
+*%
+ghi
+*%
+----
+
+[NOTE]
+====
+* Block comments can be nested, but care must be taken to ensure proper
+  matching of start and end markers.
+* Nested block comments are intended to quickly disable sections of code
+  including block comments during development.
+====
+
+=== Rules
+
+Rules are the primary constructs in {clingo} programs that define relationships
+between atoms. A _rule_ has the general form:
+
+`l0 :- l1; ...; ln.`
+
+* `l0` is a head literal (including basic literals, head aggregates
+  disjunctions, and theory atoms).
+* `l1; ...; ln` are body literals (including basic literals, body aggregates,
+  conditional literals, and theory atoms).
+* Body literals can be separted by `,` or `;`. Conditional literals must be
+  separated by `;`.
+
+A rule is satisfied if the head literal is true or at least one body literal is
+false. Rules derive head literals subject to minimization of cyclic
+derivations.
+
+.Syntax Examples
+====
+[.clingo-code]
+[source]
+----
+%%% OPTIONS: 0
+a.                 % a fact
+{b}.               % a choice rule
+c :- a; b, not c.  % a normal rule
+c | b.             % a disjunctive rule
+----
+====
+
+[NOTE]
+====
+* See section link:../basics[Basics] for more examples of rules.
+====
+
+=== Show Directives
+
+Show directives control the output of answer sets by specifying which atoms to
+show.
+
+Show directives have the following forms:
+
+* `#show.`
+* `#show name/arity. [flag]`
+* `#show term : body.`
+
+Their semantics are as follows:
+
+* The first variant indicates that atoms not explicitly shown are hidden.
+* The second variant shows all atoms with the specified name and arity if flag
+  is `true` or hides them if flag is `false`. The flag is optional and defaults
+  to `true`.
+* The third variant shows all terms whose bodies are satisfied. The body shares
+  the same syntax/semantics as rule bodies. Pools in terms expand to multiple
+  show statements.
+
+[.clingo-code]
+[source]
+----
+%% OPTIONS: 0
+{a}.
+b.
+#show.
+#show b/0.
+#show c: a.
+----
+
+[NOTE]
+====
+* We commonly only show atoms that constitute the solution to a problem hiding
+  instance and auxiliary atoms.
+* When at least name/arity variant is used with flag `true`, all atoms not
+  explicitly show are hidden.
+* Showing terms is useful to display computed values.
+====
+
+=== Const Directives
+
+Const directives allow us to define constants that can be used throughout a
+logic program.
+
+Const directives have the following form:
+
+`#const name = term. [flag]`
+
+* `name` is the name of the constant
+* `term` is a term that is to be assigned to the constant
+* `flag` is an optional flag that can be either `default` or `override`
+  defaulting to `default`
+** The syntax of terms is restricted: variables and pools are not allowed.
+
+[.clingo-code]
+[source]
+----
+%% OPTIONS: 0
+#const n = 3.
+p(1..n).
+----
+
+[NOTE]
+====
+* Const directives apply globally to all files passed to clingo. Especially, if
+  instances are generated, ensure the constants are defined consistently.
+* Flags marked `default` can be overridden via the command-line option `--const
+  name=term` (or constants defined with `override`).
+====
+
+=== Projection Directives
+
+Projection directives specify relevant atoms in solutions. When enumerating
+answer sets, solutions are considered equivalent if they agree on the projected
+atoms. Only one representative of each equivalence class is included in the
+output.
+
+Projection directives have the following form:
+
+* `#project name/arity.`
+
+Here, `name` is the name of the atom and `arity` is its arity.
+
+[.clingo-code]
+[source]
+----
+%%% OPTIONS: 0 --project
+#project p/1.
+% #show p/1.  % uncomment to only show projected atoms
+
+1 {p(1..3)} 1.
+1 {q(1..3)} 1.
+----
+
+[NOTE]
+====
+- I can be confusing to see auxiliary atoms in the output when projection is
+  used.
+- Try adding `#show p/1` to the above example to only show projected atoms.
+- To enable projection, use the `--project` command-line option. The example
+  has been set up accordingly.
+====
+
+=== Weak Constraints and Optimization Directives
+
+* TODO
+
+=== Program and Parts Directives
+
+Program directives allow us to structure logic programs into named parametrized
+sections. They are used for multi-shot solving, where different parts of a
+program can be grounded and solved incrementally. Or to organize large programs
+into composable programs parts.
+
+[.clingo-code]
+[source]
+----
+#parts base, inject(4).
+
+q(1..3).
+q(X) :- p(X).
+
+#program inject(n).
+p(n).
+----
+
+[NOTE]
+====
+- A parts directive with flag `default` can be overriden via the command-line
+  option `--part=<parts>`.
+====
+
+=== External Directives
+
+* TODO
+
+[.clingo-code]
+[source]
+----
+%%% OPTIONS: 0
+#external p(X) : X=1..3. [true]
+#external p(4). [free]
+#external p(5). [false]
+#external p(6).
+----
+
+=== Include Directives
+
+* TODO
+
+[.clingo-code]
+[source]
+----
+#include <incmode>.
+
+#program base.
+p(1).
+
+#program step(t).
+p(t) :- p(t-1).
+
+#program check(t).
+:- query(t), not p(5).
+----
+
+=== Edge Directives
+
+* TODO
+
+[.clingo-code]
+[source]
+----
+%%% OPTIONS: 0
+edge(a,b).
+edge(b,c).
+edge(c,a).
+
+2 { pick(X,Y) : edge(Y,X) }.
+
+#edge (X,Y) : pick(X,Y).
+----
+
+=== Heuristic Directives
+
+* TODO
+
+[.clingo-code]
+[source]
+----
+%%% OPTIONS: --heuristic domain
+{p(1..3)}.
+{q(1..3)}.
+
+#heuristic p(X). [1, true]
+#heuristic q(X). [1, false]
+----
+
+[NOTE]
+====
+- The exmaple uses the `domain` heuristic strategy, which can be enabled via
+  the command-line option `--heuristic=domain`.
+====
+
+=== Script Directives and External Functions
+
+* TODO
+
+[.clingo-code]
+[source]
+----
+#script (python)
+
+from clingo.symbol import Number
+
+def succ(lib, n):
+    return Number(lib, n.number + 1)
+
+def rng(lib, a, b):
+    return [Number(lib, i) for i in range(a.number, b.number + 1)]
+
+#end.
+
+p(@succ(3)).
+q(X) :- X=@rng(1,3).
+----
+
+[NOTE]
+====
+- The example might take a little longer to run in the browser because the
+  python interpreter takes some time to start.
+====
+
+=== Theory Directives
+
+* TODO
+
+[.clingo-code]
+[source]
+----
+%%% OPTIONS: --mode=ground
+#theory csp {
+  term { 
+    + : 1, binary, left;
+    - : 1, binary, left;
+    * : 2, binary, left;
+    / : 2, binary, left
+  };
+  &sum/0: term, {<,<=,>,>=,=}, term, any;
+  &minimize/0: term, directive
+}.
+
+{p(1..3)}.
+
+&sum { 1-2+3*var(X) } >= X :- p(X).
+:- &sum { var(X): p(X)  } < 3.
+&minimize { var(X): p(X) }.
+----
+
+[NOTE]
+====
+* Theories have to be implemented using {clingo}'s API to be used for solving.
+* The example is set up to just ground and print the program without actual
+  solving.
+* Observe how operator precedence and associativity are applied to the example.
+====

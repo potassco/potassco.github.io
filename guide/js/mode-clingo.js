@@ -1185,7 +1185,7 @@ ace.define(
           {
             token: "keyword.control",
             regex:
-              "#include\\b|#defined\\b|#show\\b|#program\\b|#const\\b|#sum\\+|#sum\\b|#count\\b|#minimize\\b|#maximize\\b|#true\\b|#false\\b|#theory\\b|#min\\b|#max\\b|#inf\\b|#sup\\b|#supremum\\b|#infimum\\b",
+              "#include\\b|#defined\\b|#show\\b|#program\\b|#const\\b|#sum\\+|#sum\\b|#count\\b|#minimize\\b|#maximize\\b|#true\\b|#false\\b|#theory\\b|#min\\b|#max\\b|#inf\\b|#sup\\b|#supremum\\b|#infimum\\b|#project\\b|#external\\b|#parts\\b|#edge\\b|#heuristic\\b",
           },
         ],
         "#operator": [

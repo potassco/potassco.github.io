@@ -163,9 +163,13 @@
       this.args = args;
       this.files = files;
       this.target = target;
-      if (files.find((file) => file.type === "python")) {
-        this.enablePython(true);
-      }
+
+      const py = files.find(
+        (file) =>
+          file.type === "python" ||
+          /#script\s*\(\s*python\s*\)/.test(file.content),
+      );
+      this.enablePython(py);
       // NOTE: this stops currently running worker and starts a new one.
       this.startWorker();
       this.runIfReady();
