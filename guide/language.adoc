@@ -203,8 +203,8 @@ https://peps.python.org/pep-3101/[f-strings].
   (decimal), `b` (binary), `o` (octal), `x`/`X` (hexadecimal), and `#x`
   (hexadecimal with prefix).
 * Padding, alignment, and sign: Specify width, padding, align, sign, and
-  separators, e.g., `{12345:0=+6,}` pads with zeros, sets numeric alignment,
-  shows sign, sets width to 6, and uses comma as a thousands separator.
+  separators, e.g., `{12345:0=+8,}` pads with zeros, sets numeric alignment,
+  shows sign, sets width to 8, and uses comma as a thousands separator.
 * Alignment: Use `<`, `>`, or `^` for left, right, or center alignment, and
   specify a fill character.
 * Attribute and item access: Expressions can access attributes of symbols.
@@ -215,7 +215,7 @@ https://peps.python.org/pep-3101/[f-strings].
 ----
 p(f"strings: {"foo"!r} - {"bar"!s}").
 p(f"number: {42:d} - {42:b} - {42:o} - {42:x} - {42:X} - {42:#x}").
-p(f"padding: {12345:0=+6,} {-12345:0=+6_}").
+p(f"padding: {12345:0=+8,} {-12345:0=+8_}").
 p(f"align: {abc:.^7} - {abc:.<7} - {abc:.>7}").
 p(f"accessor: {f(g(h(1)))[0][0].name}").
 p(f"nested: >{f"{7:0=3}"}<").
@@ -823,7 +823,8 @@ Variable safety:
 ====
 The following example demonstrates a disjunction over two literals:
 
-[source,clingo]
+[.clingo-code]
+[source]
 ----
 %%% OPTIONS: 0
 d(1..2).
@@ -836,7 +837,8 @@ atom `np(X)`.
 
 Disjunctions can also be written using default negation:
 
-[source,clingo]
+[.clingo-code]
+[source]
 ----
 %%% OPTIONS: 0
 d(1..2).
@@ -851,7 +853,8 @@ This is equivalent to the choice rule `{ p(X) } :- d(X).`.
 Disjunctions can use conditional elements to generate arbitrary-length
 disjunctions:
 
-[source,clingo]
+[.clingo-code]
+[source]
 ----
 %%% OPTIONS: 0
 d(1..6).
@@ -868,17 +871,19 @@ p(5); p(6).`
 In the variable-free case, it is often possible to shift conditions into the
 body of a rule. For example, the following two programs are equivalent:
 
-[source,clingo]
+[.clingo-code]
+[source]
 ----
 %%% OPTIONS: 0
 a | b.
 c : a | d : b.
 ----
 
-[source,clingo]
+[.clingo-code]
+[source]
 ----
 %%% OPTIONS: 0
-a | d.
+a | b.
       :- not a, not b.
 c     :-     a, not b.
     d :- not a,     b.
