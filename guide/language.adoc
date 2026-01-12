@@ -1022,12 +1022,14 @@ ghi
 Rules are the primary constructs in {clingo} programs that define relationships
 between atoms. A _rule_ has the general form:
 
-`l0 :- l1; ...; ln.`
+----
+head :- literal; ...; literal.
+----
 
-* `l0` is a head literal (including basic literals, head aggregates
+* `head` is a head literal (including basic literals, head aggregates
   disjunctions, and theory atoms).
-* `l1; ...; ln` are body literals (including basic literals, body aggregates,
-  conditional literals, and theory atoms).
+* `literal; ...; literal` are body literals (including basic literals, body
+  aggregates, conditional literals, and theory atoms).
 * Body literals can be separted by `,` or `;`. Conditional literals must be
   separated by `;`.
 
@@ -1060,9 +1062,11 @@ show.
 
 Show directives have the following forms:
 
-* `#show.`
-* `#show name/arity. [flag]`
-* `#show term : body.`
+----
+#show.
+#show name/arity. [flag]
+#show term : body.
+----
 
 Their semantics are as follows:
 
@@ -1077,7 +1081,7 @@ Their semantics are as follows:
 [.clingo-code]
 [source]
 ----
-%% OPTIONS: 0
+%%% OPTIONS: 0
 {a}.
 b.
 #show.
@@ -1101,11 +1105,13 @@ logic program.
 
 Const directives have the following form:
 
-`#const name = term. [flag]`
+----
+#const name = term. [type]
+----
 
 * `name` is the name of the constant
 * `term` is a term that is to be assigned to the constant
-* `flag` is an optional flag that can be either `default` or `override`
+* `type` is an optional type that can be either `default` or `override`
   defaulting to `default`
 ** The syntax of terms is restricted: variables and pools are not allowed.
 
@@ -1134,7 +1140,9 @@ output.
 
 Projection directives have the following form:
 
-* `#project name/arity.`
+----
+#project name/arity.
+----
 
 Here, `name` is the name of the atom and `arity` is its arity.
 
@@ -1151,16 +1159,123 @@ Here, `name` is the name of the atom and `arity` is its arity.
 
 [NOTE]
 ====
-- I can be confusing to see auxiliary atoms in the output when projection is
+* It can be confusing to see auxiliary atoms in the output when projection is
   used.
-- Try adding `#show p/1` to the above example to only show projected atoms.
-- To enable projection, use the `--project` command-line option. The example
+* Try adding `#show p/1` to the above example to only show projected atoms.
+* To enable projection, use the `--project` command-line option. The example
   has been set up accordingly.
 ====
 
-=== Weak Constraints and Optimization Directives
+=== Weak Constraints
 
-* TODO
+Weak constraints allow us to express preferences among answer sets by assigning
+penalties to certain conditions. They are used to guide the solver toward
+optimal solutions according to specified criteria.
+
+A weak constraint has the following form:
+
+----
+:~ body. [weight@level, term, ..., term]
+----
+
+* `body` has the same form as rule bodies.
+* `weight`, `level`, and terms `term, ..., term` are terms.
+* `level` is optional and defaults to `0`.
+
+The semantics of weak constraints are as follows:
+
+* Whenever the body is satisfied, the weak constraint incurs a penalty of
+  `weight` at optimization `level`.
+* Penalties are considered once for each unique tuple (`weight`, `level`,
+  `term`, ..., `term`).
+* The solver seeks answer sets that minimize the total penalty, considering
+  higher levels as more important.
+* `weight` and `level` must evaluate to integers.
+
+Variable safety:
+
+* Variables in the body must be safe, as in integrity constraints.
+* Variables in the annotation (`weight`, `level`, `term`, ..., `term`) must
+  also be made safe by the body.
+
+.Graph Coloring Example
+====
+The following example demonstrates weak constraints in a graph coloring
+problem:
+
+[.clingo-code]
+[source]
+----
+%%% OPTIONS: 0 --opt-mode=optN -q1
+color(red;green;blue).
+node(a;b;c;d).
+edge(U,V) :- node(U), node(V), U < V.
+
+1 { assign(N,C): color(C) } 1 :- node(N).
+:~ edge(U,V), assign(V,C), assign(U,C). [1@2,U,V]
+:~ assign(U,C), assign(V,D), V < U, C < D. [1@1,U,V]
+
+#show assign/2.
+----
+
+The first weak constraint penalizes edges whose endpoints have the same color
+(level 2; most important). The second weak constraint breaks symmetries by
+preferring to assign smaller colors to smaller nodes (level 1; less important).
+====
+
+[NOTE]
+====
+* Weak constraints are similar to integrity constraints, but instead of
+  excluding answer sets, they assign penalties that the solver tries to
+  minimize.
+* If all weak constraints are replaced by integrity constraints and the program
+  has an answer set, then this answer set is an optimal solution with penalty 0
+  (assuming that all weights are non-negative).
+* In its default mode, clingo iteratively improves intermediate solutions until
+  an optimal one is found.The above example has been set up to only print
+  optimal solutions (command line option `-q1`) and find all optimal solutions
+  (command line option `--opt-mode=optN`). 
+====
+
+=== Optimization Directives
+
+Optimization directives provide an alternative way to express optimization
+criteria in logic programs.
+
+Optimization directives have one of the following forms:
+
+----
+#minimize { element; ...; element }.
+#maximize { element; ...; element }.
+----
+
+Elements have the form:
+
+----
+weight@level, term, ..., term : literal, ..., literal
+----
+
+Each element in a minimize directive is equivalent to a weak constraint of
+form:
+
+----
+ :~ literal, ..., literal. [weight@level, term, ..., term]
+----
+
+Each element in a maximize directive is equivalent to a weak constraint of
+form:
+
+----
+ :~ literal, ..., literal. [-weight@level, term, ..., term]
+----
+
+[NOTE]
+====
+* Using optimization or weak constraints is largely a matter of preference.
+* Weak constraints support any body literal, while optimization directives only
+  support basic literals.
+* Internally, optimization directives are translated into weak constraints.
+====
 
 === Program and Parts Directives
 
@@ -1169,6 +1284,26 @@ sections. They are used for multi-shot solving, where different parts of a
 program can be grounded and solved incrementally. Or to organize large programs
 into composable programs parts.
 
+Part directives have form:
+
+----
+#parts part, ..., part. [type]
+----
+
+* `type` is an optional type that can be either `default` or `override`
+  defaulting to `default`.
+
+Each `part` has the form:
+
+----
+name(term, ..., term)
+----
+
+* `name` is the name of the program part and follows identifier syntax.
+* `term` is a term without variables or pools.
+
+.Simple Example
+====
 [.clingo-code]
 [source]
 ----
@@ -1180,11 +1315,15 @@ q(X) :- p(X).
 #program inject(n).
 p(n).
 ----
+====
 
 [NOTE]
 ====
-- A parts directive with flag `default` can be overriden via the command-line
+* A parts directive with type `default` can be overriden via the command-line
   option `--part=<parts>`.
+* Parts play an important role in multi-shot solving, which is covered later in
+  the guide.
+* Parts are sometimes used to organize large programs into composable sections.
 ====
 
 === External Directives
@@ -1254,7 +1393,7 @@ edge(c,a).
 
 [NOTE]
 ====
-- The exmaple uses the `domain` heuristic strategy, which can be enabled via
+* The exmaple uses the `domain` heuristic strategy, which can be enabled via
   the command-line option `--heuristic=domain`.
 ====
 
@@ -1283,7 +1422,7 @@ q(X) :- X=@rng(1,3).
 
 [NOTE]
 ====
-- The example might take a little longer to run in the browser because the
+* The example might take a little longer to run in the browser because the
   python interpreter takes some time to start.
 ====
 
