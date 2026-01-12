@@ -6,7 +6,14 @@
   })();
 
   class ClingoView extends EventTarget {
-    constructor(editor, runButton, inputElement, outputElement, options) {
+    constructor(
+      editor,
+      runButton,
+      settingsButton,
+      inputElement,
+      outputElement,
+      options,
+    ) {
       super();
 
       this.editor = editor;
@@ -14,6 +21,23 @@
       this.outputElement = outputElement;
       this.inputElement = inputElement;
       this.options = options;
+
+      const cancelButton = document.getElementById("clingo-settings-cancel");
+      const saveButton = document.getElementById("clingo-settings-save");
+      const modal = document.getElementById("clingo-settings-modal");
+      const input = document.getElementById("clingo-options-input");
+
+      settingsButton.onclick = () => {
+        input.value = this.options.join(" ");
+        modal.style.display = "flex";
+        saveButton.onclick = () => {
+          this.options = input.value.trim().split(" ");
+          modal.style.display = "none";
+        };
+      };
+      cancelButton.onclick = () => {
+        modal.style.display = "none";
+      };
 
       this.runButton.onclick = () =>
         this.dispatchEvent(new CustomEvent("run-request"));
@@ -35,16 +59,6 @@
     }
 
     getOptions() {
-      const content = this.editor.session.getValue();
-      const prefix = "%% OPTIONS:";
-      const start = content.indexOf(prefix);
-      if (start !== -1) {
-        const end = content.indexOf("\n", start);
-        return content
-          .substring(start + prefix.length, end === -1 ? content.length : end)
-          .trim()
-          .split(" ");
-      }
       return this.options;
     }
 
@@ -189,10 +203,18 @@
       this.views = [];
     }
 
-    addView(editor, runButton, inputElement, outputElement, options) {
+    addView(
+      editor,
+      runButton,
+      settingsButton,
+      inputElement,
+      outputElement,
+      options,
+    ) {
       const view = new ClingoView(
         editor,
         runButton,
+        settingsButton,
         inputElement,
         outputElement,
         options,
@@ -233,7 +255,6 @@
       });
       const session = editor.getSession();
       var content = session.getValue().trim();
-      // The first line of content might start with "%% OPTIONS: <space separated options>" I want to extract these options and store them in a data attribute of the block.
       var options = [];
       const prefix = "%%% OPTIONS:";
       if (content.startsWith(prefix)) {
@@ -243,21 +264,31 @@
       }
       session.setValue(content);
 
-      // create the button
-      var button = document.createElement("button");
-      button.className = "clingo-run-button";
-      button.textContent = "▶";
+      var runButton = document.createElement("button");
+      runButton.className = "clingo-run-button";
+      runButton.textContent = "▶";
 
-      // Create the output
+      var settingsButton = document.createElement("button");
+      settingsButton.className = "clingo-settings-button";
+      settingsButton.innerHTML = "⚙";
+      settingsButton.style.opacity = "100%";
+
       var output = document.createElement("div");
       output.className = "clingo-output";
 
-      // insert button and output
       block.style.position = "relative";
-      block.appendChild(button);
+      block.appendChild(settingsButton);
+      block.appendChild(runButton);
       block.parentNode.insertBefore(output, block.nextSibling);
 
-      controller.addView(editor, button, block, output, options);
+      controller.addView(
+        editor,
+        runButton,
+        settingsButton,
+        block,
+        output,
+        options,
+      );
     }
   });
 })();

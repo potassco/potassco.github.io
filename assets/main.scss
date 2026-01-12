@@ -270,6 +270,17 @@ table.trophy td {
     top: 8px;
     right: 8px;
     z-index: 10;
+    width: 24px;
+    height: 24px;
+  }
+
+  .clingo-settings-button {
+    position: absolute;
+    top: 8px;
+    right: 35px;
+    z-index: 10;
+    width: 24px;
+    height: 24px;
   }
 
   .button--loading::after {
@@ -370,6 +381,42 @@ table.trophy td {
     font-weight: 600;
     border-left: 2px solid $brand-color; /* Right accent */
   }
+}
+
+.clingo-settings-modal {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.5);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+.clingo-settings-modal-content {
+  // background: #fff;
+  // padding: 2em;
+  // border-radius: 8px;
+  // min-width: 300px;
+  // display: flex;
+  // flex-direction: column;
+  // gap: 1em;
+  background: #fff;
+  width: 100vw;
+  max-width: $content-width;
+  min-width: 0;
+  padding: 2em;
+  border-radius: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
+}
+.clingo-settings-modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1em;
 }
 
 /* Mobile - matches Minima post spacing */
