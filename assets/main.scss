@@ -405,6 +405,7 @@ table.trophy td {
   // gap: 1em;
   background: #fff;
   width: 100vw;
+  max-height: 80vh;
   max-width: $content-width;
   min-width: 0;
   padding: 2em;
@@ -412,11 +413,115 @@ table.trophy td {
   display: flex;
   flex-direction: column;
   gap: 1em;
+  overflow-y: auto;
+
+  section {
+    padding: 1ex;
+    background: #f9f9fc;
+    border-radius: 8px;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
+  }
+
+  dl {
+    margin: 0;
+  }
+
+  dt {
+    font-weight: bold;
+    color: #1a2a4a;
+    margin-top: 1em;
+    font-size: 1em;
+  }
+
+  dd {
+    margin-left: 1.5em;
+    margin-bottom: 0.5em;
+    color: #333;
+    font-size: 0.97em;
+  }
+
+  ul {
+    margin: 0.3em 0 0.3em 1.2em;
+    padding: 0;
+    list-style: disc;
+  }
+
+  ul ul {
+    list-style: circle;
+    margin-left: 1.5em;
+  }
+
+  strong {
+    color: #2a3a5e;
+  }
+
+  em {
+    color: #6a7a8a;
+    font-style: italic;
+  }
+  .collapsible {
+    background: #e7eaf3;
+    color: #2a3a5e;
+    cursor: pointer;
+    padding: 0.7em 1em;
+    width: 100%;
+    border: none;
+    text-align: left;
+    outline: none;
+    font-size: 1.1em;
+    border-radius: 6px;
+    margin-bottom: 0.3em;
+    transition: background 0.2s;
+    position: relative;
+    padding-left: 2em; /* Space for chevron */
+  }
+  .collapsible::before {
+    content: "▶";
+    position: absolute;
+    left: 0.7em;
+    top: 50%;
+    transform: translateY(-50%) rotate(0deg);
+    transition: transform 0.2s;
+    font-size: 1em;
+    color: #2a3a5e;
+  }
+  .collapsible.active::before {
+    transform: translateY(-50%) rotate(90deg);
+  }
+
+  .collapsible:hover {
+    background: #d0d6e6;
+  }
+  .content {
+    padding: 0 1em;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease;
+    background: #f9f9fc;
+    border-radius: 0 0 8px 8px;
+  }
+  .content.open {
+    max-height: 1000px; /* Large enough for content */
+    padding: 1em;
+  }
 }
 .clingo-settings-modal-actions {
   display: flex;
   justify-content: flex-end;
   gap: 1em;
+}
+
+body.modal-open {
+  overflow: hidden;
+}
+
+#clingo-options-input {
+  width: 100%;
+  box-sizing: border-box;
+  font-size: 1em;
+  padding: 0.5em;
+  margin-top: 0.3em;
+  margin-bottom: 1em;
 }
 
 /* Mobile - matches Minima post spacing */

@@ -30,13 +30,16 @@
       settingsButton.onclick = () => {
         input.value = this.options.join(" ");
         modal.style.display = "flex";
+        document.body.style.overflow = "hidden";
         saveButton.onclick = () => {
           this.options = input.value.trim().split(" ");
           modal.style.display = "none";
+          document.body.style.overflow = "";
         };
       };
       cancelButton.onclick = () => {
         modal.style.display = "none";
+        document.body.style.overflow = "";
       };
 
       this.runButton.onclick = () =>
