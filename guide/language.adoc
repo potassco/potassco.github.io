@@ -1328,7 +1328,39 @@ p(n).
 
 === External Directives
 
-* TODO
+External directives allow you to declare atoms as _external_, meaning their
+truth values can be controlled from outside the logic program. This feature is
+especially useful for multi-shot solving and for handling dynamic problem
+instances.
+
+An external directive has the following form:
+
+----
+#external atom : body. [flag]
+----
+
+* `atom` is a basic atom.
+* `body` is a rule body, following the same syntax and semantics as in rules;
+  the colon can be omitted if the body is empty.
+* `flag` is an optional term that must evaluate to one of `true`, `false`,
+  `free`, or `release` (default: `false`).
+
+
+The semantics are as follows:
+
+* The directive is grounded like a rule; after grounding, the body is discarded
+  and the atom is declared external.
+* The initial truth value of the external atom is determined by the flag, but
+  can be changed later via the API.
+
+Variable safety:
+
+* Variables in the atom and body must follow the same safety rules as in rules.
+* Variables in the flag must be made safe by the body.
+
+.Simple Example
+====
+The following example demonstrates external directives:
 
 [.clingo-code]
 [source]
@@ -1339,10 +1371,45 @@ p(n).
 #external p(5). [false]
 #external p(6).
 ----
+====
+
+[NOTE]
+====
+* The main purpose of external directives is to facilitate multi-shot solving,
+  which is covered later in the guide.
+====
 
 === Include Directives
 
-* TODO
+Include directives enable modularization by allowing you to incorporate
+external files or built-in modules into your logic programs. This helps
+organize large programs and promotes code reuse.
+
+There are two types of include directives:
+
+* Standard includes, which incorporate user-defined files.
+* Built-in includes, which provide access to predefined modules.
+
+The syntax is as follows:
+
+----
+#include "path".
+#include <module>.
+----
+
+* `path` specifies the file to be included; it can be absolute or relative to
+  the current file or working directory.
+* `module` is the name of a built-in module provided by {clingo}; currently,
+  only `incmode` is supported.
+
+When an include directive is encountered, the specified file or module is
+grounded just like a regular file passed to {clingo} on the command line.
+
+.Incremental Mode
+====
+The incremental mode module provides simple support for multi-shot solving,
+particularly useful for planning problems. Program parts are grounded and
+solved incrementally based on time steps until a solution is found.
 
 [.clingo-code]
 [source]
@@ -1350,18 +1417,55 @@ p(n).
 #include <incmode>.
 
 #program base.
-p(1).
+p(0).
 
 #program step(t).
 p(t) :- p(t-1).
 
 #program check(t).
-:- query(t), not p(5).
+:- query(t), not p(3).
 ----
+====
+
+The grounding and solving of the above example proceeds as follows:
+
+* `base` and `check(0)` are grounded and solved: unsatisfiable
+* `step(1)` and `check(1)` are grounded and solved: unsatisfiable
+* `step(2)` and `check(1)` are grounded and solved: unsatisfiable
+* `step(3)` and `check(3)` are grounded and solved: satisfiable
+
+[NOTE]
+====
+* Include directives provide a way to modularize programs.
+* In some cases, using program parts for modularization is more convenient, as
+  it avoids managing a large number of small files.
+====
 
 === Edge Directives
 
-* TODO
+Edge directives provide a concise way to construct directed graphs within logic
+programs by conditionally including edges. Any answer set that induces a cyclic
+graph is automatically discarded.
+
+The general form of an edge directive is:
+
+----
+#edge (term, term; ...; term, term) : body.
+----
+
+* Each `term, term` pair specifies an edge from the first node to the second node.
+* `body` is a rule body, following the same syntax and semantics as in rules;
+  the colon can be omitted if the body is empty.
+
+Variable safety:
+
+* Variables in the terms must be made safe by the body.
+* The body follows the same safety rules as rule bodies.
+
+.Simple Graph
+====
+The following program selects at least two edges from an example graph and
+ensures that the resulting graph is acyclic using edge directives:
 
 [.clingo-code]
 [source]
@@ -1375,6 +1479,15 @@ edge(c,a).
 
 #edge (X,Y) : pick(X,Y).
 ----
+====
+
+[NOTE]
+====
+* Edge directives are particularly useful for problems involving acyclic
+  structures, such as scheduling or dependency resolution.
+* While reachability can be expressed via recursive rules in ASP, expressing
+  acyclicity compactly is not as straightforward without edge directives.
+====
 
 === Heuristic Directives
 
