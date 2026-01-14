@@ -901,6 +901,7 @@ c | d :-     a,     b.
   rules.
 ====
 
+[[theory-atoms]]
 === Theory Atoms
 
 Theory atoms provide a way to embed custom theories into {clingo} programs.
@@ -970,8 +971,8 @@ h :- &sum { X: X=1..3  } >= 3.
 
 The example is set up to just parse and print the program without actual
 grounding. To actually ground programs with theory atoms, a theory
-specification is needed, which is introduced later in the guide. To solve them,
-a theory solver must be implemented using {clingo}'s API.
+specification is needed (see <<theory-specification>>). To solve them, a theory
+solver must be implemented using {clingo}'s API.
 ====
 
 == Statements
@@ -1491,7 +1492,50 @@ edge(c,a).
 
 === Heuristic Directives
 
-* TODO
+Heuristic directives allow you to influence the solver's search strategy by
+specifying preferences for certain atoms to be true or false during solving.
+This can guide the solver toward more desirable solutions or improve
+performance on specific problems.
+
+A heuristic directive has the following form:
+
+----
+#heuristic atom : body. [weight@priority, modifier]
+----
+
+* `atom` is a basic atom.
+* `body` is a rule body, following the same syntax and semantics as in rules;
+  the colon can be omitted if the body is empty.
+* `weight` and `priority` are terms that evaluate to integers; `priority` is
+  optional and defaults to `0`.
+* `modifier` is one of `true`, `false`, `level`, `sign`, `init`, or `factor`.
+
+Semantics:
+
+* A heuristic modification is applied whenever the body is satisfied.
+* The `priority` determines the importance of the heuristic modification;
+  higher priorities take precedence.
+* Modifiers:
+** `level`: Sets the decision level of the atom to `weight`. Atoms with the
+   highest level are considered first for branching.
+** `sign`: Sets the preferred truth value of the atom to true (`weight > 0`),
+   false (`weight < 0`), or default (`weight = 0`).
+** `true`/`false`: Shorthand for setting the sign preference to 1 or -1,
+   respectively, and the level to the value of `weight`.
+** `init`: Increases the activity score of the atom by `weight`, making it more
+   likely to be selected early in the search. The score decays over time and is
+   increased only once.
+** `factor`: Multiplies the current activity score of the atom by `weight`,
+   boosting its importance throughout solving.
+
+Variable safety:
+
+* `atom` and `body` must follow the same safety rules as in rules.
+* Variables in `weight`, `priority`, and `modifier` must be made safe by the body.
+
+.Heuristic Example
+====
+The following example demonstrates heuristic directives:
 
 [.clingo-code]
 [source]
@@ -1503,16 +1547,46 @@ edge(c,a).
 #heuristic p(X). [1, true]
 #heuristic q(X). [1, false]
 ----
+====
+
+The example is set up to compute only one model. The heuristic directives
+specify that atoms over predicate `p/1` should be made true and atoms over
+predicate `q/1` should be made false whenever possible.
 
 [NOTE]
 ====
-* The exmaple uses the `domain` heuristic strategy, which can be enabled via
+* The example uses the `domain` heuristic strategy, which can be enabled via
   the command-line option `--heuristic=domain`.
+* The `true`/`false` modifiers can also be used to implement reasoning modes,
+  such as computing a subset minimal answer set.
 ====
 
 === Script Directives and External Functions
 
-* TODO
+Script directives allow you to embed scripts written in supported languages
+(currently only Python) directly into your {clingo} programs. Scripts can be
+used to define external functions that are callable from the logic program, or
+to manipulate the solving process via the {clingo} API.
+
+The general form of a script directive is:
+
+----
+#script (language)
+code
+#end.
+----
+
+* `language` specifies the scripting language (currently only `python` is
+  supported).
+* `code` is the script code; it must not contain the `#end.` directive.
+
+External functions defined in the script can be called from the logic program
+by prefixing function names with `@`.
+
+.Calling External Functions
+====
+The following example demonstrates how to define and use external functions in
+Python:
 
 [.clingo-code]
 [source]
@@ -1532,23 +1606,98 @@ def rng(lib, a, b):
 p(@succ(3)).
 q(X) :- X=@rng(1,3).
 ----
+====
 
 [NOTE]
 ====
+* External functions can return a single term or a sequence of terms, resulting
+  in pools.
 * The example might take a little longer to run in the browser because the
-  python interpreter takes some time to start.
+  Python interpreter takes some time to start.
+* For more details on scripting and the available API, see the
+  link:../../clingo/python-api/current/[API Reference].
 ====
 
+[[theory-specification]]
 === Theory Directives
 
-* TODO
+Theory directives allow you to define custom theories that can be used within
+logic programs. Theories are collections of theory atoms with specific syntax
+and semantics, which are interpreted by external theory solvers via the
+{clingo} API.
+
+A theory directive has the following form:
+
+----
+#theory name {
+  term_definition;
+  ...
+  term_definition;
+  atom_definition;
+  ...
+  atom_definition
+}.
+----
+
+A _term_definition_ specifies the operators and their properties for theory
+terms:
+
+----
+name {
+  operator_definition;
+  ...
+  operator_definition
+}.
+----
+
+Each _operator_definition_ has the form:
+
+----
+theory_operator : precedence, arity, associativity
+----
+
+* `theory_operator` is a sequence of symbols (see <<theory-atoms>> for allowed
+  characters).
+* `precedence` is a non-negative integer.
+* `arity` is either `unary` or `binary`.
+* `associativity` is either `left` or `right` (only for binary operators).
+
+An _atom_definition_ describes the allowed forms of theory atoms:
+
+----
+&name/arity: term, {relation,...,relation}, term, type.
+&name/arity: term, type.
+----
+
+* The first variant defines a theory atom with optional guards:
+** The first `term` specifies the permissible terms within the theory atom.
+** The set `{relation,...,relation}` and the second `term` specify the
+   permissible guards.
+** The `type` determines where the theory atom can appear: `head`, `body`,
+   `any`, or `directive`.
+*** `head`: only in rule heads
+*** `body`: only in rule bodies
+*** `any`: in both heads and bodies
+*** `directive`: only in the head of a rule with an empty body
+* The second variant defines a theory atom without guards, following the same
+  rules for the remaining parts.
+
+The theory directive thus specifies both the syntax (allowed operators, terms,
+and atoms) and the placement of theory atoms in rules. The actual semantics are
+provided by an external theory solver, which must be implemented using the
+{clingo} API.
+
+.Theory Syntax for Constraint Satisfaction Problems
+====
+The following example defines a simple theory for constraint satisfaction
+problems:
 
 [.clingo-code]
 [source]
 ----
 %%% OPTIONS: --mode=ground
 #theory csp {
-  term { 
+  term {
     + : 1, binary, left;
     - : 1, binary, left;
     * : 2, binary, left;
@@ -1564,11 +1713,15 @@ q(X) :- X=@rng(1,3).
 :- &sum { var(X): p(X)  } < 3.
 &minimize { var(X): p(X) }.
 ----
+====
 
 [NOTE]
 ====
-* Theories have to be implemented using {clingo}'s API to be used for solving.
+* Theory directives only specify the syntax and placement of theory atoms;
+  their semantics must be implemented using {clingo}'s API.
 * The example is set up to just ground and print the program without actual
   solving.
-* Observe how operator precedence and associativity are applied to the example.
+* Observe how operator precedence and associativity are applied in the example.
+* For more details on implementing custom theories, see the {clingo} API
+  documentation.
 ====
