@@ -614,7 +614,7 @@ and `2,b`, `3,b`, `4,b`, `5,b` from `q(X)`, as well as the single terms `1`,
 ====
 * Recursive aggregates are also subject to minimization of cyclic derivations;
   we do not detail this here because this is a rather advanced topic.
-* Assignments aggregates are best applied predicates defined by facts or
+* Assignments aggregates are best applied to predicates defined by facts or
   definite rules to avoid computational overhead (as in the above example).
 * Care has to be taken to correctly use tuples and not just weights in term
   tuples as the set of them is formed that eliminates duplicates.
