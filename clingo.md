@@ -81,7 +81,7 @@ Packages for clingo are available for some Linux distributions:
 
 - [Debian][package-debian],
 - [Ubuntu PPA][package-ubuntu], and
-- [Arch Linux][package-arch].
+- [Arch Linux AUR][package-arch].
 
 Packages for clingo are available for some BSD-based distributions:
 
