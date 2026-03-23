@@ -1695,7 +1695,7 @@ problems:
 [.clingo-code]
 [source]
 ----
-%%% OPTIONS: --mode=ground
+%%% OPTIONS: --convert=text
 #theory csp {
   term {
     + : 1, binary, left;

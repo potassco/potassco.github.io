@@ -94,7 +94,7 @@ button to see how {clingo} grounds the program:
 [.clingo-code]
 [source]
 ----
-%%% OPTIONS: --mode=ground
+%%% OPTIONS: --convert=text
 { fly(X) } :- bird(X).
 :- fly(X), penguin(X).
 
