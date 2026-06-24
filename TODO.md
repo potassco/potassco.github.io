@@ -1,1 +1,0 @@
-- consider switching to the minimal mistakes theme
